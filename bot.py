@@ -7,6 +7,8 @@ import re
 import asyncio
 import threading
 import queue
+from datetime import datetime
+
 
 
 from utils.search import *
@@ -32,6 +34,8 @@ log_channel = bot.get_channel(1227224314483576982)
 async def on_ready():
     print("Bot started")
     channel = bot.get_channel(CHANNEL_ID)
+    with open('logs.txt', 'a') as file:
+        file.write(f"\n{datetime.now()} - Bot started")
     await channel.send("Bot is online <@780303451980038165>")
     await bot.tree.sync()
     try:
@@ -67,9 +71,13 @@ async def log_rare_trains(rare_trains):
 
         try:
             await channel.send(embed=embed)
+            with open('logs.txt', 'a') as file:
+                file.write(f"\n{datetime.now()} - Sent rare trains")
         except discord.HTTPException:
             await channel.send("Embed too big! There are many trains on the wrong line. Check ANYTRIP.")
-        await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!')
+            with open('logs.txt', 'a') as file:
+                file.write(f"\n{datetime.now()} - Sent rare trains but it was too long")
+        await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!\n`Due to errors in the PTV api data out of our control, some data may be inaccurate.`')
     else:
         await log_channel.send("None found")
 
@@ -79,6 +87,8 @@ async def log_rare_trains(rare_trains):
 async def task_loop():
     log_channel = bot.get_channel(1227224314483576982)
     await log_channel.send("Checking for trains on lines they aren't meant for")
+    with open('logs.txt', 'a') as file:
+        file.write(f"\n{datetime.now()} - Checking for rare trains")
 
     # Create a new thread to run checkRareTrainsOnRoute
     thread = threading.Thread(target=check_rare_trains_in_thread)
@@ -164,6 +174,8 @@ async def line_info(ctx, line: str):
 
     
     await ctx.response.send_message(embed=embed)
+    with open('logs.txt', 'a') as file:
+                file.write(f"\n{datetime.now()} - user sent line info command with input {line}")
 
 # @bot.tree.command(name="vline-line", description="Show info about a V/Line line")
 # @app_commands.describe(vline_line = "What V/Line line to show info about?")
@@ -236,6 +248,8 @@ async def runs(ctx, runid: str):
         embed.add_field(name="Train type:", value=vehicle_info["description"], inline=False)    
     
     await ctx.response.send_message(embed=embed)
+    with open('logs.txt', 'a') as file:
+                file.write(f"\n{datetime.now()} - user sent run search command with input {runid}")
     
     
  
@@ -368,12 +382,15 @@ async def route(ctx, rtype: str, number: int):
                     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
                     
                 await channel.send(embed=embed)
+                with open('logs.txt', 'a') as file:
+                    file.write(f"\n{datetime.now()} - user sent route search command with input {rtype}, {number}")
                                 
             counter = counter + 1
                 
     except Exception as e:
         await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
-
+        with open('logs.txt', 'a') as file:
+                    file.write(f"\n{datetime.now()} - ERROR with user command - user sent route search command with input {rtype}, {number}")
 
 
 
@@ -394,7 +411,7 @@ async def line_info(ctx, number: str):
         await channel.send(photo_url)
     else:
         mAdded = search_query+'M'
-        await channel.send(f"Photo not in xm9g database!\nTrying {mAdded}")
+        
         
         # try with m added
         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
@@ -410,6 +427,7 @@ async def line_info(ctx, number: str):
                     await channel.send(photo_url)
                 else:
                     print("no other images found")
+                    await channel.send(f"Photo not in xm9g database!")
                     break
 
         
