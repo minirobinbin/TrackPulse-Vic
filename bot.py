@@ -19,8 +19,6 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 
 
-poop = "4f106762-5059-4895-98b9-v4b8c0daf9b7"
-
 # ENV READING
 config = dotenv_values(".env")
 
