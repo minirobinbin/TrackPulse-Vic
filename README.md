@@ -1,4 +1,5 @@
 # melbourne-trains-discord-bot
+[![CodeFactor](https://www.codefactor.io/repository/github/xm9g/melbourne-transport-discord-bot/badge/main)](https://www.codefactor.io/repository/github/xm9g/melbourne-transport-discord-bot/overview/main)
 
 ## How to use:
 - rename `rename.env` to `env`
