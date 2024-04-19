@@ -450,7 +450,7 @@ async def train_line(ctx, train: str):
     embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
     
     embed.add_field(name="Type:", value=type)
-    if train.upper() == "7005": # Only old livery sprinter
+    if train.upper() == "7005": # old livery sprinter
         embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
     else:
         embed.set_thumbnail(url=getIcon(type))
@@ -519,7 +519,7 @@ async def train_line(ctx):
     date_week = apiData["date_week"]
     date_aus_string = apiData["date_aus_string"]
     
-    embed.add_field(name=days, value='\u200b', inline=False)
+    embed.add_field(name=f"{days} days", value='\u200b', inline=False)
 
     embed.add_field(name="Current Champion:", value=name)
     embed.add_field(name="Date:", value=date)
