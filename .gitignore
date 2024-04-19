@@ -3,6 +3,8 @@ token.txt
 test.token
 .env
 
+logs.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

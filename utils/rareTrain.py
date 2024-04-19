@@ -44,11 +44,11 @@ def checkRareTrainsOnRoute():
                     cars = run['vehicle_descriptor']['id'].split("-")
                 except Exception as e:
                     print(f'Error: {e}')
-                print(f'cars DEBUG {cars}')
+                # print(f'cars DEBUG {cars}')
                 
                 vehicle_type = trainType(cars[0]) # get vhecle type from 1st number
                 
-                print(f"Vhercle type: {vehicle_type}")
+                # print(f"Vhercle type: {vehicle_type}")
                 train_model = vehicle_type # just cause im lazy to update
                 if route['route_name'] == 'Mernda' or route['route_name'] == 'Belgrave' or route['route_name'] == 'Alamein' or route['route_name'] == 'Glen Waverley' or route['route_name'] == 'Hurstbridge':
                     rareTrains = ["Alstom Comeng", "EDI Comeng", "Comeng", "Siemens Nexas", "Siemens", "HCMT"]
