@@ -507,7 +507,7 @@ async def transportVicSearch_async(ctx, train):
 # Montague Bridge search
 @bot.tree.command(name="days-since-montague-hit", description="See how many days it has been since the Montague Street bridge has been hit.")
 async def train_line(ctx):
-    await ctx.response.send_message(f"Checking..")
+    await ctx.response.send_message(f"Checking...")
     channel = ctx.channel
     
     embed = discord.Embed(title=f"How many days since the Montague Street bridge has been hit?", color=0xd8d800)
@@ -541,7 +541,7 @@ async def train_line(ctx):
     date_week = apiData["date_week"]
     date_aus_string = apiData["date_aus_string"]
     
-    embed.add_field(name=days, value='\u200b', inline=False)
+    embed.add_field(name=f"{days} days", value='\u200b', inline=False)
 
     embed.add_field(name="Current Champion:", value=name)
     embed.add_field(name="Date:", value=date)
