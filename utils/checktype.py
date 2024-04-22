@@ -62,6 +62,13 @@ def trainType(number):
                 return "N Class"
             else:
                 return(f"Train type not found for {number}")
+            
+        if car.startswith("K"):
+            return("K Class")
+        
+        if car.startswith("Y"):
+            return("Y Class")
+        
         if car.startswith("TRAIN"):
             return("Error: TrainID sent")
             

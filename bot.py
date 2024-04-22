@@ -464,27 +464,31 @@ async def train_line(ctx, train: str):
     await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
     type = trainType(train)
-    
-    embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
-    
-    embed.add_field(name="Type:", value=type)
-    if train.upper() == "7005": # Only old livery sprinter
-        embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
+    print(f"TRAINTYPE {type}")
+    if type == None:
+        await channel.send("Train not found")
+        
     else:
-        embed.set_thumbnail(url=getIcon(type))
-    embed.set_image(url=getImage(train.upper()))
- 
-    # additional embed fields:
-    embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})\n[XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()})\n[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html)", inline=False)
-    await channel.send(embed=embed)
+        embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
+        
+        embed.add_field(name="Type:", value=type)
+        if train.upper() == "7005": # Only old livery sprinter
+            embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
+        else:
+            embed.set_thumbnail(url=getIcon(type))
+        embed.set_image(url=getImage(train.upper()))
     
-    # seperated the runs to a seperate thing cause its slow
-    embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
+        # additional embed fields:
+        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})\n[XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()})\n[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html)", inline=False)
+        await channel.send(embed=embed)
+        
+        # seperated the runs to a seperate thing cause its slow
+        embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
 
-    # Run transportVicSearch in a separate thread
-    loop = asyncio.get_event_loop()
-    task = loop.create_task(transportVicSearch_async(ctx, train.upper()))
-    await task
+        # Run transportVicSearch in a separate thread
+        loop = asyncio.get_event_loop()
+        task = loop.create_task(transportVicSearch_async(ctx, train.upper()))
+        await task
 
 async def transportVicSearch_async(ctx, train):
     embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
