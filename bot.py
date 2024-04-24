@@ -19,6 +19,7 @@ from utils.trainImage import *
 from utils.checktype import *
 from utils.rareTrain import *
 from utils.montagueAPI import *
+from utils.map.map import *
 
 
 # ENV READING
@@ -550,6 +551,17 @@ async def train_line(ctx):
     embed.set_author(name='howmanydayssincemontaguestreetbridgehasbeenhit.com', url="https://howmanydayssincemontaguestreetbridgehasbeenhit.com")
     await ctx.channel.send(embed=embed)
     
+# the map thing
+@bot.tree.command(name="map", description="testing")
+async def map(ctx):
+    channel = ctx.channel
+    await ctx.response.send_message("Generating Map", ephemeral=True)
+
+    genMap()
+    file = discord.File("utils/map/gen.png", filename="gen.png")
+    embed = discord.Embed(title='Map of stations in Victoria', color=0x5865f2)
+    embed.set_image(url="attachment://gen.png")
+    await channel.send(file=file, embed=embed)
 
 
 bot.run(BOT_TOKEN)
