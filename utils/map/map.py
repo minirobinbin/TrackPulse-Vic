@@ -96,3 +96,4 @@ def genMap():
     
     # Save the specific area of the plot as an image
     plt.savefig(os.path.join(current_dir, "gen.png"), bbox_inches='tight', pad_inches=0.0)
+    os.remove('utils/map/train_locations.csv')
