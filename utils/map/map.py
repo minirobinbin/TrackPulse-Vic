@@ -25,7 +25,7 @@ def genMap():
     # File access
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_dir, "train_locations.csv")
-    image_path = os.path.join(current_dir, "map.jpg")
+    image_path = os.path.join(current_dir, "map.png")
     
     try:
         # Open CSV file in write mode with newline='' for Windows compatibility
@@ -84,17 +84,15 @@ def genMap():
 
 
     # plot graph
-    sns.scatterplot(data=df, x="Latitude", y="Longitude")
-    bg_image = plt.imread(image_path)
-    plt.imshow(bg_image, extent=[ -37.5787,-38.1436, 144.655,145.538], aspect='auto')
+    sns.scatterplot(data=df, x="Longitude", y="Latitude")
+    # bg_image = plt.imread(image_path)
+    # plt.imshow(bg_image, aspect='auto')
 
     # settings
-    # plt.xlim(141.163, 147.383)  
-    # plt.ylim(-39.353, -33.878) 
+    # plt.xlim(-37.89974170269387, -38.08037565853107)  
+    # plt.ylim(145.12596528142748, 144.72817232260618) 
     plt.legend([], frameon=False)
     plt.axis('off')
-    plt.show()
-
+    
     # Save the specific area of the plot as an image
     plt.savefig(os.path.join(current_dir, "gen.png"), bbox_inches='tight', pad_inches=0.0)
-genMap()

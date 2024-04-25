@@ -559,7 +559,7 @@ async def map(ctx):
 
     genMap()
     file = discord.File("utils/map/gen.png", filename="gen.png")
-    embed = discord.Embed(title='Map of stations in Victoria', color=0x5865f2)
+    embed = discord.Embed(title='Metro Trains Location', color=0x5865f2)
     embed.set_image(url="attachment://gen.png")
     await channel.send(file=file, embed=embed)
 
