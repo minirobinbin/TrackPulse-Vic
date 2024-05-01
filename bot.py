@@ -552,7 +552,8 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)
     
 # the map thing
-@bot.tree.command(name="map", description="testing")
+# IMPORTANT: Make this a thread!
+'''@bot.tree.command(name="map", description="testing")
 async def map(ctx):
     channel = ctx.channel
     await ctx.response.send_message("Generating Map", ephemeral=True)
@@ -561,7 +562,7 @@ async def map(ctx):
     file = discord.File("utils/map/gen.png", filename="gen.png")
     embed = discord.Embed(title='Metro Trains Location', color=0x5865f2)
     embed.set_image(url="attachment://gen.png")
-    await channel.send(file=file, embed=embed)
+    await channel.send(file=file, embed=embed)'''
 
 
 bot.run(BOT_TOKEN)
