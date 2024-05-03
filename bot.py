@@ -8,8 +8,9 @@ import asyncio
 import threading
 import queue
 from datetime import datetime
-
-
+import csv
+import random
+import pandas as pd
 
 from utils.search import *
 from utils.colors import *
@@ -20,7 +21,9 @@ from utils.checktype import *
 from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
+from utils.game.lb import *
 
+rareCheckerOn = True
 
 # ENV READING
 config = dotenv_values(".env")
@@ -86,14 +89,17 @@ async def log_rare_trains(rare_trains):
 
 @tasks.loop(minutes=10)
 async def task_loop():
-    log_channel = bot.get_channel(1227224314483576982)
-    await log_channel.send("Checking for trains on lines they aren't meant for")
-    with open('logs.txt', 'a') as file:
-        file.write(f"\n{datetime.now()} - Checking for rare trains")
+    if rareCheckerOn:
+        log_channel = bot.get_channel(1227224314483576982)
+        await log_channel.send("Checking for trains on lines they aren't meant for")
+        with open('logs.txt', 'a') as file:
+            file.write(f"\n{datetime.now()} - Checking for rare trains")
 
-    # Create a new thread to run checkRareTrainsOnRoute
-    thread = threading.Thread(target=check_rare_trains_in_thread)
-    thread.start()
+        # Create a new thread to run checkRareTrainsOnRoute
+        thread = threading.Thread(target=check_rare_trains_in_thread)
+        thread.start()
+    else:
+        print("Rare checker not enabled!")
 
 
 
@@ -552,7 +558,12 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)
     
 # the map thing
+<<<<<<< HEAD
 @bot.tree.command(name="map_beta", description="train map testing")
+=======
+# IMPORTANT: Make this a thread!
+'''@bot.tree.command(name="map", description="testing")
+>>>>>>> b95e27a355f5f0099d78b866c90146240652c024
 async def map(ctx):
     channel = ctx.channel
     await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
@@ -561,7 +572,76 @@ async def map(ctx):
     file = discord.File("utils/map/gen.png", filename="gen.png")
     embed = discord.Embed(title='Metro Trains Location', color=0x5865f2)
     embed.set_image(url="attachment://gen.png")
-    await channel.send(file=file, embed=embed)
+    await channel.send(file=file, embed=embed)'''
+    
+@bot.tree.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
+async def game(ctx):
+    channel = ctx.channel
 
+    # Define the CSV file path
+    csv_file = 'utils/game/images.csv'
+
+    # Read the CSV file and store rows in a list
+    rows = []
+    with open(csv_file, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            rows.append(row)
+
+    # Remove the header row if present
+    header = rows[0]
+    data = rows[1:]
+
+    # Get a random row
+    random_row = random.choice(data)
+
+    # Extract data from the random row
+    url = random_row[0]
+    station = random_row[1]
+    difficulty = random_row[2]
+
+    embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
+    embed.set_image(url=url)
+    embed.add_field(name='Difficulty', value=difficulty)
+
+    # Send the embed message
+    await ctx.response.send_message(embed=embed)
+
+    # Define a check function to validate user input
+    def check(m):
+        return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+
+    async def run_game():
+        try:
+            correct = False
+            while not correct:
+                # Wait for user's response in the same channel
+                user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                
+                # Check if the user's response matches the correct station
+                if user_response.content[1:].lower() == station.lower():
+                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
+                    addLb(user_response.author.id, user_response.author.name)
+                    correct = True
+                else:
+                    await ctx.channel.send("Wrong guess! Try again.")
+        except asyncio.TimeoutError:
+            await ctx.channel.send(f"Times up. The answer was ||{station}||")
+
+    # Run the game in a separate task
+    asyncio.create_task(run_game())
+    
+@bot.tree.command(name="station-guesser-leaderboard", description="Leaderboard for station guesser")
+async def lb(ctx):
+    channel = ctx.channel
+    leaders = top5()
+    print(leaders)
+    # Create the embed
+    embed = discord.Embed(title="Top 5 Station Guessers", color=discord.Color.gold())
+    
+    for item, number in leaders:
+        embed.add_field(name=item, value=str(number), inline=False)
+
+    await ctx.response.send_message(embed=embed)
 
 bot.run(BOT_TOKEN)

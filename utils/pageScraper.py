@@ -45,7 +45,7 @@ def montagueDays(queue):
         # Wait for the page to load
         driver.implicitly_wait(5)
         
-        # Find all elements with class "trip"
+        # Find all elements with class
         elements = driver.find_element_by_class_name('jss25')
         
         if elements:
