@@ -558,12 +558,8 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)
     
 # the map thing
-<<<<<<< HEAD
-@bot.tree.command(name="map_beta", description="train map testing")
-=======
 # IMPORTANT: Make this a thread!
 '''@bot.tree.command(name="map", description="testing")
->>>>>>> b95e27a355f5f0099d78b866c90146240652c024
 async def map(ctx):
     channel = ctx.channel
     await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
@@ -620,7 +616,7 @@ async def game(ctx):
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
-                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
+                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     addLb(user_response.author.id, user_response.author.name)
                     correct = True
                 else:
