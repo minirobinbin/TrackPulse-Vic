@@ -599,6 +599,8 @@ async def game(ctx):
     embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
     embed.set_image(url=url)
     embed.add_field(name='Difficulty', value=difficulty)
+    embed.set_footer(text="DM @xm9g to submit a photo")
+
 
     # Send the embed message
     await ctx.response.send_message(embed=embed)
