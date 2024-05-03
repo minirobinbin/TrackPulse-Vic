@@ -10,8 +10,7 @@ import queue
 from datetime import datetime
 import csv
 import random
-
-
+import pandas as pd
 
 from utils.search import *
 from utils.colors import *
@@ -22,9 +21,9 @@ from utils.checktype import *
 from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
+from utils.game.lb import *
 
 rareCheckerOn = True
-
 
 # ENV READING
 config = dotenv_values(".env")
@@ -617,7 +616,8 @@ async def game(ctx):
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
-                    await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
+                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
+                    addLb(user_response.author.id, user_response.author.name)
                     correct = True
                 else:
                     await ctx.channel.send("Wrong guess! Try again.")
@@ -626,6 +626,18 @@ async def game(ctx):
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
+    
+@bot.tree.command(name="station-guesser-leaderboard", description="Leaderboard for station guesser")
+async def lb(ctx):
+    channel = ctx.channel
+    leaders = top5()
+    print(leaders)
+    # Create the embed
+    embed = discord.Embed(title="Top 5 Station Guessers", color=discord.Color.gold())
+    
+    for item, number in leaders:
+        embed.add_field(name=item, value=str(number), inline=False)
 
+    await ctx.response.send_message(embed=embed)
 
 bot.run(BOT_TOKEN)
