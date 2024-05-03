@@ -562,7 +562,7 @@ async def train_line(ctx):
 '''@bot.tree.command(name="map", description="testing")
 async def map(ctx):
     channel = ctx.channel
-    await ctx.response.send_message("Generating Map", ephemeral=True)
+    await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
 
     genMap()
     file = discord.File("utils/map/gen.png", filename="gen.png")
@@ -616,7 +616,7 @@ async def game(ctx):
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
-                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
+                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     addLb(user_response.author.id, user_response.author.name)
                     correct = True
                 else:
