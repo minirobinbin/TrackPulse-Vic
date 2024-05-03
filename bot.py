@@ -624,7 +624,7 @@ async def game(ctx):
                 else:
                     await ctx.channel.send("Wrong guess! Try again.")
         except asyncio.TimeoutError:
-            await ctx.channel.send(f"Times up. The answer was ||{station}||")
+            await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
