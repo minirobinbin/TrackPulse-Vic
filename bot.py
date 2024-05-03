@@ -552,10 +552,10 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)
     
 # the map thing
-@bot.tree.command(name="map", description="testing")
+@bot.tree.command(name="map_beta", description="train map testing")
 async def map(ctx):
     channel = ctx.channel
-    await ctx.response.send_message("Generating Map", ephemeral=True)
+    await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
 
     genMap()
     file = discord.File("utils/map/gen.png", filename="gen.png")
