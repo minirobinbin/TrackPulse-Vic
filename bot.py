@@ -596,7 +596,7 @@ async def game(ctx):
     station = random_row[1]
     difficulty = random_row[2]
 
-    embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
+    embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 20 Seconds")
     embed.set_image(url=url)
     embed.add_field(name='Difficulty', value=difficulty)
     embed.set_footer(text="DM @xm9g to submit a photo")
@@ -614,7 +614,7 @@ async def game(ctx):
             correct = False
             while not correct:
                 # Wait for user's response in the same channel
-                user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                user_response = await bot.wait_for('message', check=check, timeout=20.0)
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
@@ -624,7 +624,7 @@ async def game(ctx):
                 else:
                     await ctx.channel.send("Wrong guess! Try again.")
         except asyncio.TimeoutError:
-            await ctx.channel.send(f"Times up. The answer was ||{station}||")
+            await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
@@ -635,11 +635,14 @@ async def lb(ctx):
     leaders = top5()
     print(leaders)
     # Create the embed
-    embed = discord.Embed(title="Top 5 Station Guessers", color=discord.Color.gold())
+    embed = discord.Embed(title="Top 10 Station Guessers", color=discord.Color.gold())
     
+    count = 1
     for item, number in leaders:
-        embed.add_field(name=item, value=str(number), inline=False)
-
+        
+        embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}', inline=False)
+        count = count + 1
+        
     await ctx.response.send_message(embed=embed)
 
 bot.run(BOT_TOKEN)
