@@ -635,11 +635,14 @@ async def lb(ctx):
     leaders = top5()
     print(leaders)
     # Create the embed
-    embed = discord.Embed(title="Top 5 Station Guessers", color=discord.Color.gold())
+    embed = discord.Embed(title="Top 10 Station Guessers", color=discord.Color.gold())
     
+    count = 1
     for item, number in leaders:
-        embed.add_field(name=item, value=str(number), inline=False)
-
+        
+        embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}', inline=False)
+        count = count + 1
+        
     await ctx.response.send_message(embed=embed)
 
 bot.run(BOT_TOKEN)
