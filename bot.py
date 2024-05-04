@@ -622,7 +622,8 @@ async def game(ctx):
                     addLb(user_response.author.id, user_response.author.name)
                     correct = True
                 else:
-                    await ctx.channel.send("Wrong guess! Try again.")
+                    await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                    addLoss(user_response.author.id, user_response.author.name)
         except asyncio.TimeoutError:
             await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
 
@@ -638,9 +639,9 @@ async def lb(ctx):
     embed = discord.Embed(title="Top 10 Station Guessers", color=discord.Color.gold())
     
     count = 1
-    for item, number in leaders:
+    for item, number, losses in leaders:
         
-        embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}', inline=False)
+        embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
         count = count + 1
         
     await ctx.response.send_message(embed=embed)
