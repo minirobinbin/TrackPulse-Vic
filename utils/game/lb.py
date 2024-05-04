@@ -84,3 +84,11 @@ def top5():
     top_5_ids = sorted_ids[:7]
 
     return top_5_ids
+
+def fetchUserStats(name):
+    with open('utils/game/leaderboard.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['id'] == name:
+                return (row['id'], int(row['wins']), int(row['losses']))
+    return None

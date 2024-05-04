@@ -657,4 +657,17 @@ async def lb(ctx):
         
     await ctx.response.send_message(embed=embed)
 
+@bot.tree.command(name="user-stats", description="Stats for a user in the guessing game")
+async def userStats(ctx, user: discord.User):
+    channel = ctx.channel
+    print(user.name)
+    stats = fetchUserStats(user.name)
+    if stats:
+        embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
+        item, wins, losses = stats
+        embed.add_field(name='\u200b', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        await ctx.response.send_message(embed=embed)
+    else:
+        await ctx.response.send_message(f"{user.name.split('#')[0]} is not in the leaderboard.", ephemeral=True)
+
 bot.run(BOT_TOKEN)
