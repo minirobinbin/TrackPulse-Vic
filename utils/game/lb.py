@@ -81,6 +81,6 @@ def top5():
     sorted_ids = sorted(id_wins, key=lambda x: x[1], reverse=True)
 
     # Get the top 5 (id, wins) tuples
-    top_5_ids = sorted_ids[:10]
+    top_5_ids = sorted_ids[:7]
 
     return top_5_ids

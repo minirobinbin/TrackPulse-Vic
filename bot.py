@@ -645,12 +645,12 @@ async def lb(ctx):
     leaders = top5()
     print(leaders)
     # Create the embed
-    embed = discord.Embed(title="Top 10 Station Guessers", color=discord.Color.gold())
+    embed = discord.Embed(title="Top 7 Station Guessers", color=discord.Color.gold())
     
     count = 1
     for item, number, losses in leaders:
         try:
-            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}\n W/L Ratio: {str(round(number/losses, 1))}', inline=False)
+            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
         except:
             embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
         count = count + 1
