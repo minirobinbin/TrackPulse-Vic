@@ -32,6 +32,7 @@ BOT_TOKEN = config['TOKEN']
 CHANNEL_ID = 1227224314483576982 # channel id to send the startup message
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 log_channel = bot.get_channel(1227224314483576982)
+channel_game_status = {} #thing to store what channels are running the guessing game
 
 
 @bot.event
@@ -574,6 +575,13 @@ async def map(ctx):
 async def game(ctx):
     channel = ctx.channel
 
+    # Check if a game is already running in this channel
+    if channel in channel_game_status and channel_game_status[channel]:
+        await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
+        return
+
+    channel_game_status[channel] = True
+
     # Define the CSV file path
     csv_file = 'utils/game/images.csv'
 
@@ -602,7 +610,6 @@ async def game(ctx):
     embed.add_field(name='Difficulty', value=difficulty)
     embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
 
-
     # Send the embed message
     await ctx.response.send_message(embed=embed)
 
@@ -620,13 +627,14 @@ async def game(ctx):
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
                     await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
-                    addLb(user_response.author.id, user_response.author.name)
                     correct = True
                 else:
                     await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                    addLoss(user_response.author.id, user_response.author.name)
         except asyncio.TimeoutError:
             await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
+        finally:
+            # Reset game status after the game ends
+            channel_game_status[channel] = False
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
@@ -641,8 +649,10 @@ async def lb(ctx):
     
     count = 1
     for item, number, losses in leaders:
-        
-        embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
+        try:
+            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}\n W/L Ratio: {str(round(number/losses, 1))}', inline=False)
+        except:
+            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
         count = count + 1
         
     await ctx.response.send_message(embed=embed)
