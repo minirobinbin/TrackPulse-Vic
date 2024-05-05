@@ -619,6 +619,11 @@ async def game(ctx):
                     await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
                     addLb(user_response.author.id, user_response.author.name)
                     correct = True
+                elif user_response.content.lower() == '!skip':
+                    if ctx.message.author.name == user_response.author.name:
+                        await ctx.channel.send("Game skipped.")
+                    else:
+                        await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
                 else:
                     await ctx.channel.send("Wrong guess! Try again.")
         except asyncio.TimeoutError:
