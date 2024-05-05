@@ -623,27 +623,41 @@ async def game(ctx, rounds: int = 1):
         def check(m):
             return m.channel == channel and m.author != bot.user and m.content.startswith('!')
 
-        try:
-            user_response = await bot.wait_for('message', check=check, timeout=30.0)
+        round_ended = False  # Flag to track if round ended successfully
+        while True:  # Loop until round ends or timeout
+            try:
+                user_response = await bot.wait_for('message', check=check, timeout=30.0)
 
-            # Check if the user's response matches the correct station
-            if user_response.content[1:].lower() == station.lower():
-                await ctx.channel.send(
-                    f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!"
-                )
-                addLb(user_response.author.id, user_response.author.name)
-            else:
-                await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                addLoss(user_response.author.id, user_response.author.name)
-        except asyncio.TimeoutError:
-            await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
-        finally:
-            # Reset game status after each round
-            channel_game_status[channel] = False
+                # Check if the user's response matches the correct station
+                if user_response.content[1:].lower() == station.lower():
+                    await ctx.channel.send(
+                        f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
+                    addLb(user_response.author.id, user_response.author.name)
+                    round_ended = True
+                    break  # Break the loop when the correct answer is given
+                else:
+                    await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                    addLoss(user_response.author.id, user_response.author.name)
+            except asyncio.TimeoutError:
+                await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
+                break  # Break the loop when timeout occurs
+            except Exception as e:
+                await ctx.channel.send(f"An error occurred: {e}")
+                break  # Break the loop if any unexpected error occurs
+
+        # Reset game status after each round
+        channel_game_status[channel] = False
+        return round_ended
 
     for i in range(rounds):
-        await run_round(i)
-        await asyncio.sleep(1) # wait time between rounds
+        round_ended = await run_round(i)
+        if not round_ended:
+            break  # Stop the loop if the round didn't end successfully
+        
+        await asyncio.sleep(1)  # Wait time between rounds
+
+
+
     
 @bot.tree.command(name="station-guesser-leaderboard", description="Leaderboard for station guesser")
 async def lb(ctx):
