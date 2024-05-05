@@ -30,8 +30,9 @@ config = dotenv_values(".env")
 
 BOT_TOKEN = config['TOKEN']
 CHANNEL_ID = 1227224314483576982 # channel id to send the startup message
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+bot = commands.Bot(command_prefix="chode ", intents=discord.Intents.all())
 log_channel = bot.get_channel(1227224314483576982)
+channel_game_status = {} #thing to store what channels are running the guessing game
 
 
 @bot.event
@@ -562,7 +563,7 @@ async def train_line(ctx):
 '''@bot.tree.command(name="map", description="testing")
 async def map(ctx):
     channel = ctx.channel
-    await ctx.response.send_message("Generating Map", ephemeral=True)
+    await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
 
     genMap()
     file = discord.File("utils/map/gen.png", filename="gen.png")
@@ -573,6 +574,13 @@ async def map(ctx):
 @bot.tree.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 async def game(ctx):
     channel = ctx.channel
+
+    # Check if a game is already running in this channel
+    if channel in channel_game_status and channel_game_status[channel]:
+        await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
+        return
+
+    channel_game_status[channel] = True
 
     # Define the CSV file path
     csv_file = 'utils/game/images.csv'
@@ -595,10 +603,12 @@ async def game(ctx):
     url = random_row[0]
     station = random_row[1]
     difficulty = random_row[2]
+    credit = random_row[3]
 
     embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
     embed.set_image(url=url)
     embed.add_field(name='Difficulty', value=difficulty)
+    embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
 
     # Send the embed message
     await ctx.response.send_message(embed=embed)
@@ -616,18 +626,23 @@ async def game(ctx):
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
-                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station} was the correct answer!")
-                    addLb(user_response.author.id, user_response.author.name)
+                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     correct = True
+                    addLb(user_response.author.id, user_response.author.name)
                 elif user_response.content.lower() == '!skip':
                     if ctx.message.author.name == user_response.author.name:
                         await ctx.channel.send("Game skipped.")
                     else:
                         await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
                 else:
-                    await ctx.channel.send("Wrong guess! Try again.")
+                    await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                    addLoss(user_response.author.id, user_response.author.name)
+                    
         except asyncio.TimeoutError:
-            await ctx.channel.send(f"Times up. The answer was ||{station}||")
+            await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
+        finally:
+            # Reset game status after the game ends
+            channel_game_status[channel] = False
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
@@ -638,11 +653,29 @@ async def lb(ctx):
     leaders = top5()
     print(leaders)
     # Create the embed
-    embed = discord.Embed(title="Top 5 Station Guessers", color=discord.Color.gold())
+    embed = discord.Embed(title="Top 7 Station Guessers", color=discord.Color.gold())
     
-    for item, number in leaders:
-        embed.add_field(name=item, value=str(number), inline=False)
-
+    count = 1
+    for item, number, losses in leaders:
+        try:
+            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
+        except:
+            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
+        count = count + 1
+        
     await ctx.response.send_message(embed=embed)
+
+@bot.tree.command(name="user-stats", description="Stats for a user in the guessing game")
+async def userStats(ctx, user: discord.User):
+    channel = ctx.channel
+    print(user.name)
+    stats = fetchUserStats(user.name)
+    if stats:
+        embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
+        item, wins, losses = stats
+        embed.add_field(name='\u200b', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        await ctx.response.send_message(embed=embed)
+    else:
+        await ctx.response.send_message(f"{user.name.split('#')[0]} is not in the leaderboard.", ephemeral=True)
 
 bot.run(BOT_TOKEN)

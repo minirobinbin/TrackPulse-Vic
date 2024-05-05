@@ -84,9 +84,10 @@ def genMap():
 
 
     # plot graph
+    # bg_image = plt.imread(image_path)
+    # plt.imshow(bg_image, aspect='auto')
     sns.scatterplot(data=df, x="Longitude", y="Latitude")
-    bg_image = plt.imread(image_path)
-    plt.imshow(bg_image, aspect='auto')
+   
 
     # settings
     # plt.xlim(-37.89974170269387, -38.08037565853107)  
