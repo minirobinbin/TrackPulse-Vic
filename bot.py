@@ -628,8 +628,11 @@ async def game(ctx):
                 if user_response.content[1:].lower() == station.lower():
                     await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     correct = True
+                    addLb(user_response.author.id, user_response.author.name)
                 else:
                     await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                    addLoss(user_response.author.id, user_response.author.name)
+                    
         except asyncio.TimeoutError:
             await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
         finally:
