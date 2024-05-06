@@ -572,18 +572,22 @@ async def map(ctx):
     await channel.send(file=file, embed=embed)'''
     
 @bot.tree.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-async def game(ctx):
+async def game(ctx, ultrahard: bool=False):
+    
     channel = ctx.channel
-
+    mode = ultrahard
     # Check if a game is already running in this channel
     if channel in channel_game_status and channel_game_status[channel]:
         await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
         return
 
     channel_game_status[channel] = True
-
+    
     # Define the CSV file path
-    csv_file = 'utils/game/images.csv'
+    if ultrahard:
+        csv_file = 'utils/game/ultrahard/images.csv'
+    else:
+        csv_file = 'utils/game/images.csv'
 
     # Read the CSV file and store rows in a list
     rows = []
@@ -605,7 +609,10 @@ async def game(ctx):
     difficulty = random_row[2]
     credit = random_row[3]
 
-    embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
+    if ultrahard:
+        embed = discord.Embed(title=f"[ULTRARD] Guess the station!", color=0xdc5558, description="Type ! before your answer. You have 30 Seconds")
+    else:
+        embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
     embed.set_image(url=url)
     embed.add_field(name='Difficulty', value=difficulty)
     embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
@@ -626,26 +633,35 @@ async def game(ctx):
                 
                 # Check if the user's response matches the correct station
                 if user_response.content[1:].lower() == station.lower():
-                    await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
+                    if ultrahard:
+                        await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
+                    else:
+                        await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     correct = True
-                    addLb(user_response.author.id, user_response.author.name)
+                    addLb(user_response.author.id, user_response.author.name, ultrahard)
                 elif user_response.content.lower() == '!skip':
-                    if ctx.author.name == user_response.author.name:
+                    if ctx.user.id == user_response.author.id:
                         await ctx.channel.send("Game skipped.")
+                        break
                     else:
                         await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
                 else:
                     await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                    addLoss(user_response.author.id, user_response.author.name)
+                    addLoss(user_response.author.id, user_response.author.name, ultrahard)
                     
         except asyncio.TimeoutError:
-            await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
+            if ultrahard:
+                await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
+            else:
+                await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
         finally:
             # Reset game status after the game ends
             channel_game_status[channel] = False
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
+    
+
     
 @bot.tree.command(name="station-guesser-leaderboard", description="Leaderboard for station guesser")
 async def lb(ctx):

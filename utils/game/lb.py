@@ -7,8 +7,12 @@ def game():
 
 
 
-def addLb(username, id):
-    csv_file = 'utils/game/leaderboard.csv'
+def addLb(username, id, ultrahard):
+    if ultrahard:
+        csv_file = 'utils/game/ultrahard/leaderboard.csv'
+    else:
+        csv_file = 'utils/game/leaderboard.csv'
+        
     fieldnames = ['username', 'id', 'wins', 'losses']
     data = []
     id_exists = False
@@ -37,8 +41,12 @@ def addLb(username, id):
         writer.writeheader()
         writer.writerows(data)
         
-def addLoss(username, id):
-    csv_file = 'utils/game/leaderboard.csv'
+def addLoss(username, id, ultrahard):
+    if ultrahard:
+        csv_file = 'utils/game/ultrahard/leaderboard.csv'
+    else:
+        csv_file = 'utils/game/leaderboard.csv'
+        
     fieldnames = ['username', 'id', 'wins', 'losses']
     data = []
     id_exists = False
