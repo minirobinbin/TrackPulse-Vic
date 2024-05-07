@@ -7,11 +7,15 @@ def game():
 
 
 
-def addLb(username, id, ultrahard):
-    if ultrahard:
+def addLb(username, id, game):
+    print(f'adding {game}')
+
+    if game == 'ultrahard':
         csv_file = 'utils/game/ultrahard/leaderboard.csv'
-    else:
+    elif game == 'guesser':
         csv_file = 'utils/game/leaderboard.csv'
+    elif game == 'domino':
+        csv_file = 'utils/game/domino/leaderboard.csv'
         
     fieldnames = ['username', 'id', 'wins', 'losses']
     data = []
@@ -41,11 +45,13 @@ def addLb(username, id, ultrahard):
         writer.writeheader()
         writer.writerows(data)
         
-def addLoss(username, id, ultrahard):
-    if ultrahard:
+def addLoss(username, id, game):
+    if game == 'ultrahard':
         csv_file = 'utils/game/ultrahard/leaderboard.csv'
-    else:
+    elif game == 'guesser':
         csv_file = 'utils/game/leaderboard.csv'
+    elif game == 'domino':
+        csv_file = 'utils/game/domino/leaderboard.csv'
         
     fieldnames = ['username', 'id', 'wins', 'losses']
     data = []
@@ -75,16 +81,27 @@ def addLoss(username, id, ultrahard):
         writer.writeheader()
         writer.writerows(data)
         
-def top5():
+def top5(game):
     # Create an empty list to store (id, wins) tuples
     id_wins = []
 
     # Read the CSV file and populate the list with (id, wins) tuples
-    with open('utils/game/leaderboard.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
-
+    if game == 'guesser':
+        with open('utils/game/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+    elif game == 'ultrahard':
+        with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+    elif game == 'domino':
+        with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+    
     # Sort the list of tuples by wins in descending order
     sorted_ids = sorted(id_wins, key=lambda x: x[1], reverse=True)
 

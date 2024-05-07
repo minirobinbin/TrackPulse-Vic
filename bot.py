@@ -23,7 +23,7 @@ from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
 
-rareCheckerOn = True
+rareCheckerOn = False
 
 # ENV READING
 config = dotenv_values(".env")
@@ -638,7 +638,11 @@ async def game(ctx, ultrahard: bool=False):
                     else:
                         await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                     correct = True
-                    addLb(user_response.author.id, user_response.author.name, ultrahard)
+                    if ultrahard:
+                        addLb(user_response.author.id, user_response.author.name, 'ultrahard')
+                    else:
+                        addLb(user_response.author.id, user_response.author.name, 'guesser')
+                        
                 elif user_response.content.lower() == '!skip':
                     if ctx.user.id == user_response.author.id:
                         await ctx.channel.send("Game skipped.")
@@ -647,8 +651,10 @@ async def game(ctx, ultrahard: bool=False):
                         await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
                 else:
                     await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                    addLoss(user_response.author.id, user_response.author.name, ultrahard)
-                    
+                    if ultrahard:
+                        addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
+                    else:
+                        addLoss(user_response.author.id, user_response.author.name, 'guesser')
         except asyncio.TimeoutError:
             if ultrahard:
                 await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
@@ -663,13 +669,21 @@ async def game(ctx, ultrahard: bool=False):
     
 
     
-@bot.tree.command(name="station-guesser-leaderboard", description="Leaderboard for station guesser")
-async def lb(ctx):
+@bot.tree.command(name="leaderboard", description="Global leaderboards for the games",)
+@app_commands.describe(game="What game's leaderboard to show?")
+@app_commands.choices(game=[
+        app_commands.Choice(name="Station Guesser", value="guesser"),
+        app_commands.Choice(name="Ultrahard Station Guesser", value="ultrahard"),
+        app_commands.Choice(name="Station order game", value="domino"),
+
+])
+
+async def lb(ctx, game: str='guesser'):
     channel = ctx.channel
-    leaders = top5()
+    leaders = top5(game)
     print(leaders)
     # Create the embed
-    embed = discord.Embed(title="Top 7 Station Guessers", color=discord.Color.gold())
+    embed = discord.Embed(title=f"Top 7 players for {game}", color=discord.Color.gold())
     
     count = 1
     for item, number, losses in leaders:
@@ -820,6 +834,8 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                     # Check if the user's response matches the correct station
                     if response == correct_list1:
                         await ctx.channel.send(f"{user_response.author.mention} guessed it correctly!")
+                        addLb(user_response.author.id, user_response.author.name, 'domino')
+                        
                         correct = True 
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
@@ -835,6 +851,7 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")
                     else:
                         await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                        addLoss(user_response.author.id, user_response.author.name, 'domino')
                         
             except asyncio.TimeoutError:
                 await ctx.channel.send(f"Times up. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
