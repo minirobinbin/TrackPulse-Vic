@@ -694,4 +694,155 @@ async def userStats(ctx, user: discord.User):
     else:
         await ctx.response.send_message(f"{user.name.split('#')[0]} is not in the leaderboard.", ephemeral=True)
 
+
+# Station order game made by @domino
+
+lines_dictionary = {
+    'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
+    'Belgrave': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
+    'Craigieburn': [['North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
+    'Cranbourne': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
+    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
+    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
+    'Glen Waverley': [['Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
+    'Hurstbridge': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
+    'Lilydale': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
+    'Mernda': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
+    'Pakenham': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham'],0x00a8e4],
+    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
+    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
+    'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
+    'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
+    'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
+    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645]
+}
+linelist = [
+    None,
+    'Alamein', #1
+    'Belgrave', #2
+    'Craigieburn', #3
+    'Cranbourne', #4
+    'Mernda', #5
+    'Frankston', #6
+    'Glen Waverley', #7
+    'Hurstbridge', #8
+    'Lilydale', #9
+    None,
+    'Pakenham', #11
+    'Sandringham', #12
+    None,
+    'Sunbury', #14
+    'Upfield', #15
+    'Werribee', #16
+    'Williamstown' #17
+]
+
+@bot.tree.command(name="station-game", description="A game where you list the stations before or after a station.")
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.")
+@app_commands.choices(
+    direction=[
+        app_commands.Choice(name="Up or Down", value='updown'),
+        app_commands.Choice(name="Up", value='up'),
+        app_commands.Choice(name="Down", value='down')
+        ],
+    )
+
+async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
+    channel = ctx.channel
+    async def run_game():
+        # Check if a game is already running in this channel
+        if channel in channel_game_status and channel_game_status[channel]:
+            await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
+            return
+
+        channel_game_status[channel] = True
+
+        for round in range(rounds):
+            # choose random number of stations
+            numdirection = random.randint(2,5)
+
+            # choose direction
+            if direction == 'updown':
+                direction1 = random.choice(['up','down'])
+            else:
+                direction1 = direction
+            if direction1 == 'up':
+                numdirection = numdirection*-1
+            
+            # choose random line
+            line = None
+            while line == None:
+                line = linelist[random.randint(0,len(linelist)-1)]
+
+            # choose random station
+            if line == 'Flemington Racecourse':
+                if numdirection == 5 or numdirection == -5:
+                    numdirection = random.choice([-4,-3,-2,2,3,4])
+            station = None
+            while station == None:
+                station = lines_dictionary[line][0][random.randint(0,len(lines_dictionary[line][0])-1)]
+                if not 0 <= lines_dictionary[line][0].index(station)+numdirection <= len(lines_dictionary[line][0]):
+                    station = None
+
+            embed = discord.Embed(
+                title=f"Which __**{numdirection if numdirection > 0 else numdirection*-1}**__ stations are __**{direction1}**__ from __**{station}**__ station on the __**{line} line**__?",
+                description=f"**Answers must be in the correct order!** Answer using this format:\n!<station1>, <station2>{', <station3>' if numdirection >= 3 or numdirection <= -3 else ''}{', <station4>' if numdirection >= 4 or numdirection <= -4 else ''}{', <station5>' if numdirection >= 5 or numdirection <= -5 else ''}\n\n*Use !skip to skip to the next round.*",
+                colour=lines_dictionary[line][1])
+            embed.set_author(name=f"Round {round+1}/{rounds}")
+            if round == 0:
+                await ctx.response.send_message(embed=embed)
+            else:
+                await ctx.channel.send(embed=embed)
+
+            # Define a check function to validate user input
+            def check(m): return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+
+            # get list of correct stations
+            if numdirection > 0:
+                correct_list = lines_dictionary[line][0][lines_dictionary[line][0].index(station)+1:lines_dictionary[line][0].index(station)+numdirection+1]
+            else:
+                correct_list = lines_dictionary[line][0][lines_dictionary[line][0].index(station)+numdirection:lines_dictionary[line][0].index(station)]
+                correct_list.reverse()
+            correct_list1 = [x.lower() for x in correct_list]
+
+            # the actual input part
+            try:
+                correct = False
+                while not correct:
+                    # Wait for user's response in the same channel
+                    user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                    try:
+                        response = user_response.content[1:].lower().split(',')
+                        response = [x.strip() for x in response]
+                    except:
+                        pass
+
+                    # Check if the user's response matches the correct station
+                    if response == correct_list1:
+                        await ctx.channel.send(f"{user_response.author.mention} guessed it correctly!")
+                        correct = True 
+                    elif user_response.content.lower() == '!skip':
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
+                            break
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                    elif user_response.content.lower() == '!stop':
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Game ended.")
+                            return
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")
+                    else:
+                        await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                        
+            except asyncio.TimeoutError:
+                await ctx.channel.send(f"Times up. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
+            finally:
+                # Reset game status down the game ends
+                channel_game_status[channel] = False
+            
+    # Run the game in a separate task
+    asyncio.create_task(run_game())
+
 bot.run(BOT_TOKEN)
