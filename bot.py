@@ -35,6 +35,7 @@ log_channel = bot.get_channel(1227224314483576982)
 channel_game_status = {} #thing to store what channels are running the guessing game
 
 
+
 @bot.event
 async def on_ready():
     print("Bot started")
@@ -627,6 +628,12 @@ async def game(ctx, ultrahard: bool=False):
     async def run_game():
         try:
             correct = False
+            if ultrahard:
+                gameType = 'ultrahard'
+            else:
+                gameType = 'guesser'
+            
+            
             while not correct:
                 # Wait for user's response in the same channel
                 user_response = await bot.wait_for('message', check=check, timeout=30.0)
@@ -645,6 +652,7 @@ async def game(ctx, ultrahard: bool=False):
                         
                 elif user_response.content.lower() == '!skip':
                     if ctx.user.id == user_response.author.id:
+                        addLoss(ctx.user.id, ctx.user.name, gameType)
                         await ctx.channel.send("Game skipped.")
                         break
                     else:
@@ -699,15 +707,23 @@ async def lb(ctx, game: str='guesser'):
 async def userStats(ctx, user: discord.User):
     channel = ctx.channel
     print(user.name)
-    stats = fetchUserStats(user.name)
-    if stats:
-        embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
-        item, wins, losses = stats
-        embed.add_field(name='\u200b', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        await ctx.response.send_message(embed=embed)
-    else:
-        await ctx.response.send_message(f"{user.name.split('#')[0]} is not in the leaderboard.", ephemeral=True)
+    stats = fetchUserStats(user.name, 'guesser')
+    hardstats = fetchUserStats(user.name, 'ultrahard')
+    dominostats = fetchUserStats(user.name, 'domino')
 
+
+    embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
+    if stats:
+        item, wins, losses = stats
+        embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    if hardstats:
+        item, wins, losses = hardstats
+        embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    if dominostats:
+        item, wins, losses = dominostats
+        embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        
+    await ctx.response.send_message(embed=embed)
 
 # Station order game made by @domino
 
