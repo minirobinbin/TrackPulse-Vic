@@ -977,8 +977,17 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str, end:str):
     asyncio.create_task(log())
     
 # train logger reader
-@bot.tree.command(name="train-logs", description="View logged trips for a user")
-async def userLogs(ctx, user: discord.User):
+@bot.tree.command(name="view-train-logs", description="View logged trips for a user")
+@app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
+async def userLogs(ctx, user: discord.User, csv:bool=False):
+    if csv:
+        try:
+            file = discord.File(f'utils/trainlogger/userdata/{user.name}.csv')
+            await ctx.response.send_message('Here is your file:', file=file)
+            return
+        except FileNotFoundError:
+            await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
+            return
     print(user.name)
     data = readLogs(user.name)
     formatted_data = ""
