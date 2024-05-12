@@ -28,7 +28,7 @@ from utils.game.lb import *
 rareCheckerOn = False
 
 # ENV READING
-config = dotenv_values("config.env")
+config = dotenv_values(".env")
 
 BOT_TOKEN = config['BOT_TOKEN']
 CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
