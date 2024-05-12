@@ -30,6 +30,14 @@ from utils.game.lb import *
 from utils.trainlogger.main import *
 from utils.trainset import *
 
+file = open('utils\\trainlogger\\all_metro_stations.txt','r')
+stations_list = []
+for line in file:
+    line = line.strip()
+    stations_list.append(line)
+file.close()
+
+
 rareCheckerOn = False
 
 # ENV READING
@@ -924,19 +932,14 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
 
 
 async def station_autocompletion(
-        interaction: discord.Interaction,
-        current: str
-    ) -> typing.List[app_commands.Choice[str]]:
-        data = []
-        for drink_choice in [
-    "Flinders Street", "Southern Cross", "Melbourne Central", "Richmond", "Flagstaff", "Parliament",
-    "Box Hill", "Glenferrie", "Footscray", "North Melbourne", "Essendon", "Prahran", "Caulfield",
-    "South Yarra", "Hawthorn", "South Kensington", "Collingwood", "Moorabbin", "Malvern", "St Albans",
-    "Mordialloc", "Ringwood", "Pakenham", "Frankston", "Lilydale"
-]:
-            if current.lower() in drink_choice.lower():
-                data.append(app_commands.Choice(name=drink_choice, value=drink_choice))
-        return data 
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
 @bot.tree.command(name="log-train", description="Log set you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=station_autocompletion)
