@@ -919,7 +919,7 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
     asyncio.create_task(run_game())
     
 @bot.tree.command(name="log-train", description="Log set you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
@@ -938,21 +938,23 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
         app_commands.Choice(name="Werribee", value="Werribee"),
 ])
 
-async def logtrain(ctx, number: str, date:str, line:str):
+# Train logger
+async def logtrain(ctx, number: str, date:str, line:str, start:str, end:str):
     channel = ctx.channel
     async def log():
         print("logging the thing")
-        set = setNumber(number)
+        set = setNumber(number.upper())
         if set == None:
             await ctx.response.send_message(f'Invalid train number : `{number}`')
-        addTrain(ctx.user.name, set, date, line)
-        await ctx.response.send_message(f"Added {set} on the {line} line on {date} to your file")
+            return
+        type = trainType(number.upper())
+        addTrain(ctx.user.name, set, type, date, line, start, end)
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {date}  from {start} to {end} to your file")
         
                 
     # Run in a separate task
     asyncio.create_task(log())
-
-
+    
 @bot.command()
 @commands.guild_only()
 @commands.is_owner()
