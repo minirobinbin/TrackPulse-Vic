@@ -25,11 +25,12 @@ from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
 from utils.trainlogger.main import *
+from utils.trainset import *
 
 rareCheckerOn = False
 
 # ENV READING
-config = dotenv_values("config.env")
+config = dotenv_values(".env")
 
 BOT_TOKEN = config['BOT_TOKEN']
 CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
@@ -916,8 +917,9 @@ async def logtrain(ctx, number: str, date:str, line:str):
     channel = ctx.channel
     async def log():
         print("logging the thing")
-        addTrain(ctx.user.name, number, date, line)
-        await ctx.response.send_message("Logged")
+        set = setNumber(number)
+        addTrain(ctx.user.name, set, date, line)
+        await ctx.response.send_message(f"Added {set} on the {line} line on {date} to your file")
         
                 
     # Run in a separate task
