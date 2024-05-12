@@ -667,12 +667,17 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                             addLb(user_response.author.id, user_response.author.name, 'guesser')
                             
                     elif user_response.content.lower() == '!skip':
-                        if ctx.user.id == user_response.author.id:
-                            addLoss(ctx.user.id, ctx.user.name, gameType)
-                            await ctx.channel.send("Round skipped.")
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Round {round+1} skipped.")
                             break
                         else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
+                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                    elif user_response.content.lower() == '!stop':
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Game ended.")
+                            return
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                     else:
                         await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
                         if ultrahard:
