@@ -12,6 +12,7 @@ import time
 import csv
 import random
 import pandas as pd
+from typing import Literal, Optional
 
 from utils.search import *
 from utils.colors import *
@@ -56,7 +57,6 @@ async def on_ready():
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
     await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
-    await bot.tree.sync()
     try:
         task_loop.start()
     except:
@@ -890,5 +890,38 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
             
     # Run the game in a separate task
     asyncio.create_task(run_game())
+
+@bot.command()
+@commands.guild_only()
+@commands.is_owner()
+async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
+    if not guilds:
+        if spec == "~":
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "*":
+            ctx.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "^":
+            ctx.bot.tree.clear_commands(guild=ctx.guild)
+            await ctx.bot.tree.sync(guild=ctx.guild)
+            synced = []
+        else:
+            synced = await ctx.bot.tree.sync()
+
+        await ctx.send(
+            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+        )
+        return
+
+    ret = 0
+    for guild in guilds:
+        try:
+            await ctx.bot.tree.sync(guild=guild)
+        except discord.HTTPException:
+            pass
+        else:
+            ret += 1
+
+    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 bot.run(BOT_TOKEN)
