@@ -13,6 +13,9 @@ import csv
 import random
 import pandas as pd
 from typing import Literal, Optional
+import typing
+import enum
+from re import A
 
 from utils.search import *
 from utils.colors import *
@@ -64,7 +67,7 @@ async def on_ready():
     except:
         print("WARNING: Rare train checker is not enabled!")
         await channel.send("WARNING: Rare train checker is not enabled! <@{USER_ID}>")
-
+        
 
 # Threads
 
@@ -917,16 +920,33 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
             
     # Run the game in a separate task
     asyncio.create_task(run_game())
-    
+
+
+async def station_autocompletion(
+        interaction: discord.Interaction,
+        current: str
+    ) -> typing.List[app_commands.Choice[str]]:
+        data = []
+        for drink_choice in [
+    "Flinders Street", "Southern Cross", "Melbourne Central", "Richmond", "Flagstaff", "Parliament",
+    "Box Hill", "Glenferrie", "Footscray", "North Melbourne", "Essendon", "Prahran", "Caulfield",
+    "South Yarra", "Hawthorn", "South Kensington", "Collingwood", "Moorabbin", "Malvern", "St Albans",
+    "Mordialloc", "Ringwood", "Pakenham", "Frankston", "Lilydale"
+]:
+            if current.lower() in drink_choice.lower():
+                data.append(app_commands.Choice(name=drink_choice, value=drink_choice))
+        return data 
 @bot.tree.command(name="log-train", description="Log set you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.autocomplete(start=station_autocompletion)
+@app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
         app_commands.Choice(name="Frankston", value="Frankston"),
-        app_commands.Choice(name="Glen Waverley", value="Glen%20Waverley"),
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
         app_commands.Choice(name="Lilydale", value="Lilydale"),
         app_commands.Choice(name="Mernda", value="Mernda"),
@@ -948,12 +968,28 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str, end:str):
             await ctx.response.send_message(f'Invalid train number : `{number}`')
             return
         type = trainType(number.upper())
-        addTrain(ctx.user.name, set, type, date, line, start, end)
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {date}  from {start} to {end} to your file")
+        addTrain(ctx.user.name, set, type, date, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {date}  from {start.title()} to {end.title()} to your file")
         
                 
     # Run in a separate task
     asyncio.create_task(log())
+    
+# train logger reader
+@bot.tree.command(name="train-logs", description="View logged trips for a user")
+async def userLogs(ctx, user: discord.User):
+    print(user.name)
+    data = readLogs(user.name)
+    formatted_data = ""
+    for sublist in data:
+        if len(sublist) >= 6:  # Ensure the sublist has enough items
+            formatted_data += "**Set:**\n{}, {}\n".format(sublist[0], sublist[1])
+            formatted_data += "**Date:**\n{}\n".format(sublist[2])
+            formatted_data += "**Line:**\n{}\n".format(sublist[3])
+            formatted_data += "**Trip Start:**\n{}\n".format(sublist[4])
+            formatted_data += "**Trip End:**\n{}\n\n".format(sublist[5])
+
+    await ctx.response.send_message(f'# Logged trips for {user.name}:\n{formatted_data}')
     
 @bot.command()
 @commands.guild_only()

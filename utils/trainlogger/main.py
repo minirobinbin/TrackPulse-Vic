@@ -13,22 +13,23 @@ def addTrain(username, date, train_number, train_type, line, start, end):
     
 import csv
 
-def read_from_csv(username):
+def readLogs(username):
     # Create the filename based on the username
     filename = f"utils/trainlogger/userdata/{username}.csv"
+    user_data = []
 
     try:
         # Open the CSV file and read the data
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
-            data = list(reader)
+            user_data = list(reader)
         
-        # Print the data
-        if len(data) > 0:
-            print(f"Data for {username}:")
-            for row in data:
-                print(row)
+        # Return the data instead of printing it
+        if len(user_data) > 0:
+            return user_data
         else:
-            print(f"No data found for {username}")
+            return []
     except FileNotFoundError:
         print(f"File {filename} not found.")
+        return []
+        
