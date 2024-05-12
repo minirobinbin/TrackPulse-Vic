@@ -881,11 +881,9 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 while not correct:
                     # Wait for user's response in the same channel
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
-                    try:
-                        response = user_response.content[1:].lower().split(',')
-                        response = [x.strip() for x in response]
-                    except:
-                        pass
+                    response = user_response.content[1:].lower().split(',')
+                    response = [x.strip() for x in response]
+
 
                     # Check if the user's response matches the correct station
                     if response == correct_list1:
