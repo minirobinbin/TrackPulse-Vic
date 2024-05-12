@@ -630,9 +630,9 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
             credit = random_row[3]
 
             if ultrahard:
-                embed = discord.Embed(title=f"[ULTRARD] Guess the station!", color=0xe52727, description="Type ! before your answer. You have 30 seconds to answer.")
+                embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description="Type ! before your answer. You have 30 seconds to answer.")
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -645,7 +645,6 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                     embed.color = 0xff6565
             
             embed.set_image(url=url)
-            embed.add_field(name='Difficulty', value=difficulty)
             embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
