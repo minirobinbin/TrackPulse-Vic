@@ -26,12 +26,16 @@ from utils.game.lb import *
 rareCheckerOn = False
 
 # ENV READING
-config = dotenv_values(".env")
+config = dotenv_values("config.env")
 
-BOT_TOKEN = config['TOKEN']
-CHANNEL_ID = 1227224314483576982 # channel id to send the startup message
-bot = commands.Bot(command_prefix="chode ", intents=discord.Intents.all())
-log_channel = bot.get_channel(1227224314483576982)
+BOT_TOKEN = config['BOT_TOKEN']
+CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
+COMMAND_PREFIX = config['COMMAND_PREFIX']
+USER_ID = config['USER_ID']
+
+bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
+log_channel = bot.get_channel(CHANNEL_ID)
+
 channel_game_status = {} #thing to store what channels are running the guessing game
 
 
