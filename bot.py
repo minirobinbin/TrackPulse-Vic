@@ -8,9 +8,14 @@ import asyncio
 import threading
 import queue
 from datetime import datetime
+import time
 import csv
 import random
 import pandas as pd
+from typing import Literal, Optional
+import typing
+import enum
+from re import A
 
 from utils.search import *
 from utils.colors import *
@@ -22,32 +27,47 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
+from utils.trainlogger.main import *
+from utils.trainset import *
 
 rareCheckerOn = False
 
 # ENV READING
 config = dotenv_values(".env")
 
-BOT_TOKEN = config['TOKEN']
-CHANNEL_ID = 1227224314483576982 # channel id to send the startup message
-bot = commands.Bot(command_prefix="chode ", intents=discord.Intents.all())
-log_channel = bot.get_channel(1227224314483576982)
-channel_game_status = {} # thing to store what channels are running the guessing game
+BOT_TOKEN = config['BOT_TOKEN']
+STARTUP_CHANNEL_ID = int(config['STARTUP_CHANNEL_ID']) # channel id to send the startup message
+RARE_SERVICE_CHANNEL_ID = int(config['RARE_SERVICE_CHANNEL_ID'])
+COMMAND_PREFIX = config['COMMAND_PREFIX']
+USER_ID = config['USER_ID']
 
+bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
+log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+
+channel_game_status = {} #thing to store what channels are running the guessing game
+
+def convert_to_unix_time(date: datetime) -> str:
+    # Get the end date
+    end_date = date
+
+    # Get a tuple of the date attributes
+    date_tuple = (end_date.year, end_date.month, end_date.day, end_date.hour, end_date.minute, end_date.second)
+
+    # Convert to unix time
+    return f'<t:{int(time.mktime(datetime(*date_tuple).timetuple()))}:R>'
 
 @bot.event
 async def on_ready():
     print("Bot started")
-    channel = bot.get_channel(CHANNEL_ID)
+    channel = bot.get_channel(STARTUP_CHANNEL_ID)
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
-    await channel.send("Bot is online <@780303451980038165>")
-    await bot.tree.sync()
+    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
     try:
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
-        await channel.send("WARNING: Rare train checker is not enabled! <@780303451980038165>")
+        await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
 
 # Threads
@@ -58,8 +78,8 @@ def check_rare_trains_in_thread():
     asyncio.run_coroutine_threadsafe(log_rare_trains(rare_trains), bot.loop)
 
 async def log_rare_trains(rare_trains):
-    log_channel = bot.get_channel(1227224314483576982)
-    channel = bot.get_channel(1227039212553900204)
+    log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
+    channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
 
     if rare_trains:
         embed = discord.Embed(title="Trains found on lines they are not normally on!", color=0xf23f42)
@@ -91,7 +111,7 @@ async def log_rare_trains(rare_trains):
 @tasks.loop(minutes=10)
 async def task_loop():
     if rareCheckerOn:
-        log_channel = bot.get_channel(1227224314483576982)
+        log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
         with open('logs.txt', 'a') as file:
             file.write(f"\n{datetime.now()} - Checking for rare trains")
@@ -572,97 +592,128 @@ async def map(ctx):
     await channel.send(file=file, embed=embed)'''
     
 @bot.tree.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-async def game(ctx, ultrahard: bool=False):
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", ultrahard = "Ultra hard mode.")
+async def game(ctx, ultrahard: bool=False, rounds: int = 1):
     
     channel = ctx.channel
-    mode = ultrahard
-    # Check if a game is already running in this channel
-    if channel in channel_game_status and channel_game_status[channel]:
-        await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
-        return
-
-    channel_game_status[channel] = True
-    
-    # Define the CSV file path
-    if ultrahard:
-        csv_file = 'utils/game/ultrahard/images.csv'
-    else:
-        csv_file = 'utils/game/images.csv'
-
-    # Read the CSV file and store rows in a list
-    rows = []
-    with open(csv_file, newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            rows.append(row)
-
-    # Remove the header row if present
-    header = rows[0]
-    data = rows[1:]
-
-    # Get a random row
-    random_row = random.choice(data)
-
-    # Extract data from the random row
-    url = random_row[0]
-    station = random_row[1]
-    difficulty = random_row[2]
-    credit = random_row[3]
-
-    if ultrahard:
-        embed = discord.Embed(title=f"[ULTRARD] Guess the station!", color=0xdc5558, description="Type ! before your answer. You have 30 Seconds")
-    else:
-        embed = discord.Embed(title=f"Guess the station!", color=0xd8d500, description="Type ! before your answer. You have 30 Seconds")
-    embed.set_image(url=url)
-    embed.add_field(name='Difficulty', value=difficulty)
-    embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
-
-    # Send the embed message
-    await ctx.response.send_message(embed=embed)
-
-    # Define a check function to validate user input
-    def check(m):
-        return m.channel == channel and m.author != bot.user and m.content.startswith('!')
-
     async def run_game():
-        try:
-            correct = False
-            while not correct:
-                # Wait for user's response in the same channel
-                user_response = await bot.wait_for('message', check=check, timeout=30.0)
-                
-                # Check if the user's response matches the correct station
-                if user_response.content[1:].lower() == station.lower():
-                    if ultrahard:
-                        await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
-                    else:
-                        await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
-                    correct = True
-                    if ultrahard:
-                        addLb(user_response.author.id, user_response.author.name, 'ultrahard')
-                    else:
-                        addLb(user_response.author.id, user_response.author.name, 'guesser')
-                        
-                elif user_response.content.lower() == '!skip':
-                    if ctx.user.id == user_response.author.id:
-                        await ctx.channel.send("Game skipped.")
-                        break
-                    else:
-                        await ctx.channel.send(f"{user_response.author.mention} you can only skip the game if you were the one who started it.")
-                else:
-                    await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                    if ultrahard:
-                        addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
-                    else:
-                        addLoss(user_response.author.id, user_response.author.name, 'guesser')
-        except asyncio.TimeoutError:
+
+        # Check if a game is already running in this channel
+        if channel in channel_game_status and channel_game_status[channel]:
+            await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
+            return
+        if rounds > 25:
+            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+            return
+
+        channel_game_status[channel] = True
+        
+        # Define the CSV file path
+        if ultrahard:
+            csv_file = 'utils/game/ultrahard/images.csv'
+        else:
+            csv_file = 'utils/game/images.csv'
+
+        # Read the CSV file and store rows in a list
+        rows = []
+        with open(csv_file, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                rows.append(row)
+
+        # Remove the header row if present
+        header = rows[0]
+        data = rows[1:]
+
+        for round in range(rounds):
+            # Get a random row
+            random_row = random.choice(data)
+
+            # Extract data from the random row
+            url = random_row[0]
+            station = random_row[1]
+            difficulty = random_row[2]
+            credit = random_row[3]
+
             if ultrahard:
-                await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
+                embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
-        finally:
-            # Reset game status after the game ends
-            channel_game_status[channel] = False
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty}`")
+                if difficulty == 'Very Easy':
+                    embed.color = 0x89ff65
+                elif difficulty == 'Easy':
+                    embed.color = 0xcaff65
+                elif difficulty == 'Medium':
+                    embed.color = 0xffe665
+                elif difficulty == 'Hard':
+                    embed.color = 0xffa665
+                elif difficulty == 'Very Hard':
+                    embed.color = 0xff6565
+            
+            embed.set_image(url=url)
+            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
+            embed.set_author(name=f"Round {round+1}/{rounds}")
+
+            # Send the embed message
+            if round == 0:
+                await ctx.response.send_message(embed=embed)
+            else:
+                await ctx.channel.send(embed=embed)
+
+            # Define a check function to validate user input
+            def check(m):
+                return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+
+            try:
+                correct = False
+                if ultrahard:
+                    gameType = 'ultrahard'
+                else:
+                    gameType = 'guesser'
+                
+                
+                while not correct:
+                    # Wait for user's response in the same channel
+                    user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                    
+                    # Check if the user's response matches the correct station
+                    if user_response.content[1:].lower() == station.lower():
+                        if ultrahard:
+                            await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
+                        correct = True
+                        if ultrahard:
+                            addLb(user_response.author.id, user_response.author.name, 'ultrahard')
+                        else:
+                            addLb(user_response.author.id, user_response.author.name, 'guesser')
+                            
+                    elif user_response.content.lower() == '!skip':
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Round {round+1} skipped.")
+                            break
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                    elif user_response.content.lower() == '!stop':
+                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                            await ctx.channel.send(f"Game ended.")
+                            return
+                        else:
+                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
+                    else:
+                        await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                        if ultrahard:
+                            addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
+                        else:
+                            addLoss(user_response.author.id, user_response.author.name, 'guesser')
+            except asyncio.TimeoutError:
+                if ultrahard:
+                    await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
+                else:
+                    await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
+            finally:
+                # Reset game status after the game ends
+                channel_game_status[channel] = False
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
@@ -699,15 +750,23 @@ async def lb(ctx, game: str='guesser'):
 async def userStats(ctx, user: discord.User):
     channel = ctx.channel
     print(user.name)
-    stats = fetchUserStats(user.name)
-    if stats:
-        embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
-        item, wins, losses = stats
-        embed.add_field(name='\u200b', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        await ctx.response.send_message(embed=embed)
-    else:
-        await ctx.response.send_message(f"{user.name.split('#')[0]} is not in the leaderboard.", ephemeral=True)
+    stats = fetchUserStats(user.name, 'guesser')
+    hardstats = fetchUserStats(user.name, 'ultrahard')
+    dominostats = fetchUserStats(user.name, 'domino')
 
+
+    embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
+    if stats:
+        item, wins, losses = stats
+        embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    if hardstats:
+        item, wins, losses = hardstats
+        embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    if dominostats:
+        item, wins, losses = dominostats
+        embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        
+    await ctx.response.send_message(embed=embed)
 
 # Station order game made by @domino
 
@@ -768,6 +827,9 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
+        if rounds > 25:
+            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+            return
 
         channel_game_status[channel] = True
 
@@ -825,11 +887,9 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 while not correct:
                     # Wait for user's response in the same channel
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
-                    try:
-                        response = user_response.content[1:].lower().split(',')
-                        response = [x.strip() for x in response]
-                    except:
-                        pass
+                    response = user_response.content[1:].lower().split(',')
+                    response = [x.strip() for x in response]
+
 
                     # Check if the user's response matches the correct station
                     if response == correct_list1:
@@ -861,5 +921,108 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
             
     # Run the game in a separate task
     asyncio.create_task(run_game())
+
+
+async def station_autocompletion(
+        interaction: discord.Interaction,
+        current: str
+    ) -> typing.List[app_commands.Choice[str]]:
+        data = []
+        for drink_choice in [
+    "Flinders Street", "Southern Cross", "Melbourne Central", "Richmond", "Flagstaff", "Parliament",
+    "Box Hill", "Glenferrie", "Footscray", "North Melbourne", "Essendon", "Prahran", "Caulfield",
+    "South Yarra", "Hawthorn", "South Kensington", "Collingwood", "Moorabbin", "Malvern", "St Albans",
+    "Mordialloc", "Ringwood", "Pakenham", "Frankston", "Lilydale"
+]:
+            if current.lower() in drink_choice.lower():
+                data.append(app_commands.Choice(name=drink_choice, value=drink_choice))
+        return data 
+@bot.tree.command(name="log-train", description="Log set you have been on")
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.autocomplete(start=station_autocompletion)
+@app_commands.autocomplete(end=station_autocompletion)
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Frankston", value="Frankston"),
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+])
+
+# Train logger
+async def logtrain(ctx, number: str, date:str, line:str, start:str, end:str):
+    channel = ctx.channel
+    async def log():
+        print("logging the thing")
+        set = setNumber(number.upper())
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number : `{number}`')
+            return
+        type = trainType(number.upper())
+        addTrain(ctx.user.name, set, type, date, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {date}  from {start.title()} to {end.title()} to your file")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+    
+# train logger reader
+@bot.tree.command(name="train-logs", description="View logged trips for a user")
+async def userLogs(ctx, user: discord.User):
+    print(user.name)
+    data = readLogs(user.name)
+    formatted_data = ""
+    for sublist in data:
+        if len(sublist) >= 6:  # Ensure the sublist has enough items
+            formatted_data += "**Set:**\n{}, {}\n".format(sublist[0], sublist[1])
+            formatted_data += "**Date:**\n{}\n".format(sublist[2])
+            formatted_data += "**Line:**\n{}\n".format(sublist[3])
+            formatted_data += "**Trip Start:**\n{}\n".format(sublist[4])
+            formatted_data += "**Trip End:**\n{}\n\n".format(sublist[5])
+
+    await ctx.response.send_message(f'# Logged trips for {user.name}:\n{formatted_data}')
+    
+@bot.command()
+@commands.guild_only()
+@commands.is_owner()
+async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
+    if not guilds:
+        if spec == "~":
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "*":
+            ctx.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "^":
+            ctx.bot.tree.clear_commands(guild=ctx.guild)
+            await ctx.bot.tree.sync(guild=ctx.guild)
+            synced = []
+        else:
+            synced = await ctx.bot.tree.sync()
+
+        await ctx.send(
+            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+        )
+        return
+
+    ret = 0
+    for guild in guilds:
+        try:
+            await ctx.bot.tree.sync(guild=guild)
+        except discord.HTTPException:
+            pass
+        else:
+            ret += 1
+
+    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 bot.run(BOT_TOKEN)

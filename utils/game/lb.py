@@ -110,10 +110,24 @@ def top5(game):
 
     return top_5_ids
 
-def fetchUserStats(name):
-    with open('utils/game/leaderboard.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            if row['id'] == name:
-                return (row['id'], int(row['wins']), int(row['losses']))
+def fetchUserStats(name, game):
+    if game == 'guesser':
+        with open('utils/game/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['id'] == name:
+                    return (row['id'], int(row['wins']), int(row['losses']))
+    elif game == 'guesser':
+        with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['id'] == name:
+                    return (row['id'], int(row['wins']), int(row['losses']))
+    elif game == 'domino':
+        with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['id'] == name:
+                    return (row['id'], int(row['wins']), int(row['losses']))
+    
     return None
