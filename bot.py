@@ -22,6 +22,7 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
+from utils.trainlogger.main import *
 
 rareCheckerOn = False
 
@@ -877,5 +878,37 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
             
     # Run the game in a separate task
     asyncio.create_task(run_game())
+    
+@bot.tree.command(name="log-train", description="Log set you have been on")
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line')
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Frankston", value="Frankston"),
+        app_commands.Choice(name="Glen Waverley", value="Glen%20Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+])
+
+async def logtrain(ctx, number: str, date:str, line:str):
+    channel = ctx.channel
+    async def log():
+        print("logging the thing")
+        addTrain(ctx.user.name, number, date, line)
+        await ctx.response.send_message("Logged")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+
 
 bot.run(BOT_TOKEN)
