@@ -943,6 +943,8 @@ async def logtrain(ctx, number: str, date:str, line:str):
     async def log():
         print("logging the thing")
         set = setNumber(number)
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number : `{number}`')
         addTrain(ctx.user.name, set, date, line)
         await ctx.response.send_message(f"Added {set} on the {line} line on {date} to your file")
         
