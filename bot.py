@@ -649,7 +649,10 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
             # Send the embed message
-            await ctx.response.send_message(embed=embed)
+            if round == 0:
+                await ctx.response.send_message(embed=embed)
+            else:
+                await ctx.channel.send(embed=embed)
 
             # Define a check function to validate user input
             def check(m):
