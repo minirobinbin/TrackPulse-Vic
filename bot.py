@@ -61,7 +61,7 @@ async def on_ready():
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
-        await channel.send("WARNING: Rare train checker is not enabled! <@{USER_ID}>")
+        await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
 
 # Threads
