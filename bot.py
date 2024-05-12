@@ -8,9 +8,11 @@ import asyncio
 import threading
 import queue
 from datetime import datetime
+import time
 import csv
 import random
 import pandas as pd
+from typing import Literal, Optional
 
 from utils.search import *
 from utils.colors import *
@@ -26,15 +28,27 @@ from utils.game.lb import *
 rareCheckerOn = False
 
 # ENV READING
-config = dotenv_values(".env")
+config = dotenv_values("config.env")
 
-BOT_TOKEN = config['TOKEN']
-CHANNEL_ID = 1227224314483576982 # channel id to send the startup message
-bot = commands.Bot(command_prefix="chode ", intents=discord.Intents.all())
-log_channel = bot.get_channel(1227224314483576982)
+BOT_TOKEN = config['BOT_TOKEN']
+CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
+COMMAND_PREFIX = config['COMMAND_PREFIX']
+USER_ID = config['USER_ID']
+
+bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
+log_channel = bot.get_channel(CHANNEL_ID)
+
 channel_game_status = {} #thing to store what channels are running the guessing game
 
+def convert_to_unix_time(date: datetime) -> str:
+    # Get the end date
+    end_date = date
 
+    # Get a tuple of the date attributes
+    date_tuple = (end_date.year, end_date.month, end_date.day, end_date.hour, end_date.minute, end_date.second)
+
+    # Convert to unix time
+    return f'<t:{int(time.mktime(datetime(*date_tuple).timetuple()))}:R>'
 
 @bot.event
 async def on_ready():
@@ -42,13 +56,12 @@ async def on_ready():
     channel = bot.get_channel(CHANNEL_ID)
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
-    await channel.send("Bot is online <@780303451980038165>")
-    await bot.tree.sync()
+    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
     try:
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
-        await channel.send("WARNING: Rare train checker is not enabled! <@780303451980038165>")
+        await channel.send("WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
 
 # Threads
@@ -877,5 +890,38 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
             
     # Run the game in a separate task
     asyncio.create_task(run_game())
+
+@bot.command()
+@commands.guild_only()
+@commands.is_owner()
+async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
+    if not guilds:
+        if spec == "~":
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "*":
+            ctx.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif spec == "^":
+            ctx.bot.tree.clear_commands(guild=ctx.guild)
+            await ctx.bot.tree.sync(guild=ctx.guild)
+            synced = []
+        else:
+            synced = await ctx.bot.tree.sync()
+
+        await ctx.send(
+            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+        )
+        return
+
+    ret = 0
+    for guild in guilds:
+        try:
+            await ctx.bot.tree.sync(guild=guild)
+        except discord.HTTPException:
+            pass
+        else:
+            ret += 1
+
+    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 bot.run(BOT_TOKEN)
