@@ -8,6 +8,7 @@ import asyncio
 import threading
 import queue
 from datetime import datetime
+import time
 import csv
 import random
 import pandas as pd
@@ -38,7 +39,15 @@ log_channel = bot.get_channel(CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
+def convert_to_unix_time(date: datetime) -> str:
+    # Get the end date
+    end_date = date
 
+    # Get a tuple of the date attributes
+    date_tuple = (end_date.year, end_date.month, end_date.day, end_date.hour, end_date.minute, end_date.second)
+
+    # Convert to unix time
+    return f'<t:{int(time.mktime(datetime(*date_tuple).timetuple()))}:R>'
 
 @bot.event
 async def on_ready():
@@ -46,13 +55,13 @@ async def on_ready():
     channel = bot.get_channel(CHANNEL_ID)
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
-    await channel.send("Bot is online <@780303451980038165>")
+    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
     await bot.tree.sync()
     try:
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
-        await channel.send("WARNING: Rare train checker is not enabled! <@780303451980038165>")
+        await channel.send("WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
 
 # Threads
