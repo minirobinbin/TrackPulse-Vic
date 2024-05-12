@@ -30,18 +30,27 @@ from utils.game.lb import *
 from utils.trainlogger.main import *
 from utils.trainset import *
 
+file = open('utils\\trainlogger\\all_metro_stations.txt','r')
+stations_list = []
+for line in file:
+    line = line.strip()
+    stations_list.append(line)
+file.close()
+
+
 rareCheckerOn = False
 
 # ENV READING
 config = dotenv_values(".env")
 
 BOT_TOKEN = config['BOT_TOKEN']
-CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
+STARTUP_CHANNEL_ID = int(config['STARTUP_CHANNEL_ID']) # channel id to send the startup message
+RARE_SERVICE_CHANNEL_ID = int(config['RARE_SERVICE_CHANNEL_ID'])
 COMMAND_PREFIX = config['COMMAND_PREFIX']
 USER_ID = config['USER_ID']
 
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
-log_channel = bot.get_channel(CHANNEL_ID)
+log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
@@ -58,7 +67,7 @@ def convert_to_unix_time(date: datetime) -> str:
 @bot.event
 async def on_ready():
     print("Bot started")
-    channel = bot.get_channel(CHANNEL_ID)
+    channel = bot.get_channel(STARTUP_CHANNEL_ID)
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
     await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
@@ -66,8 +75,8 @@ async def on_ready():
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
-        await channel.send("WARNING: Rare train checker is not enabled! <@{USER_ID}>")
-        
+        await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
+
 
 # Threads
 
@@ -77,8 +86,8 @@ def check_rare_trains_in_thread():
     asyncio.run_coroutine_threadsafe(log_rare_trains(rare_trains), bot.loop)
 
 async def log_rare_trains(rare_trains):
-    log_channel = bot.get_channel(1227224314483576982)
-    channel = bot.get_channel(1227039212553900204)
+    log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
+    channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
 
     if rare_trains:
         embed = discord.Embed(title="Trains found on lines they are not normally on!", color=0xf23f42)
@@ -110,7 +119,7 @@ async def log_rare_trains(rare_trains):
 @tasks.loop(minutes=10)
 async def task_loop():
     if rareCheckerOn:
-        log_channel = bot.get_channel(1227224314483576982)
+        log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
         with open('logs.txt', 'a') as file:
             file.write(f"\n{datetime.now()} - Checking for rare trains")
@@ -635,9 +644,9 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
             credit = random_row[3]
 
             if ultrahard:
-                embed = discord.Embed(title=f"[ULTRARD] Guess the station!", color=0xe52727, description="Type ! before your answer. You have 30 seconds to answer.")
+                embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description="Type ! before your answer. You have 30 seconds to answer.")
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -650,12 +659,14 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                     embed.color = 0xff6565
             
             embed.set_image(url=url)
-            embed.add_field(name='Difficulty', value=difficulty)
             embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
             # Send the embed message
-            await ctx.response.send_message(embed=embed)
+            if round == 0:
+                await ctx.response.send_message(embed=embed)
+            else:
+                await ctx.channel.send(embed=embed)
 
             # Define a check function to validate user input
             def check(m):
@@ -884,11 +895,9 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 while not correct:
                     # Wait for user's response in the same channel
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
-                    try:
-                        response = user_response.content[1:].lower().split(',')
-                        response = [x.strip() for x in response]
-                    except:
-                        pass
+                    response = user_response.content[1:].lower().split(',')
+                    response = [x.strip() for x in response]
+
 
                     # Check if the user's response matches the correct station
                     if response == correct_list1:
@@ -923,19 +932,14 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
 
 
 async def station_autocompletion(
-        interaction: discord.Interaction,
-        current: str
-    ) -> typing.List[app_commands.Choice[str]]:
-        data = []
-        for drink_choice in [
-    "Flinders Street", "Southern Cross", "Melbourne Central", "Richmond", "Flagstaff", "Parliament",
-    "Box Hill", "Glenferrie", "Footscray", "North Melbourne", "Essendon", "Prahran", "Caulfield",
-    "South Yarra", "Hawthorn", "South Kensington", "Collingwood", "Moorabbin", "Malvern", "St Albans",
-    "Mordialloc", "Ringwood", "Pakenham", "Frankston", "Lilydale"
-]:
-            if current.lower() in drink_choice.lower():
-                data.append(app_commands.Choice(name=drink_choice, value=drink_choice))
-        return data 
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
 @bot.tree.command(name="log-train", description="Log set you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=station_autocompletion)
