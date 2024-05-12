@@ -31,12 +31,13 @@ rareCheckerOn = False
 config = dotenv_values(".env")
 
 BOT_TOKEN = config['BOT_TOKEN']
-CHANNEL_ID = int(config['CHANNEL_ID']) # channel id to send the startup message
+STARTUP_CHANNEL_ID = int(config['STARTUP_CHANNEL_ID']) # channel id to send the startup message
+RARE_SERVICE_CHANNEL_ID = int(config['RARE_SERVICE_CHANNEL_ID'])
 COMMAND_PREFIX = config['COMMAND_PREFIX']
 USER_ID = config['USER_ID']
 
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
-log_channel = bot.get_channel(CHANNEL_ID)
+log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
@@ -53,7 +54,7 @@ def convert_to_unix_time(date: datetime) -> str:
 @bot.event
 async def on_ready():
     print("Bot started")
-    channel = bot.get_channel(CHANNEL_ID)
+    channel = bot.get_channel(STARTUP_CHANNEL_ID)
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.now()} - Bot started")
     await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
@@ -72,8 +73,8 @@ def check_rare_trains_in_thread():
     asyncio.run_coroutine_threadsafe(log_rare_trains(rare_trains), bot.loop)
 
 async def log_rare_trains(rare_trains):
-    log_channel = bot.get_channel(1227224314483576982)
-    channel = bot.get_channel(1227039212553900204)
+    log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
+    channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
 
     if rare_trains:
         embed = discord.Embed(title="Trains found on lines they are not normally on!", color=0xf23f42)
@@ -105,7 +106,7 @@ async def log_rare_trains(rare_trains):
 @tasks.loop(minutes=10)
 async def task_loop():
     if rareCheckerOn:
-        log_channel = bot.get_channel(1227224314483576982)
+        log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
         with open('logs.txt', 'a') as file:
             file.write(f"\n{datetime.now()} - Checking for rare trains")
