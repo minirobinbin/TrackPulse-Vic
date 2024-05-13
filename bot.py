@@ -740,6 +740,9 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
 async def lb(ctx, game: str='guesser'):
     channel = ctx.channel
     leaders = top5(game)
+    if leaders == 'no stats':
+        await ctx.response.send_message('There is no data for this game yet!',ephemeral=True)
+        return
     print(leaders)
     # Create the embed
     embed = discord.Embed(title=f"Top 7 players for {game}", color=discord.Color.gold())
@@ -765,15 +768,28 @@ async def userStats(ctx, user: discord.User):
 
     embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
     if stats:
-        item, wins, losses = stats
-        embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        print('stats',stats)
+        if stats != 'no stats':
+            item, wins, losses = stats
+            embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Station Guesser', value='No data',inline=False)
+
     if hardstats:
-        item, wins, losses = hardstats
-        embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        print('hardstats',hardstats)
+        if hardstats != 'no stats':
+            item, wins, losses = hardstats
+            embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Ultrahard Station Guesser', value='No data',inline=False)
     if dominostats:
-        item, wins, losses = dominostats
-        embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        
+        print('dominostats',dominostats)
+        if dominostats != 'no stats':
+            item, wins, losses = dominostats
+            embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Station Order Guesser', value='No data',inline=False)
+
     await ctx.response.send_message(embed=embed)
 
 # Station order game made by @domino

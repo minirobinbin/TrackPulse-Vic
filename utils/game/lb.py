@@ -34,6 +34,7 @@ def addLb(username, id, game):
                     # If the id exists, update 'wins' and mark id_exists as True
                     row['wins'] = str(int(row['wins']) + 1)
                     id_exists = True
+
     
     if not id_exists:
         # If id doesn't exist, add a new row with wins=1
@@ -87,20 +88,29 @@ def top5(game):
 
     # Read the CSV file and populate the list with (id, wins) tuples
     if game == 'guesser':
-        with open('utils/game/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        try:
+            with open('utils/game/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        except FileNotFoundError:
+            return 'no stats'
     elif game == 'ultrahard':
-        with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        try:
+            with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        except FileNotFoundError:
+            return 'no stats'
     elif game == 'domino':
-        with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        try:
+            with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+        except FileNotFoundError:
+            return 'no stats'
     
     # Sort the list of tuples by wins in descending order
     sorted_ids = sorted(id_wins, key=lambda x: x[1], reverse=True)
@@ -112,22 +122,32 @@ def top5(game):
 
 def fetchUserStats(name, game):
     if game == 'guesser':
-        with open('utils/game/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row['id'] == name:
-                    return (row['id'], int(row['wins']), int(row['losses']))
-    elif game == 'guesser':
-        with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row['id'] == name:
-                    return (row['id'], int(row['wins']), int(row['losses']))
+        try:
+            with open('utils/game/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row['id'] == name:
+                        return (row['id'], int(row['wins']), int(row['losses']))
+        except FileNotFoundError:
+            return 'no stats'
+        
+    elif game == 'ultrahard':
+        try:
+            with open('utils/game/ultrahard/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row['id'] == name:
+                        return (row['id'], int(row['wins']), int(row['losses']))
+        except FileNotFoundError:
+            return 'no stats'
     elif game == 'domino':
-        with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row['id'] == name:
-                    return (row['id'], int(row['wins']), int(row['losses']))
+        try:
+            with open('utils/game/domino/leaderboard.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row['id'] == name:
+                        return (row['id'], int(row['wins']), int(row['losses']))
+        except FileNotFoundError:
+            return 'no stats'
     
     return None
