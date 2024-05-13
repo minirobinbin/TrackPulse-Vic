@@ -1043,13 +1043,14 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
                             image = getImage(last_car)
   
                     # Make the embed
-                embed = discord.Embed(title=f"Log {count}")
+                embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
                 embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
                 embed.add_field(name=f'Date', value="{}".format(sublist[2]))
                 embed.add_field(name=f'Line', value="{}".format(sublist[3]))
                 embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
                 embed.set_thumbnail(url=image)
+                
                 count = count + 1
                 await ctx.channel.send(embed=embed)
     asyncio.create_task(sendLogs())
