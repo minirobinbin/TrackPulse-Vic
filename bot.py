@@ -1016,6 +1016,7 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
 async def deleteLog(ctx, log:str='last'):
     async def deleteLogFunction():
         deleteRow(f'{ctx.user.name}.csv', log)
+        await ctx.response.send_message(f'Row {log} deleted.',ephemeral=True)
             
     asyncio.create_task(deleteLogFunction())
 

@@ -45,13 +45,13 @@ def deleteRow(csv_file, row_number):
 
     if row_number == 'last':
         row_number = len(rows) - 1
-    if row_number < 1 or row_number >= len(rows):
+    if int(row_number) < 1 or int(row_number) >= len(rows):
         print("Invalid row number.")
         return
 
-    del rows[row_number - 1]
+    del rows[int(row_number) - 1]
 
-    with open(csv_file, 'w', newline='') as file:
+    with open(f'utils/trainlogger/userdata/{csv_file}', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(rows)
 
