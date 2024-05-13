@@ -1011,6 +1011,14 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
     # Run in a separate task
     asyncio.create_task(log())
     
+#thing to delete the stuff
+@bot.tree.command(name='delete-log', description='delete a logged trip.')
+async def deleteLog(ctx, log:str='last'):
+    async def deleteLogFunction():
+        deleteRow(f'{ctx.user.name}.csv', log)
+            
+    asyncio.create_task(deleteLogFunction())
+
 # train logger reader
 @bot.tree.command(name="view-train-logs", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
