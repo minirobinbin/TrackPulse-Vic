@@ -1008,30 +1008,51 @@ async def deleteLog(ctx, log:str='last'):
 @bot.tree.command(name="view-train-logs", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
 async def userLogs(ctx, user: discord.User=None, csv:bool=False):
-    if user == None:
-        userid = ctx.user
-    else:
-        userid = user
-    if csv:
-        try:
-            file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
-            await ctx.response.send_message('Here is your file:', file=file)
-            return
-        except FileNotFoundError:
-            await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
-            return  
-    print(userid.name)
-    data = readLogs(userid.name)
-    formatted_data = ""
-    for sublist in data:
-        if len(sublist) >= 6:  # Ensure the sublist has enough items
-            formatted_data += "**Set:**\n{}, {}\n".format(sublist[0], sublist[1])
-            formatted_data += "**Date:**\n{}\n".format(sublist[2])
-            formatted_data += "**Line:**\n{}\n".format(sublist[3])
-            formatted_data += "**Trip Start:**\n{}\n".format(sublist[4])
-            formatted_data += "**Trip End:**\n{}\n\n".format(sublist[5])
-
-    await ctx.response.send_message(f'# Logged trips for {userid.name}:\n{formatted_data}')
+    async def sendLogs():
+        if user == None:
+            userid = ctx.user
+        else:
+            userid = user
+        if csv:
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
+                await ctx.response.send_message('Here is your file:', file=file)
+                return
+            except FileNotFoundError:
+                await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
+                return  
+        print(userid.name)
+        data = readLogs(userid.name)
+        await ctx.response.send_message(f"Trains logged by {userid.name}")
+        formatted_data = ""
+        count=1
+        for sublist in data:
+            if len(sublist) >= 6:  # Ensure the sublist has enough items
+                
+                # thing to find image:
+                hyphen_index = sublist[0].find("-")
+                if hyphen_index != -1:
+                    first_car = sublist[0][:hyphen_index]
+                    print(f'First car: {first_car}')
+                    image = getImage(first_car)
+                    if image == None:
+                        last_hyphen = sublist[0].rfind("-")
+                        if last_hyphen != -1:
+                            last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            print(f'Last car: {last_car}')
+                            image = getImage(last_car)
+  
+                    # Make the embed
+                embed = discord.Embed(title=f"Log {count}")
+                embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
+                embed.add_field(name=f'Date', value="{}".format(sublist[2]))
+                embed.add_field(name=f'Line', value="{}".format(sublist[3]))
+                embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
+                embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
+                embed.set_thumbnail(url=image)
+                count = count + 1
+                await ctx.channel.send(embed=embed)
+    asyncio.create_task(sendLogs())
     
 @bot.command()
 @commands.guild_only()
