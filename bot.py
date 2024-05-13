@@ -7,7 +7,7 @@ import re
 import asyncio
 import threading
 import queue
-from datetime import datetime
+import datetime
 import time
 import csv
 import random
@@ -54,7 +54,7 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
-def convert_to_unix_time(date: datetime) -> str:
+def convert_to_unix_time(date: datetime.datetime) -> str:
     # Get the end date
     end_date = date
 
@@ -62,15 +62,15 @@ def convert_to_unix_time(date: datetime) -> str:
     date_tuple = (end_date.year, end_date.month, end_date.day, end_date.hour, end_date.minute, end_date.second)
 
     # Convert to unix time
-    return f'<t:{int(time.mktime(datetime(*date_tuple).timetuple()))}:R>'
+    return f'<t:{int(time.mktime(datetime.datetime(*date_tuple).timetuple()))}:R>'
 
 @bot.event
 async def on_ready():
     print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
     with open('logs.txt', 'a') as file:
-        file.write(f"\n{datetime.now()} - Bot started")
-    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.now())}")
+        file.write(f"\n{datetime.datetime.now()} - Bot started")
+    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.datetime.now())}")
     try:
         task_loop.start()
     except:
@@ -105,11 +105,11 @@ async def log_rare_trains(rare_trains):
         try:
             await channel.send(embed=embed)
             with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.now()} - Sent rare trains")
+                file.write(f"\n{datetime.datetime.now()} - Sent rare trains")
         except discord.HTTPException:
             await channel.send("Embed too big! There are many trains on the wrong line. Check ANYTRIP.")
             with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.now()} - Sent rare trains but it was too long")
+                file.write(f"\n{datetime.datetime.now()} - Sent rare trains but it was too long")
         await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!\n`Due to errors in the PTV api data out of our control, some data may be inaccurate.`')
     else:
         await log_channel.send("None found")
@@ -122,7 +122,7 @@ async def task_loop():
         log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
         with open('logs.txt', 'a') as file:
-            file.write(f"\n{datetime.now()} - Checking for rare trains")
+            file.write(f"\n{datetime.datetime.now()} - Checking for rare trains")
 
         # Create a new thread to run checkRareTrainsOnRoute
         thread = threading.Thread(target=check_rare_trains_in_thread)
@@ -211,7 +211,7 @@ async def line_info(ctx, line: str):
     
     await ctx.response.send_message(embed=embed)
     with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.now()} - user sent line info command with input {line}")
+                file.write(f"\n{datetime.datetime.now()} - user sent line info command with input {line}")
 
 # @bot.tree.command(name="vline-line", description="Show info about a V/Line line")
 # @app_commands.describe(vline_line = "What V/Line line to show info about?")
@@ -285,7 +285,7 @@ async def runs(ctx, runid: str):
     
     await ctx.response.send_message(embed=embed)
     with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.now()} - user sent run search command with input {runid}")
+                file.write(f"\n{datetime.datetime.now()} - user sent run search command with input {runid}")
     
     
  
@@ -419,14 +419,14 @@ async def route(ctx, rtype: str, number: int):
                     
                 await channel.send(embed=embed)
                 with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.now()} - user sent route search command with input {rtype}, {number}")
+                    file.write(f"\n{datetime.datetime.now()} - user sent route search command with input {rtype}, {number}")
                                 
             counter = counter + 1
                 
     except Exception as e:
         await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
         with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.now()} - ERROR with user command - user sent route search command with input {rtype}, {number}")
+                    file.write(f"\n{datetime.datetime.now()} - ERROR with user command - user sent route search command with input {rtype}, {number}")
 
 
 
@@ -960,20 +960,33 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Unknown/Other", value="Unknown/Other")
 ])
 
 # Train logger
-async def logtrain(ctx, number: str, date:str, line:str, start:str, end:str):
+async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     async def log():
         print("logging the thing")
+
+        # checking if date is valid
+        savedate = date.split('/')
+        try:
+            savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
+        except TypeError:
+            await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
+            return
+
+        # checking if train number is valid
         set = setNumber(number.upper())
         if set == None:
-            await ctx.response.send_message(f'Invalid train number : `{number}`')
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
         type = trainType(number.upper())
-        addTrain(ctx.user.name, set, type, date, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {date}  from {start.title()} to {end.title()} to your file")
+
+        # Add train to the list
+        addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate}  from {start.title()} to {end.title()} to your file")
         
                 
     # Run in a separate task
