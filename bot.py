@@ -973,6 +973,9 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
         savedate = date.split('/')
         try:
             savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
+        except ValueError:
+            await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.',ephemeral=True)
+            return
         except TypeError:
             await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
             return
@@ -995,17 +998,21 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
 # train logger reader
 @bot.tree.command(name="view-train-logs", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
-async def userLogs(ctx, user: discord.User, csv:bool=False):
+async def userLogs(ctx, user: discord.User=None, csv:bool=False):
+    if user == None:
+        userid = ctx.user
+    else:
+        userid = user
     if csv:
         try:
-            file = discord.File(f'utils/trainlogger/userdata/{user.name}.csv')
+            file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
             await ctx.response.send_message('Here is your file:', file=file)
             return
         except FileNotFoundError:
             await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
-            return
-    print(user.name)
-    data = readLogs(user.name)
+            return  
+    print(userid.name)
+    data = readLogs(userid.name)
     formatted_data = ""
     for sublist in data:
         if len(sublist) >= 6:  # Ensure the sublist has enough items
@@ -1015,7 +1022,7 @@ async def userLogs(ctx, user: discord.User, csv:bool=False):
             formatted_data += "**Trip Start:**\n{}\n".format(sublist[4])
             formatted_data += "**Trip End:**\n{}\n\n".format(sublist[5])
 
-    await ctx.response.send_message(f'# Logged trips for {user.name}:\n{formatted_data}')
+    await ctx.response.send_message(f'# Logged trips for {userid.name}:\n{formatted_data}')
     
 @bot.command()
 @commands.guild_only()
