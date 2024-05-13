@@ -40,11 +40,11 @@ def readLogs(username):
         return []
         
 def deleteRow(csv_file, row_number):
-    with open(csv_file, 'r') as file:
+    with open(f'utils/trainlogger/userdata/{csv_file}', 'r') as file:
         rows = list(csv.reader(file))
 
     if row_number == 'last':
-        row_number = len(rows)
+        row_number = len(rows) - 1
     if row_number < 1 or row_number >= len(rows):
         print("Invalid row number.")
         return
