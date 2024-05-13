@@ -996,7 +996,7 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
     asyncio.create_task(log())
     
 #thing to delete the stuff
-@bot.tree.command(name='delete-log', description='delete a logged trip.')
+@bot.tree.command(name='delete-log', description='Delete a logged trip. Defaults to the last logged trip.')
 async def deleteLog(ctx, log:str='last'):
     async def deleteLogFunction():
         deleteRow(f'{ctx.user.name}.csv', log)
