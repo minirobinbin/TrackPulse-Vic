@@ -543,6 +543,7 @@ def setNumber(input_str):
         ]
 
     for set_str in all_sets:
-        if input_str in set_str:
+        temp = set_str.split('-')
+        if input_str in temp:
             return set_str
     return None
