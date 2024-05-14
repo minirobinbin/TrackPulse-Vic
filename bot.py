@@ -54,6 +54,12 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
+try:    
+    os.mkdir('utils/game/scores')
+except FileExistsError:
+    pass    
+
+
 def convert_to_unix_time(date: datetime.datetime) -> str:
     # Get the end date
     end_date = date
@@ -618,9 +624,9 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
         
         # Define the CSV file path
         if ultrahard:
-            csv_file = 'utils/game/ultrahard/images.csv'
+            csv_file = 'utils/game/images/ultrahard.csv'
         else:
-            csv_file = 'utils/game/images.csv'
+            csv_file = 'utils/game/images/guesser.csv'
 
         # Read the CSV file and store rows in a list
         rows = []
@@ -761,34 +767,28 @@ async def lb(ctx, game: str='guesser'):
 async def userStats(ctx, user: discord.User):
     channel = ctx.channel
     print(user.name)
-    stats = fetchUserStats(user.name, 'guesser')
-    hardstats = fetchUserStats(user.name, 'ultrahard')
-    dominostats = fetchUserStats(user.name, 'domino')
+    stats = fetchUserStats(user.name)
+    print(stats)
 
 
     embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
-    if stats:
-        print('stats',stats)
-        if stats != 'no stats':
-            item, wins, losses = stats
-            embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        else:
-            embed.add_field(name='Station Guesser', value='No data',inline=False)
+    if stats[0] != 'no stats':
+        item, wins, losses = stats[0]
+        embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    else:
+        embed.add_field(name='Station Guesser', value='No data',inline=False)
 
-    if hardstats:
-        print('hardstats',hardstats)
-        if hardstats != 'no stats':
-            item, wins, losses = hardstats
-            embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        else:
-            embed.add_field(name='Ultrahard Station Guesser', value='No data',inline=False)
-    if dominostats:
-        print('dominostats',dominostats)
-        if dominostats != 'no stats':
-            item, wins, losses = dominostats
-            embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        else:
-            embed.add_field(name='Station Order Guesser', value='No data',inline=False)
+    if stats[1] != 'no stats':
+        item, wins, losses = stats[1]
+        embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    else:
+        embed.add_field(name='Ultrahard Station Guesser', value='No data',inline=False)
+    
+    if stats[2] != 'no stats':
+        item, wins, losses = stats[2]
+        embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+    else:
+        embed.add_field(name='Station Order Guesser', value='No data',inline=False)
 
     await ctx.response.send_message(embed=embed)
 
