@@ -960,8 +960,15 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-        app_commands.Choice(name="Unknown/Other", value="Unknown/Other")
+        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
+        app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
+        app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
+        app_commands.Choice(name="Albury", value="Albury"),
+        app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
+        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale")
 ])
+
+
 
 # Train logger
 async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:str='N/A'):
@@ -1005,7 +1012,11 @@ async def deleteLog(ctx, log:str='last'):
             
     asyncio.create_task(deleteLogFunction())
 
+
+
 # train logger reader
+vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
+
 @bot.tree.command(name="view-train-logs", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
 async def userLogs(ctx, user: discord.User=None, csv:bool=False):
@@ -1029,6 +1040,7 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
         count=1
         for sublist in data:
             if len(sublist) >= 6:  # Ensure the sublist has enough items
+                image = None
                 
                 # thing to find image:
                 hyphen_index = sublist[0].find("-")
@@ -1042,9 +1054,15 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
                             last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
                             print(f'Last car: {last_car}')
                             image = getImage(last_car)
+                            if image == None:
+                                image = getImage(sublist[1])
+                                print(f'the loco number is: {sublist[0]}')
   
                     # Make the embed
-                embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
+                if sublist[3] in vLineLines:
+                    embed = discord.Embed(title=f"Log {count}",colour=0x7e3e98)
+                else:
+                    embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
                 embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
                 embed.add_field(name=f'Date', value="{}".format(sublist[2]))
                 embed.add_field(name=f'Line', value="{}".format(sublist[3]))
