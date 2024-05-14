@@ -764,14 +764,18 @@ async def lb(ctx, game: str='guesser'):
     await ctx.response.send_message(embed=embed)
 
 @bot.tree.command(name="user-stats", description="Stats for a user in the guessing game")
-async def userStats(ctx, user: discord.User):
+async def userStats(ctx, user: discord.User=None):
     channel = ctx.channel
-    print(user.name)
-    stats = fetchUserStats(user.name)
+    if user == None:
+        username = ctx.user.name
+    else:
+        username = user
+    print(username)
+    stats = fetchUserStats(username)
     print(stats)
 
 
-    embed = discord.Embed(title=f"{user.name.split('#')[0]}'s stats", color=discord.Color.gold())
+    embed = discord.Embed(title=f"{username.split('#')[0]}'s stats", color=discord.Color.gold())
     if stats[0] != 'no stats':
         item, wins, losses = stats[0]
         embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
