@@ -29,6 +29,8 @@ from utils.map.map import *
 from utils.game.lb import *
 from utils.trainlogger.main import *
 from utils.trainset import *
+from utils.trainlogger.stats import *
+
 
 file = open('utils\\stations.txt','r')
 stations_list = []
@@ -1019,16 +1021,18 @@ vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Ech
 
 @bot.tree.command(name="view-train-logs", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
-async def userLogs(ctx, user: discord.User=None, csv:bool=False):
+async def userLogs(ctx, user: discord.User=None, csv:bool=True):
     async def sendLogs():
         if user == None:
             userid = ctx.user
         else:
             userid = user
+            
+    
         if csv:
             try:
                 file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
-                await ctx.response.send_message('Here is your file:', file=file)
+                await ctx.response.send_message('Please note: it is not reccomended to run this command with cvs set to false in public channels if you have a lot of logs, if you want an easy to read view please run this command with the csv option set to false.\nHere is your file:', file=file)
                 return
             except FileNotFoundError:
                 await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
@@ -1057,7 +1061,9 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
                             if image == None:
                                 image = getImage(sublist[1])
                                 print(f'the loco number is: {sublist[0]}')
-  
+                                
+                #send in thread to reduce spam!
+                thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                     # Make the embed
                 if sublist[3] in vLineLines:
                     embed = discord.Embed(title=f"Log {count}",colour=0x7e3e98)
@@ -1071,9 +1077,36 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
                 embed.set_thumbnail(url=image)
                 
                 count = count + 1
+                
                 await ctx.channel.send(embed=embed)
+                # if count == 6:
+                #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
+                #     return
     asyncio.create_task(sendLogs())
-    
+
+# train logger reader
+vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
+
+@bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
+@app_commands.describe(user = "Who do you want to see the data of?")
+async def userLogs(ctx, user: discord.User=None):
+    async def sendLogs():
+        if user == None:
+            userid = ctx.user
+        else:
+            userid = user
+        data = topLines(ctx.user.name)
+            
+        embed=discord.Embed(title=f'Top lines for {userid.name}')
+        for item in data:
+            station, times = item.split(': ')
+            embed.add_field(name=station, value=f"{times} times", inline=False)
+        
+        await ctx.response.send_message(embed=embed)
+        
+    asyncio.create_task(sendLogs())
+
+
 @bot.command()
 @commands.guild_only()
 @commands.is_owner()
