@@ -70,10 +70,26 @@ def convert_to_unix_time(date: datetime.datetime) -> str:
     # Convert to unix time
     return f'<t:{int(time.mktime(datetime.datetime(*date_tuple).timetuple()))}:R>'
 
+
+# Group commands
+class CommandGroups(app_commands.Group):
+    ...
+
+trainlogs = CommandGroups(name='train-logs')
+games = CommandGroups(name='games')
+search = CommandGroups(name='search')
+stats = CommandGroups(name='stats')
+
 @bot.event
 async def on_ready():
     print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
+
+    bot.tree.add_command(trainlogs)
+    bot.tree.add_command(games)
+    bot.tree.add_command(search)
+    bot.tree.add_command(stats)
+
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.datetime.now()} - Bot started")
     await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.datetime.now())}")
@@ -82,6 +98,10 @@ async def on_ready():
     except:
         print("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
+
+
+
+
 
 
 # Threads
@@ -141,7 +161,7 @@ async def task_loop():
     
 
     
-@bot.tree.command(name="metro-line", description="Show info about a Metro line")
+@search.command(name="metro-line", description="Show info about a Metro line")
 @app_commands.describe(line = "What Metro line to show info about?")
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
@@ -261,7 +281,7 @@ async def line_info(ctx, line: str):
 #     await ctx.response.send_message(embed=embed)
 
 
-@bot.tree.command(name="run_search", description="Show runs for a route")
+@search.command(name="run", description="Show runs for a route")
 @app_commands.describe(runid = "route id")
 async def runs(ctx, runid: str):
     
@@ -355,7 +375,7 @@ async def bus_route(ctx, line: str):
 
 
 # Route Seach v2
-@bot.tree.command(name="route", description="Show info about a tram or bus route")
+@search.command(name="route", description="Show info about a tram or bus route")
 @app_commands.describe(rtype = "What type of transport is this route?")
 @app_commands.choices(rtype=[
         app_commands.Choice(name="Tram", value="1"),
@@ -437,57 +457,57 @@ async def route(ctx, rtype: str, number: int):
 
 
 # Photo search
-@bot.tree.command(name="train_photo", description="Search for xm9g's railway photos")
-@app_commands.describe(number="Carriage number")
-async def line_info(ctx, number: str):
-    channel = ctx.channel
-    search_query = number.upper()
-    photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
-    await ctx.response.send_message(f"Searching for `{search_query}`...")
+# @search.command(name="train-photo", description="Search for xm9g's railway photos")
+# @app_commands.describe(number="Carriage number")
+# async def line_info(ctx, number: str):
+#     channel = ctx.channel
+#     search_query = number.upper()
+#     photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
+#     await ctx.response.send_message(f"Searching for `{search_query}`...")
 
    
 
-    # Make a HEAD request to check if the photo exists
-    URLresponse = requests.head(photo_url)
-    if URLresponse.status_code == 200:
-        await channel.send(photo_url)
-    else:
-        mAdded = search_query+'M'
+#     # Make a HEAD request to check if the photo exists
+#     URLresponse = requests.head(photo_url)
+#     if URLresponse.status_code == 200:
+#         await channel.send(photo_url)
+#     else:
+#         mAdded = search_query+'M'
         
         
-        # try with m added
-        photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
-        URLresponse = requests.head(photo_url)
-        if URLresponse.status_code == 200:
-            await channel.send(photo_url)
-            for i in range(2,5):
-                photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
-                print(f"searching for other images for {mAdded}")
-                print(f"url: {photo_url}")
-                URLresponse = requests.head(photo_url)
-                if URLresponse.status_code == 200:
-                    await channel.send(photo_url)
-                else:
-                    print("no other images found")
-                    await channel.send(f"Photo not in xm9g database!")
-                    break
+#         # try with m added
+#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
+#         URLresponse = requests.head(photo_url)
+#         if URLresponse.status_code == 200:
+#             await channel.send(photo_url)
+#             for i in range(2,5):
+#                 photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
+#                 print(f"searching for other images for {mAdded}")
+#                 print(f"url: {photo_url}")
+#                 URLresponse = requests.head(photo_url)
+#                 if URLresponse.status_code == 200:
+#                     await channel.send(photo_url)
+#                 else:
+#                     print("no other images found")
+#                     await channel.send(f"Photo not in xm9g database!")
+#                     break
 
         
         
-    for i in range(2,5):
-        photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
-        print(f"searching for other images for {search_query}")
-        print(f"url: {photo_url}")
-        URLresponse = requests.head(photo_url)
-        if URLresponse.status_code == 200:
-            await channel.send(photo_url)
-        else:
-            print("no other images found")
-            break
+#     for i in range(2,5):
+#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
+#         print(f"searching for other images for {search_query}")
+#         print(f"url: {photo_url}")
+#         URLresponse = requests.head(photo_url)
+#         if URLresponse.status_code == 200:
+#             await channel.send(photo_url)
+#         else:
+#             print("no other images found")
+#             break
 
 
 # Wongm search
-@bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
+@search.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
 async def line_info(ctx, search: str):
     channel = ctx.channel
@@ -500,7 +520,7 @@ async def line_info(ctx, search: str):
 
 
 # Train search
-@bot.tree.command(name="train_search", description="Find trips for a specific Metro train")
+@search.command(name="train", description="Find trips for a specific Metro train")
 @app_commands.describe(train="train")
 async def train_line(ctx, train: str):
     await ctx.response.send_message(f"Searching, trip data may take longer to send...")
@@ -605,7 +625,7 @@ async def map(ctx):
     embed.set_image(url="attachment://gen.png")
     await channel.send(file=file, embed=embed)'''
     
-@bot.tree.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
+@games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1.", ultrahard = "Ultra hard mode.")
 async def game(ctx, ultrahard: bool=False, rounds: int = 1):
     
@@ -734,7 +754,7 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
     
 
     
-@bot.tree.command(name="leaderboard", description="Global leaderboards for the games",)
+@stats.command(name="leaderboard", description="Global leaderboards for the games.",)
 @app_commands.describe(game="What game's leaderboard to show?")
 @app_commands.choices(game=[
         app_commands.Choice(name="Station Guesser", value="guesser"),
@@ -763,7 +783,7 @@ async def lb(ctx, game: str='guesser'):
         
     await ctx.response.send_message(embed=embed)
 
-@bot.tree.command(name="user-stats", description="Stats for a user in the guessing game")
+@stats.command(name="user", description="Stats for a user in the games.")
 async def userStats(ctx, user: discord.User=None):
     channel = ctx.channel
     if user == None:
@@ -838,7 +858,7 @@ linelist = [
     'Williamstown' #17
 ]
 
-@bot.tree.command(name="station-game", description="A game where you list the stations before or after a station.")
+@games.command(name="station-order", description="A game where you list the stations before or after a station.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.")
 @app_commands.choices(
     direction=[
@@ -960,7 +980,7 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@bot.tree.command(name="log-train", description="Log set you have been on")
+@trainlogs.command(name="add", description="Log a train set.")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
@@ -1019,8 +1039,11 @@ async def logtrain(ctx, number: str, date:str='today', line:str='Unknown/Other',
     # Run in a separate task
     asyncio.create_task(log())
     
+
+
+
 #thing to delete the stuff
-@bot.tree.command(name='delete-log', description='Delete a logged trip. Defaults to the last logged trip.')
+@trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
 async def deleteLog(ctx, log:str='last'):
     async def deleteLogFunction():
         dataToDelete = readRow(f'{ctx.user.name}.csv', log)
@@ -1030,7 +1053,7 @@ async def deleteLog(ctx, log:str='last'):
     asyncio.create_task(deleteLogFunction())
 
 # train logger reader
-@bot.tree.command(name="view-train-logs", description="View logged trips for a user")
+@trainlogs.command(name="view", description="View logged trips for a user.")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
 async def userLogs(ctx, user: discord.User=None, csv:bool=False):
     async def sendLogs():
