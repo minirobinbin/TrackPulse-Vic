@@ -4,11 +4,14 @@ import requests
 # THIS ONE ONLY RETURNS THE FIRST IMAGE AND ALSO REQUIRS CORRECT FORMATTING!!
 def getImage(number):
     photo_url = f"https://railway-photos.xm9g.xyz/photos/{number}.jpg"
-
+    print('checking')
     # Make a HEAD request to check if the photo exists
-    URLresponse = requests.head(photo_url)
-    if URLresponse.status_code == 200:
-        return(photo_url)
+    try:
+        URLresponse = requests.head(photo_url)
+        if URLresponse.status_code == 200:
+            return(photo_url)
+    except requests.exceptions.ConnectionError:
+        return 'no connection'
 
 
 def getIcon(type):
