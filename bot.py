@@ -30,7 +30,7 @@ from utils.game.lb import *
 from utils.trainlogger.main import *
 from utils.trainset import *
 
-file = open('utils\\trainlogger\\all_metro_stations.txt','r')
+file = open('utils\\stations.txt','r')
 stations_list = []
 for line in file:
     line = line.strip()
