@@ -984,21 +984,25 @@ async def station_autocompletion(
 ])
 
 # Train logger
-async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, number: str, date:str='today', line:str='Unknown/Other', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
+    print(date)
     async def log():
         print("logging the thing")
 
         # checking if date is valid
         savedate = date.split('/')
-        try:
-            savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
-        except ValueError:
-            await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.',ephemeral=True)
-            return
-        except TypeError:
-            await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
-            return
+        if date.lower() == 'today':
+            savedate = datetime.date.today()
+        else:
+            try:
+                savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.',ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
+                return
 
         # checking if train number is valid
         set = setNumber(number.upper())
@@ -1009,7 +1013,7 @@ async def logtrain(ctx, number: str, date:str, line:str, start:str='N/A', end:st
 
         # Add train to the list
         addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate}  from {start.title()} to {end.title()} to your file")
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file")
         
                 
     # Run in a separate task
@@ -1047,30 +1051,36 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=False):
         await ctx.response.send_message(f"Trains logged by {userid.name}")
         formatted_data = ""
         count=1
+        websiteonline = True
         for sublist in data:
             if len(sublist) >= 6:  # Ensure the sublist has enough items
                 
                 # thing to find image:
-                hyphen_index = sublist[0].find("-")
-                if hyphen_index != -1:
-                    first_car = sublist[0][:hyphen_index]
-                    print(f'First car: {first_car}')
-                    image = getImage(first_car)
-                    if image == None:
-                        last_hyphen = sublist[0].rfind("-")
-                        if last_hyphen != -1:
-                            last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                            print(f'Last car: {last_car}')
-                            image = getImage(last_car)
-  
-                    # Make the embed
-                embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
+                image = 'no connection'
+                if websiteonline:
+                    hyphen_index = sublist[0].find("-")
+                    if hyphen_index != -1:
+                        first_car = sublist[0][:hyphen_index]
+                        print(f'First car: {first_car}')
+                        image = getImage(first_car)
+                        if image != 'no connection':
+                            if image == None:
+                                last_hyphen = sublist[0].rfind("-")
+                                if last_hyphen != -1:
+                                    last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                    print(f'Last car: {last_car}')
+                                    image = getImage(last_car)
+                            embed.set_thumbnail(url=image)
+                        else:
+                            websiteonline = False
+    
+                # Make the embed
+                embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1] if sublist[3] != 'Unknown/Other' else None)
                 embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
                 embed.add_field(name=f'Date', value="{}".format(sublist[2]))
                 embed.add_field(name=f'Line', value="{}".format(sublist[3]))
                 embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
-                embed.set_thumbnail(url=image)
                 
                 count = count + 1
                 await ctx.channel.send(embed=embed)
