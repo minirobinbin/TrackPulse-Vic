@@ -459,53 +459,53 @@ async def route(ctx, rtype: str, number: int):
 
 
 # Photo search
-# @search.command(name="train-photo", description="Search for xm9g's railway photos")
-# @app_commands.describe(number="Carriage number")
-# async def line_info(ctx, number: str):
-#     channel = ctx.channel
-#     search_query = number.upper()
-#     photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
-#     await ctx.response.send_message(f"Searching for `{search_query}`...")
+@search.command(name="photo", description="Search for xm9g's railway photos")
+@app_commands.describe(number="Carriage number")
+async def line_info(ctx, number: str):
+    channel = ctx.channel
+    search_query = number.upper()
+    photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
+    await ctx.response.send_message(f"Searching for `{search_query}`...")
 
    
 
-#     # Make a HEAD request to check if the photo exists
-#     URLresponse = requests.head(photo_url)
-#     if URLresponse.status_code == 200:
-#         await channel.send(photo_url)
-#     else:
-#         mAdded = search_query+'M'
+    # Make a HEAD request to check if the photo exists
+    URLresponse = requests.head(photo_url)
+    if URLresponse.status_code == 200:
+        await channel.send(photo_url)
+    else:
+        mAdded = search_query+'M'
         
         
-#         # try with m added
-#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
-#         URLresponse = requests.head(photo_url)
-#         if URLresponse.status_code == 200:
-#             await channel.send(photo_url)
-#             for i in range(2,5):
-#                 photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
-#                 print(f"searching for other images for {mAdded}")
-#                 print(f"url: {photo_url}")
-#                 URLresponse = requests.head(photo_url)
-#                 if URLresponse.status_code == 200:
-#                     await channel.send(photo_url)
-#                 else:
-#                     print("no other images found")
-#                     await channel.send(f"Photo not in xm9g database!")
-#                     break
+        # try with m added
+        photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
+        URLresponse = requests.head(photo_url)
+        if URLresponse.status_code == 200:
+            await channel.send(photo_url)
+            for i in range(2,5):
+                photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
+                print(f"searching for other images for {mAdded}")
+                print(f"url: {photo_url}")
+                URLresponse = requests.head(photo_url)
+                if URLresponse.status_code == 200:
+                    await channel.send(photo_url)
+                else:
+                    print("no other images found")
+                    await channel.send(f"Photo not in xm9g database!")
+                    break
 
         
         
-#     for i in range(2,5):
-#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
-#         print(f"searching for other images for {search_query}")
-#         print(f"url: {photo_url}")
-#         URLresponse = requests.head(photo_url)
-#         if URLresponse.status_code == 200:
-#             await channel.send(photo_url)
-#         else:
-#             print("no other images found")
-#             break
+    for i in range(2,5):
+        photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
+        print(f"searching for other images for {search_query}")
+        print(f"url: {photo_url}")
+        URLresponse = requests.head(photo_url)
+        if URLresponse.status_code == 200:
+            await channel.send(photo_url)
+        else:
+            print("no other images found")
+            break
 
 
 # Wongm search
@@ -991,6 +991,7 @@ async def station_autocompletion(
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
         app_commands.Choice(name="Frankston", value="Frankston"),
         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
@@ -1002,10 +1003,10 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
+        app_commands.Choice(name="Albury", value="Albury"),
         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-        app_commands.Choice(name="Albury", value="Albury"),
+        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale")
 ])
@@ -1013,7 +1014,7 @@ async def station_autocompletion(
 
 
 # Train logger
-async def logtrain(ctx, number: str, date:str='today', line:str='Unknown/Other', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, number: str, date:str='today', line:str='Unknown', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1067,7 +1068,7 @@ async def deleteLog(ctx, log:str='last'):
 
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
-@bot.tree.command(name="view-train-logs", description="View logged trips for a user")
+@trainlogs.command(name="view", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
 async def userLogs(ctx, user: discord.User=None, csv:bool=True):
     async def sendLogs():
@@ -1119,6 +1120,8 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
                     # Make the embed
                 if sublist[3] in vLineLines:
                     embed = discord.Embed(title=f"Log {count}",colour=0x7e3e98)
+                elif sublist[3] == 'Unknown':
+                    embed = discord.Embed(title=f"Log {count}")
                 else:
                     embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
                 embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
@@ -1138,7 +1141,7 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
 # train logger reader
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
-@bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
+@trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(user = "Who do you want to see the data of?")
 async def userLogs(ctx, user: discord.User=None):
     async def sendLogs():
