@@ -5,6 +5,7 @@ test.token
 leaderboard.csv
 logs.txt
 userdata/
+utils/game/scores/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

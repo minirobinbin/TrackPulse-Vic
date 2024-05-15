@@ -15,4 +15,3 @@ def getIcon(type):
     cleaned_type = type.replace(' ', '-').replace("'", '')
     url = f"https://xm9g.xyz/discord-bot-assets/MPTB/{cleaned_type}.png"
     return(url)
-
