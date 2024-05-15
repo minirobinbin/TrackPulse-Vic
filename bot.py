@@ -459,7 +459,7 @@ async def route(ctx, rtype: str, number: int):
 
 
 # Photo search
-@search.command(name="photo", description="Search for xm9g's railway photos")
+@search.command(name="train-photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number")
 async def line_info(ctx, number: str):
     channel = ctx.channel
@@ -992,8 +992,8 @@ async def station_autocompletion(
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
-        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
         app_commands.Choice(name="Frankston", value="Frankston"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
         app_commands.Choice(name="Lilydale", value="Lilydale"),
@@ -1004,10 +1004,10 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-        app_commands.Choice(name="Albury", value="Albury"),
+        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
+        app_commands.Choice(name="Albury", value="Albury"),
         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
         app_commands.Choice(name="Unknown", value="Unknown")
@@ -1016,7 +1016,7 @@ async def station_autocompletion(
 
 
 # Train logger
-async def logtrain(ctx, number: str, date:str='today', line:str='Unknown', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1090,15 +1090,17 @@ async def userLogs(ctx, user: discord.User=None):
         print(userid.name)
         data = readLogs(userid.name)
 
-        # send reponse message
-        await ctx.response.send_message(f"Creating a thread...")
-
+    
         # create thread
         logsthread = await ctx.channel.create_thread(
-            name=f'{userid.name}\'s Train Logs',
+            name=f'{userid.name}\'s Trip Logs',
             auto_archive_duration=60,
             type=discord.ChannelType.public_thread
         )
+        
+        # send reponse message
+        await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+        
         await logsthread.send(f'# {userid.name}\'s Train Logs')
         formatted_data = ""
         count=1
@@ -1145,7 +1147,7 @@ async def userLogs(ctx, user: discord.User=None):
                 #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
                 #     return
         
-        await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+        await logsthread.send(f'csv file:', file=file)
     asyncio.create_task(sendLogs())
 
 # train logger reader
