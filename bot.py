@@ -837,7 +837,8 @@ lines_dictionary = {
     'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
     'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
     'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
-    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645]
+    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
+    'Unknown/Other':[[None], 0x000000],
 }
 linelist = [
     None,
@@ -1008,7 +1009,8 @@ async def station_autocompletion(
         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
         app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
-        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale")
+        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
+        app_commands.Choice(name="Unknown", value="Unknown")
 ])
 
 
@@ -1100,29 +1102,25 @@ async def userLogs(ctx, user: discord.User=None):
         await logsthread.send(f'# {userid.name}\'s Train Logs')
         formatted_data = ""
         count=1
-        websiteonline = True
         for sublist in data:
             if len(sublist) >= 6:  # Ensure the sublist has enough items
                 image = None
                 
                 # thing to find image:
-      
-                image = 'no connection'
-                if websiteonline:
-                    hyphen_index = sublist[0].find("-")
-                    if hyphen_index != -1:
-                        first_car = sublist[0][:hyphen_index]
-                        print(f'First car: {first_car}')
-                        image = getImage(first_car)
-                        if image == None:
-                            last_hyphen = sublist[0].rfind("-")
-                            if last_hyphen != -1:
-                                last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                print(f'Last car: {last_car}')
-                                image = getImage(last_car)
-                                if image == None:
-                                    image = getImage(sublist[1])
-                                    print(f'the loco number is: {sublist[0]}')
+                hyphen_index = sublist[0].find("-")
+                if hyphen_index != -1:
+                    first_car = sublist[0][:hyphen_index]
+                    print(f'First car: {first_car}')
+                    image = getImage(first_car)
+                    if image == None:
+                        last_hyphen = sublist[0].rfind("-")
+                        if last_hyphen != -1:
+                            last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            print(f'Last car: {last_car}')
+                            image = getImage(last_car)
+                            if image == None:
+                                image = getImage(sublist[1])
+                                print(f'the loco number is: {sublist[0]}')
                                 
                 #send in thread to reduce spam!
                 thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
@@ -1138,7 +1136,8 @@ async def userLogs(ctx, user: discord.User=None):
                 embed.add_field(name=f'Line', value="{}".format(sublist[3]))
                 embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
-                
+                embed.set_thumbnail(url=image)
+
                 count = count + 1
 
                 await logsthread.send(embed=embed)
@@ -1151,24 +1150,30 @@ async def userLogs(ctx, user: discord.User=None):
 
 # train logger reader
 
-@trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(user = "Who do you want to see the data of?")
-async def userLogs(ctx, user: discord.User=None):
+@bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
+@app_commands.choices(stat=[
+    app_commands.Choice(name="Top Lines", value="lines"),
+    app_commands.Choice(name="Top Stations", value="stations"),
+    app_commands.Choice(name="Top Sets", value="sets"),
+    app_commands.Choice(name="Top Dates", value="dates"),
+    app_commands.Choice(name="Top Types", value="types"),
+])
+async def statTop(interaction: discord.Interaction, stat: str, user: discord.User = None):
     async def sendLogs():
-        if user == None:
-            userid = ctx.user
-        else:
-            userid = user
-        data = topLines(ctx.user.name)
-            
-        embed=discord.Embed(title=f'Top lines for {userid.name}')
+        statSearch = stat
+        userid = user if user else interaction.user
+        data = topStats(interaction.user.name, statSearch)
+
+        embed = discord.Embed(title=f'Top {stat} for {userid.name}')
         for item in data:
             station, times = item.split(': ')
-            embed.add_field(name=station, value=f"{times} times", inline=False)
+            embed.add_field(name=station, value=f"{times}", inline=False)
         
-        await ctx.response.send_message(embed=embed)
-        
-    asyncio.create_task(sendLogs())
+        await interaction.response.send_message(embed=embed)
+    
+    await sendLogs()
+
 
 
 @bot.command()
