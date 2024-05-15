@@ -1069,26 +1069,35 @@ async def deleteLog(ctx, log:str='last'):
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
-@app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
-async def userLogs(ctx, user: discord.User=None, csv:bool=True):
+@app_commands.describe(user = "Who do you want to see the data of?")
+async def userLogs(ctx, user: discord.User=None):
     async def sendLogs():
         if user == None:
             userid = ctx.user
         else:
             userid = user
-            
-    
-        if csv:
-            try:
-                file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
-                await ctx.response.send_message('Please note: it is not reccomended to run this command with cvs set to false in public channels if you have a lot of logs, if you want an easy to read view please run this command with the csv option set to false.\nHere is your file:', file=file)
-                return
-            except FileNotFoundError:
-                await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
-                return  
+        
+        try:
+            file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
+        except FileNotFoundError:
+            if userid == ctx.user:
+                await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+            else:
+                await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+            return
         print(userid.name)
         data = readLogs(userid.name)
-        await ctx.response.send_message(f"Trains logged by {userid.name}")
+
+        # send reponse message
+        await ctx.response.send_message(f"Creating a thread...")
+
+        # create thread
+        logsthread = await ctx.channel.create_thread(
+            name=f'{userid.name}\'s Train Logs',
+            auto_archive_duration=60,
+            type=discord.ChannelType.public_thread
+        )
+        await logsthread.send(f'# {userid.name}\'s Train Logs')
         formatted_data = ""
         count=1
         websiteonline = True
@@ -1131,15 +1140,16 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
                 
                 count = count + 1
-                
-                await ctx.channel.send(embed=embed)
+
+                await logsthread.send(embed=embed)
                 # if count == 6:
                 #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
                 #     return
+        
+        await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
     asyncio.create_task(sendLogs())
 
 # train logger reader
-vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(user = "Who do you want to see the data of?")
