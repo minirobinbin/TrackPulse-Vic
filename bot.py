@@ -459,7 +459,7 @@ async def route(ctx, rtype: str, number: int):
 
 
 # Photo search
-@search.command(name="train-photo", description="Search for xm9g's railway photos")
+@search.command(name="photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number")
 async def line_info(ctx, number: str):
     channel = ctx.channel
@@ -992,6 +992,7 @@ async def station_autocompletion(
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
         app_commands.Choice(name="Frankston", value="Frankston"),
         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
@@ -1003,10 +1004,10 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
+        app_commands.Choice(name="Albury", value="Albury"),
         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-        app_commands.Choice(name="Albury", value="Albury"),
+        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
         app_commands.Choice(name="Unknown", value="Unknown")
@@ -1015,7 +1016,7 @@ async def station_autocompletion(
 
 
 # Train logger
-async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, number: str, date:str='today', line:str='Unknown', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1069,27 +1070,36 @@ async def deleteLog(ctx, log:str='last'):
 
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
-@bot.tree.command(name="view-train-logs", description="View logged trips for a user")
-@app_commands.describe(user = "Who do you want to see the data of?", csv = "Send the data as a csv file")
-async def userLogs(ctx, user: discord.User=None, csv:bool=True):
+@trainlogs.command(name="view", description="View logged trips for a user")
+@app_commands.describe(user = "Who do you want to see the data of?")
+async def userLogs(ctx, user: discord.User=None):
     async def sendLogs():
         if user == None:
             userid = ctx.user
         else:
             userid = user
-            
-    
-        if csv:
-            try:
-                file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
-                await ctx.response.send_message('Please note: it is not reccomended to run this command with cvs set to false in public channels if you have a lot of logs, if you want an easy to read view please run this command with the csv option set to false.\nHere is your file:', file=file)
-                return
-            except FileNotFoundError:
-                await ctx.response.send_message("This account has no trains logged!",ephemeral=True)
-                return  
+        
+        try:
+            file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
+        except FileNotFoundError:
+            if userid == ctx.user:
+                await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+            else:
+                await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+            return
         print(userid.name)
         data = readLogs(userid.name)
-        await ctx.response.send_message(f"Trains logged by {userid.name}")
+
+        # send reponse message
+        await ctx.response.send_message(f"Creating a thread...")
+
+        # create thread
+        logsthread = await ctx.channel.create_thread(
+            name=f'{userid.name}\'s Train Logs',
+            auto_archive_duration=60,
+            type=discord.ChannelType.public_thread
+        )
+        await logsthread.send(f'# {userid.name}\'s Train Logs')
         formatted_data = ""
         count=1
         for sublist in data:
@@ -1117,6 +1127,8 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
                     # Make the embed
                 if sublist[3] in vLineLines:
                     embed = discord.Embed(title=f"Log {count}",colour=0x7e3e98)
+                elif sublist[3] == 'Unknown':
+                    embed = discord.Embed(title=f"Log {count}")
                 else:
                     embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
                 embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
@@ -1127,15 +1139,16 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
                 embed.set_thumbnail(url=image)
 
                 count = count + 1
-                
-                await ctx.channel.send(embed=embed)
+
+                await logsthread.send(embed=embed)
                 # if count == 6:
                 #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
                 #     return
+        
+        await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
     asyncio.create_task(sendLogs())
 
 # train logger reader
-vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
 @bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
