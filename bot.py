@@ -459,53 +459,53 @@ async def route(ctx, rtype: str, number: int):
 
 
 # Photo search
-# @search.command(name="train-photo", description="Search for xm9g's railway photos")
-# @app_commands.describe(number="Carriage number")
-# async def line_info(ctx, number: str):
-#     channel = ctx.channel
-#     search_query = number.upper()
-#     photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
-#     await ctx.response.send_message(f"Searching for `{search_query}`...")
+@search.command(name="train-photo", description="Search for xm9g's railway photos")
+@app_commands.describe(number="Carriage number")
+async def line_info(ctx, number: str):
+    channel = ctx.channel
+    search_query = number.upper()
+    photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
+    await ctx.response.send_message(f"Searching for `{search_query}`...")
 
    
 
-#     # Make a HEAD request to check if the photo exists
-#     URLresponse = requests.head(photo_url)
-#     if URLresponse.status_code == 200:
-#         await channel.send(photo_url)
-#     else:
-#         mAdded = search_query+'M'
+    # Make a HEAD request to check if the photo exists
+    URLresponse = requests.head(photo_url)
+    if URLresponse.status_code == 200:
+        await channel.send(photo_url)
+    else:
+        mAdded = search_query+'M'
         
         
-#         # try with m added
-#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
-#         URLresponse = requests.head(photo_url)
-#         if URLresponse.status_code == 200:
-#             await channel.send(photo_url)
-#             for i in range(2,5):
-#                 photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
-#                 print(f"searching for other images for {mAdded}")
-#                 print(f"url: {photo_url}")
-#                 URLresponse = requests.head(photo_url)
-#                 if URLresponse.status_code == 200:
-#                     await channel.send(photo_url)
-#                 else:
-#                     print("no other images found")
-#                     await channel.send(f"Photo not in xm9g database!")
-#                     break
+        # try with m added
+        photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
+        URLresponse = requests.head(photo_url)
+        if URLresponse.status_code == 200:
+            await channel.send(photo_url)
+            for i in range(2,5):
+                photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
+                print(f"searching for other images for {mAdded}")
+                print(f"url: {photo_url}")
+                URLresponse = requests.head(photo_url)
+                if URLresponse.status_code == 200:
+                    await channel.send(photo_url)
+                else:
+                    print("no other images found")
+                    await channel.send(f"Photo not in xm9g database!")
+                    break
 
         
         
-#     for i in range(2,5):
-#         photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
-#         print(f"searching for other images for {search_query}")
-#         print(f"url: {photo_url}")
-#         URLresponse = requests.head(photo_url)
-#         if URLresponse.status_code == 200:
-#             await channel.send(photo_url)
-#         else:
-#             print("no other images found")
-#             break
+    for i in range(2,5):
+        photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
+        print(f"searching for other images for {search_query}")
+        print(f"url: {photo_url}")
+        URLresponse = requests.head(photo_url)
+        if URLresponse.status_code == 200:
+            await channel.send(photo_url)
+        else:
+            print("no other images found")
+            break
 
 
 # Wongm search
@@ -837,7 +837,8 @@ lines_dictionary = {
     'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
     'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
     'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
-    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645]
+    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
+    'Unknown/Other':[[None], 0x000000],
 }
 linelist = [
     None,
@@ -1007,13 +1008,14 @@ async def station_autocompletion(
         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
         app_commands.Choice(name="Albury", value="Albury"),
         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
-        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale")
+        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
+        app_commands.Choice(name="Unknown", value="Unknown")
 ])
 
 
 
 # Train logger
-async def logtrain(ctx, number: str, date:str='today', line:str='Unknown/Other', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1090,29 +1092,25 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
         await ctx.response.send_message(f"Trains logged by {userid.name}")
         formatted_data = ""
         count=1
-        websiteonline = True
         for sublist in data:
             if len(sublist) >= 6:  # Ensure the sublist has enough items
                 image = None
                 
                 # thing to find image:
-      
-                image = 'no connection'
-                if websiteonline:
-                    hyphen_index = sublist[0].find("-")
-                    if hyphen_index != -1:
-                        first_car = sublist[0][:hyphen_index]
-                        print(f'First car: {first_car}')
-                        image = getImage(first_car)
-                        if image == None:
-                            last_hyphen = sublist[0].rfind("-")
-                            if last_hyphen != -1:
-                                last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                print(f'Last car: {last_car}')
-                                image = getImage(last_car)
-                                if image == None:
-                                    image = getImage(sublist[1])
-                                    print(f'the loco number is: {sublist[0]}')
+                hyphen_index = sublist[0].find("-")
+                if hyphen_index != -1:
+                    first_car = sublist[0][:hyphen_index]
+                    print(f'First car: {first_car}')
+                    image = getImage(first_car)
+                    if image == None:
+                        last_hyphen = sublist[0].rfind("-")
+                        if last_hyphen != -1:
+                            last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            print(f'Last car: {last_car}')
+                            image = getImage(last_car)
+                            if image == None:
+                                image = getImage(sublist[1])
+                                print(f'the loco number is: {sublist[0]}')
                                 
                 #send in thread to reduce spam!
                 thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
@@ -1126,7 +1124,8 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
                 embed.add_field(name=f'Line', value="{}".format(sublist[3]))
                 embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
-                
+                embed.set_thumbnail(url=image)
+
                 count = count + 1
                 
                 await ctx.channel.send(embed=embed)
@@ -1139,23 +1138,29 @@ async def userLogs(ctx, user: discord.User=None, csv:bool=True):
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
 @bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
-@app_commands.describe(user = "Who do you want to see the data of?")
-async def userLogs(ctx, user: discord.User=None):
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
+@app_commands.choices(stat=[
+    app_commands.Choice(name="Top Lines", value="lines"),
+    app_commands.Choice(name="Top Stations", value="stations"),
+    app_commands.Choice(name="Top Sets", value="sets"),
+    app_commands.Choice(name="Top Dates", value="dates"),
+    app_commands.Choice(name="Top Types", value="types"),
+])
+async def statTop(interaction: discord.Interaction, stat: str, user: discord.User = None):
     async def sendLogs():
-        if user == None:
-            userid = ctx.user
-        else:
-            userid = user
-        data = topLines(ctx.user.name)
-            
-        embed=discord.Embed(title=f'Top lines for {userid.name}')
+        statSearch = stat
+        userid = user if user else interaction.user
+        data = topStats(interaction.user.name, statSearch)
+
+        embed = discord.Embed(title=f'Top {stat} for {userid.name}')
         for item in data:
             station, times = item.split(': ')
-            embed.add_field(name=station, value=f"{times} times", inline=False)
+            embed.add_field(name=station, value=f"{times}", inline=False)
         
-        await ctx.response.send_message(embed=embed)
-        
-    asyncio.create_task(sendLogs())
+        await interaction.response.send_message(embed=embed)
+    
+    await sendLogs()
+
 
 
 @bot.command()
