@@ -974,20 +974,6 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
     # Run the game in a separate task
     asyncio.create_task(run_game())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
