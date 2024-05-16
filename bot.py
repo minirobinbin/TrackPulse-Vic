@@ -1207,18 +1207,21 @@ async def userLogs(ctx, user: discord.User=None):
     app_commands.Choice(name="Top Dates", value="dates"),
     app_commands.Choice(name="Top Types", value="types"),
 ])
-async def statTop(interaction: discord.Interaction, stat: str, user: discord.User = None):
+async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None):
     async def sendLogs():
         statSearch = stat
-        userid = user if user else interaction.user
-        data = topStats(interaction.user.name, statSearch)
+        if user == None:
+            userid = ctx.user
+        else:
+            userid = user
+        data = topStats(userid.name, statSearch)
 
         embed = discord.Embed(title=f'Top {stat} for {userid.name}')
         for item in data:
             station, times = item.split(': ')
             embed.add_field(name=station, value=f"{times}", inline=False)
         
-        await interaction.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed)
     
     await sendLogs()
 
