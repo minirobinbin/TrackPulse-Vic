@@ -30,6 +30,7 @@ from utils.game.lb import *
 from utils.trainlogger.main import *
 from utils.trainset import *
 from utils.trainlogger.stats import *
+from utils.trainlogger.ids import *
 
 
 file = open('utils\\stations.txt','r')
@@ -974,6 +975,19 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
     asyncio.create_task(run_game())
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
@@ -1044,8 +1058,8 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
         type = trainType(number.upper())
 
         # Add train to the list
-        addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file")
+        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
                 
     # Run in a separate task
@@ -1056,11 +1070,42 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
 
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
-async def deleteLog(ctx, log:str='last'):
+@app_commands.describe(id = "The ID of the log that you want to delete.")
+async def deleteLog(ctx, id:str='LAST'):
+    
     async def deleteLogFunction():
-        dataToDelete = readRow(f'{ctx.user.name}.csv', log)
-        deleteRow(f'{ctx.user.name}.csv', log)
-        await ctx.response.send_message(f'Row {log} deleted. This rows data was: `{dataToDelete}`',ephemeral=True)
+        if id[0] == '#':
+            idformatted = id[1:].upper()
+        else:
+            idformatted = id.upper()
+
+        if idformatted != 'LAST':
+            if not is_hex(idformatted):
+                cmds = await bot.tree.fetch_commands()
+                for cmd in cmds:
+                    if cmd.name == 'train-logs':
+                        cmdid = cmd.id
+                        await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </train-logs view:{cmdid}>.',ephemeral=True)
+                        return
+                
+            
+        dataToDelete = readRow(ctx.user.name, idformatted)
+        if dataToDelete in ['no data at all','no data for user']:
+            await ctx.response.send_message(f'You have no logs you can delete!',ephemeral=True)
+            return
+        elif dataToDelete == 'invalid id did not show up':
+            cmds = await bot.tree.fetch_commands()
+            for cmd in cmds:
+                if cmd.name == 'train-logs':
+                    cmdid = cmd.id
+                    await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </train-logs view:{cmdid}>.',ephemeral=True)
+                    return
+        else:
+            idformatted1 = deleteRow(ctx.user.name, idformatted)
+            if idformatted == 'LAST':
+                await ctx.response.send_message(f'Most recent log (`#{idformatted1}`) deleted. The data was:\n`{dataToDelete}`',ephemeral=True)
+            else:
+                await ctx.response.send_message(f'Log `#{idformatted}` deleted. The data was:\n`{dataToDelete}`',ephemeral=True)
             
     asyncio.create_task(deleteLogFunction())
 
@@ -1089,77 +1134,78 @@ async def userLogs(ctx, user: discord.User=None):
             return
         print(userid.name)
         data = readLogs(userid.name)
-
+        if data == 'no data':
+            if userid == ctx.user:
+                await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+            else:
+                await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+            return
     
         # create thread
         logsthread = await ctx.channel.create_thread(
-            name=f'{userid.name}\'s Trip Logs',
+            name=f'{userid.name}\'s Train Logs',
             auto_archive_duration=60,
             type=discord.ChannelType.public_thread
         )
         
         # send reponse message
         await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
-        
+        await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
         await logsthread.send(f'# {userid.name}\'s Train Logs')
         formatted_data = ""
-        count=1
         for sublist in data:
-            if len(sublist) >= 6:  # Ensure the sublist has enough items
+            if len(sublist) >= 7:  # Ensure the sublist has enough items
                 image = None
                 
                 # thing to find image:
-                hyphen_index = sublist[0].find("-")
+                hyphen_index = sublist[1].find("-")
                 if hyphen_index != -1:
-                    first_car = sublist[0][:hyphen_index]
+                    first_car = sublist[1][:hyphen_index]
                     print(f'First car: {first_car}')
                     image = getImage(first_car)
                     if image == None:
-                        last_hyphen = sublist[0].rfind("-")
+                        last_hyphen = sublist[1].rfind("-")
                         if last_hyphen != -1:
-                            last_car = sublist[0][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
                             print(f'Last car: {last_car}')
                             image = getImage(last_car)
                             if image == None:
-                                image = getImage(sublist[1])
-                                print(f'the loco number is: {sublist[0]}')
+                                image = getImage(sublist[2])
+                                print(f'the loco number is: {sublist[1]}')
                                 
                 #send in thread to reduce spam!
                 thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                     # Make the embed
-                if sublist[3] in vLineLines:
-                    embed = discord.Embed(title=f"Log {count}",colour=0x7e3e98)
-                elif sublist[3] == 'Unknown':
-                    embed = discord.Embed(title=f"Log {count}")
+                if sublist[4] in vLineLines:
+                    embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                elif sublist[4] == 'Unknown':
+                    embed = discord.Embed(title=f"Log {sublist[0]}")
                 else:
-                    embed = discord.Embed(title=f"Log {count}",colour=lines_dictionary[sublist[3]][1])
-                embed.add_field(name=f'Set', value="{}, {}".format(sublist[0], sublist[1]))
-                embed.add_field(name=f'Date', value="{}".format(sublist[2]))
-                embed.add_field(name=f'Line', value="{}".format(sublist[3]))
-                embed.add_field(name=f'Trip Start', value="{}".format(sublist[4]))
-                embed.add_field(name=f'Trip End', value="{}".format(sublist[5]))
+                    embed = discord.Embed(title=f"Log {sublist[0]}",colour=lines_dictionary[sublist[4]][1])
+                embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                 embed.set_thumbnail(url=image)
-
-                count = count + 1
 
                 await logsthread.send(embed=embed)
                 # if count == 6:
                 #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
                 #     return
         
-        await logsthread.send(f'csv file:', file=file)
     asyncio.create_task(sendLogs())
 
 # train logger reader
 
-@bot.tree.command(name="train-logger-stats", description="View stats for a logged user's trips.")
+@trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
 @app_commands.choices(stat=[
-    app_commands.Choice(name="Top Lines", value="lines"),
-    app_commands.Choice(name="Top Stations", value="stations"),
-    app_commands.Choice(name="Top Sets", value="sets"),
-    app_commands.Choice(name="Top Dates", value="dates"),
-    app_commands.Choice(name="Top Types", value="types"),
+    app_commands.Choice(name="Lines", value="lines"),
+    app_commands.Choice(name="Stations", value="stations"),
+    app_commands.Choice(name="Sets", value="sets"),
+    app_commands.Choice(name="Dates", value="dates"),
+    app_commands.Choice(name="Types", value="types"),
 ])
 async def statTop(interaction: discord.Interaction, stat: str, user: discord.User = None):
     async def sendLogs():
@@ -1178,37 +1224,52 @@ async def statTop(interaction: discord.Interaction, stat: str, user: discord.Use
 
 
 
+
+
+
+
+
+@bot.command()
+async def ids(ctx: commands.Context) -> None:
+    if ctx.author.id in [707866373602148363,780303451980038165,749835864468619376]:
+        checkaddids = addids()
+        if checkaddids == 'no userdata folder':
+            await ctx.send('Error: No userdata folder found.')
+        else:
+            await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')
+
+
 @bot.command()
 @commands.guild_only()
-@commands.is_owner()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
-    if not guilds:
-        if spec == "~":
-            synced = await ctx.bot.tree.sync(guild=ctx.guild)
-        elif spec == "*":
-            ctx.bot.tree.copy_global_to(guild=ctx.guild)
-            synced = await ctx.bot.tree.sync(guild=ctx.guild)
-        elif spec == "^":
-            ctx.bot.tree.clear_commands(guild=ctx.guild)
-            await ctx.bot.tree.sync(guild=ctx.guild)
-            synced = []
-        else:
-            synced = await ctx.bot.tree.sync()
+    if ctx.author.id in [707866373602148363,780303451980038165]:
+        if not guilds:
+            if spec == "~":
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "*":
+                ctx.bot.tree.copy_global_to(guild=ctx.guild)
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "^":
+                ctx.bot.tree.clear_commands(guild=ctx.guild)
+                await ctx.bot.tree.sync(guild=ctx.guild)
+                synced = []
+            else:
+                synced = await ctx.bot.tree.sync()
 
-        await ctx.send(
-            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
-        )
-        return
+            await ctx.send(
+                f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+            )
+            return
 
-    ret = 0
-    for guild in guilds:
-        try:
-            await ctx.bot.tree.sync(guild=guild)
-        except discord.HTTPException:
-            pass
-        else:
-            ret += 1
+        ret = 0
+        for guild in guilds:
+            try:
+                await ctx.bot.tree.sync(guild=guild)
+            except discord.HTTPException:
+                pass
+            else:
+                ret += 1
 
-    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+        await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 bot.run(BOT_TOKEN)
