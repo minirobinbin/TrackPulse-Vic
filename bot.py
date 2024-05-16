@@ -997,7 +997,7 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@trainlogs.command(name="add", description="Log a train set.")
+@trainlogs.command(name="add", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
@@ -1201,11 +1201,11 @@ async def userLogs(ctx, user: discord.User=None):
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
 @app_commands.choices(stat=[
-    app_commands.Choice(name="Lines", value="lines"),
-    app_commands.Choice(name="Stations", value="stations"),
-    app_commands.Choice(name="Sets", value="sets"),
-    app_commands.Choice(name="Dates", value="dates"),
-    app_commands.Choice(name="Types", value="types"),
+    app_commands.Choice(name="Top Lines", value="lines"),
+    app_commands.Choice(name="Top Stations", value="stations"),
+    app_commands.Choice(name="Top Sets", value="sets"),
+    app_commands.Choice(name="Top Dates", value="dates"),
+    app_commands.Choice(name="Top Types", value="types"),
 ])
 async def statTop(interaction: discord.Interaction, stat: str, user: discord.User = None):
     async def sendLogs():
