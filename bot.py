@@ -1183,7 +1183,6 @@ async def userLogs(ctx, user: discord.User=None):
     asyncio.create_task(sendLogs())
 
 # train logger reader
-
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
 @app_commands.choices(stat=[
@@ -1211,21 +1210,32 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
     
     await sendLogs()
 
+# photo submit
+@bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
+async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
+    async def submitPhoto():
+        channel_id = 1238821549352685568
+        channel = ctx.guild.get_channel(channel_id)  # Get the channel object
 
+        if photo.content_type.startswith('image/'):
+            await photo.save(f"./{photo.filename}")
+            file = discord.File(f"./{photo.filename}")
+            await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!', ephemeral=True)
+            await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n - Location: {location}\n<@780303451980038165> ', file=file)
+        else:
+            await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
 
+    await submitPhoto()
 
-
-
-
-
-@bot.command()
+# Disabled to not fuck up the data by accident
+'''@bot.command()
 async def ids(ctx: commands.Context) -> None:
     if ctx.author.id in [707866373602148363,780303451980038165,749835864468619376]:
         checkaddids = addids()
         if checkaddids == 'no userdata folder':
             await ctx.send('Error: No userdata folder found.')
         else:
-            await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')
+            await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
 
 
 @bot.command()
