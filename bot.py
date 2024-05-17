@@ -1221,8 +1221,8 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
             channel = target_guild.get_channel(target_channel_id)
             if channel:
                 if photo.content_type.startswith('image/'):
-                    await photo.save(f"./{photo.filename}")
-                    file = discord.File(f"./{photo.filename}")
+                    await photo.save(f"./photo-submissions/{photo.filename}")
+                    file = discord.File(f"./photo-submissions/{photo.filename}")
                     await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!', ephemeral=True)
                     await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
                 else:
