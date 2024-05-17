@@ -1198,7 +1198,7 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
         if user == None:
             userid = ctx.user
         else:
-            userid = user
+            userid = ctx.user # temp cause the thing wont work fix later!
         data = topStats(userid.name, statSearch)
 
         embed = discord.Embed(title=f'Top {stat} for {userid.name}')
