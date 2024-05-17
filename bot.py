@@ -1210,20 +1210,27 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
     
     await sendLogs()
 
-# photo submit
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
     async def submitPhoto():
-        channel_id = 1238821549352685568
-        channel = ctx.guild.get_channel(channel_id)  # Get the channel object
-
-        if photo.content_type.startswith('image/'):
-            await photo.save(f"./{photo.filename}")
-            file = discord.File(f"./{photo.filename}")
-            await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!', ephemeral=True)
-            await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n - Location: {location}\n<@780303451980038165> ', file=file)
+        target_guild_id = 1214139268725870602
+        target_channel_id = 1238821549352685568
+        
+        target_guild = bot.get_guild(target_guild_id)
+        if target_guild:
+            channel = target_guild.get_channel(target_channel_id)
+            if channel:
+                if photo.content_type.startswith('image/'):
+                    await photo.save(f"./photo-submissions/{photo.filename}")
+                    file = discord.File(f"./photo-submissions/{photo.filename}")
+                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!', ephemeral=True)
+                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
+                else:
+                    await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
+            else:
+                await ctx.response.send_message("Error: Target channel not found.", ephemeral=True)
         else:
-            await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
+            await ctx.response.send_message("Error: Target guild not found.", ephemeral=True)
 
     await submitPhoto()
 
