@@ -786,38 +786,6 @@ async def lb(ctx, game: str='guesser'):
         
     await ctx.response.send_message(embed=embed)
 
-@stats.command(name="user", description="Stats for a user in the games.")
-async def userStats(ctx, user: discord.User=None):
-    channel = ctx.channel
-    if user == None:
-        username = ctx.user.name
-    else:
-        username = user
-    print(username)
-    stats = fetchUserStats(username)
-    print(stats)
-
-
-    embed = discord.Embed(title=f"{username.split('#')[0]}'s stats", color=discord.Color.gold())
-    if stats[0] != 'no stats':
-        item, wins, losses = stats[0]
-        embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-    else:
-        embed.add_field(name='Station Guesser', value='No data',inline=False)
-
-    if stats[1] != 'no stats':
-        item, wins, losses = stats[1]
-        embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-    else:
-        embed.add_field(name='Ultrahard Station Guesser', value='No data',inline=False)
-    
-    if stats[2] != 'no stats':
-        item, wins, losses = stats[2]
-        embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-    else:
-        embed.add_field(name='Station Order Guesser', value='No data',inline=False)
-
-    await ctx.response.send_message(embed=embed)
 
 # Station order game made by @domino
 
@@ -1233,6 +1201,48 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
             await ctx.response.send_message("Error: Target guild not found.", ephemeral=True)
 
     await submitPhoto()
+    
+@stats.command(name='profile', description="Shows a users trip log stats, and leaderboard wins")    
+async def profile(ctx, user: discord.User = None):
+    async def profiles():
+        if user == None:
+            username = ctx.user.name
+        else:
+            username = user.name
+        embed = discord.Embed(title=f"{username}'s Profile")
+        #games
+        stats = fetchUserStats(username)
+        
+        if stats[0] != 'no stats':
+            item, wins, losses = stats[0]
+            embed.add_field(name='Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Station Guesser', value='No data',inline=False)
+        if stats[1] != 'no stats':
+            item, wins, losses = stats[1]
+            embed.add_field(name='Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Ultrahard Station Guesser', value='No data',inline=False)
+        if stats[2] != 'no stats':
+            item, wins, losses = stats[2]
+            embed.add_field(name='Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+        else:
+            embed.add_field(name='Station Order Guesser', value='No data',inline=False)
+        
+        # train logger
+        try:
+            lines = topStats(username, 'lines')
+            stations = topStats(username, 'stations')
+            sets = topStats(username, 'sets')
+            trains = topStats(username, 'types')
+            dates = topStats(username, 'dates')
+            embed.add_field(name='Train Log stats:', value=f'Top Line:  {lines[0]}\nTop Station:	{stations[0]}\nTop Train:	{trains[0]}\nTop Set:	{sets[0]}\nTop Date:    {dates[0]}')
+
+        except FileNotFoundError:
+            embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
+        await ctx.response.send_message(embed=embed)
+        
+    await profiles()
 
 # Disabled to not fuck up the data by accident
 '''@bot.command()
@@ -1278,4 +1288,5 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
+# imptrant
 bot.run(BOT_TOKEN)
