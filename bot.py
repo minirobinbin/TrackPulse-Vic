@@ -50,6 +50,7 @@ from utils.trainlogger.stats import *
 from utils.trainlogger.ids import *
 from utils.unixtime import *
 from utils.pastTime import *
+from utils.routeName import *
 
 
 
@@ -618,7 +619,8 @@ async def train_line(ctx, station: str):
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
-                print(f"time in past")
+                # print(f"time in past")
+                pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
                 run_id = departure['run_id']
@@ -628,9 +630,11 @@ async def train_line(ctx, station: str):
                 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                #get route name:
+                route_name = get_route_name(route_id)
                 #add to embed
                 
-                embed.add_field(name="Scheduled Departure:", value=f"Departing {depTime}, {scheduled_departure_utc}")
+                embed.add_field(name=route_name, value=f"Departing {depTime}\n Platform {platform_number}")
                 fields = fields + 1
                 if fields == 25:
                     break
