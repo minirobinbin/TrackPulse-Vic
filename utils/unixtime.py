@@ -1,4 +1,6 @@
-import datetime, time
+import time
+import datetime
+
 
 def convert_to_unix_time(date: datetime.datetime) -> str:
     # Get the end date
@@ -9,3 +11,16 @@ def convert_to_unix_time(date: datetime.datetime) -> str:
 
     # Convert to unix time
     return f'<t:{int(time.mktime(datetime.datetime(*date_tuple).timetuple()))}:R>'
+
+def convert_iso_to_unix_time(iso_time: str) -> str:
+    # Parse the ISO 8601 formatted time string
+    date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
+
+    # Convert to the computer's current timezone
+    date_local = date.astimezone()
+
+    # Convert to Unix time
+    unix_time = int(time.mktime(date_local.timetuple()))
+
+    # Format Unix time for Discord's timestamp
+    return f'<t:{unix_time}:R>'

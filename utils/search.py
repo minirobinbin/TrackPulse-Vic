@@ -17,6 +17,7 @@ def search_api_request(search_term):
         data = response.json()
         formatted = format(data)
         print(formatted)
+        return(data)
     else:
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")

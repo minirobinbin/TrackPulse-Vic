@@ -49,6 +49,7 @@ from utils.trainset import *
 from utils.trainlogger.stats import *
 from utils.trainlogger.ids import *
 from utils.unixtime import *
+from utils.pastTime import *
 
 
 
@@ -63,6 +64,7 @@ for line in file:
     line = line.strip()
     stations_list.append(line)
 file.close()
+
 
 
 rareCheckerOn = False
@@ -577,6 +579,65 @@ async def transportVicSearch_async(ctx, train):
     else:
         await ctx.channel.send(f"No runs currently found for {train.upper()}")
 
+
+# Next departures for a station
+async def station_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
+@search.command(name="departures", description="Upcoming departures for a station")
+@app_commands.describe(station="Station")
+@app_commands.autocomplete(station=station_autocompletion)
+
+async def train_line(ctx, station: str):
+    async def nextdeps():
+        channel = ctx.channel
+        Nstation = station.replace(' ', '%20')
+        search = search_api_request(f'{Nstation}%20Station')
+        # find the stop id!
+        def stop_id(data, location):
+            for stop in data['stops']:
+                if stop['stop_name'] == location:
+                    return stop['stop_id']
+            return None
+        
+        stop_id = stop_id(search, f"{station} Station")
+        print(f'STOP ID for {station} Station: {stop_id}')
+        # get departures for the stop:
+        depsData = departures_api_request(stop_id, 0)
+        
+        departures = depsData['departures']
+        # make embed with data
+        embed= discord.Embed(title=f"Next departures for {station} Station")
+        fields = 0
+        for departure in departures:
+            scheduled_departure_utc = departure['scheduled_departure_utc']
+            if isPast(scheduled_departure_utc):
+                print(f"time in past")
+            else:
+                estimated_departure_utc = departure['estimated_departure_utc']
+                run_id = departure['run_id']
+                at_platform = departure['at_platform']
+                platform_number = departure['platform_number']
+                route_id= departure['route_id'] 
+                
+                #convert to timestamp
+                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                #add to embed
+                
+                embed.add_field(name="Scheduled Departure:", value=f"Departing {depTime}, {scheduled_departure_utc}")
+                fields = fields + 1
+                if fields == 25:
+                    break
+            
+        await ctx.channel.send(embed=embed)          
+
+    asyncio.create_task(nextdeps())
 
 
 # Montague Bridge search
