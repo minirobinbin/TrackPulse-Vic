@@ -1,3 +1,5 @@
+import datetime
+
 def convert_to_unix_time(date: datetime.datetime) -> str:
     # Get the end date
     end_date = date
