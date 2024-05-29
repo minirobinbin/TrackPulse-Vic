@@ -1,4 +1,4 @@
-import datetime
+import datetime, time
 
 def convert_to_unix_time(date: datetime.datetime) -> str:
     # Get the end date
