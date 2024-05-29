@@ -117,17 +117,15 @@ async def on_ready():
 
     with open('logs.txt', 'a') as file:
         file.write(f"\n{datetime.datetime.now()} - Bot started")
-    await channel.send(f"<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.datetime.now())}")
+    await channel.send(f"Melbourne Public Transport Discord Bot  Copyright (C) 2024  Billy Evans
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions\n<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.datetime.now())}")
     try:
         task_loop.start()
     except:
         print("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
-
-
-
-
-
 
 # Threads
 
