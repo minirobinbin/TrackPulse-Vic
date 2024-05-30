@@ -79,6 +79,20 @@ def runs_api_request(route_id):
     else:
         print(f"Error: {response.status_code} - {response.text}")
         
+def runs_ref_api_request(ref):
+    # API endpoint URL
+    url = getUrl(f'/v3/runs/{ref}')
+    print(f"search url: {url}")
+    
+    response = requests.get(url)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        data = response.json()
+        return(data)
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        
 def departures_api_request(stop_id, route_type):
     # API endpoint URL
     url = getUrl(f'/v3/departures/route_type/{route_type}/stop/{stop_id}')
