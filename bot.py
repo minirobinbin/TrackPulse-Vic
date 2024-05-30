@@ -644,7 +644,7 @@ async def departures(ctx, station: str):
                 fields = fields + 1
                 if fields == 10:
                     break
-            
+        embed.set_footer(text="Note: The departures info does not currently take delays into account!")
         await ctx.channel.send(embed=embed)          
 
     asyncio.create_task(nextdeps())
