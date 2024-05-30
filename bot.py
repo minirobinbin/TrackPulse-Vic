@@ -1071,18 +1071,19 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
     async def log():
         print("logging the thing")
 
-        # checking if date is valid
         savedate = date.split('/')
         if date.lower() == 'today':
-            savedate = datetime.date.today()
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
         else:
             try:
-                savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.',ephemeral=True)
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
 
         # checking if train number is valid
