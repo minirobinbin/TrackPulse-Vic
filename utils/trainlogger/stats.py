@@ -51,7 +51,7 @@ def topStats(user, stat):
                 results.append(f"{station}: {count} times")
         if stat == "sets":
             for set, count in most_common_sets:
-                results.append(f"{set} {emoji}: {count} times")
+                results.append(f"{set}: {count} times")
         if stat == "types":
             for type, count in most_common_types:
                 results.append(f"{type}: {count} times")
