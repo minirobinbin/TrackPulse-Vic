@@ -20,3 +20,19 @@ def getColor(type):
         return(0xff8400)
     if type == "vline" or type =="3":
         return(0x8f1a95)
+
+def getEmojiColor(line):
+    if line == "Lilydale" or line =="Belgrave" or line =="Alamein" or line =='Glen Waverley':
+        return('<:burnley:1245673094509760562>')
+    if line == "Pakenham" or line =="Cranbourne":
+        return('<:metrotunnel:1245673090495680533>')
+    if line == "Hurstbridge" or line =="Mernda":
+        return('<:cliftonhill:1245673092655878174>')
+    if line == "Frankston" or line =="Williamstown" or line =='Werribee' or line == 'Stony Point':
+        return('<:frankston:1245673086360092735>')    
+    if line == "Upfield" or line =="Sunbury" or line =='Craigieburn':
+        return('<:northern:1245673088314638431>')    
+    if line == "Sandringham":
+        return('<:crosscity:1245673084187578368>')   
+    else:
+        return('<:other:1245674664647331860>')

@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
 
 
+from tracemalloc import stop
 from discord.ext import commands, tasks
 from discord import app_commands
 import discord
@@ -24,7 +25,7 @@ import re
 import asyncio
 import threading
 import queue
-import datetime
+from datetime import datetime
 import time
 import csv
 import random
@@ -108,12 +109,10 @@ async def on_ready():
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
 
-    with open('logs.txt', 'a') as file:
-        file.write(f"\n{datetime.datetime.now()} - Bot started")
     await channel.send(f"""Melbourne Public Transport Discord Bot  Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
-    under certain conditions\n<@{USER_ID}> Bot is online! {convert_to_unix_time(datetime.datetime.now())}""")
+    under certain conditions\n<@{USER_ID}> Bot is online!""")
     try:
         task_loop.start()
     except:
@@ -595,9 +594,10 @@ async def station_autocompletion(
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
 
-async def train_line(ctx, station: str):
+async def departures(ctx, station: str):
     async def nextdeps():
         channel = ctx.channel
+        await ctx.response.send_message(f"Loading Departures for {station}...")
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation}%20Station')
         # find the stop id!
@@ -609,12 +609,14 @@ async def train_line(ctx, station: str):
         
         stop_id = stop_id(search, f"{station} Station")
         print(f'STOP ID for {station} Station: {stop_id}')
+        if stop_id == None:
+            await ctx.channel.send("Station not found")
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
         
         departures = depsData['departures']
         # make embed with data
-        embed= discord.Embed(title=f"Next departures for {station} Station")
+        embed= discord.Embed(title=f"Next 10 departures for {station} Station <:train:1241164967789727744>")
         fields = 0
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
@@ -623,22 +625,26 @@ async def train_line(ctx, station: str):
                 pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
-                run_id = departure['run_id']
+                run_ref = departure['run_ref']
                 at_platform = departure['at_platform']
                 platform_number = departure['platform_number']
                 route_id= departure['route_id'] 
                 
+                # get info for the run:
+                runInfo = runs_ref_api_request(run_ref)
+                desto = runInfo["runs"][0]["destination_name"]
+
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
                 route_name = get_route_name(route_id)
                 #add to embed
                 
-                embed.add_field(name=route_name, value=f"Departing {depTime}\n Platform {platform_number}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}")
                 fields = fields + 1
-                if fields == 25:
+                if fields == 10:
                     break
-            
+        embed.set_footer(text="Note: The departures info does not currently take delays into account!")
         await ctx.channel.send(embed=embed)          
 
     asyncio.create_task(nextdeps())
@@ -1063,18 +1069,19 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
     async def log():
         print("logging the thing")
 
-        # checking if date is valid
         savedate = date.split('/')
         if date.lower() == 'today':
-            savedate = datetime.date.today()
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
         else:
             try:
-                savedate = datetime.date(int(savedate[2]),int(savedate[1]),int(savedate[0]))
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.',ephemeral=True)
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`',ephemeral=True)
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
 
         # checking if train number is valid
