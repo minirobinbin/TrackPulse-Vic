@@ -131,4 +131,3 @@ def lowestDate(user):
 
     return lowest_date
 
-print(lowestDate('xm9g'))
