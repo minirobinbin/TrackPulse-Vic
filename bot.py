@@ -1321,7 +1321,7 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username)
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal logs: {logAmounts(username)}')
+            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}')
                         
         except FileNotFoundError:
             embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
