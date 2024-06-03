@@ -1056,8 +1056,6 @@ async def station_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown")
 ])
 
-
-
 # Train logger
 async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
@@ -1094,7 +1092,6 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
     # Run in a separate task
     asyncio.create_task(log())
     
-
 
 
 #thing to delete the stuff
@@ -1248,7 +1245,9 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
         for item in data:
             station, times = item.split(': ')
             embed.add_field(name=station, value=f"{times}", inline=False)
-        
+            
+        #percent stuff:
+        embed.add_field(name=f'Percent of stations visited: {stationPercent(user)}')
         await ctx.response.send_message(embed=embed)
     
     await sendLogs()
