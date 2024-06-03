@@ -1,5 +1,7 @@
 import csv
 from collections import Counter
+from datetime import datetime
+from io import StringIO
 
 def topStats(user, stat):
     with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
@@ -39,7 +41,7 @@ def topStats(user, stat):
 
         # Prepare the results as a list
         results = []
-
+                
         # Append the most common lines to the results list
         if stat == "lines":
             for line, count in most_common_lines:
@@ -49,7 +51,7 @@ def topStats(user, stat):
                 results.append(f"{station}: {count} times")
         if stat == "sets":
             for set, count in most_common_sets:
-                results.append(f"{set}: {count} times")
+                results.append(f"{set} {emoji}: {count} times")
         if stat == "types":
             for type, count in most_common_types:
                 results.append(f"{type}: {count} times")
@@ -82,6 +84,51 @@ def stationPercent(user):
     
     total= len(unique_items)
     percent = round((total/numberOfStations)*100,2)
-    print(f'{percent}%')
+    return(f'{percent}%')
+
+def linePercent(user):
+    file = f'utils/trainlogger/userdata/{user}.csv'
+    unique_items = set()
     
-stationPercent('xm9g')
+    # Read the CSV content
+    with open(file, mode='r') as csvfile:
+        reader = csv.reader(csvfile)
+        
+        for row in reader:
+            # Extract the fifth item from each row (index 4)
+            fifth_item = row[4]
+            
+            # Add the item to the set (sets only keep unique items)
+            unique_items.add(fifth_item)
+    
+    # The number of unique items is the length of the set
+    numberOfLines = 22
+    
+    total = len(unique_items)
+    percent = round((total / numberOfLines) * 100, 2)
+    return f'{percent}%'
+
+def lowestDate(user):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    # Initialize an empty list to store the dates
+    dates = []
+
+    # Read the CSV file
+    with open(filename, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            # Extract the date string from each row and add it to the dates list
+            dates.append(row[3])
+
+    # Remove dashes from each date and convert them to integers
+    cleaned_dates = [int(date.replace('-', '')) for date in dates]
+
+    # Find the lowest number in the cleaned_dates list
+    lowest_number = min(cleaned_dates)
+
+    # Convert the lowest number back to the date format 'yyyy-mm-dd'
+    lowest_date = str(lowest_number)[:4] + '-' + str(lowest_number)[4:6] + '-' + str(lowest_number)[6:]
+
+    return lowest_date
+
+print(lowestDate('xm9g'))
