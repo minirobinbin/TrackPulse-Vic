@@ -131,3 +131,25 @@ def lowestDate(user):
 
     return lowest_date
 
+def highestDate(user):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    # Initialize an empty list to store the dates
+    dates = []
+
+    # Read the CSV file
+    with open(filename, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            # Extract the date string from each row and add it to the dates list
+            dates.append(row[3])
+
+    # Remove dashes from each date and convert them to integers
+    cleaned_dates = [int(date.replace('-', '')) for date in dates]
+
+    # Find the highest number in the cleaned_dates list
+    highest_number = max(cleaned_dates)
+
+    # Convert the highest number back to the date format 'yyyy-mm-dd'
+    highest_date = str(highest_number)[:4] + '-' + str(highest_number)[4:6] + '-' + str(highest_number)[6:]
+
+    return highest_date
