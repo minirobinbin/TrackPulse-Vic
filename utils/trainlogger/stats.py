@@ -153,3 +153,10 @@ def highestDate(user):
     highest_date = str(highest_number)[:4] + '-' + str(highest_number)[4:6] + '-' + str(highest_number)[6:]
 
     return highest_date
+
+def logAmounts(user):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    with open(filename, 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        line_count = sum(1 for row in csv_reader)
+    return line_count
