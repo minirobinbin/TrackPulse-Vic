@@ -1220,6 +1220,8 @@ async def userLogs(ctx, user: discord.User=None):
                 embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                 embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                 embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                if sublist[4] not in vLineLines:
+                    embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
                 embed.set_thumbnail(url=image)
 
                 await logsthread.send(embed=embed)
