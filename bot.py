@@ -1314,14 +1314,14 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-            embed.add_field(name=':chart_with_upwards_trend: Train Log Top Stats:', value=f'Top Line:  {lines[0]}\nTop Station:	{stations[0]}\nTop Train:	{trains[0]}\nTop Set:	{sets[0]}\nTop Date:    {dates[0]}')
+            embed.add_field(name=':chart_with_upwards_trend: Train Log Top Stats:', value=f'Top Line: {lines[0]}\nTop Station: {stations[0]}\nTop Train: {trains[0]}\nTop Set: {sets[0]}\nTop Date: {dates[0]}')
           
             #other stats stuff:
             eDate =lowestDate(username)
             LeDate =highestDate(username)
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}')
+            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
                         
         except FileNotFoundError:
             embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')

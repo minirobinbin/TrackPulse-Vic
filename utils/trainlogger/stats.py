@@ -2,6 +2,7 @@ import csv
 from collections import Counter
 from datetime import datetime
 from io import StringIO
+from utils.trainlogger.stationDistance import *
 
 def topStats(user, stat):
     with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
@@ -160,3 +161,22 @@ def logAmounts(user):
         csv_reader = csv.reader(csv_file)
         line_count = sum(1 for row in csv_reader)
     return line_count
+
+def getTotalTravelDistance(user):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    distance = 0
+    
+    # Open and read the CSV file
+    with open(filename, newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            col6 = row[5]
+            col7 = row[6]
+            try:
+                distance += getStationDistance(load_station_data('utils/trainlogger/stationDistances.csv'), col6, col7)
+                print(f"{col6} to {col7}: {distance}")
+            except:
+                print(f'{col6} to {col7} could not be calculated!')
+    
+    return distance
+
