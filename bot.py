@@ -1293,12 +1293,12 @@ async def profile(ctx, user: discord.User = None):
         
         if stats[0] != 'no stats':
             item, wins, losses = stats[0]
-            embed.add_field(name=':question: Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+            embed.add_field(name=':question: Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
         else:
             embed.add_field(name=':question: Station Guesser', value='No data',inline=False)
         if stats[1] != 'no stats':
             item, wins, losses = stats[1]
-            embed.add_field(name=':interrobang: Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+            embed.add_field(name=':interrobang: Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
         else:
             embed.add_field(name=':interrobang: Ultrahard Station Guesser', value='No data',inline=False)
         if stats[2] != 'no stats':
@@ -1318,8 +1318,10 @@ async def profile(ctx, user: discord.User = None):
           
             #other stats stuff:
             eDate =lowestDate(username)
+            LeDate =highestDate(username)
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            embed.add_field(name=f'User started logging {joined}', value=f'Stations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}')
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}')
                         
         except FileNotFoundError:
             embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
