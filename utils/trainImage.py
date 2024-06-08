@@ -15,3 +15,15 @@ def getIcon(type):
     cleaned_type = type.replace(' ', '-').replace("'", '')
     url = f"https://xm9g.xyz/discord-bot-assets/MPTB/{cleaned_type}.png"
     return(url)
+
+def getStationImage(station):
+    type = station.title()
+    cleaned_type = type.replace(' ', '%20')
+    url = f"https://railway-photos.xm9g.xyz/stations/photos/{cleaned_type}.jpg"
+    URLresponse = requests.head(url)
+    if URLresponse.status_code == 200:
+        return(url)
+
+    return(None)
+
+print(getStationImage('lilydale'))

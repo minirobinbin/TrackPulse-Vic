@@ -599,7 +599,7 @@ async def departures(ctx, station: str):
         channel = ctx.channel
         await ctx.response.send_message(f"Loading Departures for {station}...")
         Nstation = station.replace(' ', '%20')
-        search = search_api_request(f'{Nstation}%20Station')
+        search = search_api_request(f'{Nstation.title()}%20Station')
         # find the stop id!
         def stop_id(data, location):
             for stop in data['stops']:
@@ -607,7 +607,7 @@ async def departures(ctx, station: str):
                     return stop['stop_id']
             return None
         
-        stop_id = stop_id(search, f"{station} Station")
+        stop_id = stop_id(search, f"{station.title()} Station")
         print(f'STOP ID for {station} Station: {stop_id}')
         if stop_id == None:
             await ctx.channel.send("Station not found")
@@ -645,6 +645,7 @@ async def departures(ctx, station: str):
                 if fields == 10:
                     break
         embed.set_footer(text="Note: The departures info does not currently take delays into account!")
+        embed.set_thumbnail(url=getStationImage(station))
         await ctx.channel.send(embed=embed)          
 
     asyncio.create_task(nextdeps())
@@ -1252,7 +1253,7 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
         for item in data:
             station, times = item.split(': ')
             embed.add_field(name=station, value=f"{times}", inline=False)
-        
+        await ctx.response.send_message(embed=embed)
     
     await sendLogs()
 
