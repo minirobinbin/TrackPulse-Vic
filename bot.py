@@ -1252,9 +1252,11 @@ async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None
         data = topStats(userid.name, statSearch)
 
         embed = discord.Embed(title=f'Top {stat} for {userid.name}')
+        count = 1
         for item in data:
             station, times = item.split(': ')
-            embed.add_field(name=station, value=f"{times}", inline=False)
+            embed.add_field(name=f'#{count}: {station}', value=f"{times}", inline=False)
+            count = count+1
         await ctx.response.send_message(embed=embed)
     
     await sendLogs()
@@ -1291,6 +1293,26 @@ async def profile(ctx, user: discord.User = None):
         else:
             username = user.name
         embed = discord.Embed(title=f":bar_chart: {username}'s Profile")
+        
+        # train logger
+        try:
+            lines = topStats(username, 'lines')
+            stations = topStats(username, 'stations')
+            sets = topStats(username, 'sets')
+            trains = topStats(username, 'types')
+            dates = topStats(username, 'dates')
+            embed.add_field(name=':chart_with_upwards_trend: Train Log Top Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
+          
+            #other stats stuff:
+            eDate =lowestDate(username)
+            LeDate =highestDate(username)
+            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
+                        
+        except FileNotFoundError:
+            embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
+        
         #games
         stats = fetchUserStats(username)
         
@@ -1310,24 +1332,7 @@ async def profile(ctx, user: discord.User = None):
         else:
             embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
         
-        # train logger
-        try:
-            lines = topStats(username, 'lines')
-            stations = topStats(username, 'stations')
-            sets = topStats(username, 'sets')
-            trains = topStats(username, 'types')
-            dates = topStats(username, 'dates')
-            embed.add_field(name=':chart_with_upwards_trend: Train Log Top Stats:', value=f'Top Line: {lines[0]}\nTop Station: {stations[0]}\nTop Train: {trains[0]}\nTop Set: {sets[0]}\nTop Date: {dates[0]}')
-          
-            #other stats stuff:
-            eDate =lowestDate(username)
-            LeDate =highestDate(username)
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
-                        
-        except FileNotFoundError:
-            embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
+        
         await ctx.response.send_message(embed=embed)
         
     await profiles()

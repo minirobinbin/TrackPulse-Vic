@@ -32,11 +32,11 @@ def topStats(user, stat):
             date_counter.update([date])
 
         # Get the 10 most common lines
-        most_common_lines = line_counter.most_common(10)
-        most_common_stations = station_counter.most_common(10)
-        most_common_sets = set_counter.most_common(10)
-        most_common_types = type_counter.most_common(10)
-        most_common_dates = date_counter.most_common(10)
+        most_common_lines = line_counter.most_common(25)
+        most_common_stations = station_counter.most_common(25)
+        most_common_sets = set_counter.most_common(25)
+        most_common_types = type_counter.most_common(25)
+        most_common_dates = date_counter.most_common(25)
 
         # Get the 10 most common stations
 
