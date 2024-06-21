@@ -34,6 +34,7 @@ from typing import Literal, Optional
 import typing
 import enum
 from re import A
+from io import StringIO
 
 from utils.search import *
 from utils.colors import *
@@ -1232,9 +1233,9 @@ async def userLogs(ctx, user: discord.User=None):
         
     asyncio.create_task(sendLogs())
 
-# train logger reader
+# train logger top
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?')
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', sendfile='send as a csv')
 @app_commands.choices(stat=[
     app_commands.Choice(name="Top Lines", value="lines"),
     app_commands.Choice(name="Top Stations", value="stations"),
@@ -1242,25 +1243,35 @@ async def userLogs(ctx, user: discord.User=None):
     app_commands.Choice(name="Top Dates", value="dates"),
     app_commands.Choice(name="Top Types", value="types"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, user: discord.User = None):
+async def statTop(ctx: discord.Interaction, stat: str, sendfile: bool=False, user: discord.User = None, ):
     async def sendLogs():
         statSearch = stat
-        if user == None:
-            userid = ctx.user
-        else:
-            userid = ctx.user # temp cause the thing wont work fix later!
+        userid = user if user else ctx.user
         data = topStats(userid.name, statSearch)
 
-        embed = discord.Embed(title=f'Top {stat} for {userid.name}')
         count = 1
-        for item in data:
-            station, times = item.split(': ')
-            embed.add_field(name=f'#{count}: {station}', value=f"{times}", inline=False)
-            count = count+1
-        await ctx.response.send_message(embed=embed)
+        message = ''
+        print(sendfile)
+        if sendfile:
+            csv_filename = f'temp/top{stat.title()}.{user}-t{time.time()}.csv'
+            with open(csv_filename, mode='w', newline='') as csv_file:
+                writer = csv.writer(csv_file)  # Use csv.writer on csv_file, not csvs
+                for item in data:
+                    station, times = item.split(': ')
+                    writer.writerow([station, times.split()[0]])
+
+            await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+            
+        else:
+            for item in data:
+                station, times = item.split(': ')
+                message += f'{count}. **{station}:** `{times}`\n'
+                count += 1
+            await ctx.response.send_message(message)
     
     await sendLogs()
-
+   
+   
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
     async def submitPhoto():
