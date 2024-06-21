@@ -8,7 +8,6 @@ userdata/
 utils/game/scores/
 utils/trainlogger/userdatabackup
 photo-submissions/
-temp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
