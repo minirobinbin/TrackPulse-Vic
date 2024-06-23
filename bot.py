@@ -1,4 +1,4 @@
-'''Melbourne Public Transport Discord Bot
+'''TrackPulse 𝕍𝕀ℂ
     Copyright (C) 2024  Billy Evans
 
     This program is free software: you can redistribute it and/or modify
@@ -53,10 +53,11 @@ from utils.trainlogger.ids import *
 from utils.unixtime import *
 from utils.pastTime import *
 from utils.routeName import *
+from utils.trainlogger.graph import *
 
 
 
-print("""Melbourne Public Transport Discord Bot  Copyright (C) 2024  Billy Evans
+print("""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
@@ -110,7 +111,7 @@ async def on_ready():
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
 
-    await channel.send(f"""Melbourne Public Transport Discord Bot  Copyright (C) 2024  Billy Evans
+    await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions\n<@{USER_ID}> Bot is online!""")
@@ -1236,7 +1237,7 @@ async def userLogs(ctx, user: discord.User=None):
 
 # train logger top
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', sendfile='send as a csv')
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='send as a csv')
 @app_commands.choices(stat=[
     app_commands.Choice(name="Top Lines", value="lines"),
     app_commands.Choice(name="Top Stations", value="stations"),
@@ -1244,32 +1245,42 @@ async def userLogs(ctx, user: discord.User=None):
     app_commands.Choice(name="Top Dates", value="dates"),
     app_commands.Choice(name="Top Types", value="types"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, sendfile: bool=False, user: discord.User = None, ):
+@app_commands.choices(format=[
+    app_commands.Choice(name="List and Bar chart", value="l&g"),
+    app_commands.Choice(name="Pie chart", value="pie"),
+    app_commands.Choice(name="CSV file", value="csv"),
+])
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, ):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
         data = topStats(userid.name, statSearch)
-
         count = 1
         message = ''
-        print(sendfile)
-        if sendfile:
-            csv_filename = f'temp/top{stat.title()}.{user}-t{time.time()}.csv'
-            with open(csv_filename, mode='w', newline='') as csv_file:
-                writer = csv.writer(csv_file)  # Use csv.writer on csv_file, not csvs
-                for item in data:
-                    station, times = item.split(': ')
-                    writer.writerow([station, times.split()[0]])
-
+        
+        # make temp csv
+        csv_filename = f'temp/top{stat.title()}.{ctx.user.name}-t{time.time()}.csv'
+        with open(csv_filename, mode='w', newline='') as csv_file:
+            writer = csv.writer(csv_file)  # Use csv.writer on csv_file, not csvs
+            for item in data:
+                station, times = item.split(': ')
+                writer.writerow([station, times.split()[0]])
+        
+        if format == 'csv':
             await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
             
-        else:
+        elif format == 'l&g':
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
                 count += 1
-            await ctx.response.send_message(message)
-    
+            barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
+            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            
+        elif format == 'pie':
+            pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
+            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+
     await sendLogs()
    
    
