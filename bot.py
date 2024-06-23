@@ -1153,30 +1153,30 @@ async def deleteLog(ctx, id:str='LAST'):
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(route=[
-        app_commands.Choice(name="1 - East Coburg", value="1"),
-        app_commands.Choice(name="3 - Melbourne University", value="3"),
-        app_commands.Choice(name="5- Melbourne University", value="5"),
-        app_commands.Choice(name="6 - Brunswick tram depot", value="6"),
-        app_commands.Choice(name="11 - West Preston", value="11"),
-        app_commands.Choice(name="12 - Victoria Gardens", value="12"),
-        app_commands.Choice(name="16 - Melbourne University", value="16"),
-        app_commands.Choice(name="19 - North Coburg", value="19"),
-        app_commands.Choice(name="30 - St Vincent's Plaza", value="30"),
-        app_commands.Choice(name="35 - Waterfront City Docklands", value="35"),
-        app_commands.Choice(name="48 - Balwyn North", value="48"),
-        app_commands.Choice(name="57 - West Maribyrnong", value="57"),
-        app_commands.Choice(name="58 - West Coburg", value="58"),
-        app_commands.Choice(name="59 - Airport West", value="59"),
-        app_commands.Choice(name="64 - Melbourne University", value="64"),
-        app_commands.Choice(name="67 - Melbourne University", value="67"),
-        app_commands.Choice(name="70 - Wattle Park, Surrey Hills", value="70"),
-        app_commands.Choice(name="72 - Melbourne University", value="72"),
-        app_commands.Choice(name="75 - Vermont South Shopping Centre", value="75"),
-        app_commands.Choice(name="78 - North Richmond", value="78"),
-        app_commands.Choice(name="82 - Footscray", value="82"),
-        app_commands.Choice(name="86 - Bundoora RMIT", value="86"),
-        app_commands.Choice(name="96 - Brunswick East", value="96"),
-        app_commands.Choice(name="109 - Box Hill Central", value="109")
+        app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
+        app_commands.Choice(name="3 Melbourne University - Malvern East", value="3"),
+        app_commands.Choice(name="5 Melbourne University- Malvern", value="5"),
+        app_commands.Choice(name="6 Brunswick tram depot - Glen Iris", value="6"),
+        app_commands.Choice(name="11 West Preston - Victoria Harbour Docklands", value="11"),
+        app_commands.Choice(name="12 Victoria Gardens - St Kilda", value="12"),
+        app_commands.Choice(name="16 Melbourne University - Kew", value="16"),
+        app_commands.Choice(name="19 North Coburg - Flinders Street station", value="19"),
+        app_commands.Choice(name="30 St Vincent's Plaza - Central Pier Docklands", value="30"),
+        app_commands.Choice(name="35 City Circle", value="35"),
+        app_commands.Choice(name="48 Balwyn North - Victoria Harbour Docklands", value="48"),
+        app_commands.Choice(name="57 West Maribyrnong - Flinders Street station", value="57"),
+        app_commands.Choice(name="58 West Coburg - Toorak", value="58"),
+        app_commands.Choice(name="59 Airport West - Flinders Street station", value="59"),
+        app_commands.Choice(name="64 Melbourne University - Brighton East", value="64"),
+        app_commands.Choice(name="67 Melbourne University - Carnegie", value="67"),
+        app_commands.Choice(name="70 Wattle Park - Waterfront City Docklands", value="70"),
+        app_commands.Choice(name="72 Melbourne University - Camberwell", value="72"),
+        app_commands.Choice(name="75 Vermont South Shopping Centre - Central Pier Docklands", value="75"),
+        app_commands.Choice(name="78 North Richmond - Balaclava", value="78"),
+        app_commands.Choice(name="82 Footscray - Moonee Ponds", value="82"),
+        app_commands.Choice(name="86 Bundoora RMIT - Waterfront City Docklands", value="86"),
+        app_commands.Choice(name="96 Brunswick East - St Kilda Beach", value="96"),
+        app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
 async def logtram(ctx, number: str, route:str, date:str='today', start:str='N/A', end:str='N/A'):
@@ -1385,7 +1385,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 
 # train logger top
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.')
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
 @app_commands.choices(stat=[
     app_commands.Choice(name="Top Lines", value="lines"),
     app_commands.Choice(name="Top Stations", value="stations"),
@@ -1399,11 +1399,21 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="CSV file", value="csv"),
     app_commands.Choice(name="Daily Chart", value="daily"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, ):
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Train", value="train"),
+    app_commands.Choice(name="Tram", value="tram"),
+])
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'train'):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
-        data = topStats(userid.name, statSearch)
+        try:
+            if mode == 'train':
+                data = topStats(userid.name, statSearch)
+            elif mode == 'tram':
+                data = tramTopStats(userid.name, statSearch)     
+        except:
+               await ctx.response.send_message('You have no logged trips!')
         count = 1
         message = ''
         

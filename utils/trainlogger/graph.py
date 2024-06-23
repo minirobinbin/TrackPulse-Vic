@@ -13,6 +13,37 @@ def barChart(file_path, dataType, heading, uname):
             parts = line.strip().split(',')
             labels.append(parts[0])
             values.append(int(parts[1]))
+            
+    label_colors = {
+        'Lilydale': '#01528b',
+        'Belgrave': '#01528b',
+        'Glen Waverley': '#01528b',
+        'Alamein': '#01528b',
+        'Cranbourne': '#00a8e4',
+        'Pakenham': '#00a8e4',
+        'Hurstbridge': '#d1202f',
+        'Mernda': '#d1202f',
+        'Craigieburn': '#fdb917',
+        'Upfield': '#fdb917',
+        'Sunbury': '#fdb917',
+        'Frankston': '#009645',
+        'Stony Point': '#009645',
+        'Werribee': '#009645',
+        'Williamstown': '#009645',
+        'Sandringham': '#f27fb2',
+        'Flemington Racecourse': '#949797',
+        'N/A': '#949797',
+        'Unknown': '#949797',
+        
+        'Albury': '#7f3f98',
+        'Ballarat/Maryborough/Ararat': '#7f3f98',
+        'Bendigo/Echuca/Swan Hill': '#7f3f98',
+        'Geelong/Warrnambool': '#7f3f98',
+        'Seymour/Shepparton': '#7f3f98',
+        'Traralgon/Bairnsdale': '#7f3f98',      
+    }
+    
+    colors = [label_colors.get(label, 'white') for label in labels]
 
     # Create the bar graph
     plt.style.use('dark_background')
@@ -22,7 +53,7 @@ def barChart(file_path, dataType, heading, uname):
     plt.rcParams['ytick.color'] = 'white'
     
     plt.figure(figsize=(10, 6))
-    plt.bar(labels, values)
+    plt.bar(labels, values, color=colors)
     plt.xlabel(dataType)
     plt.title(heading)
     plt.xticks(rotation=45, ha='right')
@@ -43,9 +74,38 @@ def pieChart(file_path, heading, uname):
             parts = line.strip().split(',')
             labels.append(parts[0])
             values.append(int(parts[1]))
+            
+    label_colors = {
+        'Lilydale': '#01528b',
+        'Belgrave': '#01528b',
+        'Glen Waverley': '#01528b',
+        'Alamein': '#01528b',
+        'Cranbourne': '#00a8e4',
+        'Pakenham': '#00a8e4',
+        'Hurstbridge': '#d1202f',
+        'Mernda': '#d1202f',
+        'Craigieburn': '#fdb917',
+        'Upfield': '#fdb917',
+        'Sunbury': '#fdb917',
+        'Frankston': '#009645',
+        'Stony Point': '#009645',
+        'Werribee': '#009645',
+        'Williamstown': '#009645',
+        'Sandringham': '#f27fb2',
+        'Flemington Racecourse': '#949797',
+        'N/A': '#949797',
+        'Unknown': '#949797',
+        
+        'Albury': '#7f3f98',
+        'Ballarat/Maryborough/Ararat': '#7f3f98',
+        'Bendigo/Echuca/Swan Hill': '#7f3f98',
+        'Geelong/Warrnambool': '#7f3f98',
+        'Seymour/Shepparton': '#7f3f98',
+        'Traralgon/Bairnsdale': '#7f3f98',      
+    }
 
     # Define a darker color palette
-    colors = plt.cm.Dark2.colors  
+    colors = [label_colors.get(label, 'white') for label in labels]
     
     plt.style.use('dark_background')
     plt.rcParams['text.color'] = 'white'
