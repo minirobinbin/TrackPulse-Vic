@@ -87,3 +87,35 @@ def trainType(number):
     except Exception as e:
         print(f"Error: {e}")
         
+# trams
+def tramType(number):
+    try:
+        car = int(number)
+    except:
+        return(f"Train type not foudnd for {number}")
+    
+    if car >= 116 and car <= 230:
+        return('Z Class')
+    elif car >= 231 and car <= 300:
+        return('A Class')
+    elif car >= 2003 and car <= 2132:
+        return('B Class')
+    elif car >= 3001 and car <= 3036:
+        return('C Class')
+    elif car >= 3501 and car <= 3538:
+        return('D1 Class')
+    elif car >= 5001 and car <= 5021:
+        return('D2 Class')
+    elif car in [5103, 5106, 5111, 5113, 5123]:
+        return('C2 Class')
+    elif car >= 6001 and car <= 6050:
+        return('E Class')
+    elif car in [856, 888, 925, 928, 946, 957, 959, 961, 981, 983, 1000, 1010]:
+        return('C2 Class')
+    elif car >= 6051 and car <= 6100:
+        return('E2 Class')
+    else:
+        print(f"Train type not found for {number}")
+        return(None)
+    
+print(tramType(300))

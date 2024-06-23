@@ -96,7 +96,7 @@ except FileExistsError:
 class CommandGroups(app_commands.Group):
     ...
 
-trainlogs = CommandGroups(name='train-logs')
+trainlogs = CommandGroups(name='logs')
 games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
@@ -1035,7 +1035,7 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@trainlogs.command(name="add", description="Log a train you have been on")
+@trainlogs.command(name="add-train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
@@ -1147,92 +1147,240 @@ async def deleteLog(ctx, id:str='LAST'):
     asyncio.create_task(deleteLogFunction())
 
     
+  # tram logger goes here
+@trainlogs.command(name="add-tram", description="Log a tram you have been on")
+@app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.autocomplete(start=station_autocompletion)
+@app_commands.autocomplete(end=station_autocompletion)
+@app_commands.choices(route=[
+        app_commands.Choice(name="1 - East Coburg", value="1"),
+        app_commands.Choice(name="3 - Melbourne University", value="3"),
+        app_commands.Choice(name="5- Melbourne University", value="5"),
+        app_commands.Choice(name="6 - Brunswick tram depot", value="6"),
+        app_commands.Choice(name="11 - West Preston", value="11"),
+        app_commands.Choice(name="12 - Victoria Gardens", value="12"),
+        app_commands.Choice(name="16 - Melbourne University", value="16"),
+        app_commands.Choice(name="19 - North Coburg", value="19"),
+        app_commands.Choice(name="30 - St Vincent's Plaza", value="30"),
+        app_commands.Choice(name="35 - Waterfront City Docklands", value="35"),
+        app_commands.Choice(name="48 - Balwyn North", value="48"),
+        app_commands.Choice(name="57 - West Maribyrnong", value="57"),
+        app_commands.Choice(name="58 - West Coburg", value="58"),
+        app_commands.Choice(name="59 - Airport West", value="59"),
+        app_commands.Choice(name="64 - Melbourne University", value="64"),
+        app_commands.Choice(name="67 - Melbourne University", value="67"),
+        app_commands.Choice(name="70 - Wattle Park, Surrey Hills", value="70"),
+        app_commands.Choice(name="72 - Melbourne University", value="72"),
+        app_commands.Choice(name="75 - Vermont South Shopping Centre", value="75"),
+        app_commands.Choice(name="78 - North Richmond", value="78"),
+        app_commands.Choice(name="82 - Footscray", value="82"),
+        app_commands.Choice(name="86 - Bundoora RMIT", value="86"),
+        app_commands.Choice(name="96 - Brunswick East", value="96"),
+        app_commands.Choice(name="109 - Box Hill Central", value="109")
+])
+
+async def logtram(ctx, number: str, route:str, date:str='today', start:str='N/A', end:str='N/A'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the thing")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # checking if train number is valid
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+        type = tramType(number.upper())
+        if type == None:
+            type = 'N/A'
+
+        # Add train to the list
+        id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title())
+        await ctx.response.send_message(f"Added {number} ({type}) on route {route} on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+    
 
 # train logger reader
 
 vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
-@app_commands.describe(user = "Who do you want to see the data of?")
-async def userLogs(ctx, user: discord.User=None):
-    async def sendLogs():
-        if user == None:
-            userid = ctx.user
-        else:
-            userid = user
-        
-        try:
-            file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
-        except FileNotFoundError:
-            if userid == ctx.user:
-                await ctx.response.send_message("You have no trains logged!",ephemeral=True)
-            else:
-                await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
-            return
-        print(userid.name)
-        data = readLogs(userid.name)
-        if data == 'no data':
-            if userid == ctx.user:
-                await ctx.response.send_message("You have no trains logged!",ephemeral=True)
-            else:
-                await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
-            return
-    
-        # create thread
-        logsthread = await ctx.channel.create_thread(
-            name=f'{userid.name}\'s Train Logs',
-            auto_archive_duration=60,
-            type=discord.ChannelType.public_thread
-        )
-        
-        # send reponse message
-        await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
-        await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-        await logsthread.send(f'# {userid.name}\'s Train Logs')
-        formatted_data = ""
-        for sublist in data:
-            if len(sublist) >= 7:  # Ensure the sublist has enough items
-                image = None
-                
-                # thing to find image:
-                hyphen_index = sublist[1].find("-")
-                if hyphen_index != -1:
-                    first_car = sublist[1][:hyphen_index]
-                    print(f'First car: {first_car}')
-                    image = getImage(first_car)
-                    if image == None:
-                        last_hyphen = sublist[1].rfind("-")
-                        if last_hyphen != -1:
-                            last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                            print(f'Last car: {last_car}')
-                            image = getImage(last_car)
-                            if image == None:
-                                image = getImage(sublist[2])
-                                print(f'the loco number is: {sublist[1]}')
-                                
-                #send in thread to reduce spam!
-                thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
-                    # Make the embed
-                if sublist[4] in vLineLines:
-                    embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
-                elif sublist[4] == 'Unknown':
-                    embed = discord.Embed(title=f"Log {sublist[0]}")
-                else:
-                    embed = discord.Embed(title=f"Log {sublist[0]}",colour=lines_dictionary[sublist[4]][1])
-                embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
-                embed.add_field(name=f'Line', value="{}".format(sublist[4]))
-                embed.add_field(name=f'Date', value="{}".format(sublist[3]))
-                embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
-                embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
-                if sublist[4] not in vLineLines:
-                    embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
-                embed.set_thumbnail(url=image)
+@app_commands.describe(user = "Who do you want to see the data of?", mode = 'Train or tram logs?')
+@app_commands.choices(mode=[
+        app_commands.Choice(name="Train", value="train"),
+        app_commands.Choice(name="Tram", value="tram")])
 
-                await logsthread.send(embed=embed)
-                # if count == 6:
-                #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
-                #     return
+async def userLogs(ctx, mode:str='train', user: discord.User=None):
+    async def sendLogs():
+        # for train
+        if mode == 'train':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+                return
         
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s Train Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# {userid.name}\'s Train Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                    
+                    # thing to find image:
+                    hyphen_index = sublist[1].find("-")
+                    if hyphen_index != -1:
+                        first_car = sublist[1][:hyphen_index]
+                        print(f'First car: {first_car}')
+                        image = getImage(first_car)
+                        if image == None:
+                            last_hyphen = sublist[1].rfind("-")
+                            if last_hyphen != -1:
+                                last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                print(f'Last car: {last_car}')
+                                image = getImage(last_car)
+                                if image == None:
+                                    image = getImage(sublist[2])
+                                    print(f'the loco number is: {sublist[1]}')
+                                    
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                        # Make the embed
+                    if sublist[4] in vLineLines:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                    elif sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=lines_dictionary[sublist[4]][1])
+                    embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                    embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                    if sublist[4] not in vLineLines:
+                        embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
+                    embed.set_thumbnail(url=image)
+
+                    await logsthread.send(embed=embed)
+                    # if count == 6:
+                    #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
+                    #     return
+        # for tram:
+        if mode == 'tram':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/tram/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readTramLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+        
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s Tram Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# {userid.name}\'s Tram Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                    
+                    # # thing to find image:
+                    # hyphen_index = sublist[1].find("-")
+                    # if hyphen_index != -1:
+                    #     first_car = sublist[1][:hyphen_index]
+                    #     print(f'First car: {first_car}')
+                    #     image = getImage(first_car)
+                    #     if image == None:
+                    #         last_hyphen = sublist[1].rfind("-")
+                    #         if last_hyphen != -1:
+                    #             last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                    #             print(f'Last car: {last_car}')
+                    #             image = getImage(last_car)
+                    #             if image == None:
+                    #                 image = getImage(sublist[2])
+                    #                 print(f'the loco number is: {sublist[1]}')
+                                    
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                        # Make the embed
+                    if sublist[4] in vLineLines:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                    elif sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x71bf44)
+                    embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                    embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                    # embed.set_thumbnail(url=image)
+
+                    await logsthread.send(embed=embed)
+                    time.sleep(0.5)
     asyncio.create_task(sendLogs())
 
 # train logger top
