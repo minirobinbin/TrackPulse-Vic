@@ -1299,7 +1299,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                     embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                     embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
-                    if sublist[4] not in vLineLines:
+                    if sublist[4] not in vLineLines and sublist[5] != 'N/A' and sublist[6] != 'N/A':
                         embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
                     embed.set_thumbnail(url=image)
 
