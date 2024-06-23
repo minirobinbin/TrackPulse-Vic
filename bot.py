@@ -1237,7 +1237,7 @@ async def userLogs(ctx, user: discord.User=None):
 
 # train logger top
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='send as a csv')
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.')
 @app_commands.choices(stat=[
     app_commands.Choice(name="Top Lines", value="lines"),
     app_commands.Choice(name="Top Stations", value="stations"),
@@ -1249,6 +1249,7 @@ async def userLogs(ctx, user: discord.User=None):
     app_commands.Choice(name="List and Bar chart", value="l&g"),
     app_commands.Choice(name="Pie chart", value="pie"),
     app_commands.Choice(name="CSV file", value="csv"),
+    app_commands.Choice(name="Daily Chart", value="daily"),
 ])
 async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, ):
     async def sendLogs():
@@ -1279,7 +1280,13 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
             
         elif format == 'pie':
             pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            
+        elif format == 'daily':
+            if stat != 'dates':
+                await ctx.response.send_message('Daily chart can only be used with the stat set to Top Dates')
+            dayChart(csv_filename, ctx.user.name)
+            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
 
     await sendLogs()
    

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def barChart(file_path, dataType, heading, uname):
     # Lists to store data from the file
@@ -60,3 +61,31 @@ def pieChart(file_path, heading, uname):
 
     # Save the graph
     plt.savefig(f'temp/Graph{uname}.png')
+    
+def dayChart(csv_file, uname):
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(csv_file, names=['Date', 'Number'])
+
+    # Convert the 'Date' column to datetime format
+    df['Date'] = pd.to_datetime(df['Date'])
+
+    # Set the 'Date' column as the index
+    df.set_index('Date', inplace=True)
+
+    # Create a new DataFrame with a daily frequency and fill missing values with 0
+    daily_df = df.asfreq('D', fill_value=0)
+
+    # Plotting
+    plt.style.use('dark_background')  # Applying dark theme
+    plt.figure(figsize=(10, 6))
+    plt.plot(daily_df.index, daily_df['Number'], color='cyan')  # Adjust color for better visibility
+    plt.xlabel('Date', color='white')  # Adjust label color
+    plt.ylabel('Trips', color='white')  # Adjust label color
+    plt.title(f'Trips per day - {uname}', color='white')  # Adjust title color
+    plt.grid(True, color='gray')  # Adjust grid color
+    plt.xticks(rotation=45, color='white')  # Adjust tick color
+    plt.tight_layout()
+    
+    plt.savefig(f'temp/Graph{uname}.png')
+
+
