@@ -1,4 +1,4 @@
-# melbourne-trains-discord-bot
+# TrackPulse Vic
 [![CodeFactor](https://www.codefactor.io/repository/github/xm9g/trackpulse-vic/badge)](https://www.codefactor.io/repository/github/xm9g/trackpulse-vic)
 
 ## How to use:
