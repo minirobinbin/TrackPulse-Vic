@@ -14,3 +14,4 @@
 
 ## Important
 if you wanna change what channels the bot sends notifications in or change the role you can find them in `bot.py`
+also if there is no folder called `temp` please make one or some features may not work!
