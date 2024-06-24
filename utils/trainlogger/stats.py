@@ -246,7 +246,7 @@ def getTotalTravelDistance(user):
     return distance
 
 def topOperators(user):
-    metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2"]
+    metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'N Class', 'Sprinter']
     
     metro_count = 0

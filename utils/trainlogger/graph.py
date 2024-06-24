@@ -66,7 +66,17 @@ def barChart(file_path, dataType, heading, uname):
         '82': '#bdd739',     
         '86': '#feba12',     
         '96': '#e33686',     
-        '109': '#f58022',        
+        '109': '#f58022',   
+        
+        "X'Trapolis 100": '#008cce', 
+        "HCMT": '#008cce', 
+        "EDI Comeng": '#008cce', 
+        "Alstom Comeng": '#008cce', 
+        "Siemens Nexas": '#008cce', 
+        "X'Trapolis 2.0": '#008cce', 
+        'VLocity': '#7d4295',   
+        'N Class': '#7d4295',   
+        'Sprinter': '#7d4295',      
     }
     
     colors = [label_colors.get(label, 'white') for label in labels]
@@ -157,6 +167,7 @@ def pieChart(file_path, heading, uname):
 
         'Metro': '#008cce',     
         'V/Line': '#7d4295',   
+          
       }
     
     def get_random_color():
