@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import random
 
 def barChart(file_path, dataType, heading, uname):
     # Lists to store data from the file
@@ -40,7 +41,32 @@ def barChart(file_path, dataType, heading, uname):
         'Bendigo/Echuca/Swan Hill': '#7f3f98',
         'Geelong/Warrnambool': '#7f3f98',
         'Seymour/Shepparton': '#7f3f98',
-        'Traralgon/Bairnsdale': '#7f3f98',      
+        'Traralgon/Bairnsdale': '#7f3f98',   
+        
+        '1': '#b6c527',     
+        '3': '#89d1ef',     
+        '5': '#e04138',     
+        '6': '#004c6d',     
+        '11': '#85c5a2',     
+        '12': '#008896',     
+        '16': '#ffda66',     
+        '19': '#8e4b79',     
+        '30': '#4f4a9f',     
+        '35': '#713c1f',     
+        '48': '#434244',     
+        '57': '#33bdca',     
+        '58': '#83898e',     
+        '59': '#4a815a',     
+        '64': '#16ab6f',     
+        '67': '#ac7963',     
+        '70': '#f38bb9',     
+        '72': '#9fb5a5',     
+        '75': '#009fdb',     
+        '78': '#887bb9',     
+        '82': '#bdd739',     
+        '86': '#feba12',     
+        '96': '#e33686',     
+        '109': '#f58022',        
     }
     
     colors = [label_colors.get(label, 'white') for label in labels]
@@ -95,17 +121,49 @@ def pieChart(file_path, heading, uname):
         'Flemington Racecourse': '#949797',
         'N/A': '#949797',
         'Unknown': '#949797',
+        'Other': '#949797',
         
         'Albury': '#7f3f98',
         'Ballarat/Maryborough/Ararat': '#7f3f98',
         'Bendigo/Echuca/Swan Hill': '#7f3f98',
         'Geelong/Warrnambool': '#7f3f98',
         'Seymour/Shepparton': '#7f3f98',
-        'Traralgon/Bairnsdale': '#7f3f98',      
-    }
+        'Traralgon/Bairnsdale': '#7f3f98',     
+        
+        '1': '#b6c527',     
+        '3': '#89d1ef',     
+        '5': '#e04138',     
+        '6': '#004c6d',     
+        '11': '#85c5a2',     
+        '12': '#008896',     
+        '16': '#ffda66',     
+        '19': '#8e4b79',     
+        '30': '#4f4a9f',     
+        '35': '#713c1f',     
+        '48': '#434244',     
+        '57': '#33bdca',     
+        '58': '#83898e',     
+        '59': '#4a815a',     
+        '64': '#16ab6f',     
+        '67': '#ac7963',     
+        '70': '#f38bb9',     
+        '72': '#9fb5a5',     
+        '75': '#009fdb',     
+        '78': '#887bb9',     
+        '82': '#bdd739',     
+        '86': '#feba12',     
+        '96': '#e33686',     
+        '109': '#f58022',     
+
+        'Metro': '#008cce',     
+        'V/Line': '#7d4295',   
+      }
+    
+    def get_random_color():
+        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
     # Define a darker color palette
-    colors = [label_colors.get(label, 'white') for label in labels]
+    colors = [label_colors.get(label, get_random_color()) for label in labels]
     
     plt.style.use('dark_background')
     plt.rcParams['text.color'] = 'white'

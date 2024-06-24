@@ -245,3 +245,33 @@ def getTotalTravelDistance(user):
     
     return distance
 
+def topOperators(user):
+    metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2"]
+    vlineTrains = ['VLocity', 'N Class', 'Sprinter']
+    
+    metro_count = 0
+    vline_count = 0
+    other_count = 0
+    
+    with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            train_type = row[2]
+            if train_type in metroTrains:
+                metro_count += 1
+            elif train_type in vlineTrains:
+                vline_count += 1
+            else:
+                other_count += 1
+                
+    # Write the results to a new CSV file
+    output = f'temp/{user}TopOperators.csv'
+    
+    with open(output, mode='w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Metro', metro_count])
+        writer.writerow(['V/Line', vline_count])
+        writer.writerow(['Other', other_count])
+                
+    return output
+

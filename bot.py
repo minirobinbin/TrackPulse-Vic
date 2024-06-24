@@ -1387,11 +1387,12 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
 @app_commands.choices(stat=[
-    app_commands.Choice(name="Top Lines", value="lines"),
-    app_commands.Choice(name="Top Stations", value="stations"),
-    app_commands.Choice(name="Top Sets", value="sets"),
-    app_commands.Choice(name="Top Dates", value="dates"),
-    app_commands.Choice(name="Top Types", value="types"),
+    app_commands.Choice(name="Lines", value="lines"),
+    app_commands.Choice(name="Stations", value="stations"),
+    app_commands.Choice(name="Sets", value="sets"),
+    app_commands.Choice(name="Dates", value="dates"),
+    app_commands.Choice(name="Types", value="types"),
+    app_commands.Choice(name="Operators", value="operators"),
 ])
 @app_commands.choices(format=[
     app_commands.Choice(name="List and Bar chart", value="l&g"),
@@ -1408,7 +1409,9 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
         statSearch = stat
         userid = user if user else ctx.user
         try:
-            if mode == 'train':
+            if stat == 'operators':
+                data = topOperators(userid.name)
+            elif mode == 'train':
                 data = topStats(userid.name, statSearch)
             elif mode == 'tram':
                 data = tramTopStats(userid.name, statSearch)     
@@ -1417,6 +1420,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
         count = 1
         message = ''
         
+        # top operators thing:
+        if stat == 'operators':
+            pieChart(data, f'Top Operators ― {ctx.user.name}', ctx.user.name)
+            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                    
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{ctx.user.name}-t{time.time()}.csv'
         with open(csv_filename, mode='w', newline='') as csv_file:

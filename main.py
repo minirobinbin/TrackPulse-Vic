@@ -1,4 +1,5 @@
 from utils.search import *
 from utils.pageScraper import *
+from utils.trainlogger.stats import *
 
-runs_api_request("9")
+print(topOperators('xm9g'))
