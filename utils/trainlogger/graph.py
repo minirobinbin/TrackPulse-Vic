@@ -76,7 +76,27 @@ def barChart(file_path, dataType, heading, uname):
         "X'Trapolis 2.0": '#008cce', 
         'VLocity': '#7d4295',   
         'N Class': '#7d4295',   
-        'Sprinter': '#7d4295',      
+        'Sprinter': '#7d4295', 
+        
+        'Blue Mountains Line': '#f99d1c', 
+        'Central Coast & Newcastle Line': '#d11f2f',
+        'Hunter Line': '#833134',
+        'South Coast Line': '#005aa3',
+        'Southern Highlands Line': '#008846',
+        'North Coast Region': '#f6891f',
+        'North Western Region': '#f6891f',
+        'Southern Region': '#f6891f',
+        'Western Region': '#f6891f',
+        'T1': '#f99d1c',
+        'T2': '#0098cd',
+        'T3': '#f37021',
+        'T4': '#005aa3',
+        'T5': '#c4258f',
+        'T6': '#7d3f21',
+        'T7': '#6f818e',
+        'T8': '#00954c',
+        'T9': '#c81e2d',
+
     }
     
     colors = [label_colors.get(label, 'white') for label in labels]

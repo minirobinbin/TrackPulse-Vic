@@ -196,6 +196,29 @@ def readTramLogs(username):
         print(f"File {filename} not found.")
         return []
 
+def readSydneyTrainLogs(username):
+    # Create the filename based on the username
+    filename = f"utils/trainlogger/userdata/sydney-trains/{username}.csv"
+    user_data = []
+
+    try:
+        # Open the CSV file and read the data
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            user_data = list(reader)
+            # data = file.readlines()
+            # print(data)
+            if user_data == []:
+                return 'no data'
+        
+        # Return the data instead of printing it
+        if len(user_data) > 0:
+            return user_data
+        else:
+            return []
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return []
 
 # same as one above but only reads the row you put in   
 def readRow(username, logid):

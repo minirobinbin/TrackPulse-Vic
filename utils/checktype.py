@@ -117,5 +117,3 @@ def tramType(number):
     else:
         print(f"Train type not found for {number}")
         return(None)
-    
-print(tramType(300))

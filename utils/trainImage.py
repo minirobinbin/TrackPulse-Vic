@@ -25,5 +25,3 @@ def getStationImage(station):
         return(url)
 
     return(None)
-
-print(getStationImage('lilydale'))

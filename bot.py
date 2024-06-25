@@ -1334,8 +1334,11 @@ vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Ech
 @trainlogs.command(name="view", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", mode = 'Train or tram logs?')
 @app_commands.choices(mode=[
-        app_commands.Choice(name="Train", value="train"),
-        app_commands.Choice(name="Tram", value="tram")])
+        app_commands.Choice(name="Train VIC", value="train"),
+        app_commands.Choice(name="Tram VIC", value="tram"),
+        app_commands.Choice(name="Train NSW", value="sydney-trains"),
+        app_commands.Choice(name="Tram NSW", value="sydney-trams"),
+])
 
 async def userLogs(ctx, mode:str='train', user: discord.User=None):
     async def sendLogs():
@@ -1372,7 +1375,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
             
             # send reponse message
             await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
-            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
             await logsthread.send(f'# {userid.name}\'s Train Logs')
             formatted_data = ""
             for sublist in data:
@@ -1451,7 +1454,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
             # send reponse message
             await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
             await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-            await logsthread.send(f'# {userid.name}\'s Tram Logs')
+            await logsthread.send(f' #<:tram:1241165701390012476> {userid.name}\'s Tram Logs')
             formatted_data = ""
             for sublist in data:
                 if len(sublist) >= 7:  # Ensure the sublist has enough items
@@ -1491,6 +1494,65 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 
                     await logsthread.send(embed=embed)
                     time.sleep(0.5)
+         
+         
+         # for nsw train:
+        if mode == 'sydney-trains':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/sydney-trains/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readSydneyTrainLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trains logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
+                return
+        
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s NSW Train Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# <:NSWTrains:1255084911103184906>  {userid.name}\'s NSW Train Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                                       
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                        # Make the embed
+                    if sublist[4] in vLineLines:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                    elif sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf47913)
+                    embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                    embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+
+                    await logsthread.send(embed=embed)
+                    time.sleep(0.5)       
     asyncio.create_task(sendLogs())
 
 # train logger stats
@@ -1511,8 +1573,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Daily Chart", value="daily"),
 ])
 @app_commands.choices(mode=[
-    app_commands.Choice(name="Train", value="train"),
-    app_commands.Choice(name="Tram", value="tram"),
+    app_commands.Choice(name="Train VIC", value="train"),
+    app_commands.Choice(name="Tram VIC", value="tram"),
+    app_commands.Choice(name="Train NSW", value="sydney-trains"),
+    app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
 async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'train'):
     async def sendLogs():
@@ -1524,7 +1588,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
             elif mode == 'train':
                 data = topStats(userid.name, statSearch)
             elif mode == 'tram':
-                data = tramTopStats(userid.name, statSearch)     
+                data = tramTopStats(userid.name, statSearch)   
+            elif mode == 'sydney-trains':
+                data = sydneyTrainTopStats(userid.name, statSearch)    
+            elif mode == 'sydney-trams':
+                data = sydneyTramTopStats(userid.name, statSearch)  
         except:
                await ctx.response.send_message('You have no logged trips!')
         count = 1
