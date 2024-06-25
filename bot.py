@@ -660,7 +660,7 @@ async def departures(ctx, station: str):
 
 
 # Montague Bridge search
-@bot.tree.command(name="days-since-montague-hit", description="See how many days it has been since the Montague Street bridge has been hit.")
+'''@bot.tree.command(name="days-since-montague-hit", description="See how many days it has been since the Montague Street bridge has been hit.")
 async def train_line(ctx):
     await ctx.response.send_message(f"Checking...")
     channel = ctx.channel
@@ -703,7 +703,7 @@ async def train_line(ctx):
     embed.set_image(url=f'https://howmanydayssincemontaguestreetbridgehasbeenhit.com{image}')
     
     embed.set_author(name='howmanydayssincemontaguestreetbridgehasbeenhit.com', url="https://howmanydayssincemontaguestreetbridgehasbeenhit.com")
-    await ctx.channel.send(embed=embed)
+    await ctx.channel.send(embed=embed)'''
     
 # the map thing
 # IMPORTANT: Make this a thread!
@@ -1118,7 +1118,7 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
      app_commands.Choice(name="Victorian Train", value="train"),
     app_commands.Choice(name="Melbourne Tram", value="tram"),
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
-    app_commands.Choice(name="Sydney Light Rail", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
 
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
@@ -1287,6 +1287,8 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="XPT", value="XPT"),
         app_commands.Choice(name="Xplorer", value="Xplorer"),
         
+        app_commands.Choice(name="Metropolis Stock", value="Metropolis Stock"),
+
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
@@ -1324,7 +1326,58 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
                 
     # Run in a separate task
     asyncio.create_task(log())
-    
+
+
+
+@trainlogs.command(name="add-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
+@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.autocomplete(start=NSWstation_autocompletion)
+@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.choices(line=[
+        app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
+        app_commands.Choice(name="L2 Randwick", value="L2"),
+        app_commands.Choice(name="L3 Kingsford Lines", value="L3"),
+])
+@app_commands.choices(type=[
+        app_commands.Choice(name="Urbos 3", value="Urbos 3"),
+        app_commands.Choice(name="Citadis 305", value="Citadis 305"),
+])
+# SYdney tram logger nsw tram
+async def logNSWTram(ctx, type:str, line:str, number: str='N/A', date:str='today', start:str='N/A', end:str='N/A'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the sydney tram")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+
+        # Add train to the list
+        id = addSydneyTram(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+
     
 
 # train logger reader
@@ -1675,7 +1728,7 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> <:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
           
             #other stats stuff:
             eDate =lowestDate(username)
@@ -1685,7 +1738,7 @@ async def profile(ctx, user: discord.User = None):
             embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
                         
         except FileNotFoundError:
-            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> <:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
             
         # Tram Logger
         try:
@@ -1694,10 +1747,35 @@ async def profile(ctx, user: discord.User = None):
             sets = tramTopStats(username, 'sets')
             trains = tramTopStats(username, 'types')
             dates = tramTopStats(username, 'dates')
-            embed.add_field(name='<:tram:1241165701390012476> <:NSWLightRail:1255084906053369856> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:tram:1241165701390012476> <:NSWLightRail:1255084906053369856> Tram Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
+
+ # sydney trains Logger
+        try:
+            lines = sydneyTrainTopStats(username, 'lines')
+            stations = sydneyTrainTopStats(username, 'stations')
+            sets = sydneyTrainTopStats(username, 'sets')
+            trains = sydneyTrainTopStats(username, 'types')
+            dates = sydneyTrainTopStats(username, 'dates')
+            embed.add_field(name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+                                  
+        except FileNotFoundError:
+            embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
+
+# sydney tram Logger
+        try:
+            lines = sydneyTramTopStats(username, 'lines')
+            stations = sydneyTramTopStats(username, 'stations')
+            sets = sydneyTramTopStats(username, 'sets')
+            trains = sydneyTramTopStats(username, 'types')
+            dates = sydneyTramTopStats(username, 'dates')
+            embed.add_field(name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+                                  
+        except FileNotFoundError:
+            embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
+
         
         #games
         stats = fetchUserStats(username)
