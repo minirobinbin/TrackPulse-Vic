@@ -1508,6 +1508,18 @@ async def profile(ctx, user: discord.User = None):
                         
         except FileNotFoundError:
             embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
+            
+        # Tram Logger
+        try:
+            lines = tramTopStats(username, 'lines')
+            stations = tramTopStats(username, 'stations')
+            sets = tramTopStats(username, 'sets')
+            trains = tramTopStats(username, 'types')
+            dates = tramTopStats(username, 'dates')
+            embed.add_field(name=':chart_with_upwards_trend: Tram Log Top Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+                                  
+        except FileNotFoundError:
+            embed.add_field(name="Tram Log Stats", value=f'{username} has no logged trips!')
         
         #games
         stats = fetchUserStats(username)
