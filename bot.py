@@ -1497,7 +1497,7 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-            embed.add_field(name=':chart_with_upwards_trend: Train Log Top Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
           
             #other stats stuff:
             eDate =lowestDate(username)
@@ -1507,7 +1507,7 @@ async def profile(ctx, user: discord.User = None):
             embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
                         
         except FileNotFoundError:
-            embed.add_field(name="Train Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
             
         # Tram Logger
         try:
@@ -1516,10 +1516,10 @@ async def profile(ctx, user: discord.User = None):
             sets = tramTopStats(username, 'sets')
             trains = tramTopStats(username, 'types')
             dates = tramTopStats(username, 'dates')
-            embed.add_field(name=':chart_with_upwards_trend: Tram Log Top Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="Tram Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
         
         #games
         stats = fetchUserStats(username)
