@@ -69,6 +69,12 @@ for line in file:
     stations_list.append(line)
 file.close()
 
+file = open('utils\\nswstations.txt','r')
+NSWstations_list = []
+for line in file:
+    line = line.strip()
+    NSWstations_list.append(line)
+file.close()
 
 
 rareCheckerOn = False
@@ -1107,8 +1113,15 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
 
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
-@app_commands.describe(id = "The ID of the log that you want to delete.")
-async def deleteLog(ctx, id:str='LAST'):
+@app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
+@app_commands.choices(mode=[
+     app_commands.Choice(name="Victorian Train", value="train"),
+    app_commands.Choice(name="Melbourne Tram", value="tram"),
+    app_commands.Choice(name="NSW Train", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trains"),
+
+])
+async def deleteLog(ctx, mode:str, id:str='LAST'):
     
     async def deleteLogFunction():
         if id[0] == '#':
@@ -1126,7 +1139,7 @@ async def deleteLog(ctx, id:str='LAST'):
                         return
                 
             
-        dataToDelete = readRow(ctx.user.name, idformatted)
+        dataToDelete = universalReadRow(ctx.user.name, idformatted, mode)
         if dataToDelete in ['no data at all','no data for user']:
             await ctx.response.send_message(f'You have no logs you can delete!',ephemeral=True)
             return
@@ -1138,7 +1151,7 @@ async def deleteLog(ctx, id:str='LAST'):
                     await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </train-logs view:{cmdid}>.',ephemeral=True)
                     return
         else:
-            idformatted1 = deleteRow(ctx.user.name, idformatted)
+            idformatted1 = deleteRow(ctx.user.name, idformatted, mode)
             if idformatted == 'LAST':
                 await ctx.response.send_message(f'Most recent log (`#{idformatted1}`) deleted. The data was:\n`{dataToDelete}`',ephemeral=True)
             else:
@@ -1215,6 +1228,103 @@ async def logtram(ctx, number: str, route:str, date:str='today', start:str='N/A'
                 
     # Run in a separate task
     asyncio.create_task(log())
+    
+    
+    
+# sydney train logger
+async def NSWstation_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = NSWstations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
+    
+@trainlogs.command(name="add-sydney-train", description="Log a Sydney/NSW train you have been on")
+@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.autocomplete(start=NSWstation_autocompletion)
+@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.choices(line=[
+        app_commands.Choice(name="T1 North Shore & Western Line", value="T1"),
+        app_commands.Choice(name="T2 Inner West & Leppington Line", value="T2"),
+        app_commands.Choice(name="T3 Bankstown Line", value="T3"),
+        app_commands.Choice(name="T4 Eastern Suburbs & Illawarra Line", value="T4"),
+        app_commands.Choice(name="T5 Cumberland Line", value="T5"),
+        app_commands.Choice(name="T6 Lidcombe & Bankstown Line", value="T6"),
+        app_commands.Choice(name="T7 Olympic Park Line", value="T7"),
+        app_commands.Choice(name="T8 Airport & South Line", value="T8"),
+        app_commands.Choice(name="T9 Northern Line", value="T9"),
+        
+        app_commands.Choice(name="Metro North West Line", value="Metro North West Line"),
+
+        app_commands.Choice(name="Blue Mountains Line", value="Blue Mountains Line"),
+        app_commands.Choice(name="Central Coast & Newcastle Line", value="Central Coast & Newcastle Line"),
+        app_commands.Choice(name="Hunter Line", value="Hunter Line"),
+        app_commands.Choice(name="South Coast Line", value="South Coast Line"),
+        app_commands.Choice(name="Southern Highlands Line", value="Southern Highlands Line"),
+
+        app_commands.Choice(name="North Coast Region", value="North Coast Region"),
+        app_commands.Choice(name="North Western Region", value="North Western Region"),
+        app_commands.Choice(name="Southern Region", value="Southern Region"),
+        app_commands.Choice(name="Western Region", value="Western Region"),
+
+        app_commands.Choice(name="Unknown", value="Unknown")
+])
+@app_commands.choices(type=[
+        app_commands.Choice(name="K set", value="K set"),
+        app_commands.Choice(name="T set", value="T set"),
+        app_commands.Choice(name="M set", value="M set"),
+        app_commands.Choice(name="H set", value="H set"),
+        app_commands.Choice(name="A set", value="A set"),
+        app_commands.Choice(name="B set", value="B set"),
+        
+        app_commands.Choice(name="V set", value="V set"),
+        app_commands.Choice(name="D set", value="D set"),
+        app_commands.Choice(name="Endeavour railcar", value="Endeavour railcar"),
+        app_commands.Choice(name="Hunter railcar", value="Hunter railcar"),
+        app_commands.Choice(name="XPT", value="XPT"),
+        app_commands.Choice(name="Xplorer", value="Xplorer"),
+        
+        app_commands.Choice(name="Unknown", value="Unknown"),
+])
+# SYdney train logger nsw train
+async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the nsw sydney train")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+
+        # Add train to the list
+        id = addSydneyTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+    
     
 
 # train logger reader
@@ -1383,7 +1493,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     time.sleep(0.5)
     asyncio.create_task(sendLogs())
 
-# train logger top
+# train logger stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
 @app_commands.choices(stat=[
@@ -1497,7 +1607,7 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> <:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
           
             #other stats stuff:
             eDate =lowestDate(username)
@@ -1507,7 +1617,7 @@ async def profile(ctx, user: discord.User = None):
             embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
                         
         except FileNotFoundError:
-            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> <:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips!')
             
         # Tram Logger
         try:
@@ -1516,10 +1626,10 @@ async def profile(ctx, user: discord.User = None):
             sets = tramTopStats(username, 'sets')
             trains = tramTopStats(username, 'types')
             dates = tramTopStats(username, 'dates')
-            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+            embed.add_field(name='<:tram:1241165701390012476> <:NSWLightRail:1255084906053369856> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
+            embed.add_field(name="<:tram:1241165701390012476> <:NSWLightRail:1255084906053369856> Tram Log Stats", value=f'{username} has no logged trips!')
         
         #games
         stats = fetchUserStats(username)
