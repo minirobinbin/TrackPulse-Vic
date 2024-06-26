@@ -1626,6 +1626,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Daily Chart", value="daily"),
 ])
 @app_commands.choices(mode=[
+    app_commands.Choice(name="All", value="all"),
+    app_commands.Choice(name="All Trains", value="all-trains"),
+    app_commands.Choice(name="All Trams", value="all-trams"),
+
     app_commands.Choice(name="Train VIC", value="train"),
     app_commands.Choice(name="Tram VIC", value="tram"),
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
@@ -1646,6 +1650,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                 data = sydneyTrainTopStats(userid.name, statSearch)    
             elif mode == 'sydney-trams':
                 data = sydneyTramTopStats(userid.name, statSearch)  
+            elif mode == 'all':
+                data = allTopStats(userid.name, statSearch) 
         except:
                await ctx.response.send_message('You have no logged trips!')
         count = 1

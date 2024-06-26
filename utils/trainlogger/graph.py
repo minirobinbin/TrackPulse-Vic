@@ -186,7 +186,32 @@ def pieChart(file_path, heading, uname):
         '109': '#f58022',     
 
         'Metro': '#008cce',     
-        'V/Line': '#7d4295',   
+        'V/Line': '#7d4295', 
+        'Sydney Trains': '#f47a0b',
+        'NSW Trainlink': '#f47a0b',
+        'Yarra Trams': '#72bf44',
+        'Sydney Light Rail': '#ed2438',
+        'Sydney Metro': '#04959e',
+
+                
+        'Blue Mountains Line': '#f99d1c', 
+        'Central Coast & Newcastle Line': '#d11f2f',
+        'Hunter Line': '#833134',
+        'South Coast Line': '#005aa3',
+        'Southern Highlands Line': '#008846',
+        'North Coast Region': '#f6891f',
+        'North Western Region': '#f6891f',
+        'Southern Region': '#f6891f',
+        'Western Region': '#f6891f',
+        'T1': '#f99d1c',
+        'T2': '#0098cd',
+        'T3': '#f37021',
+        'T4': '#005aa3',
+        'T5': '#c4258f',
+        'T6': '#7d3f21',
+        'T7': '#6f818e',
+        'T8': '#00954c',
+        'T9': '#c81e2d',
           
       }
     

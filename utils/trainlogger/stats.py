@@ -3,6 +3,8 @@ from collections import Counter
 from datetime import datetime
 from io import StringIO
 from utils.trainlogger.stationDistance import *
+from collections import Counter
+import os
 
 def topStats(user, stat):
     with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
@@ -256,8 +258,73 @@ def sydneyTramTopStats(user, stat):
         print(results)
         return results
 
-        
-    
+
+def allTopStats(user, stat):
+    file_pathsChecker = [
+        f'utils/trainlogger/userdata/{user}.csv',
+        f'utils/trainlogger/userdata/tram/{user}.csv',
+        f'utils/trainlogger/userdata/sydney-trains/{user}.csv',
+        f'utils/trainlogger/userdata/sydney-trams/{user}.csv'
+    ]
+    file_paths = [path for path in file_pathsChecker if os.path.exists(path)]
+
+    # Counters to keep track of line and station frequencies
+    line_counter = Counter()
+    station_counter = Counter()
+    set_counter = Counter()
+    date_counter = Counter()
+    type_counter = Counter()
+
+    # Process each file in the list
+    for file_path in file_paths:
+        if file_path.endswith('.csv'):
+            with open(file_path, newline='') as csvfile:
+                reader = csv.reader(csvfile)
+
+                # Process each row in the CSV
+                for row in reader:
+                    # Row format: LogID, TrainID, TrainType, Date, Line, Start, End
+                    line = row[4]
+                    start_station = row[5]
+                    end_station = row[6]
+                    set = row[1]
+                    type = row[2]
+                    date = row[3]
+                    # Update counters
+                    line_counter.update([line])
+                    station_counter.update([start_station, end_station])
+                    set_counter.update([set])
+                    type_counter.update([type])
+                    date_counter.update([date])
+
+    # Get the most common entries
+    most_common_lines = line_counter.most_common(100000)
+    most_common_stations = station_counter.most_common(100000)
+    most_common_sets = set_counter.most_common(100000)
+    most_common_types = type_counter.most_common(100000)
+    most_common_dates = date_counter.most_common(100000)
+
+    # Prepare the results as a list
+    results = []
+
+    # Append the most common entries to the results list based on the specified stat
+    if stat == "lines":
+        for line, count in most_common_lines:
+            results.append(f"{line}: {count} times")
+    elif stat == "stations":
+        for station, count in most_common_stations:
+            results.append(f"{station}: {count} times")
+    elif stat == "sets":
+        for set, count in most_common_sets:
+            results.append(f"{set}: {count} times")
+    elif stat == "types":
+        for type, count in most_common_types:
+            results.append(f"{type}: {count} times")
+    elif stat == "dates":
+        for date, count in most_common_dates:
+            results.append(f"{date}: {count} times")
+    print(results)
+    return results 
 
 def stationPercent(user):
     file = f'utils/trainlogger/userdata/{user}.csv'
@@ -377,21 +444,65 @@ def topOperators(user):
     metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'N Class', 'Sprinter']
     
+    sydneyTrainsLines = ['T1', 'T2', 'T3', "T4", 'T5', "T6", 'T7', 'T8', 'T9']
+    nswTrainsLines = ['Blue Mountains Line', 'Central Coast & Newcastle Line', 'Hunter Line', "South Coast Line", 'Southern Highlands Line', "North Coast Region", 'North Western Region', 'Southern Region', 'Western Region']
+    sydneyMetroLines = ['Metro North West Line',]
+    
     metro_count = 0
     vline_count = 0
+    yarra_trams_count=0
+    sydney_trams_count=0
+
+    sydney_trains_count=0
+    nsw_trainlink_count=0
+    sydney_metro_count=0
     other_count = 0
+    try:
+        with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                train_type = row[2]
+                if train_type in metroTrains:
+                    metro_count += 1
+                elif train_type in vlineTrains:
+                    vline_count += 1
+                else:
+                    other_count += 1
+    except:
+        pass
     
-    with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            train_type = row[2]
-            if train_type in metroTrains:
-                metro_count += 1
-            elif train_type in vlineTrains:
-                vline_count += 1
-            else:
-                other_count += 1
-                
+    # sydney trains
+    try:
+        with open(f'utils/trainlogger/userdata/sydney-trains/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                line = row[4]
+                if line in sydneyTrainsLines:
+                    sydney_trains_count +=1
+                elif line in nswTrainsLines:
+                    nsw_trainlink_count +=1
+                elif line in sydneyMetroLines:
+                    sydney_metro_count +=1
+    except:
+        pass
+    
+     # sydney tram
+    try:
+        with open(f'utils/trainlogger/userdata/sydney-trams/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                sydney_trams_count +=1
+    except:
+        pass    
+    
+    # melbourne tram
+    try:
+        with open(f'utils/trainlogger/userdata/tram/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                yarra_trams_count +=1
+    except:
+        pass   
     # Write the results to a new CSV file
     output = f'temp/{user}TopOperators.csv'
     
@@ -399,6 +510,11 @@ def topOperators(user):
         writer = csv.writer(csvfile)
         writer.writerow(['Metro', metro_count])
         writer.writerow(['V/Line', vline_count])
+        writer.writerow(['Sydney Trains', sydney_trains_count])
+        writer.writerow(['NSW Trainlink', nsw_trainlink_count])
+        writer.writerow(['Sydney Metro', sydney_metro_count])
+        writer.writerow(['Yarra Trams', yarra_trams_count])
+        writer.writerow(['Sydney Light Rail', sydney_trams_count])
         writer.writerow(['Other', other_count])
                 
     return output
