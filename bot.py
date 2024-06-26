@@ -54,6 +54,7 @@ from utils.unixtime import *
 from utils.pastTime import *
 from utils.routeName import *
 from utils.trainlogger.graph import *
+import zipfile
 
 
 
@@ -1110,7 +1111,30 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
     asyncio.create_task(log())
     
 
+# export command
 
+# NOT WORKING FIX SOON!
+'''@trainlogs.command(name='export', description='Export all your saved logs')
+async def export(ctx):
+    def create_zip_file(file_paths, output_filename):
+        with zipfile.ZipFile(output_filename, 'w') as zipf:
+            for file_path in file_paths:
+                if os.path.isfile(file_path):
+                    zipf.write(file_path, os.path.basename(file_path))
+                else:
+                    print(f"Warning: File not found - {file_path}")
+    file_paths = [
+        f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+        f'utils/trainlogger/userdata/tram/{ctx.user.name}.csv'
+        f'utils/trainlogger/userdata/sydney-trains/{ctx.user.name}.csv'
+        f'utils/trainlogger/userdata/sydney-trams/{ctx.user.name}.csv'
+    ]
+    output_filename = f'temp/export-{ctx.user.name}.zip'
+    create_zip_file(file_paths, output_filename)
+
+    zipper = discord.File(f'temp/export-{ctx.user.name}.zip')
+    ctx.response.send_message('Here are your files:', file=file, ephemeral=True)'''
+    
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
