@@ -8,8 +8,10 @@ def trainType(number):
                 car = int(car)
             except:
                 return(f"Train type not found for {number}")
-            
-            if car >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
+            # steamrail tait
+            if car == 317 or car == 327 or car == 381 or car == 470:
+                return "Tait"
+            elif car >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
                 return "HCMT"
             elif car >= 561 and car <= 680:
                 return "Alstom Comeng"
@@ -32,7 +34,10 @@ def trainType(number):
                 car = int(car)
             except:
                 return(f"Train type not found for {number}")
-            if car >= 1131 and car <= 1190:
+            # steamrail tait
+            if car == 208 or car == 341:
+                return "Tait"
+            elif car >= 1131 and car <= 1190:
                 return "Alstom Comeng"
             elif car >= 1001 and car <= 1084:
                 return "EDI Comeng"
@@ -78,8 +83,6 @@ def trainType(number):
             return "VLocity"
         elif (7001 <= int(car) <= 7022):
             return "Sprinter"
-
-
         
         else:
             return(f"Train type not found for {number}")

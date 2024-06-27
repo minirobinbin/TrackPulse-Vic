@@ -709,6 +709,12 @@ def setNumber(input_str):
         "T395",
         "Y164",
         "B72",
+        '317M',
+        '327M',
+        '381M',
+        '470M',
+        '208T',
+        '341T',
         ]
     
     for set_str in all_sets:
