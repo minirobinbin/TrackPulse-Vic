@@ -1659,7 +1659,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
     app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'train'):
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'all'):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
