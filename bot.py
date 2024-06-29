@@ -1481,9 +1481,12 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     if sublist[4] in vLineLines:
                         embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
                     elif sublist[4] == 'Unknown':
-                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                            embed = discord.Embed(title=f"Log {sublist[0]}")
                     else:
-                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=lines_dictionary[sublist[4]][1])
+                        try:
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=lines_dictionary[sublist[4]][1])
+                        except:
+                            embed = discord.Embed(title=f"Log {sublist[0]}")
                     embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
                     embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                     embed.add_field(name=f'Date', value="{}".format(sublist[3]))
@@ -1491,8 +1494,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                     if sublist[4] not in vLineLines and sublist[5] != 'N/A' and sublist[6] != 'N/A':
                         embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
-                    embed.set_thumbnail(url=image)
-
+                    try:
+                        embed.set_thumbnail(url=image)
+                    except:
+                        pass
+                    
                     await logsthread.send(embed=embed)
                     # if count == 6:
                     #     await ctx.channel.send('Max of 5 logs can be sent at a time. Use the csv option to see all logs')
