@@ -1657,8 +1657,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 ])
 @app_commands.choices(mode=[
     app_commands.Choice(name="All", value="all"),
-    app_commands.Choice(name="All Trains", value="all-trains"),
-    app_commands.Choice(name="All Trams", value="all-trams"),
+    # app_commands.Choice(name="All Trains", value="all-trains"),
+    # app_commands.Choice(name="All Trams", value="all-trams"),
 
     app_commands.Choice(name="Train VIC", value="train"),
     app_commands.Choice(name="Tram VIC", value="tram"),
