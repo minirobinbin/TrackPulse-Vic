@@ -1704,12 +1704,17 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
             await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
             
         elif format == 'l&g':
+            await ctx.response.send_message('Here are your stats:')
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
                 count += 1
+                if len(message) > 1900:
+                    await ctx.channel.send(message)
+                    message = ''
+                    
             barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             
         elif format == 'pie':
             pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
