@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+
 import random
 label_colors = {
     'Lilydale': '#01528b',
@@ -158,6 +160,9 @@ def barChart(file_path, dataType, heading, uname):
     plt.xlabel(dataType)
     plt.title(heading)
     plt.xticks(rotation=45, ha='right')
+      # only whole numbers
+    max_value = max(values)
+    plt.yticks(np.arange(0, max_value + 1, step=2))
     plt.tight_layout()
 
     # sabe  graph
