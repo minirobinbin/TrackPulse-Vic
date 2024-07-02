@@ -1084,6 +1084,9 @@ async def station_autocompletion(
         app_commands.Choice(name="N Class", value="N Class"),
         app_commands.Choice(name="Sprinter", value="Sprinter"),
         app_commands.Choice(name="Other", value="Other"),
+        app_commands.Choice(name="Tait", value="Tait"),
+        app_commands.Choice(name="K Class", value="K Class"),
+        app_commands.Choice(name="Y Class", value="Y Class"),
 ])
 
 # Train logger
