@@ -1074,7 +1074,7 @@ async def station_autocompletion(
 ])
 
 # Train logger
-async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1096,11 +1096,15 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
                 return
 
         # checking if train number is valid
-        set = setNumber(number.upper())
-        if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
-            return
-        type = trainType(number.upper())
+        if number != 'Unknown':
+            set = setNumber(number.upper())
+            if set == None:
+                await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+                return
+            type = trainType(number.upper())
+        else:
+            set = 'Unknown'
+            type = 'Unknown'
 
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
@@ -1216,7 +1220,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, number: str, route:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
