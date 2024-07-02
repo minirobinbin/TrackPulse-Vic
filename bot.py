@@ -20,7 +20,6 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
-from flask import app
 import requests
 import re
 import asyncio
