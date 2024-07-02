@@ -1694,11 +1694,13 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
         
         # top operators thing:
         if stat == 'operators':
-            pieChart(data, f'Top Operators ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-                    
+            try:
+                pieChart(data, f'Top Operators ― {userid}', ctx.user.name)
+                await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.response.send_message('User has no logs!')  
         # make temp csv
-        csv_filename = f'temp/top{stat.title()}.{ctx.user.name}-t{time.time()}.csv'
+        csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
         with open(csv_filename, mode='w', newline='') as csv_file:
             writer = csv.writer(csv_file)  # Use csv.writer on csv_file, not csvs
             for item in data:
@@ -1706,7 +1708,10 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                 writer.writerow([station, times.split()[0]])
         
         if format == 'csv':
-            await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+            try:
+                await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+            except:
+                ctx.response.send_message('You have no logs!')
             
         elif format == 'l&g':
             await ctx.response.send_message('Here are your stats:')
@@ -1717,20 +1722,25 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                 if len(message) > 1900:
                     await ctx.channel.send(message)
                     message = ''
-                    
-            barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            
+            try:
+                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {userid}', ctx.user.name)
+                await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.channel.send('User has no logs!')
         elif format == 'pie':
-            pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            
+            try:
+                pieChart(csv_filename, f'Top {stat.title()} ― {userid}', ctx.user.name)
+                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.response.send_message('You have no logs!')
         elif format == 'daily':
             if stat != 'dates':
                 await ctx.response.send_message('Daily chart can only be used with the stat set to Top Dates')
-            dayChart(csv_filename, ctx.user.name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-
+            try:
+                dayChart(csv_filename, ctx.user.name)
+                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                ctx.response.send_message('User has no logs!')
     await sendLogs()
    
    
