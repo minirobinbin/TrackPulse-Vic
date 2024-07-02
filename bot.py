@@ -1079,7 +1079,7 @@ async def station_autocompletion(
         app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
         app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
         app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-        app_commands.Choice(name="VLocity", value="Vlocity"),
+        app_commands.Choice(name="VLocity", value="VLocity"),
         app_commands.Choice(name="N Class", value="N Class"),
         app_commands.Choice(name="Sprinter", value="Sprinter"),
         app_commands.Choice(name="Other", value="Other"),
@@ -1382,14 +1382,14 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
-        app_commands.Choice(name="L3 Kingsford Lines", value="L3"),
+        app_commands.Choice(name="L3 Kingsford Line", value="L3"),
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="Urbos 3", value="Urbos 3"),
         app_commands.Choice(name="Citadis 305", value="Citadis 305"),
 ])
 # SYdney tram logger nsw tram
-async def logNSWTram(ctx, type:str, line:str, number: str='N/A', date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1425,6 +1425,62 @@ async def logNSWTram(ctx, type:str, line:str, number: str='N/A', date:str='today
     asyncio.create_task(log())
 
     
+ # Perth Train logger
+# NOT FINISHED   
+'''@trainlogs.command(name="add-perth-train", description="Log a Transperth Train you have been on")
+@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.autocomplete(start=NSWstation_autocompletion)
+@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.choices(line=[
+        app_commands.Choice(name="Fremantle line", value="Fremantle line"),
+        app_commands.Choice(name="Midland line", value="Midland line"),
+        app_commands.Choice(name="Armadale line", value="Armadale line"),
+        app_commands.Choice(name="Joondalup line", value="Joondalup line"),
+        app_commands.Choice(name="Thornlie line", value="Thornlie line"),
+        app_commands.Choice(name="Mandurah line", value="Mandurah line"),
+        app_commands.Choice(name="Airport line", value="Airport line"),
+        app_commands.Choice(name="Morley–Ellenbrook line", value="Morley–Ellenbrook line"),
+])
+@app_commands.choices(type=[
+        app_commands.Choice(name="A-series", value="A-series"),
+        app_commands.Choice(name="B-series", value="B-series"),
+        app_commands.Choice(name="C-series", value="C-series"),
+])
+
+async def logPerth(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the perth train")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+
+        # Add train to the list
+        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())'''
 
 # train logger reader
 
@@ -1691,6 +1747,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
+        
+        if userid.name == 'comeng_17':
+            name = 'comeng17'
+        else:
+            name = userid
         try:
             if stat == 'operators':
                 data = topOperators(userid.name)
@@ -1712,7 +1773,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
         # top operators thing:
         if stat == 'operators':
             try:
-                pieChart(data, f'Top Operators ― {userid}', ctx.user.name)
+                pieChart(data, f'Top Operators ― {name}', ctx.user.name)
                 await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('User has no logs!')  
@@ -1740,13 +1801,13 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                     await ctx.channel.send(message)
                     message = ''
             try:
-                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {userid}', ctx.user.name)
+                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name}', ctx.user.name)
                 await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.channel.send('User has no logs!')
         elif format == 'pie':
             try:
-                pieChart(csv_filename, f'Top {stat.title()} ― {userid}', ctx.user.name)
+                pieChart(csv_filename, f'Top {stat.title()} ― {name}', ctx.user.name)
                 await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('You have no logs!')
