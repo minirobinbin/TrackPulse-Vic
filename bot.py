@@ -1079,7 +1079,7 @@ async def station_autocompletion(
         app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
         app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
         app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-        app_commands.Choice(name="VLocity", value="Vlocity"),
+        app_commands.Choice(name="VLocity", value="VLocity"),
         app_commands.Choice(name="N Class", value="N Class"),
         app_commands.Choice(name="Sprinter", value="Sprinter"),
         app_commands.Choice(name="Other", value="Other"),
