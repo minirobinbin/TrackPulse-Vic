@@ -20,6 +20,7 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
+from flask import app
 import requests
 import re
 import asyncio
@@ -1044,7 +1045,7 @@ async def station_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
 @trainlogs.command(name="add-train", description="Log a train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(line=[
@@ -1073,9 +1074,20 @@ async def station_autocompletion(
         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
         app_commands.Choice(name="Unknown", value="Unknown")
 ])
+@app_commands.choices(traintype=[
+        app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+        app_commands.Choice(name="HCMT", value="HCMT"),
+        app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
+        app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+        app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+        app_commands.Choice(name="VLocity", value="Vlocity"),
+        app_commands.Choice(name="N Class", value="N Class"),
+        app_commands.Choice(name="Sprinter", value="Sprinter"),
+        app_commands.Choice(name="Other", value="Other"),
+])
 
 # Train logger
-async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1106,6 +1118,9 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
         else:
             set = 'Unknown'
             type = 'Unknown'
+            if traintype == 'auto':
+                type = 'Unknown'
+            else: type = traintype
 
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
