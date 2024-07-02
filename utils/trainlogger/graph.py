@@ -74,6 +74,7 @@ label_colors = {
     'Yarra Trams': '#72bf44',
     'Sydney Light Rail': '#ed2438',
     'Sydney Metro': '#04959e',
+    'Heritage': '#b30303',
 
             
     'Blue Mountains Line': '#f99d1c', 

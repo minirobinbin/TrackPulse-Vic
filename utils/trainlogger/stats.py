@@ -443,6 +443,7 @@ def getTotalTravelDistance(user):
 def topOperators(user):
     metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'N Class', 'Sprinter']
+    heritage = ['Tait', 'K Class',]
     
     sydneyTrainsLines = ['T1', 'T2', 'T3', "T4", 'T5', "T6", 'T7', 'T8', 'T9']
     nswTrainsLines = ['Blue Mountains Line', 'Central Coast & Newcastle Line', 'Hunter Line', "South Coast Line", 'Southern Highlands Line', "North Coast Region", 'North Western Region', 'Southern Region', 'Western Region']
@@ -452,6 +453,7 @@ def topOperators(user):
     vline_count = 0
     yarra_trams_count=0
     sydney_trams_count=0
+    heritage_count=0
 
     sydney_trains_count=0
     nsw_trainlink_count=0
@@ -466,6 +468,8 @@ def topOperators(user):
                     metro_count += 1
                 elif train_type in vlineTrains:
                     vline_count += 1
+                elif train_type in heritage:
+                    heritage_count+=1
                 else:
                     other_count += 1
     except:
@@ -515,6 +519,7 @@ def topOperators(user):
         writer.writerow(['Sydney Metro', sydney_metro_count])
         writer.writerow(['Yarra Trams', yarra_trams_count])
         writer.writerow(['Sydney Light Rail', sydney_trams_count])
+        writer.writerow(['Heritage', heritage_count])
         writer.writerow(['Other', other_count])
                 
     return output
