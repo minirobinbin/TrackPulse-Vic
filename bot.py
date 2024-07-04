@@ -35,6 +35,7 @@ import typing
 import enum
 from re import A
 from io import StringIO
+import numpy as np
 
 from utils.search import *
 from utils.colors import *
@@ -1043,7 +1044,7 @@ async def station_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
 @trainlogs.command(name="add-train", description="Log a train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(line=[
@@ -1072,9 +1073,23 @@ async def station_autocompletion(
         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
         app_commands.Choice(name="Unknown", value="Unknown")
 ])
+@app_commands.choices(traintype=[
+        app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+        app_commands.Choice(name="HCMT", value="HCMT"),
+        app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
+        app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+        app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+        app_commands.Choice(name="VLocity", value="VLocity"),
+        app_commands.Choice(name="N Class", value="N Class"),
+        app_commands.Choice(name="Sprinter", value="Sprinter"),
+        app_commands.Choice(name="Other", value="Other"),
+        app_commands.Choice(name="Tait", value="Tait"),
+        app_commands.Choice(name="K Class", value="K Class"),
+        app_commands.Choice(name="Y Class", value="Y Class"),
+])
 
 # Train logger
-async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1096,11 +1111,18 @@ async def logtrain(ctx, number: str, line:str, date:str='today', start:str='N/A'
                 return
 
         # checking if train number is valid
-        set = setNumber(number.upper())
-        if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
-            return
-        type = trainType(number.upper())
+        if number != 'Unknown':
+            set = setNumber(number.upper())
+            if set == None:
+                await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+                return
+            type = trainType(number.upper())
+        else:
+            set = 'Unknown'
+            type = 'Unknown'
+            if traintype == 'auto':
+                type = 'Unknown'
+            else: type = traintype
 
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
@@ -1216,7 +1238,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, number: str, route:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1360,14 +1382,14 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
-        app_commands.Choice(name="L3 Kingsford Lines", value="L3"),
+        app_commands.Choice(name="L3 Kingsford Line", value="L3"),
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="Urbos 3", value="Urbos 3"),
         app_commands.Choice(name="Citadis 305", value="Citadis 305"),
 ])
 # SYdney tram logger nsw tram
-async def logNSWTram(ctx, type:str, line:str, number: str='N/A', date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1403,6 +1425,62 @@ async def logNSWTram(ctx, type:str, line:str, number: str='N/A', date:str='today
     asyncio.create_task(log())
 
     
+ # Perth Train logger
+# NOT FINISHED   
+'''@trainlogs.command(name="add-perth-train", description="Log a Transperth Train you have been on")
+@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.autocomplete(start=NSWstation_autocompletion)
+@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.choices(line=[
+        app_commands.Choice(name="Fremantle line", value="Fremantle line"),
+        app_commands.Choice(name="Midland line", value="Midland line"),
+        app_commands.Choice(name="Armadale line", value="Armadale line"),
+        app_commands.Choice(name="Joondalup line", value="Joondalup line"),
+        app_commands.Choice(name="Thornlie line", value="Thornlie line"),
+        app_commands.Choice(name="Mandurah line", value="Mandurah line"),
+        app_commands.Choice(name="Airport line", value="Airport line"),
+        app_commands.Choice(name="Morley–Ellenbrook line", value="Morley–Ellenbrook line"),
+])
+@app_commands.choices(type=[
+        app_commands.Choice(name="A-series", value="A-series"),
+        app_commands.Choice(name="B-series", value="B-series"),
+        app_commands.Choice(name="C-series", value="C-series"),
+])
+
+async def logPerth(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the perth train")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+
+        # Add train to the list
+        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())'''
 
 # train logger reader
 
@@ -1657,8 +1735,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 ])
 @app_commands.choices(mode=[
     app_commands.Choice(name="All", value="all"),
-    app_commands.Choice(name="All Trains", value="all-trains"),
-    app_commands.Choice(name="All Trams", value="all-trams"),
+    # app_commands.Choice(name="All Trains", value="all-trains"),
+    # app_commands.Choice(name="All Trams", value="all-trams"),
 
     app_commands.Choice(name="Train VIC", value="train"),
     app_commands.Choice(name="Tram VIC", value="tram"),
@@ -1669,34 +1747,38 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
-        if global_stats:
-            data = globalTopStats(statSearch)
+        
+        if userid.name == 'comeng_17':
+            name = 'comeng17'
         else:
-            try:
-                if stat == 'operators':
-                    data = topOperators(userid.name)
-                elif mode == 'train':
-                    data = topStats(userid.name, statSearch)
-                elif mode == 'tram':
-                    data = tramTopStats(userid.name, statSearch)   
-                elif mode == 'sydney-trains':
-                    data = sydneyTrainTopStats(userid.name, statSearch)    
-                elif mode == 'sydney-trams':
-                    data = sydneyTramTopStats(userid.name, statSearch)  
-                elif mode == 'all':
-                    data = allTopStats(userid.name, statSearch) 
-            except:
-                await ctx.response.send_message('You have no logged trips!')
+            name = userid
+        try:
+            if stat == 'operators':
+                data = topOperators(userid.name)
+            elif mode == 'train':
+                data = topStats(userid.name, statSearch)
+            elif mode == 'tram':
+                data = tramTopStats(userid.name, statSearch)   
+            elif mode == 'sydney-trains':
+                data = sydneyTrainTopStats(userid.name, statSearch)    
+            elif mode == 'sydney-trams':
+                data = sydneyTramTopStats(userid.name, statSearch)  
+            elif mode == 'all':
+                data = allTopStats(userid.name, statSearch) 
+        except:
+               await ctx.response.send_message('You have no logged trips!')
         count = 1
         message = ''
         
         # top operators thing:
         if stat == 'operators':
-            pieChart(data, f'Top Operators ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-                    
+            try:
+                pieChart(data, f'Top Operators ― {name}', ctx.user.name)
+                await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.response.send_message('User has no logs!')  
         # make temp csv
-        csv_filename = f'temp/top{stat.title()}.{ctx.user.name}-t{time.time()}.csv'
+        csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
         with open(csv_filename, mode='w', newline='') as csv_file:
             writer = csv.writer(csv_file)  # Use csv.writer on csv_file, not csvs
             for item in data:
@@ -1704,32 +1786,42 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 writer.writerow([station, times.split()[0]])
         
         if format == 'csv':
-            await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+            try:
+                await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+            except:
+                ctx.response.send_message('You have no logs!')
             
         elif format == 'l&g':
+            await ctx.response.send_message('Here are your stats:')
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
                 count += 1
-            if globalTopStats:
+                if len(message) > 1900:
+                    await ctx.channel.send(message)
+                    message = ''
+            try:
+                if globalTopStats:
                  barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
             else:
-                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            
+                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name}', ctx.user.name)
+                await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.channel.send('User has no logs!')
         elif format == 'pie':
-            if globalTopStats:
-                pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
-            else:
-                pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            
+            try:
+                pieChart(csv_filename, f'Top {stat.title()} ― {name}', ctx.user.name)
+                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                await ctx.response.send_message('You have no logs!')
         elif format == 'daily':
             if stat != 'dates':
                 await ctx.response.send_message('Daily chart can only be used with the stat set to Top Dates')
-            dayChart(csv_filename, ctx.user.name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-
+            try:
+                dayChart(csv_filename, ctx.user.name)
+                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except:
+                ctx.response.send_message('User has no logs!')
     await sendLogs()
    
    
