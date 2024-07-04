@@ -437,8 +437,11 @@ def linePercent(user):
     percent = round((total / numberOfLines) * 100, 2)
     return f'{percent}%'
 
-def lowestDate(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
+def lowestDate(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'
     # Initialize an empty list to store the dates
     dates = []
 
@@ -460,9 +463,11 @@ def lowestDate(user):
 
     return lowest_date
 
-def highestDate(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
-    # Initialize an empty list to store the dates
+def highestDate(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'    # Initialize an empty list to store the dates
     dates = []
 
     # Read the CSV file
@@ -483,8 +488,11 @@ def highestDate(user):
 
     return highest_date
 
-def logAmounts(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
+def logAmounts(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'    
     with open(filename, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         line_count = sum(1 for row in csv_reader)
