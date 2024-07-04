@@ -1320,11 +1320,10 @@ async def NSWstation_autocompletion(
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="K set", value="K set"),
-        app_commands.Choice(name="T set", value="T set"),
-        app_commands.Choice(name="M set", value="M set"),
-        app_commands.Choice(name="H set", value="H set"),
-        app_commands.Choice(name="A set", value="A set"),
-        app_commands.Choice(name="B set", value="B set"),
+        app_commands.Choice(name="Tangara - T Set", value="Tangara"),
+        app_commands.Choice(name="Millennium - M Set", value="Millennium"),
+        app_commands.Choice(name="OSCAR - H set", value="OSCAR"),
+        app_commands.Choice(name="Waratah - A & B sets", value="Waratah"),
         
         app_commands.Choice(name="V set", value="V set"),
         app_commands.Choice(name="D set", value="D set"),

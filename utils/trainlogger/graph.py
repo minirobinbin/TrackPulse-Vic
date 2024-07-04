@@ -107,6 +107,7 @@ label_colors = {
     "HCMT": '#008cce',
     "X'Trapolis 2.0": '#008cce',
     'Tait': '#b30303',
+    'K Class': '#b30303',
 
     "N Class": '#7d4296',
     "VLocity": '#7d4296',
