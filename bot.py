@@ -1665,25 +1665,28 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
     app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'all'):
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all'):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
-        try:
-            if stat == 'operators':
-                data = topOperators(userid.name)
-            elif mode == 'train':
-                data = topStats(userid.name, statSearch)
-            elif mode == 'tram':
-                data = tramTopStats(userid.name, statSearch)   
-            elif mode == 'sydney-trains':
-                data = sydneyTrainTopStats(userid.name, statSearch)    
-            elif mode == 'sydney-trams':
-                data = sydneyTramTopStats(userid.name, statSearch)  
-            elif mode == 'all':
-                data = allTopStats(userid.name, statSearch) 
-        except:
-               await ctx.response.send_message('You have no logged trips!')
+        if global_stats:
+            data = globalTopStats(statSearch)
+        else:
+            try:
+                if stat == 'operators':
+                    data = topOperators(userid.name)
+                elif mode == 'train':
+                    data = topStats(userid.name, statSearch)
+                elif mode == 'tram':
+                    data = tramTopStats(userid.name, statSearch)   
+                elif mode == 'sydney-trains':
+                    data = sydneyTrainTopStats(userid.name, statSearch)    
+                elif mode == 'sydney-trams':
+                    data = sydneyTramTopStats(userid.name, statSearch)  
+                elif mode == 'all':
+                    data = allTopStats(userid.name, statSearch) 
+            except:
+                await ctx.response.send_message('You have no logged trips!')
         count = 1
         message = ''
         
@@ -1708,11 +1711,17 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
                 count += 1
-            barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
+            if globalTopStats:
+                 barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
+            else:
+                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
             await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             
         elif format == 'pie':
-            pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
+            if globalTopStats:
+                pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
+            else:
+                pieChart(csv_filename, f'Top {stat.title()} ― {ctx.user.name}', ctx.user.name)
             await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             
         elif format == 'daily':
