@@ -126,7 +126,7 @@ label_colors = {
     "Hunter railcar": '#f47913',
     "XPT": '#f47913',
     "Xplorer": '#f47913',
-    "Metropolis Stock": '#f47913',
+    "Metropolis Stock": '#04959e',
     
     "Urbos 3": '#ed2438',
     "Citadis 305": '#ed2438',
