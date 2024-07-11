@@ -326,6 +326,74 @@ def allTopStats(user, stat):
     print(results)
     return results 
 
+
+def globalTopStats(stat):
+    base_paths = [
+        f'utils/trainlogger/userdata/',
+        # f'utils/trainlogger/userdata/tram/',
+        # f'utils/trainlogger/userdata/sydney-trains/',
+        # f'utils/trainlogger/userdata/sydney-trams/'
+    ]
+
+    file_paths = []
+    for base_path in base_paths:
+        if os.path.exists(base_path):
+            for root, _, files in os.walk(base_path):
+                for file in files:
+                    if file.endswith('.csv'):
+                        if file != 'XXm9G.csv' and file != 'comeng_17.csv':
+                            print(file)
+                            file_paths.append(os.path.join(root, file))
+
+    line_counter = Counter()
+    station_counter = Counter()
+    set_counter = Counter()
+    date_counter = Counter()
+    type_counter = Counter()
+
+    for file_path in file_paths:
+        with open(file_path, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                line = row[4]
+                start_station = row[5]
+                end_station = row[6]
+                set = row[1]
+                train_type = row[2]
+                date = row[3]
+
+                line_counter.update([line])
+                station_counter.update([start_station, end_station])
+                set_counter.update([set])
+                type_counter.update([train_type])
+                date_counter.update([date])
+
+    most_common_lines = line_counter.most_common()
+    most_common_stations = station_counter.most_common()
+    most_common_sets = set_counter.most_common()
+    most_common_types = type_counter.most_common()
+    most_common_dates = date_counter.most_common()
+
+    results = []
+
+    if stat == "lines":
+        for line, count in most_common_lines:
+            results.append(f"{line}: {count} times")
+    elif stat == "stations":
+        for station, count in most_common_stations:
+            results.append(f"{station}: {count} times")
+    elif stat == "sets":
+        for set, count in most_common_sets:
+            results.append(f"{set}: {count} times")
+    elif stat == "types":
+        for train_type, count in most_common_types:
+            results.append(f"{train_type}: {count} times")
+    elif stat == "dates":
+        for date, count in most_common_dates:
+            results.append(f"{date}: {count} times")
+
+    print(results)
+    return results
 def stationPercent(user):
     file = f'utils/trainlogger/userdata/{user}.csv'
     unique_items = set()
@@ -369,8 +437,11 @@ def linePercent(user):
     percent = round((total / numberOfLines) * 100, 2)
     return f'{percent}%'
 
-def lowestDate(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
+def lowestDate(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'
     # Initialize an empty list to store the dates
     dates = []
 
@@ -392,9 +463,11 @@ def lowestDate(user):
 
     return lowest_date
 
-def highestDate(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
-    # Initialize an empty list to store the dates
+def highestDate(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'    # Initialize an empty list to store the dates
     dates = []
 
     # Read the CSV file
@@ -415,8 +488,11 @@ def highestDate(user):
 
     return highest_date
 
-def logAmounts(user):
-    filename = f'utils/trainlogger/userdata/{user}.csv'
+def logAmounts(user, mode):
+    if mode == 'train':
+        filename = f'utils/trainlogger/userdata/{user}.csv'
+    else:
+        filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'    
     with open(filename, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         line_count = sum(1 for row in csv_reader)

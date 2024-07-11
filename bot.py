@@ -1327,11 +1327,10 @@ async def NSWstation_autocompletion(
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="K set", value="K set"),
-        app_commands.Choice(name="T set", value="T set"),
-        app_commands.Choice(name="M set", value="M set"),
-        app_commands.Choice(name="H set", value="H set"),
-        app_commands.Choice(name="A set", value="A set"),
-        app_commands.Choice(name="B set", value="B set"),
+        app_commands.Choice(name="Tangara - T Set", value="Tangara"),
+        app_commands.Choice(name="Millennium - M Set", value="Millennium"),
+        app_commands.Choice(name="OSCAR - H set", value="OSCAR"),
+        app_commands.Choice(name="Waratah - A & B sets", value="Waratah"),
         
         app_commands.Choice(name="V set", value="V set"),
         app_commands.Choice(name="D set", value="D set"),
@@ -1750,7 +1749,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
     app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: discord.User = None, mode:str = 'all'):
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all'):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
@@ -1759,21 +1758,25 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
             name = 'comeng17'
         else:
             name = userid
-        try:
-            if stat == 'operators':
-                data = topOperators(userid.name)
-            elif mode == 'train':
-                data = topStats(userid.name, statSearch)
-            elif mode == 'tram':
-                data = tramTopStats(userid.name, statSearch)   
-            elif mode == 'sydney-trains':
-                data = sydneyTrainTopStats(userid.name, statSearch)    
-            elif mode == 'sydney-trams':
-                data = sydneyTramTopStats(userid.name, statSearch)  
-            elif mode == 'all':
-                data = allTopStats(userid.name, statSearch) 
-        except:
-               await ctx.response.send_message('You have no logged trips!')
+            
+        if global_stats:
+            data = globalTopStats(statSearch)
+        else:
+            try:
+                if stat == 'operators':
+                    data = topOperators(userid.name)
+                elif mode == 'train':
+                    data = topStats(userid.name, statSearch)
+                elif mode == 'tram':
+                    data = tramTopStats(userid.name, statSearch)   
+                elif mode == 'sydney-trains':
+                    data = sydneyTrainTopStats(userid.name, statSearch)    
+                elif mode == 'sydney-trams':
+                    data = sydneyTramTopStats(userid.name, statSearch)  
+                elif mode == 'all':
+                    data = allTopStats(userid.name, statSearch) 
+            except:
+                await ctx.response.send_message('You have no logged trips!')
         count = 1
         message = ''
         
@@ -1808,13 +1811,20 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', user: 
                     await ctx.channel.send(message)
                     message = ''
             try:
-                barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name}', ctx.user.name)
+                if global_stats:
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
+                else:
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name}', ctx.user.name)
                 await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.channel.send('User has no logs!')
         elif format == 'pie':
             try:
-                pieChart(csv_filename, f'Top {stat.title()} ― {name}', ctx.user.name)
+                if global_stats:
+                    pieChart(csv_filename, f'Top {stat.title()} ― {name}', ctx.user.name)
+                else:
+                    pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
+
                 await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('You have no logs!')
@@ -1869,18 +1879,17 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}')
           
             #other stats stuff:
-            eDate =lowestDate(username)
-            LeDate =highestDate(username)
+            eDate =lowestDate(username, 'train')
+            LeDate =highestDate(username, 'train')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name=f':information_source: User started logging {joined}', value=f'Last log {last}\nTotal logs: {logAmounts(username)}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "train")}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
                         
         except FileNotFoundError:
             embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
-            
+                   
         # Tram Logger
         try:
             lines = tramTopStats(username, 'lines')
@@ -1888,8 +1897,14 @@ async def profile(ctx, user: discord.User = None):
             sets = tramTopStats(username, 'sets')
             trains = tramTopStats(username, 'types')
             dates = tramTopStats(username, 'dates')
-            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}')
-                                  
+            
+            #other stats stuff:
+            eDate =lowestDate(username, 'tram')
+            LeDate =highestDate(username, 'tram')
+            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "tram")}')
+  
         except FileNotFoundError:
             embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
 
@@ -1900,7 +1915,12 @@ async def profile(ctx, user: discord.User = None):
             sets = sydneyTrainTopStats(username, 'sets')
             trains = sydneyTrainTopStats(username, 'types')
             dates = sydneyTrainTopStats(username, 'dates')
-            embed.add_field(name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+             #other stats stuff:
+            eDate =lowestDate(username, 'sydney-trains')
+            LeDate =highestDate(username, 'sydney-trains')
+            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name='<:NSWTrains:1255084911103184906> <:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -1912,7 +1932,12 @@ async def profile(ctx, user: discord.User = None):
             sets = sydneyTramTopStats(username, 'sets')
             trains = sydneyTramTopStats(username, 'types')
             dates = sydneyTramTopStats(username, 'dates')
-            embed.add_field(name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}')
+             #other stats stuff:
+            eDate =lowestDate(username, 'sydney-trams')
+            LeDate =highestDate(username, 'sydney-trams')
+            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trams")}')
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
