@@ -554,48 +554,41 @@ async def train_line(ctx, train: str):
     type = trainType(train)
     set = setNumber(train)
     print(f"TRAINTYPE {type}")
-    if type == None:
+    if type is None:
         await channel.send("Train not found")
-        
     else:
         embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
-        
         embed.add_field(name=type, value=set)
-        if train.upper() == "7005": # Only old livery sprinter
+        
+        if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
         else:
             embed.set_thumbnail(url=getIcon(type))
         
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
-            information = trainData(set)             
+            information = trainData(set)
             embed.add_field(name='Information', value=f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}')
         
         embed.set_image(url=getImage(train.upper()))
-    
-        # additional embed fields:
         embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)", inline=False)
-        await channel.send(embed=embed)
         
-        # seperated the runs to a seperate thing cause its slow
-        embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
-
+        embed_update = await channel.send(embed=embed)
+        
         # Run transportVicSearch in a separate thread
         loop = asyncio.get_event_loop()
-        task = loop.create_task(transportVicSearch_async(ctx, train.upper()))
+        task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
         await task
 
-async def transportVicSearch_async(ctx, train):
-    embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
-
-    runs = await asyncio.to_thread(transportVicSearch, train)  # find runs in a separate thread
+async def transportVicSearch_async(ctx, train, embed, embed_update):
+    runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
     if isinstance(runs, list):
         print("thing is a list")
         for i, run in enumerate(runs):
             embed.add_field(name=f"Trip {i+1}", value=run, inline=False)
-        await ctx.channel.send(embed=embed)
+        await embed_update.edit(embed=embed)
     else:
-        await ctx.channel.send(f"No runs currently found for {train.upper()}")
-
+        embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
+        await embed_update.edit(embed=embed)
 
 # Next departures for a station
 async def station_autocompletion(
