@@ -395,25 +395,27 @@ def globalTopStats(stat):
     print(results)
     return results
 def stationPercent(user):
-    file = f'utils/trainlogger/userdata/{user}.csv'
+    file_path = f'utils/trainlogger/userdata/{user}.csv'
     unique_items = set()
     
     # Read the CSV content
-    reader = csv.reader(file.splitlines())
-    
-    for row in reader:
-        # Extract the last two items from each row
-        last_two_items = row[-2:]
+    with open(file_path, mode='r') as file:
+        reader = csv.reader(file)
         
-        # Add each item to the set (sets only keep unique items)
-        unique_items.update(last_two_items)
+        for row in reader:
+            # Extract the last two items from each row
+            last_two_items = row[-2:]
+            
+            # Add each item to the set (sets only keep unique items)
+            unique_items.update(last_two_items)
     
     # The number of unique items is the length of the set
     numberOfStations = 320
     
-    total= len(unique_items)
-    percent = round((total/numberOfStations)*100,2)
-    return(f'{percent}%')
+    total = len(unique_items)
+    print(f'number of stations visited: {total}')
+    percent = round((total/numberOfStations)*100, 2)
+    return f'{percent}%'
 
 def linePercent(user):
     file = f'utils/trainlogger/userdata/{user}.csv'
