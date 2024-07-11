@@ -37,6 +37,7 @@ from re import A
 from io import StringIO
 import numpy as np
 
+from utils import trainset
 from utils.search import *
 from utils.colors import *
 from utils.stats import *
@@ -545,12 +546,13 @@ async def line_info(ctx, search: str):
 
 
 # Train search
-@search.command(name="train", description="Find trips for a specific Metro train")
+@search.command(name="train", description="Search for a specific Metro train")
 @app_commands.describe(train="train")
 async def train_line(ctx, train: str):
     await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
     type = trainType(train)
+    set = setNumber(train)
     print(f"TRAINTYPE {type}")
     if type == None:
         await channel.send("Train not found")
@@ -558,15 +560,20 @@ async def train_line(ctx, train: str):
     else:
         embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
         
-        embed.add_field(name="Type:", value=type)
+        embed.add_field(name=type, value=set)
         if train.upper() == "7005": # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
         else:
             embed.set_thumbnail(url=getIcon(type))
+        
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+            information = trainData(set)             
+            embed.add_field(name='Information', value=f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}')
+        
         embed.set_image(url=getImage(train.upper()))
     
         # additional embed fields:
-        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})\n[XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()})\n[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html)", inline=False)
+        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)", inline=False)
         await channel.send(embed=embed)
         
         # seperated the runs to a seperate thing cause its slow

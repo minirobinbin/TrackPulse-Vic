@@ -16,7 +16,7 @@ def transportVicSearch(search):
     
     try:
         # Wait for the page to load
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(5)
         
         # Find all elements with class "trip"
         elements = driver.find_elements(By.XPATH, '//div[@class="trip "]')
