@@ -567,12 +567,12 @@ async def train_line(ctx, train: str):
         
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             information = trainData(set)
-            embed.add_field(name='Information', value=f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}')
+            embed.add_field(name='Information', value=f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}')
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)", inline=False)
+        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)", inline=False)
         
-        embed.add_field(name='<a:botloading:1226416066385936414> Loading trip data', value='⠀')
+        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
         
         # Run transportVicSearch in a separate thread
