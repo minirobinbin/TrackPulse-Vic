@@ -552,7 +552,7 @@ async def train_line(ctx, train: str):
     await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
     type = trainType(train)
-    set = setNumber(train)
+    set = setNumber(train.upper())
     print(f"TRAINTYPE {type}")
     if type is None:
         await channel.send("Train not found")
@@ -572,6 +572,7 @@ async def train_line(ctx, train: str):
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)", inline=False)
         
+        embed.add_field(name='<a:botloading:1226416066385936414> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
         
         # Run transportVicSearch in a separate thread
@@ -583,10 +584,12 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
     runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
     if isinstance(runs, list):
         print("thing is a list")
+        embed.remove_field(3)
         for i, run in enumerate(runs):
             embed.add_field(name=f"Trip {i+1}", value=run, inline=False)
         await embed_update.edit(embed=embed)
     else:
+        embed.remove_field(3)
         embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
         await embed_update.edit(embed=embed)
 
