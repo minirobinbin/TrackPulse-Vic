@@ -515,12 +515,11 @@ async def line_info(ctx, number: str):
 
     # Make a HEAD request to check if the photo exists
     URLresponse = requests.head(photo_url)
+    print(URLresponse.status_code)
     if URLresponse.status_code == 200:
         await channel.send(photo_url)
     else:
         mAdded = search_query+'M'
-        
-        
         # try with m added
         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
         URLresponse = requests.head(photo_url)
@@ -537,7 +536,9 @@ async def line_info(ctx, number: str):
                     print("no other images found")
                     await channel.send(f"Photo not in xm9g database!")
                     break
-
+        else:
+            await channel.send(f"Photo not in xm9g database!")
+            
         
         
     for i in range(2,5):
@@ -593,27 +594,28 @@ async def train_line(ctx, train: str):
             if information[5]:
                 infoData+=f'\n**Name:** {information[5]}'
                 
+            # thing if the user has been on
+            def check_variable_in_csv(variable, file_path):
+                if not os.path.exists(file_path):
+                    print(f"The file {file_path} does not exist.")
+                    return False
+
+                with open(file_path, mode='r') as file:
+                    csv_reader = csv.reader(file)
+                    for row in csv_reader:
+                        if row[1] == variable:
+                            return True
+                return False 
+        
+            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+            trainridden = check_variable_in_csv(set, fPath)
+            if trainridden:
+                infoData +='\n\n✅ You have been on this train before'
+                
             embed.add_field(name='Information', value=infoData)
         else:
             embed.add_field(name='Information', value='None available')
             
-        # thing if the user has been on
-        def check_variable_in_csv(variable, file_path):
-            if not os.path.exists(file_path):
-                print(f"The file {file_path} does not exist.")
-                return False
-
-            with open(file_path, mode='r') as file:
-                csv_reader = csv.reader(file)
-                for row in csv_reader:
-                    if row[1] == variable:
-                        return True
-            return False 
-        
-        fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
-        trainridden = check_variable_in_csv(set, fPath)
-        if trainridden:
-            embed.add_field(name='You have been on this train before', value='✅')
         
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)", inline=False)
