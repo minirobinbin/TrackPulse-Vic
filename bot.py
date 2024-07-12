@@ -188,7 +188,7 @@ async def task_loop():
 async def help(ctx):
     async def helper():
         generalCmds ="""</help:1261107050545549342> - Shows this command
-</stats profile:1240101357847838815> - View your profile with variouse stats across your logs and game wins"""
+</stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
         logCmds = """</logs add-train:1254387855820849154> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered.
 </logs add-sydney-train:1254387855820849154> - same as above but for trains in NSW
 </logs add-tram:1254387855820849154> - same as above but for trams in Melbourne
@@ -196,8 +196,8 @@ async def help(ctx):
 
 </logs view:1254387855820849154> - view your logs
 </logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
-</logs stats:1254387855820849154> - view variouse stats and graphs from your logged trips."""
-        searchCmds = """</search train:1240101357847838814> - Input a carrige number to see info about it, such as it's type, next services, livery and more!
+</logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
+        searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
 </search departures:1240101357847838814> - View the next 10 departures for a station
 </search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
