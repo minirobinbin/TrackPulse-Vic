@@ -37,6 +37,7 @@ from re import A
 from io import StringIO
 import numpy as np
 
+from utils import trainset
 from utils.search import *
 from utils.colors import *
 from utils.stats import *
@@ -182,6 +183,26 @@ async def task_loop():
         print("Rare checker not enabled!")
 
 
+# Help command
+@bot.tree.command(name='help', description='Run help if you want to know about a command')
+async def help(ctx):
+    async def helper():
+        generalCmds ="""</help:1261107050545549342> - Shows this command
+</stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
+        logCmds = """</logs add-train:1254387855820849154> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered.
+</logs add-sydney-train:1254387855820849154> - same as above but for trains in NSW
+</logs add-tram:1254387855820849154> - same as above but for trams in Melbourne
+</logs add-sydney-tram:1254387855820849154> - same as above but for light rail in Sydney
+
+</logs view:1254387855820849154> - view your logs
+</logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
+</logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
+        searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
+</search departures:1240101357847838814> - View the next 10 departures for a station
+</search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
+</search route:1240101357847838814> - View disruptions for a tram or bus route"""
+        await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
+    asyncio.create_task(helper())
 
     
 
@@ -494,12 +515,11 @@ async def line_info(ctx, number: str):
 
     # Make a HEAD request to check if the photo exists
     URLresponse = requests.head(photo_url)
+    print(URLresponse.status_code)
     if URLresponse.status_code == 200:
         await channel.send(photo_url)
     else:
         mAdded = search_query+'M'
-        
-        
         # try with m added
         photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
         URLresponse = requests.head(photo_url)
@@ -516,7 +536,9 @@ async def line_info(ctx, number: str):
                     print("no other images found")
                     await channel.send(f"Photo not in xm9g database!")
                     break
-
+        else:
+            await channel.send(f"Photo not in xm9g database!")
+            
         
         
     for i in range(2,5):
@@ -545,50 +567,83 @@ async def line_info(ctx, search: str):
 
 
 # Train search
-@search.command(name="train", description="Find trips for a specific Metro train")
+@search.command(name="train", description="Search for a specific Train")
 @app_commands.describe(train="train")
 async def train_line(ctx, train: str):
     await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
     type = trainType(train)
+    set = setNumber(train.upper())
+    print(f'set: {set}')
     print(f"TRAINTYPE {type}")
-    if type == None:
+    if type is None:
         await channel.send("Train not found")
-        
     else:
         embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
+        embed.add_field(name=type, value=set)
         
-        embed.add_field(name="Type:", value=type)
-        if train.upper() == "7005": # Only old livery sprinter
+        if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
         else:
             embed.set_thumbnail(url=getIcon(type))
-        embed.set_image(url=getImage(train.upper()))
-    
-        # additional embed fields:
-        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})\n[XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()})\n[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html)", inline=False)
-        await channel.send(embed=embed)
         
-        # seperated the runs to a seperate thing cause its slow
-        embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class']:
+            information = trainData(set)
+            print(information)
+            infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
+            if information[5]:
+                infoData+=f'\n**Name:** {information[5]}'
+                
+            # thing if the user has been on
+            def check_variable_in_csv(variable, file_path):
+                if not os.path.exists(file_path):
+                    print(f"The file {file_path} does not exist.")
+                    return False
 
+                with open(file_path, mode='r') as file:
+                    csv_reader = csv.reader(file)
+                    for row in csv_reader:
+                        if row[1] == variable:
+                            return True
+                return False 
+        
+            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+            trainridden = check_variable_in_csv(set, fPath)
+            if trainridden:
+                infoData +='\n\n✅ You have been on this train before'
+                
+            embed.add_field(name='Information', value=infoData)
+        else:
+            embed.add_field(name='Information', value='None available')
+            
+        
+        embed.set_image(url=getImage(train.upper()))
+        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)", inline=False)
+        
+        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+        embed_update = await channel.send(embed=embed)
+        
         # Run transportVicSearch in a separate thread
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(transportVicSearch_async(ctx, train.upper()))
-        await task
-
-async def transportVicSearch_async(ctx, train):
-    embed = discord.Embed(title=f"Current runs for {train.upper()}:", color=0x0070c0)
-
-    runs = await asyncio.to_thread(transportVicSearch, train)  # find runs in a separate thread
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+            loop = asyncio.get_event_loop()
+            task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
+            await task
+        else:
+            embed.remove_field(3)
+            await embed_update.edit(embed=embed)
+            
+async def transportVicSearch_async(ctx, train, embed, embed_update):
+    runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
     if isinstance(runs, list):
         print("thing is a list")
+        embed.remove_field(3)
         for i, run in enumerate(runs):
             embed.add_field(name=f"Trip {i+1}", value=run, inline=False)
-        await ctx.channel.send(embed=embed)
+        await embed_update.edit(embed=embed)
     else:
-        await ctx.channel.send(f"No runs currently found for {train.upper()}")
-
+        embed.remove_field(3)
+        embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
+        await embed_update.edit(embed=embed)
 
 # Next departures for a station
 async def station_autocompletion(

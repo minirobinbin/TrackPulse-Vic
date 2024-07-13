@@ -1,6 +1,6 @@
 import requests
 from utils.keyCalc import *
-
+import csv
 
 def search_api_request(search_term):
     
@@ -144,3 +144,13 @@ def disruption_api_request(routeId):
     else:
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
+        
+def trainData(search_value):
+    csv_filename = 'utils/metrotrains.csv'
+    with open(csv_filename, mode='r') as file:
+        reader = csv.reader(file)
+        header = next(reader)  # Skip the header row
+        for row in reader:
+            if row[0] == search_value:
+                return row
+    return None
