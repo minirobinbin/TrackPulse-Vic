@@ -1,13 +1,18 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import queue
 
 
 def transportVicSearch(search):
+    options = Options()
+    options.headless = True
     service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=service, options=options)
     
     url = f'https://vic.transportsg.me/metro/tracker/consist?consist={search}'
     
@@ -15,8 +20,8 @@ def transportVicSearch(search):
     driver.get(url)
     
     try:
-        # Wait for the page to load
-        driver.implicitly_wait(5)
+        # Use WebDriverWait for explicit wait
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@class="trip "]')))
         
         # Find all elements with class "trip"
         elements = driver.find_elements(By.XPATH, '//div[@class="trip "]')
@@ -24,11 +29,11 @@ def transportVicSearch(search):
         if elements:
             trip_texts = [element.text for element in elements]
             print(trip_texts)
-            return(trip_texts)
+            return trip_texts
         else:
-            return("`Error: No trips found`\nTrain may be invalid or not currently running.")
+            return ["Error: No trips found. Train may be invalid or not currently running."]
     except Exception as e:
-        return(f'Error: {e}')
+        return [f'Error: {e}']
     finally:
         driver.quit()
 
