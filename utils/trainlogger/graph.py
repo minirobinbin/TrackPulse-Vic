@@ -70,7 +70,7 @@ label_colors = {
     'Metro': '#008cce',     
     'V/Line': '#7d4295', 
     'Sydney Trains': '#f47a0b',
-    'NSW Trainlink': '#f47a0b',
+    'NSW Trainlink': '#e26d23',
     'Yarra Trams': '#72bf44',
     'Sydney Light Rail': '#ed2438',
     'Sydney Metro': '#04959e',

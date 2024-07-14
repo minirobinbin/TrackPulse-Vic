@@ -590,15 +590,24 @@ def topOperators(user):
     
     with open(output, mode='w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Metro', metro_count])
-        writer.writerow(['V/Line', vline_count])
-        writer.writerow(['Sydney Trains', sydney_trains_count])
-        writer.writerow(['NSW Trainlink', nsw_trainlink_count])
-        writer.writerow(['Sydney Metro', sydney_metro_count])
-        writer.writerow(['Yarra Trams', yarra_trams_count])
-        writer.writerow(['Sydney Light Rail', sydney_trams_count])
-        writer.writerow(['Heritage', heritage_count])
-        writer.writerow(['Other', other_count])
+        if metro_count > 0:
+            writer.writerow(['Metro', metro_count])
+        if vline_count > 0:
+            writer.writerow(['V/Line', vline_count])
+        if sydney_trains_count > 0:
+            writer.writerow(['Sydney Trains', sydney_trains_count])
+        if nsw_trainlink_count > 0:
+            writer.writerow(['NSW Trainlink', nsw_trainlink_count])
+        if sydney_metro_count > 0:
+            writer.writerow(['Sydney Metro', sydney_metro_count])
+        if yarra_trams_count > 0:
+            writer.writerow(['Yarra Trams', yarra_trams_count])
+        if sydney_trams_count > 0:
+            writer.writerow(['Sydney Light Rail', sydney_trams_count])
+        if heritage_count > 0:
+            writer.writerow(['Heritage', heritage_count])
+        if other_count > 0:
+            writer.writerow(['Other', other_count])
                 
     return output
 
