@@ -630,24 +630,38 @@ async def train_line(ctx, train: str):
         mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
+            # Generate the map asynchronously
+            
+            
+            # After map generation, send it
             location = getTrainLocation(set)
-            url =convertTrainLocationToGoogle(location)
-            if location != None:
+            url = convertTrainLocationToGoogle(location)
+            
+            if location is not None:
                 for item in location:
                     latitude = item['latitude']
                     longitude = item['longitude']
+                    
+                await makeMap(latitude,longitude, train)  # Adjust this line to asynchronously generate the map
                 
-                makeMap(latitude, longitude, train)
-                file = discord.File(f"temp/{train}-map.png", filename=f"{train}-map.png")
-                mapEmbed = discord.Embed(title=f"{train}'s location", url = url)
-                mapEmbed.remove_field(0)
-                mapEmbed.set_image(url=f'attachment://{train}-map.png')
-                mapEmbed.set_footer(text='Map data © OpenStreetMap contributors')
-            # Delete the old message
-            await mapEmbedUpdate.delete()
+                file_path = f"temp/{train}-map.png"
+                if os.path.exists(file_path):
+                    file = discord.File(file_path, filename=f"{train}-map.png")
+                    
+                    mapEmbed = discord.Embed(title=f"{train}'s location", url=url)
+                    mapEmbed.remove_field(0)
+                    mapEmbed.set_image(url=f'attachment://{train}-map.png')
+                    mapEmbed.set_footer(text='Map data © OpenStreetMap contributors')
+                    
+                    # Delete the old message
+                    await mapEmbedUpdate.delete()
 
-            # Send a new message with the file and embed
-            await channel.send(file=file, embed=mapEmbed)
+                    # Send a new message with the file and embed
+                    await channel.send(file=file, embed=mapEmbed)
+                else:
+                    print(f"Error: Map file '{file_path}' not found.")
+            else:
+                print("Error: No location data available.")
 
             
 
@@ -660,7 +674,8 @@ async def train_line(ctx, train: str):
         else:
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
-    
+        # Wait for the map to finish generating before continuing
+        await addmap()
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):

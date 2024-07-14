@@ -6,6 +6,7 @@ from folium import plugins
 from io import BytesIO
 from PIL import Image
 import threading
+import asyncio
 
 from utils.trainImage import getIcon
 
@@ -71,7 +72,7 @@ def convertTrainLocationToGoogle(data):
         google_maps_link = generate_google_maps_link(latitude, longitude)
         return google_maps_link
     
-def makeMap(point_latitude, point_longitude, name):
+async def makeMap(point_latitude, point_longitude, name):
     def create_map_and_save():
         try:
             # Get icon URL based on train type
@@ -111,10 +112,10 @@ def makeMap(point_latitude, point_longitude, name):
             
             # Save the cropped image to a file (optional)
             image.save(f'temp/{name}-map.png')
-                
+            
         except Exception as e:
             print(f'Error creating map: {e}')
 
-    thread = threading.Thread(target=create_map_and_save)
-    thread.start()
-
+    # Run create_map_and_save in a separate thread
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, create_map_and_save)
