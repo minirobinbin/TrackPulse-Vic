@@ -629,39 +629,40 @@ async def train_line(ctx, train: str):
         mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
         mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
-        async def addmap():
-            # Generate the map asynchronously
-            
-            
-            # After map generation, send it
-            location = getTrainLocation(set)
-            url = convertTrainLocationToGoogle(location)
-            
-            if location is not None:
-                for item in location:
-                    latitude = item['latitude']
-                    longitude = item['longitude']
-                    
-                await makeMap(latitude,longitude, train)  # Adjust this line to asynchronously generate the map
+        if type in ["X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+            async def addmap():
+                # Generate the map asynchronously
                 
-                file_path = f"temp/{train}-map.png"
-                if os.path.exists(file_path):
-                    file = discord.File(file_path, filename=f"{train}-map.png")
+                
+                # After map generation, send it
+                location = getTrainLocation(set)
+                url = convertTrainLocationToGoogle(location)
+                
+                if location is not None:
+                    for item in location:
+                        latitude = item['latitude']
+                        longitude = item['longitude']
+                        
+                    await makeMap(latitude,longitude, train)  # Adjust this line to asynchronously generate the map
                     
-                    mapEmbed = discord.Embed(title=f"{train}'s location", url=url)
-                    mapEmbed.remove_field(0)
-                    mapEmbed.set_image(url=f'attachment://{train}-map.png')
-                    mapEmbed.set_footer(text='Map data © OpenStreetMap contributors')
-                    
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
+                    file_path = f"temp/{train}-map.png"
+                    if os.path.exists(file_path):
+                        file = discord.File(file_path, filename=f"{train}-map.png")
+                        
+                        mapEmbed = discord.Embed(title=f"{train}'s location", url=url)
+                        mapEmbed.remove_field(0)
+                        mapEmbed.set_image(url=f'attachment://{train}-map.png')
+                        mapEmbed.set_footer(text='Map data © OpenStreetMap contributors')
+                        
+                        # Delete the old message
+                        await mapEmbedUpdate.delete()
 
-                    # Send a new message with the file and embed
-                    await channel.send(file=file, embed=mapEmbed)
+                        # Send a new message with the file and embed
+                        await channel.send(file=file, embed=mapEmbed)
+                    else:
+                        print(f"Error: Map file '{file_path}' not found.")
                 else:
-                    print(f"Error: Map file '{file_path}' not found.")
-            else:
-                print("Error: No location data available.")
+                    print("Error: No location data available.")
 
             
 
