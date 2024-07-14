@@ -56,6 +56,7 @@ from utils.unixtime import *
 from utils.pastTime import *
 from utils.routeName import *
 from utils.trainlogger.graph import *
+from utils.locationFromNumber import *
 import zipfile
 
 
@@ -618,19 +619,49 @@ async def train_line(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[XM9G (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)", inline=False')
+        embed.add_field(name="Source:", value=f'[XM9G (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
         
+        # map thing
+        mapEmbed = discord.Embed(title=f"{train}'s location")
+        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
+        
+        async def addmap():
+            location = getTrainLocation(set)
+            url =convertTrainLocationToGoogle(location)
+            if location != None:
+                for item in location:
+                    latitude = item['latitude']
+                    longitude = item['longitude']
+                
+                makeMap(latitude, longitude, train)
+                file = discord.File(f"temp/{train}-map.png", filename=f"{train}-map.png")
+                mapEmbed = discord.Embed(title=f"{train}'s location", url = url)
+                mapEmbed.remove_field(0)
+                mapEmbed.set_image(url=f'attachment://{train}-map.png')
+                mapEmbed.set_footer(text='Map data © OpenStreetMap contributors')
+            # Delete the old message
+            await mapEmbedUpdate.delete()
+
+            # Send a new message with the file and embed
+            await channel.send(file=file, embed=mapEmbed)
+
+            
+
         # Run transportVicSearch in a separate thread
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             loop = asyncio.get_event_loop()
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
+            asyncio.create_task(addmap())
         else:
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
+    
+        
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
     runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
@@ -638,7 +669,10 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
         print("thing is a list")
         embed.remove_field(3)
         for i, run in enumerate(runs):
-            embed.add_field(name=f"Run {i+1}", value=run, inline=False)
+            if run.startswith('#'):
+                embed.add_field(name=f"Run {i+1}", value=run, inline=False)
+            else:
+                embed.add_field(name='No runs found!', value='⠀')
         embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})')
         await embed_update.edit(embed=embed)
     else:
