@@ -701,7 +701,8 @@ async def train_line(ctx, train: str):
         else:
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
-        # Wait for the map to finish generating before continuing
+            await mapEmbedUpdate.delete()
+            await ctx.channel.send('Location info is only available for Metro services')
 
         
             
