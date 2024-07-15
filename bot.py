@@ -682,7 +682,7 @@ async def train_line(ctx, train: str):
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
         # Wait for the map to finish generating before continuing
-        # await addmap()
+
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
