@@ -733,14 +733,14 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@search.command(name="departures", description="Upcoming departures for a station")
+@search.command(name="departures", description="Upcoming trains departing a station")
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
 
 async def departures(ctx, station: str):
     async def nextdeps():
         channel = ctx.channel
-        await ctx.response.send_message(f"Loading Departures for {station}...")
+        await ctx.response.send_message(f"Loading Departures from {station}...")
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation.title()}%20Station')
         # find the stop id!
@@ -759,7 +759,7 @@ async def departures(ctx, station: str):
         
         departures = depsData['departures']
         # make embed with data
-        embed= discord.Embed(title=f"Next 10 departures for {station} Station <:train:1241164967789727744>")
+        embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
         fields = 0
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
