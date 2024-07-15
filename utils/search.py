@@ -3,7 +3,6 @@ from utils.keyCalc import *
 import csv
 
 def search_api_request(search_term):
-    
     # API endpoint URL
     url = getUrl(f"/v3/search/{search_term}")
     print(f"Search url: {url}")

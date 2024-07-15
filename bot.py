@@ -756,8 +756,9 @@ async def departures(ctx, station: str):
             await ctx.channel.send("Station not found")
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        
-        departures = depsData['departures']
+        vlineDepsData = departures_api_request(stop_id, 3)
+
+        departures = depsData['departures'] + vlineDepsData ['departures']
         # make embed with data
         embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
         fields = 0
