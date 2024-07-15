@@ -7,6 +7,7 @@ from io import BytesIO
 from PIL import Image
 import threading
 import asyncio
+from staticmap import StaticMap, CircleMarker, IconMarker, Line
 
 from utils.trainImage import getIcon
 
@@ -37,8 +38,12 @@ def getTrainLocation(Tnumber):
         
         for run in data.get("runs", []):
             if run.get("vehicle_descriptor") and all(part in run["vehicle_descriptor"]["id"] for part in parts):
-                results.append(run["vehicle_position"])
-        
+                result = {
+                    "vehicle_position": run["vehicle_position"],
+                    "run_ref": run["run_ref"]  # Include run_ref in the result
+                }
+                results.append(result)
+        print(f' RESILSTS THING: {results}')
         return results
 
     def process_route(route):
@@ -60,6 +65,23 @@ def getTrainLocation(Tnumber):
     
     return all_results
 
+def getGeopath(runId):
+    data = runs_ref_api_request(runId)
+    json_data = data
+    coordinates = []
+    # Ensure 'geopath' exists in the JSON response
+    if 'geopath' in json_data['runs'][0]:
+        geopath = json_data['runs'][0]['geopath']
+        
+        # Iterate over each path
+        for path in geopath:
+            paths = path['paths']
+            return paths
+    else:
+        print("No 'geopath' found in JSON data.")
+        return None
+
+
 def convertTrainLocationToGoogle(data):
     def generate_google_maps_link(latitude, longitude):
         base_url = "https://www.google.com/maps/search/?api=1&query="
@@ -67,10 +89,53 @@ def convertTrainLocationToGoogle(data):
         return base_url + coordinates
     
     for item in data:
-        latitude = item['latitude']
-        longitude = item['longitude']
+        latitude = item['vehicle_position']['latitude']
+        longitude = item['vehicle_position']['longitude']
         google_maps_link = generate_google_maps_link(latitude, longitude)
         return google_maps_link
+    
+async def makeMapv2(lat, long, name, geopath):
+    def create_map_and_save():
+        # Coordinates for the pin
+        latitude = lat # + 0.00045
+        longitude = long
+        print('started map gen')
+        
+        # Create a static map centered at the coordinates with the desired zoom level
+        m = StaticMap(1024, 1024, 12, url_template='https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=e3b64f018aff44d697edee2f265fda73')
+        print('created base map')
+        
+        # Split the coordinates into individual pairs
+        # pairs = str(geopath[0].replace(',','')).split(" ")
+        # print(f'MONOR: {pairs}')
+
+        # for i in range(0, len(pairs)-2, 2):
+        #     lat1 = float(pairs[i])
+        #     lon1 = float(pairs[i+1])
+        #     lat2 = float(pairs[i+2])
+        #     lon2 = float(pairs[i+3])
+            
+        #     line = Line([(lon1, lat1), (lon2, lat2)], 'blue', 3)
+        #     m.add_line(line)
+            
+        # Add a marker at the coordinates
+        icon_train = IconMarker((longitude, latitude), './utils/metro.png', 25, 25)  # Adjusted to use latitude and longitude correctly
+        # marker = CircleMarker((longitude, latitude), '#008dd0', 20)
+
+        m.add_marker(icon_train)
+        # m.add_marker(marker)
+        print('added marker')
+
+        # Render the map
+        image = m.render(zoom=14)
+
+        # Save the map as a high-resolution PNG file
+        image.save(f'temp/{name}-map.png')
+        print('saved map')
+        
+        # Run create_map_and_save in a separate thread
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, create_map_and_save)
     
 async def makeMap(point_latitude, point_longitude, name):
     def create_map_and_save():
@@ -119,3 +184,4 @@ async def makeMap(point_latitude, point_longitude, name):
     # Run create_map_and_save in a separate thread
     loop = asyncio.get_event_loop()
     await loop.run_in_executor(None, create_map_and_save)
+

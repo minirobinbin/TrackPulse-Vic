@@ -641,10 +641,12 @@ async def train_line(ctx, train: str):
                 try:
                     if location is not None:
                         for item in location:
-                            latitude = item['latitude']
-                            longitude = item['longitude']
-                        
-                        await makeMap(latitude,longitude, train)  # Adjust this line to asynchronously generate the map
+                            latitude = item['vehicle_position']['latitude']
+                            longitude = item['vehicle_position']['longitude']
+                            geopath = getGeopath(item["run_ref"])
+                            print(f'geopath: {geopath}')
+
+                        await makeMapv2(latitude,longitude, train, geopath)  # Adjust this line to asynchronously generate the map
                 except Exception as e:
                     await mapEmbedUpdate.delete()
                     await ctx.channel.send('No location data available.')
@@ -660,7 +662,7 @@ async def train_line(ctx, train: str):
                     embed = discord.Embed(title=f"{train}'s location", url=url)
                     embed.remove_field(0)
                     embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Map data © OpenStreetMap contributors')
+                    embed.set_footer(text='Maps © www.thunderforest.com, Data © www.osm.org/copyright')
                 
                     # Send a new message with the file and embed
                     await channel.send(file=file, embed=embed)
@@ -668,21 +670,19 @@ async def train_line(ctx, train: str):
                     await mapEmbedUpdate.delete()
                     await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
                     print(f"Error: Map file '{file_path}' not found.")
-
-
-            
-
+                    
         # Run transportVicSearch in a separate thread
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+            asyncio.create_task(addmap())
             loop = asyncio.get_event_loop()
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
-            asyncio.create_task(addmap())
+            
         else:
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
         # Wait for the map to finish generating before continuing
-        await addmap()
+        # await addmap()
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
