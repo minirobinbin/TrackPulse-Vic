@@ -95,6 +95,9 @@ def convertTrainLocationToGoogle(data):
         return google_maps_link
     
 async def makeMapv2(lat, long, name, geopath):
+    config = dotenv_values(".env")
+    key = config['THUNDERFOREST_MAP']
+
     def create_map_and_save():
         # Coordinates for the pin
         latitude = lat # + 0.00045
@@ -102,7 +105,7 @@ async def makeMapv2(lat, long, name, geopath):
         print('started map gen')
         
         # Create a static map centered at the coordinates with the desired zoom level
-        m = StaticMap(1024, 1024, 12, url_template='https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=e3b64f018aff44d697edee2f265fda73')
+        m = StaticMap(1024, 1024, 12, url_template='https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey='+ key)
         print('created base map')
         
         # Split the coordinates into individual pairs

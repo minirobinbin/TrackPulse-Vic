@@ -37,6 +37,7 @@ import enum
 from re import A
 from io import StringIO
 import numpy as np
+import io
 
 from utils import trainset
 from utils.search import *
@@ -620,7 +621,25 @@ async def train_line(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[XM9G (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)', inline=False)
+        # image credits:
+        url = 'https://railway-photos.xm9g.xyz/credit.csv'
+        search_value = train.upper()
+
+        response = requests.get(url)
+        response.raise_for_status() 
+
+        csv_content = response.content.decode('utf-8')
+        csv_reader = csv.reader(io.StringIO(csv_content))
+
+        result_value = None
+        for row in csv_reader:
+            if row[0] == search_value:
+                result_value = row[1]
+                break
+        if result_value == None:
+            result_value = "XM9G's Railway Photos"
+        
+        embed.add_field(name="Source:", value=f'[{result_value} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
@@ -643,8 +662,9 @@ async def train_line(ctx, train: str):
                         for item in location:
                             latitude = item['vehicle_position']['latitude']
                             longitude = item['vehicle_position']['longitude']
-                            geopath = getGeopath(item["run_ref"])
-                            print(f'geopath: {geopath}')
+                            geopath=''
+                            # geopath = getGeopath(item["run_ref"])
+                            # print(f'geopath: {geopath}')
 
                         await makeMapv2(latitude,longitude, train, geopath)  # Adjust this line to asynchronously generate the map
                 except Exception as e:
