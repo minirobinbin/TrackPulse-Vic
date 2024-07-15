@@ -1,6 +1,7 @@
 import requests
 from utils.keyCalc import *
 import csv
+import json
 
 def search_api_request(search_term):
     # API endpoint URL
@@ -59,6 +60,7 @@ def routes_list(type):
         data = response.json()
         formatted = format(data)
         print(formatted)
+        formatted = json.dumps(data, indent=4)
         return(formatted)
     else:
         # Print an error message if the request was not successful
