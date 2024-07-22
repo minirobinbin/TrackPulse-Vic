@@ -662,7 +662,11 @@ async def train_line(ctx, train: str):
                 
                 
                 # After map generation, send it
-                location = getTrainLocation(set)
+                if type == "HCMT": # because ptv api lists hcmts like "9005M-9905M" for some fucking reason
+                    hcmtcar1 = set.split('-')
+                    location = getTrainLocation(hcmtcar1[0]+'M')
+                else:
+                    location = getTrainLocation(set)
                 url = convertTrainLocationToGoogle(location)
                 try:
                     if location is not None:

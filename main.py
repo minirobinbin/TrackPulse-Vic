@@ -4,4 +4,4 @@ from utils.pageScraper import *
 from utils.trainlogger.stats import *
 from utils.locationFromNumber import *
 
-get_route_name(1512)
+getTrainLocation('9018M')
