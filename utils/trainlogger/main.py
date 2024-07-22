@@ -146,7 +146,7 @@ def addSydneyTrain(username, date, train_number, train_type, line, start, end):
     print(f"Data saved to {filename}")
     return id
 
-def addBus(username, date, train_number, train_type, line, start, end):
+def addBus(username, date, train_number, train_type, line, start, end, operator):
 
     # Create a CSV file named after the username
     filename = f"utils/trainlogger/userdata/bus/{username}.csv"
@@ -183,7 +183,7 @@ def addBus(username, date, train_number, train_type, line, start, end):
     with open(filename, 'a', newline='') as file:
         writer = csv.writer(file)
         # file.write('\n')
-        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end])
+        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, operator])
 
 
     print(f"Data saved to {filename}")
@@ -348,6 +348,30 @@ def readSydneyTrainLogs(username):
         print(f"File {filename} not found.")
         return []
     
+def readSydneyLightRailLogs(username):
+    # Create the filename based on the username
+    filename = f"utils/trainlogger/userdata/sydney-trams/{username}.csv"
+    user_data = []
+
+    try:
+        # Open the CSV file and read the data
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            user_data = list(reader)
+            # data = file.readlines()
+            # print(data)
+            if user_data == []:
+                return 'no data'
+        
+        # Return the data instead of printing it
+        if len(user_data) > 0:
+            return user_data
+        else:
+            return []
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return []
+
 def readBusLogs(username):
     # Create the filename based on the username
     filename = f"utils/trainlogger/userdata/bus/{username}.csv"

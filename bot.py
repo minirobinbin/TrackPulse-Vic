@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
 
 
+import operator
 from shutil import ExecError
 from tracemalloc import stop
 from discord.ext import commands, tasks
@@ -75,11 +76,11 @@ for line in file:
     stations_list.append(line)
 file.close()
 
-file = open('utils\\nswstations.txt','r')
-NSWstations_list = []
+file = open('utils\\busOps.txt','r')
+busOps = []
 for line in file:
     line = line.strip()
-    NSWstations_list.append(line)
+    busOps.append(line)
 file.close()
 
 
@@ -1560,13 +1561,23 @@ async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='t
     asyncio.create_task(log())
 
 
+
+async def busOpsautocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = busOps.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
+    
 @trainlogs.command(name="add-bus", description="Log a Bus you have been on")
 @app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
-# @app_commands.autocomplete(start=NSWstation_autocompletion)
+@app_commands.autocomplete(operator=busOpsautocompletion)
 # @app_commands.autocomplete(end=NSWstation_autocompletion)
 
-# bus logger
-async def logBus(ctx, line:str, date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
+async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
     channel = ctx.channel
     print(date)
     async def log():
@@ -1590,8 +1601,8 @@ async def logBus(ctx, line:str, date:str='today', start:str='N/A', end:str='N/A'
         set = number
 
         # Add train to the list
-        id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added bus on route {line} on {savedate} from {start.title()} to {end.title()} with bus number {set} ({type}) to your file. (Log ID `#{id}`)")
+        id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title())
+        await ctx.response.send_message(f"Added bus on route {line} on {savedate} from {start.title()} to {end.title()} with bus number {set} ({type}) Operator: {operator} to your file. (Log ID `#{id}`)")
         
                 
     # Run in a separate task
@@ -1829,6 +1840,62 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     await logsthread.send(embed=embed)
                     time.sleep(0.5)
          
+         # for sydney light rail tram:
+        if mode == 'sydney-trams':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readSydneyLightRailLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+        
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s Sydney Light Rail Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# {userid.name}\'s Light Rail Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                                       
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                        # Make the embed
+
+                    if sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xed2438)
+                    embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                    embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+
+                    await logsthread.send(embed=embed)
+                    time.sleep(0.5) 
          
          # for nsw train:
         if mode == 'sydney-trains':
@@ -1939,6 +2006,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                     embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                     embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                    embed.add_field(name=f'Operator', value="{}".format(sublist[7]))
                     embed.add_field(name=f'Bus Number', value="{} ({})".format(sublist[1], sublist[2]))
                     # embed.set_thumbnail(url=image)
  
@@ -1970,6 +2038,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 
     app_commands.Choice(name="Train VIC", value="train"),
     app_commands.Choice(name="Tram VIC", value="tram"),
+    app_commands.Choice(name="Bus", value="bus"),
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
     app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
@@ -1997,6 +2066,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     data = sydneyTrainTopStats(userid.name, statSearch)    
                 elif mode == 'sydney-trams':
                     data = sydneyTramTopStats(userid.name, statSearch)  
+                elif mode == 'bus':
+                    data = busTopStats(userid.name, statSearch)  
                 elif mode == 'all':
                     data = allTopStats(userid.name, statSearch) 
             except:
