@@ -327,7 +327,8 @@ def allTopStats(user, stat):
         f'utils/trainlogger/userdata/{user}.csv',
         f'utils/trainlogger/userdata/tram/{user}.csv',
         f'utils/trainlogger/userdata/sydney-trains/{user}.csv',
-        f'utils/trainlogger/userdata/sydney-trams/{user}.csv'
+        f'utils/trainlogger/userdata/sydney-trams/{user}.csv',
+        f'utils/trainlogger/userdata/bus/{user}.csv'
     ]
     file_paths = [path for path in file_pathsChecker if os.path.exists(path)]
 
