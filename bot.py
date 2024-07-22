@@ -580,13 +580,17 @@ async def train_line(ctx, train: str):
     channel = ctx.channel
     type = trainType(train)
     set = setNumber(train.upper())
+   
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
     if type is None:
         await channel.send("Train not found")
     else:
         embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
-        embed.add_field(name=type, value=set)
+        if set.endswith('-'):
+            embed.add_field(name=type, value=set[:-1])
+        else:
+            embed.add_field(name=type, value=set)
         
         if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
