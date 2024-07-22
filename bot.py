@@ -693,7 +693,7 @@ async def train_line(ctx, train: str):
                     embed = discord.Embed(title=f"{train}'s location", url=url)
                     embed.remove_field(0)
                     embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Maps © www.thunderforest.com, Data © www.osm.org/copyright')
+                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
                 
                     # Send a new message with the file and embed
                     await channel.send(file=file, embed=embed)
