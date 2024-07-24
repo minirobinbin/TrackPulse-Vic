@@ -33,6 +33,8 @@ def getEmojiColor(line):
     if line == "Upfield" or line =="Sunbury" or line =='Craigieburn':
         return('<:northern:1245673088314638431>')    
     if line == "Sandringham":
-        return('<:crosscity:1245673084187578368>')   
+        return('<:crosscity:1245673084187578368>')
+    if line == 'City Loop':
+        return('<:cityloop:1265627754473197630>')  
     else:
         return('<:other:1245674664647331860>')

@@ -81,7 +81,7 @@ def runs_api_request(route_id):
         
 def runs_ref_api_request(ref):
     # API endpoint URL
-    url = getUrl(f'/v3/runs/{ref}')
+    url = getUrl(f'/v3/runs/{ref}?expand=all')
     print(f"search url: {url}")
     
     response = requests.get(url)
