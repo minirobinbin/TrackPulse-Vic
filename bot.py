@@ -15,6 +15,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
 
 
+import operator
+from shutil import ExecError
 from tracemalloc import stop
 from discord.ext import commands, tasks
 from discord import app_commands
@@ -36,6 +38,7 @@ import enum
 from re import A
 from io import StringIO
 import numpy as np
+import io
 
 from utils import trainset
 from utils.search import *
@@ -56,6 +59,7 @@ from utils.unixtime import *
 from utils.pastTime import *
 from utils.routeName import *
 from utils.trainlogger.graph import *
+from utils.locationFromNumber import *
 import zipfile
 
 
@@ -72,12 +76,14 @@ for line in file:
     stations_list.append(line)
 file.close()
 
-file = open('utils\\nswstations.txt','r')
-NSWstations_list = []
+file = open('utils\\busOps.txt','r')
+busOps = []
 for line in file:
     line = line.strip()
-    NSWstations_list.append(line)
+    busOps.append(line)
 file.close()
+
+
 
 
 rareCheckerOn = False
@@ -574,13 +580,17 @@ async def train_line(ctx, train: str):
     channel = ctx.channel
     type = trainType(train)
     set = setNumber(train.upper())
+   
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
     if type is None:
         await channel.send("Train not found")
     else:
         embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
-        embed.add_field(name=type, value=set)
+        if set.endswith('-'):
+            embed.add_field(name=type, value=set[:-1])
+        else:
+            embed.add_field(name=type, value=set)
         
         if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
@@ -618,19 +628,94 @@ async def train_line(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f"[TransportVic (Data)](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()}), [XM9G (Image)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net) (updated 12/8/24)", inline=False)
+        # image credits:
+        url = 'https://railway-photos.xm9g.xyz/credit.csv'
+        search_value = train.upper()
+
+        response = requests.get(url)
+        response.raise_for_status() 
+
+        csv_content = response.content.decode('utf-8')
+        csv_reader = csv.reader(io.StringIO(csv_content))
+
+        result_value = None
+        for row in csv_reader:
+            if row[0] == search_value:
+                result_value = row[1]
+                break
+        if result_value == None:
+            result_value = "XM9G's Railway Photos"
+        
+        embed.add_field(name="Source:", value=f'[{result_value} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
         
+        # map thing
+        mapEmbed = discord.Embed(title=f"{train}'s location")
+        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
+        
+        async def addmap():
+
+                # Generate the map asynchronously
+                
+                
+                # After map generation, send it
+                if type == "HCMT": # because ptv api lists hcmts like "9005M-9905M" for some fucking reason
+                    hcmtcar1 = set.split('-')
+                    location = getTrainLocation(hcmtcar1[0]+'M')
+                else:
+                    location = getTrainLocation(set)
+                url = convertTrainLocationToGoogle(location)
+                try:
+                    if location is not None:
+                        for item in location:
+                            latitude = item['vehicle_position']['latitude']
+                            longitude = item['vehicle_position']['longitude']
+                            geopath=''
+                            # geopath = getGeopath(item["run_ref"])
+                            # print(f'geopath: {geopath}')
+
+                        await makeMapv2(latitude,longitude, train, geopath)  # Adjust this line to asynchronously generate the map
+                except Exception as e:
+                    await mapEmbedUpdate.delete()
+                    await ctx.channel.send('No location data available.')
+                    print(f'ErROR: {e}')
+                    return
+                file_path = f"temp/{train}-map.png"
+                if os.path.exists(file_path):
+                    # Delete the old message
+                    await mapEmbedUpdate.delete()
+                    
+                    file = discord.File(file_path, filename=f"{train}-map.png")
+                    
+                    embed = discord.Embed(title=f"{train}'s location", url=url)
+                    embed.remove_field(0)
+                    embed.set_image(url=f'attachment://{train}-map.png')
+                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
+                
+                    # Send a new message with the file and embed
+                    await channel.send(file=file, embed=embed)
+                else:
+                    await mapEmbedUpdate.delete()
+                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
+                    print(f"Error: Map file '{file_path}' not found.")
+                    
         # Run transportVicSearch in a separate thread
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+            asyncio.create_task(addmap())
             loop = asyncio.get_event_loop()
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
+            
         else:
             embed.remove_field(3)
             await embed_update.edit(embed=embed)
+            await mapEmbedUpdate.delete()
+            await ctx.channel.send('Location info is only available for Metro services')
+
+        
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
     runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
@@ -638,7 +723,11 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
         print("thing is a list")
         embed.remove_field(3)
         for i, run in enumerate(runs):
-            embed.add_field(name=f"Trip {i+1}", value=run, inline=False)
+            if run.startswith('#'):
+                embed.add_field(name=f"Run {i+1}", value=run, inline=False)
+            else:
+                embed.add_field(name='No runs found!', value='⠀')
+        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})')
         await embed_update.edit(embed=embed)
     else:
         embed.remove_field(3)
@@ -655,14 +744,14 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@search.command(name="departures", description="Upcoming departures for a station")
+@search.command(name="departures", description="Upcoming trains departing a station")
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
 
 async def departures(ctx, station: str):
     async def nextdeps():
         channel = ctx.channel
-        await ctx.response.send_message(f"Loading Departures for {station}...")
+        await ctx.response.send_message(f"Loading Departures from {station}...")
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation.title()}%20Station')
         # find the stop id!
@@ -678,10 +767,11 @@ async def departures(ctx, station: str):
             await ctx.channel.send("Station not found")
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        
-        departures = depsData['departures']
+        vlineDepsData = departures_api_request(stop_id, 3)
+
+        departures = depsData['departures'] + vlineDepsData ['departures']
         # make embed with data
-        embed= discord.Embed(title=f"Next 10 departures for {station} Station <:train:1241164967789727744>")
+        embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
         fields = 0
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
@@ -1478,6 +1568,53 @@ async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='t
     # Run in a separate task
     asyncio.create_task(log())
 
+
+
+async def busOpsautocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = busOps.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ]
+    
+@trainlogs.command(name="add-bus", description="Log a Bus you have been on")
+@app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
+@app_commands.autocomplete(operator=busOpsautocompletion)
+# @app_commands.autocomplete(end=NSWstation_autocompletion)
+
+async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the bus")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        set = number
+
+        # Add train to the list
+        id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title())
+        await ctx.response.send_message(f"Added bus on route {line} on {savedate} from {start.title()} to {end.title()} with bus number {set} ({type}) Operator: {operator} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
     
  # Perth Train logger
 # NOT FINISHED   
@@ -1545,6 +1682,7 @@ vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Ech
 @app_commands.choices(mode=[
         app_commands.Choice(name="Train VIC", value="train"),
         app_commands.Choice(name="Tram VIC", value="tram"),
+        app_commands.Choice(name="Bus", value="bus"),
         app_commands.Choice(name="Train NSW", value="sydney-trains"),
         app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
@@ -1710,6 +1848,62 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     await logsthread.send(embed=embed)
                     time.sleep(0.5)
          
+         # for sydney light rail tram:
+        if mode == 'sydney-trams':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readSydneyLightRailLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                return
+        
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s Sydney Light Rail Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f'# {userid.name}\'s Light Rail Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                                       
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                        # Make the embed
+
+                    if sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xed2438)
+                    embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                    embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+
+                    await logsthread.send(embed=embed)
+                    time.sleep(0.5) 
          
          # for nsw train:
         if mode == 'sydney-trains':
@@ -1767,7 +1961,65 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
 
                     await logsthread.send(embed=embed)
-                    time.sleep(0.5)       
+                    time.sleep(0.5)     
+        
+        # for bus:
+        if mode == 'bus':
+            if user == None:
+                userid = ctx.user
+            else:
+                userid = user
+            
+            try:
+                file = discord.File(f'utils/trainlogger/userdata/bus/{userid.name}.csv')
+            except FileNotFoundError:
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no busses logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no busses logged!",ephemeral=True)
+                return
+            print(userid.name)
+            data = readBusLogs(userid.name)
+            if data == 'no data':
+                if userid == ctx.user:
+                    await ctx.response.send_message("You have no busses logged!",ephemeral=True)
+                else:
+                    await ctx.response.send_message("This user has no busses logged!",ephemeral=True)
+                return
+        
+            # create thread
+            logsthread = await ctx.channel.create_thread(
+                name=f'{userid.name}\'s Bus Logs',
+                auto_archive_duration=60,
+                type=discord.ChannelType.public_thread
+            )
+            
+            # send reponse message
+            await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+            await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+            await logsthread.send(f' # <:bus:1241165769241530460> {userid.name}\'s Bus Logs')
+            formatted_data = ""
+            for sublist in data:
+                if len(sublist) >= 7:  # Ensure the sublist has enough items
+                    image = None
+                                            
+                    #send in thread to reduce spam!
+                    thread = await ctx.channel.create_thread(name=f"{userid.name}'s bus logs")
+                        # Make the embed
+                    if sublist[4] == 'Unknown':
+                        embed = discord.Embed(title=f"Log {sublist[0]}")
+                    else:
+                        embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf68a24)
+                    embed.add_field(name=f'Route', value="{}".format(sublist[4]))
+                    embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                    embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                    embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                    embed.add_field(name=f'Operator', value="{}".format(sublist[7]))
+                    embed.add_field(name=f'Bus Number', value="{} ({})".format(sublist[1], sublist[2]))
+                    # embed.set_thumbnail(url=image)
+ 
+                    await logsthread.send(embed=embed)
+                    time.sleep(0.5)  
     asyncio.create_task(sendLogs())
 
 # train logger stats
@@ -1794,6 +2046,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 
     app_commands.Choice(name="Train VIC", value="train"),
     app_commands.Choice(name="Tram VIC", value="tram"),
+    app_commands.Choice(name="Bus", value="bus"),
     app_commands.Choice(name="Train NSW", value="sydney-trains"),
     app_commands.Choice(name="Tram NSW", value="sydney-trams"),
 ])
@@ -1821,6 +2074,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     data = sydneyTrainTopStats(userid.name, statSearch)    
                 elif mode == 'sydney-trams':
                     data = sydneyTramTopStats(userid.name, statSearch)  
+                elif mode == 'bus':
+                    data = busTopStats(userid.name, statSearch)  
                 elif mode == 'all':
                     data = allTopStats(userid.name, statSearch) 
             except:
@@ -1900,7 +2155,7 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!', ephemeral=True)
+                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.xyz.', ephemeral=True)
                     await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
                 else:
                     await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
@@ -1989,6 +2244,23 @@ async def profile(ctx, user: discord.User = None):
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
+            
+# bus Logger
+        try:
+            lines = busTopStats(username, 'lines')
+            stations = busTopStats(username, 'stations')
+            sets = busTopStats(username, 'sets')
+            trains = busTopStats(username, 'types')
+            dates = busTopStats(username, 'dates')
+             #other stats stuff:
+            eDate =lowestDate(username, 'bus')
+            LeDate =highestDate(username, 'bus')
+            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
+                                  
+        except FileNotFoundError:
+            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats", value=f'{username} has no logged trips in NSW!')
 
         
         #games

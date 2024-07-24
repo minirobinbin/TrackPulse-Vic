@@ -130,6 +130,7 @@ label_colors = {
     
     "Urbos 3": '#ed2438',
     "Citadis 305": '#ed2438',
+    
     }
 
 

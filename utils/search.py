@@ -1,9 +1,9 @@
 import requests
 from utils.keyCalc import *
 import csv
+import json
 
 def search_api_request(search_term):
-    
     # API endpoint URL
     url = getUrl(f"/v3/search/{search_term}")
     print(f"Search url: {url}")
@@ -60,6 +60,7 @@ def routes_list(type):
         data = response.json()
         formatted = format(data)
         print(formatted)
+        formatted = json.dumps(data, indent=4)
         return(formatted)
     else:
         # Print an error message if the request was not successful
@@ -81,7 +82,7 @@ def runs_api_request(route_id):
         
 def runs_ref_api_request(ref):
     # API endpoint URL
-    url = getUrl(f'/v3/runs/{ref}?expand=all')
+    url = getUrl(f'/v3/runs/{ref}?expand=All&include_geopath=true')
     print(f"search url: {url}")
     
     response = requests.get(url)
@@ -92,6 +93,7 @@ def runs_ref_api_request(ref):
         return(data)
     else:
         print(f"Error: {response.status_code} - {response.text}")
+        # how to get run id for a specific set number?
         
 def departures_api_request(stop_id, route_type):
     # API endpoint URL
@@ -145,6 +147,23 @@ def disruption_api_request(routeId):
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
         
+def specificRunAPIRequest(run_ref, route_type):
+    # API endpoint URL
+    url = getUrl(f'/v3/runs/{run_ref}/route_type/{route_type}?expand=VehiclePosition')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+
 def trainData(search_value):
     csv_filename = 'utils/metrotrains.csv'
     with open(csv_filename, mode='r') as file:
@@ -154,3 +173,4 @@ def trainData(search_value):
             if row[0] == search_value:
                 return row
     return None
+

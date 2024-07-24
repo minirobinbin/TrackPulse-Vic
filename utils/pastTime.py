@@ -9,5 +9,3 @@ def isPast(iso_time: str) -> bool:
 
     # Check if the provided time is in the past
     return date <= current_time
-
-print(isPast('2024-05-29T11:04:00Z'))
