@@ -763,8 +763,8 @@ async def departures(ctx, station: str):
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
-                # print(f"time in past")
-                pass
+                print(f"time in past")
+                # pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
                 run_ref = departure['run_ref']
