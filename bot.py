@@ -105,8 +105,8 @@ channel_game_status = {} #thing to store what channels are running the guessing 
 
 try:    
     os.mkdir('utils/game/scores')
-except FileExistsError:
-    pass    
+except FileExistsError as e:
+    print(e)    
 
 # Group commands
 class CommandGroups(app_commands.Group):
@@ -1754,7 +1754,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     try:
                         embed.set_thumbnail(url=image)
                     except:
-                        pass
+                        print('no image')
                     
                     await logsthread.send(embed=embed)
                     # if count == 6:
@@ -2311,8 +2311,8 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
         for guild in guilds:
             try:
                 await ctx.bot.tree.sync(guild=guild)
-            except discord.HTTPException:
-                pass
+            except discord.HTTPException as e:
+                print(f'Error: {e}')
             else:
                 ret += 1
 
