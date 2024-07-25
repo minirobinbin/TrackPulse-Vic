@@ -60,6 +60,7 @@ from utils.pastTime import *
 from utils.routeName import *
 from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
+from utils.photo import *
 import zipfile
 
 
@@ -524,6 +525,7 @@ async def line_info(ctx, number: str):
     print(URLresponse.status_code)
     if URLresponse.status_code == 200:
         await channel.send(photo_url)
+        await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
     else:
         mAdded = search_query+'M'
         # try with m added
@@ -538,6 +540,7 @@ async def line_info(ctx, number: str):
                 URLresponse = requests.head(photo_url)
                 if URLresponse.status_code == 200:
                     await channel.send(photo_url)
+                    await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={mAdded}>)')
                 else:
                     print("no other images found")
                     await channel.send(f"Photo not in xm9g database!")
@@ -554,6 +557,7 @@ async def line_info(ctx, number: str):
         URLresponse = requests.head(photo_url)
         if URLresponse.status_code == 200:
             await channel.send(photo_url)
+            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
         else:
             print("no other images found")
             break
