@@ -190,6 +190,7 @@ async def task_loop():
         print("Rare checker not enabled!")
 
 
+
 # Help command
 @bot.tree.command(name='help', description='Run help if you want to know about a command')
 async def help(ctx):
