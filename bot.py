@@ -632,25 +632,8 @@ async def train_line(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        # image credits:
-        url = 'https://railway-photos.xm9g.xyz/credit.csv'
-        search_value = train.upper()
-
-        response = requests.get(url)
-        response.raise_for_status() 
-
-        csv_content = response.content.decode('utf-8')
-        csv_reader = csv.reader(io.StringIO(csv_content))
-
-        result_value = None
-        for row in csv_reader:
-            if row[0] == search_value:
-                result_value = row[1]
-                break
-        if result_value == None:
-            result_value = "XM9G's Railway Photos"
         
-        embed.add_field(name="Source:", value=f'[{result_value} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
