@@ -60,6 +60,7 @@ from utils.pastTime import *
 from utils.routeName import *
 from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
+from utils.photo import *
 import zipfile
 
 
@@ -104,8 +105,8 @@ channel_game_status = {} #thing to store what channels are running the guessing 
 
 try:    
     os.mkdir('utils/game/scores')
-except FileExistsError:
-    pass    
+except FileExistsError as e:
+    print(e)    
 
 # Group commands
 class CommandGroups(app_commands.Group):
@@ -187,6 +188,7 @@ async def task_loop():
         thread.start()
     else:
         print("Rare checker not enabled!")
+
 
 
 # Help command
@@ -524,6 +526,7 @@ async def line_info(ctx, number: str):
     print(URLresponse.status_code)
     if URLresponse.status_code == 200:
         await channel.send(photo_url)
+        await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
     else:
         mAdded = search_query+'M'
         # try with m added
@@ -538,6 +541,7 @@ async def line_info(ctx, number: str):
                 URLresponse = requests.head(photo_url)
                 if URLresponse.status_code == 200:
                     await channel.send(photo_url)
+                    await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={mAdded}>)')
                 else:
                     print("no other images found")
                     await channel.send(f"Photo not in xm9g database!")
@@ -554,6 +558,7 @@ async def line_info(ctx, number: str):
         URLresponse = requests.head(photo_url)
         if URLresponse.status_code == 200:
             await channel.send(photo_url)
+            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
         else:
             print("no other images found")
             break
@@ -628,25 +633,8 @@ async def train_line(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        # image credits:
-        url = 'https://railway-photos.xm9g.xyz/credit.csv'
-        search_value = train.upper()
-
-        response = requests.get(url)
-        response.raise_for_status() 
-
-        csv_content = response.content.decode('utf-8')
-        csv_reader = csv.reader(io.StringIO(csv_content))
-
-        result_value = None
-        for row in csv_reader:
-            if row[0] == search_value:
-                result_value = row[1]
-                break
-        if result_value == None:
-            result_value = "XM9G's Railway Photos"
         
-        embed.add_field(name="Source:", value=f'[{result_value} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
@@ -776,8 +764,8 @@ async def departures(ctx, station: str):
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
-                # print(f"time in past")
-                pass
+                print(f"time in past")
+                # pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
                 run_ref = departure['run_ref']
@@ -1767,7 +1755,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
                     try:
                         embed.set_thumbnail(url=image)
                     except:
-                        pass
+                        print('no image')
                     
                     await logsthread.send(embed=embed)
                     # if count == 6:
@@ -2188,7 +2176,7 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'train')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "train")}\nStations visited: {stationPercent(username)}\nLines visited: {linePercent(username)}\nTotal distance on Metro: {round(getTotalTravelDistance(username))}Km')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\n**Total logs:** `{logAmounts(username, "train")}`\n**Stations visited:** `{stationPercent(username)}`\n**Lines visited:** `{linePercent(username)}`\n**Distance on Metro:** `{round(getTotalTravelDistance(username))}km`')
                         
         except FileNotFoundError:
             embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
@@ -2260,7 +2248,7 @@ async def profile(ctx, user: discord.User = None):
             embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats", value=f'{username} has no logged trips in NSW!')
+            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats", value=f'{username} has no logged bus trips.')
 
         
         #games
@@ -2324,8 +2312,8 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
         for guild in guilds:
             try:
                 await ctx.bot.tree.sync(guild=guild)
-            except discord.HTTPException:
-                pass
+            except discord.HTTPException as e:
+                print(f'Error: {e}')
             else:
                 ret += 1
 
