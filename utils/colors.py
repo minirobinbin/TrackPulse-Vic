@@ -10,6 +10,19 @@ def genColor(status):
         return(0x3d3d3d)
     if status == "Planned Works":
         return(0xffd500)
+    
+def statusEmoji(status):
+    print(f"Line Status: {status}")
+    if status == "Major Delays":
+        return('<:majordisruptions:1267414600266289152>')
+    if status == "Good Service":
+        return('<:goodservice:1267414598353682463>')
+    if status == "Minor Delays":
+        return('<:MinorDelays:1267414596499538011>')
+    if status == "Suspended" or status == 'Part Suspended':
+        return('<:suspended:1267414594272362537>')
+    if status == "Planned Works":
+        return('<:Plannedworks:1267414592187924532>')
 
 def getColor(type):
     if type == "metro" or type == "0":
