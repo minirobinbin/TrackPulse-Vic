@@ -164,11 +164,11 @@ async def log_rare_trains(rare_trains):
         try:
             await channel.send(embed=embed)
             with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.datetime.now()} - Sent rare trains")
+                file.write(f"Sent rare trains")
         except discord.HTTPException:
             await channel.send("Embed too big! There are many trains on the wrong line. Check ANYTRIP.")
             with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.datetime.now()} - Sent rare trains but it was too long")
+                file.write(f"Sent rare trains but it was too long")
         await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!\n`Due to errors in the PTV api data out of our control, some data may be inaccurate.`')
     else:
         await log_channel.send("None found")
@@ -181,7 +181,7 @@ async def task_loop():
         log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
         with open('logs.txt', 'a') as file:
-            file.write(f"\n{datetime.datetime.now()} - Checking for rare trains")
+            file.write(f"Checking for rare trains")
 
         # Create a new thread to run checkRareTrainsOnRoute
         thread = threading.Thread(target=check_rare_trains_in_thread)
