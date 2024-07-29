@@ -193,7 +193,7 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
-@tasks.loop(minutes=1)
+@tasks.loop(minutes=15)
 async def task_loop():
     async def checklines():
         global last_message  # Referencing the global variable
