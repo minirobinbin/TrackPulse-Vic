@@ -88,6 +88,10 @@ file.close()
 
 
 rareCheckerOn = False
+lineStatusOn = True
+
+# Global variable to keep track of the last sent message
+last_message = None
 
 # ENV READING
 config = dotenv_values(".env")
@@ -189,6 +193,79 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
+@tasks.loop(minutes=1)
+async def task_loop():
+    async def checklines():
+        global last_message  # Referencing the global variable
+
+        try:
+            if last_message:  # Check if there is a message to delete
+                print(f"Attempting to delete message ID: {last_message.id}")
+                await last_message.delete()
+                print("Message deleted successfully")
+        except Exception as e:
+            print(f'Failed to delete the old message: {e}')
+        
+        send_channel = bot.get_channel(1267419375388987505)
+        log_channel = bot.get_channel(1227224314483576982)
+        if lineStatusOn:
+            await log_channel.send('Loading line status...')
+            embed = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}')
+            
+            lines = ['Alamein','Belgrave','Craigieburn',"Cranbourne","Mernda","Frankston","Glen%20Waverley","Hurstbridge","Lilydale","Pakenham","Sandringham","Stony%20Point","Sunbury","Upfield","Werribee","Williamstown",]
+            for line in lines:
+                json_info_str = route_api_request(line, "0")
+                json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
+                json_info = json.loads(json_info_str)
+                
+                routes = json_info['routes']
+                status = json_info['status']
+                version = status['version']
+                health = status['health']
+                
+                route = routes[0]
+                route_service_status = route['route_service_status']
+                description = route_service_status['description']
+                timestamp = route_service_status['timestamp']
+                route_type = route['route_type']
+                route_id = route['route_id']
+                route_name = route['route_name']
+                route_number = route['route_number']
+                route_gtfs_id = route['route_gtfs_id']
+                geopath = route['geopath']
+                
+                print(f"route id: {route_id}")
+                
+                
+                # disruption info
+                disruptionDescription = ""
+                try:
+                    # print(disruption_api_request(route_id))
+                    disruptions = disruption_api_request(route_id)
+                    print(disruptions)
+                    
+                    # Extracting title and description
+                    general_disruption = disruptions["disruptions"]["metro_train"][0]
+                    disruptionTitle = general_disruption["title"]
+                    disruptionDescription = general_disruption["description"]
+                            
+                except Exception as e:
+                    print(e)
+
+                color = genColor(description)
+                print(f"Status color: {color}")
+            
+            
+                embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {description}', inline=True)
+                # if disruptionDescription:
+                #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+                
+            last_message = await send_channel.send(embed=embed)
+
+            with open('logs.txt', 'a') as file:
+                        file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
+                        
+    asyncio.create_task(checklines())
 
 
 # Help command
