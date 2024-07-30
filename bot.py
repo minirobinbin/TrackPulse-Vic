@@ -255,8 +255,8 @@ async def task_loop():
                 color = genColor(description)
                 print(f"Status color: {color}")
             
-            
-                embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {description}', inline=True)
+                info = f'{description}'
+                embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
                 # if disruptionDescription:
                 #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
                 
