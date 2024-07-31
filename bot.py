@@ -18,6 +18,7 @@
 import operator
 from shutil import ExecError
 from tracemalloc import stop
+from cycler import V
 from discord.ext import commands, tasks
 from discord import app_commands
 import discord
@@ -839,10 +840,12 @@ async def departures(ctx, station: str):
             await ctx.channel.send("Station not found")
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        # vlineDepsData = departures_api_request(stop_id, 3)
+        vlineDepsData = departures_api_request(stop_id, 3)
 
         departures = depsData['departures']
+        vdepartures = vlineDepsData['departures']
         runs = depsData['runs']
+        vruns = vlineDepsData['runs']
 
         # make embed with data
         embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
@@ -850,8 +853,8 @@ async def departures(ctx, station: str):
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
-                print(f"time in past")
-                # pass
+                # print(f"time in past")
+                pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
                 run_ref = departure['run_ref']
@@ -861,7 +864,10 @@ async def departures(ctx, station: str):
                 
                 # get info for the run:
                 desto = runs[run_ref]['destination_name']
-                trainType = runs[run_ref]['vehicle_descriptor']['description']
+                try:
+                    trainType = runs[run_ref]['vehicle_descriptor']['description']
+                except:
+                    trainType = ''
 
                 # train info
 
@@ -875,6 +881,42 @@ async def departures(ctx, station: str):
                 fields = fields + 1
                 if fields == 9:
                     break
+        # the V/Line part
+        fields = 0
+        runIDS = ['']
+        for departure in vdepartures:
+            scheduled_departure_utc = departure['scheduled_departure_utc']
+            if isPast(scheduled_departure_utc):
+                # print(f"time in past")
+                pass
+            else:
+                estimated_departure_utc = departure['estimated_departure_utc']
+                run_ref = departure['run_ref']
+                if run_ref in runIDS:
+                    break
+                else:
+                    runIDS.append(run_ref)
+                    at_platform = departure['at_platform']
+                    platform_number = departure['platform_number']
+                    route_id= departure['route_id'] 
+                    
+                    # get info for the run:
+                    desto = vruns[run_ref]['destination_name']
+                    try:
+                        trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    except:
+                        trainType = ''
+
+                    #convert to timestamp
+                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                    #get route name:
+                    route_name = get_route_name(route_id)
+                    #add to embed
+                    
+                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
+                    fields = fields + 1
+                    if fields == 9:
+                        break
         embed.set_footer(text="Note: The departures info does not currently take delays into account!")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.channel.send(embed=embed)          
