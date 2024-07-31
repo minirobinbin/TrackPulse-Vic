@@ -97,7 +97,7 @@ def runs_ref_api_request(ref):
         
 def departures_api_request(stop_id, route_type):
     # API endpoint URL
-    url = getUrl(f'/v3/departures/route_type/{route_type}/stop/{stop_id}')
+    url = getUrl(f'/v3/departures/route_type/{route_type}/stop/{stop_id}?expand=All')
     print(f"search url: {url}")
     
     # Make the GET request

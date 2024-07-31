@@ -88,7 +88,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = True
+lineStatusOn = False
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -841,7 +841,9 @@ async def departures(ctx, station: str):
         depsData = departures_api_request(stop_id, 0)
         # vlineDepsData = departures_api_request(stop_id, 3)
 
-        departures = depsData['departures']# + vlineDepsData ['departures']
+        departures = depsData['departures']
+        runs = depsData['runs']
+
         # make embed with data
         embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
         fields = 0
@@ -858,8 +860,7 @@ async def departures(ctx, station: str):
                 route_id= departure['route_id'] 
                 
                 # get info for the run:
-                runInfo = runs_ref_api_request(run_ref)
-                desto = runInfo["runs"][0]["destination_name"]
+                desto = runs[run_ref]['destination_name']
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
