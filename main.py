@@ -4,4 +4,4 @@ from utils.pageScraper import *
 from utils.trainlogger.stats import *
 from utils.locationFromNumber import *
 
-departures_api_request('1181', 3)
+search_api_request('Lilydale%20Station')

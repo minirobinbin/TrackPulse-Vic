@@ -89,7 +89,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = False
+lineStatusOn = True
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -178,25 +178,11 @@ async def log_rare_trains(rare_trains):
     else:
         await log_channel.send("None found")
 
+def check_lines_in_thread():
+    rare_trains = checkRareTrainsOnRoute()
+    asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
-
-@tasks.loop(minutes=10)
-async def task_loop():
-    if rareCheckerOn:
-        log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
-        await log_channel.send("Checking for trains on lines they aren't meant for")
-        with open('logs.txt', 'a') as file:
-            file.write(f"Checking for rare trains")
-
-        # Create a new thread to run checkRareTrainsOnRoute
-        thread = threading.Thread(target=check_rare_trains_in_thread)
-        thread.start()
-    else:
-        print("Rare checker not enabled!")
-
-@tasks.loop(minutes=15)
-async def task_loop():
-    async def checklines():
+async def checklines():
         global last_message  # Referencing the global variable
         
         send_channel = bot.get_channel(1267419375388987505)
@@ -273,7 +259,26 @@ async def task_loop():
                 writer = csv.writer(file)
                 writer.writerow(statuses)
                         
-    asyncio.create_task(checklines())
+
+@tasks.loop(minutes=10)
+async def task_loop():
+    if rareCheckerOn:
+        log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
+        await log_channel.send("Checking for trains on lines they aren't meant for")
+        with open('logs.txt', 'a') as file:
+            file.write(f"Checking for rare trains")
+
+        # Create a new thread to run checkRareTrainsOnRoute
+        thread = threading.Thread(target=check_rare_trains_in_thread)
+        thread.start()
+    else:
+        print("Rare checker not enabled!")
+
+@tasks.loop(minutes=15)
+async def task_loop():
+    # Create a new thread to run checkRareTrainsOnRoute
+    thread = threading.Thread(target=check_lines_in_thread)
+    thread.start()
 
 
 # Help command
@@ -828,16 +833,21 @@ async def departures(ctx, station: str):
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation.title()}%20Station')
         # find the stop id!
-        def stop_id(data, location):
+        def find_stop_id(data, location):
             for stop in data['stops']:
                 if stop['stop_name'] == location:
                     return stop['stop_id']
-            return None
+            return 'None'
         
-        stop_id = stop_id(search, f"{station.title()} Station")
+        stop_id = find_stop_id(search, f"{station.title()} Station")
         print(f'STOP ID for {station} Station: {stop_id}')
-        if stop_id == None:
-            await ctx.channel.send("Station not found")
+        if stop_id == 'None':
+            # await ctx.channel.send("Station not found, trying for V/LINE")
+            search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
+            stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
+            print(f'STOP ID for {station} Station: {stop_id}')
+
+            
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
         vlineDepsData = departures_api_request(stop_id, 3)
@@ -848,7 +858,7 @@ async def departures(ctx, station: str):
         vruns = vlineDepsData['runs']
 
         # make embed with data
-        embed= discord.Embed(title=f"Next 10 trains departing {station} Station <:train:1241164967789727744>")
+        embed= discord.Embed(title=f"Next trains departing {station} Station")
         fields = 0
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
@@ -876,6 +886,10 @@ async def departures(ctx, station: str):
                 #get route name:
                 route_name = get_route_name(route_id)
                 #add to embed
+                
+                #VLINE PLATFORMS DONT WORK PLS HELP
+                if platform_number == 'None':
+                    platform_number = "unknown"
                 
                 embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
                 fields = fields + 1
@@ -917,7 +931,7 @@ async def departures(ctx, station: str):
                     fields = fields + 1
                     if fields == 9:
                         break
-        embed.set_footer(text="Note: The departures info does not currently take delays into account!")
+        embed.set_footer(text="Note: The departures info does not currently take delays into account.\nV/Line departures info is in Beta")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.channel.send(embed=embed)          
 
