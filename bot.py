@@ -893,7 +893,7 @@ async def departures(ctx, station: str):
                 
                 embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
                 fields = fields + 1
-                if fields == 9:
+                if fields == 3:
                     break
         # the V/Line part
         fields = 0
