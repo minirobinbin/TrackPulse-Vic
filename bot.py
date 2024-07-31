@@ -279,7 +279,7 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
-@tasks.loop(minutes=0.5)
+@tasks.loop(minutes=15)
 async def task_loop():
     # Create a new thread to run checkRareTrainsOnRoute
     thread = threading.Thread(target=check_lines_in_thread)
