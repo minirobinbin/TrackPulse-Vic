@@ -200,6 +200,8 @@ async def task_loop():
         
         send_channel = bot.get_channel(1267419375388987505)
         log_channel = bot.get_channel(1227224314483576982)
+        statuses = [f'{datetime.now()}']
+        
         if lineStatusOn:
             await log_channel.send('Loading line status...')
             embed = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}')
@@ -249,6 +251,7 @@ async def task_loop():
             
                 info = f'{description}'
                 embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
+                statuses.append(description)
                 # if disruptionDescription:
                 #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
              
@@ -261,9 +264,13 @@ async def task_loop():
                 print(f'Failed to delete the old message: {e}')   
                 
             last_message = await send_channel.send(embed=embed)
-
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
+                        
+            # save line status to csv            
+            with open('utils/line-status-data.csv', mode='a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(statuses)
                         
     asyncio.create_task(checklines())
 
