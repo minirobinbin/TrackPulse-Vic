@@ -66,7 +66,7 @@ import zipfile
 
 
 
-print("""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
+print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
