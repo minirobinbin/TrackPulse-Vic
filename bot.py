@@ -861,6 +861,9 @@ async def departures(ctx, station: str):
                 
                 # get info for the run:
                 desto = runs[run_ref]['destination_name']
+                trainType = runs[run_ref]['vehicle_descriptor']['description']
+
+                # train info
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -868,9 +871,9 @@ async def departures(ctx, station: str):
                 route_name = get_route_name(route_id)
                 #add to embed
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
                 fields = fields + 1
-                if fields == 10:
+                if fields == 9:
                     break
         embed.set_footer(text="Note: The departures info does not currently take delays into account!")
         embed.set_thumbnail(url=getStationImage(station))

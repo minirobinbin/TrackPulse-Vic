@@ -51,3 +51,4 @@ def getEmojiColor(line):
         return('<:cityloop:1265627754473197630>')  
     else:
         return('<:other:1245674664647331860>')
+    
