@@ -260,7 +260,7 @@ async def task_loop():
                 # if disruptionDescription:
                 #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
                 
-            last_message = await send_channel.send('@silent',embed=embed)
+            last_message = await send_channel.send(embed=embed)
 
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
