@@ -197,14 +197,6 @@ async def task_loop():
 async def task_loop():
     async def checklines():
         global last_message  # Referencing the global variable
-
-        try:
-            if last_message:  # Check if there is a message to delete
-                print(f"Attempting to delete message ID: {last_message.id}")
-                await last_message.delete()
-                print("Message deleted successfully")
-        except Exception as e:
-            print(f'Failed to delete the old message: {e}')
         
         send_channel = bot.get_channel(1267419375388987505)
         log_channel = bot.get_channel(1227224314483576982)
@@ -259,6 +251,14 @@ async def task_loop():
                 embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
                 # if disruptionDescription:
                 #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+             
+            try:
+                if last_message:  # Check if there is a message to delete
+                    print(f"Attempting to delete message ID: {last_message.id}")
+                    await last_message.delete()
+                    print("Message deleted successfully")
+            except Exception as e:
+                print(f'Failed to delete the old message: {e}')   
                 
             last_message = await send_channel.send(embed=embed)
 
