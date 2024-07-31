@@ -258,7 +258,7 @@ async def task_loop():
                 info = f'{description}'
                 embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
                 # if disruptionDescription:
-                #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+                #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
                 
             last_message = await send_channel.send('@silent',embed=embed)
 
