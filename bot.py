@@ -93,6 +93,7 @@ lineStatusOn = True
 
 # Global variable to keep track of the last sent message
 last_message = None
+comeng_last_message = None
 
 # ENV READING
 config = dotenv_values(".env")
@@ -179,12 +180,13 @@ async def log_rare_trains(rare_trains):
         await log_channel.send("None found")
 
 def check_lines_in_thread():
-    rare_trains = checkRareTrainsOnRoute()
     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
 async def checklines():
         global last_message  # Referencing the global variable
-        
+        global comeng_last_message  # Referencing the global variable
+
+        comeng_channel = bot.get_channel(1268152743638335519)
         send_channel = bot.get_channel(1267419375388987505)
         log_channel = bot.get_channel(1227224314483576982)
         statuses = [f'{datetime.now()}']
@@ -246,11 +248,14 @@ async def checklines():
                 if last_message:  # Check if there is a message to delete
                     print(f"Attempting to delete message ID: {last_message.id}")
                     await last_message.delete()
+                    await comeng_last_message.delete()
                     print("Message deleted successfully")
             except Exception as e:
                 print(f'Failed to delete the old message: {e}')   
                 
             last_message = await send_channel.send(embed=embed)
+            comeng_last_message = await comeng_channel.send(embed=embed)
+
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
                         
@@ -274,7 +279,7 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
-@tasks.loop(minutes=15)
+@tasks.loop(minutes=0.5)
 async def task_loop():
     # Create a new thread to run checkRareTrainsOnRoute
     thread = threading.Thread(target=check_lines_in_thread)
