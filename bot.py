@@ -62,7 +62,6 @@ from utils.routeName import *
 from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
 from utils.photo import *
-import zipfile
 
 
 
