@@ -88,7 +88,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = True
+lineStatusOn = False
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -931,7 +931,7 @@ async def departures(ctx, station: str):
                     route_name = get_route_name(route_id)
                     #add to embed
                     
-                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
+                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}")
                     fields = fields + 1
                     if fields == 3:
                         break
