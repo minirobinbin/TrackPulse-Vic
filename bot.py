@@ -898,7 +898,7 @@ async def departures(ctx, station: str):
                 
                 embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
                 fields = fields + 1
-                if fields == 3:
+                if fields == 9:
                     break
         # the V/Line part
         fields = 0
@@ -934,7 +934,7 @@ async def departures(ctx, station: str):
                     
                     embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
                     fields = fields + 1
-                    if fields == 9:
+                    if fields == 3:
                         break
         embed.set_footer(text="Note: The departures info does not currently take delays into account.\nV/Line departures info is in Beta")
         embed.set_thumbnail(url=getStationImage(station))
