@@ -182,8 +182,6 @@ async def log_rare_trains(rare_trains):
 def check_lines_in_thread():
     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
-# this comment is a change and should be ignored
-
 async def checklines():
         global last_message  # Referencing the global variable
         global comeng_last_message  # Referencing the global variable
