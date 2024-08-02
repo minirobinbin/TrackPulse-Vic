@@ -132,7 +132,7 @@ async def makeMapv2(lat, long, name, geopath):
         # Render the map
         image = m.render(zoom=14)
 
-        # Save the map as a high-resolution PNG file
+        # Save the map as a  PNG file
         image.save(f'temp/{name}-map.png')
         print('saved map')
         
