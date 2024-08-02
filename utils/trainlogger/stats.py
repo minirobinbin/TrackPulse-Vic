@@ -646,9 +646,11 @@ def topOperators(user):
         with open(f'utils/trainlogger/userdata/tram/{user}.csv') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                yarra_trams_count +=1
+                yarra_trams_count +=1    
     except:
         pass   
+    
+      
     # Write the results to a new CSV file
     output = f'temp/{user}TopOperators.csv'
     

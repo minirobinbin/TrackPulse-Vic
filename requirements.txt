@@ -9,5 +9,5 @@ numpy
 pandas
 seaborn
 pandas
-Pillow==9.2.0
-staticmap==0.7.0
+Pillow
+staticmap
