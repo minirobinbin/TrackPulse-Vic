@@ -88,7 +88,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = False
+lineStatusOn = True
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -300,7 +300,7 @@ async def help(ctx):
 </logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
 </logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
         searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
-</search departures:1240101357847838814> - View the next 10 departures for a station
+</search departures:1240101357847838814> - View the next 9 Metro and 3 V/Line departures for a station
 </search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
         await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
