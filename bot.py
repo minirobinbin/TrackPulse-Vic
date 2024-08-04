@@ -93,6 +93,8 @@ lineStatusOn = True
 # Global variable to keep track of the last sent message
 last_message = None
 comeng_last_message = None
+last_message_metro = None
+comeng_last_message_metro = None
 
 # ENV READING
 config = dotenv_values(".env")
@@ -184,6 +186,8 @@ def check_lines_in_thread():
 async def checklines():
         global last_message  # Referencing the global variable
         global comeng_last_message  # Referencing the global variable
+        global last_message_metro  # Referencing the global variable
+        global comeng_last_message_metro  # Referencing the global variable
 
         comeng_channel = bot.get_channel(1268152743638335519)
         send_channel = bot.get_channel(1267419375388987505)
@@ -192,7 +196,8 @@ async def checklines():
         
         if lineStatusOn:
             await log_channel.send('Loading line status...')
-            embed = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}')
+            embed_metro = discord.Embed(title=f'Metro Trains Melbourne', color=0x008dd0)
+            #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
             
             lines = ['Alamein','Belgrave','Craigieburn',"Cranbourne","Mernda","Frankston","Glen%20Waverley","Hurstbridge","Lilydale","Pakenham","Sandringham","Stony%20Point","Sunbury","Upfield","Werribee","Williamstown",]
             for line in lines:
@@ -238,22 +243,26 @@ async def checklines():
                 print(f"Status color: {color}")
             
                 info = f'{description}'
-                embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
+                embed_metro.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
                 statuses.append(description)
                 # if disruptionDescription:
-                #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
-             
+                #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
             try:
                 if last_message:  # Check if there is a message to delete
                     print(f"Attempting to delete message ID: {last_message.id}")
                     await last_message.delete()
                     await comeng_last_message.delete()
+                    await last_message_metro.delete()
+                    await comeng_last_message_metro.delete()
                     print("Message deleted successfully")
             except Exception as e:
-                print(f'Failed to delete the old message: {e}')   
-                
-            last_message = await send_channel.send(embed=embed)
-            comeng_last_message = await comeng_channel.send(embed=embed)
+                print(f'Failed to delete the old message: {e}')
+            
+            last_message=await send_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')
+            comeng_last_message=await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
+            last_message_metro = await send_channel.send(embed=embed_metro)
+            comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
 
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
