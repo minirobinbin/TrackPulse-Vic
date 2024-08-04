@@ -198,8 +198,8 @@ async def checklines():
             await log_channel.send('Loading line status...')
             embed_metro = discord.Embed(title=f'Metro Trains Melbourne', color=0x008dd0)
             #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
-            
-            lines = ['Alamein','Belgrave','Craigieburn',"Cranbourne","Mernda","Frankston","Glen%20Waverley","Hurstbridge","Lilydale","Pakenham","Sandringham","Stony%20Point","Sunbury","Upfield","Werribee","Williamstown",]
+
+            lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
             for line in lines:
                 json_info_str = route_api_request(line, "0")
                 json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
