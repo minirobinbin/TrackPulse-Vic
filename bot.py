@@ -881,8 +881,10 @@ async def departures(ctx, station: str):
                 desto = runs[run_ref]['destination_name']
                 try:
                     trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
                 except:
                     trainType = ''
+                    trainNumber = ''
 
                 # train info
 
@@ -896,7 +898,7 @@ async def departures(ctx, station: str):
                 if platform_number == 'None':
                     platform_number = "unknown"
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType} - {trainNumber}")
                 fields = fields + 1
                 if fields == 9:
                     break
