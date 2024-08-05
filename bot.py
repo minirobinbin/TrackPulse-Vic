@@ -95,6 +95,8 @@ last_message = None
 comeng_last_message = None
 last_message_metro = None
 comeng_last_message_metro = None
+last_message_vline = None
+comeng_last_message_vline = None
 
 # ENV READING
 config = dotenv_values(".env")
@@ -188,6 +190,8 @@ async def checklines():
         global comeng_last_message  # Referencing the global variable
         global last_message_metro  # Referencing the global variable
         global comeng_last_message_metro  # Referencing the global variable
+        global last_message_vline  # Referencing the global variable
+        global comeng_last_message_vline  # Referencing the global variable
 
         comeng_channel = bot.get_channel(1268152743638335519)
         send_channel = bot.get_channel(1267419375388987505)
@@ -251,6 +255,82 @@ async def checklines():
                 # if disruptionDescription:
                 #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
 
+            embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line - In Beta', color=0x7f3e98)
+            lines = ['Geelong - Melbourne','Warrnambool - Melbourne via Apollo Bay & Geelong','Ballarat-Wendouree - Melbourne via Melton','Ararat - Melbourne via Ballarat','Maryborough - Melbourne via  Ballarat','Bendigo - Melbourne via Gisborne','Echuca-Moama - Melbourne via Bendigo or Heathcote','Swan Hill - Melbourne via Bendigo','Seymour - Melbourne via Broadmeadows','Shepparton - Melbourne via Seymour','Albury - Melbourne via Seymour','Traralgon - Melbourne via Morwell & Moe & Pakenham','Bairnsdale - Melbourne via Sale & Traralgon']
+            for line in lines:
+                line = line.replace(" ","%20")
+                json_info_str = route_api_request(line, "3")
+                json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
+                json_info = json.loads(json_info_str)
+                
+                routes = json_info['routes']
+                status = json_info['status']
+                version = status['version']
+                health = status['health']
+                
+                route = routes[0]
+                route_service_status = route['route_service_status']
+                description = route_service_status['description']
+                timestamp = route_service_status['timestamp']
+                route_type = route['route_type']
+                route_id = route['route_id']
+                route_name = route['route_name']
+                route_number = route['route_number']
+                route_gtfs_id = route['route_gtfs_id']
+                geopath = route['geopath']
+                
+                print(f"route id: {route_id}")
+
+                route_name = route_name.replace("Geelong - Melbourne","Geelong")
+                route_name = route_name.replace("Warrnambool - Melbourne via Apollo Bay & Geelong","Warrnambool")
+                route_name = route_name.replace("Ballarat-Wendouree - Melbourne via Melton","Ballarat")
+                route_name = route_name.replace("Ararat - Melbourne via Ballarat","Ararat")
+                route_name = route_name.replace("Maryborough - Melbourne via  Ballarat","Maryborough")
+                route_name = route_name.replace("Bendigo - Melbourne via Gisborne","Bendigo")
+                route_name = route_name.replace("Echuca-Moama - Melbourne via Bendigo or Heathcote","Echuca")
+                route_name = route_name.replace("Swan Hill - Melbourne via Bendigo","Swan Hill")
+                route_name = route_name.replace("Seymour - Melbourne via Broadmeadows","Seymour")
+                route_name = route_name.replace("Shepparton - Melbourne via Seymour","Shepparton")
+                route_name = route_name.replace("Albury - Melbourne via Seymour","Albury")
+                route_name = route_name.replace("Traralgon - Melbourne via Morwell & Moe & Pakenham","Traralgon")
+                route_name = route_name.replace("Bairnsdale - Melbourne via Sale & Traralgon","Bairnsdale")
+                
+                
+                # disruption info
+                disruptionDescription = ""
+                try:
+                    # print(disruption_api_request(route_id))
+                    disruptions = disruption_api_request(route_id)
+                    print(disruptions)
+                    
+                    # Extracting title and description
+                    general_disruption = disruptions["disruptions"]["regional_train"][0]
+                    disruptionTitle = general_disruption["title"]
+                    disruptionDescription = general_disruption["description"]
+
+                    #Extracting the true description for V/Line Rail Distruptions
+                    disruption_vline = general_disruption["disruption_type"]
+                    currentness = general_disruption["disruption_status"]
+
+                    if currentness == "Planned":
+                        disruption_vline = "Good Service"
+                    
+                    if disruption_vline == "Service Information":
+                        disruption_vline = "Good Service"
+
+                            
+                except Exception as e:
+                    print(e)
+
+                color = genColor(disruption_vline)
+                print(f"Status color: {color}")
+            
+                info = f'{disruption_vline}'
+                embed_vline.add_field(name=f'{route_name}', value=f'{statusEmoji(disruption_vline)} {info}', inline=True)
+                statuses.append(disruption_vline)
+                # if disruptionDescription:
+                #     embed_vline.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
             try:
                 if last_message:  # Check if there is a message to delete
                     print(f"Attempting to delete message ID: {last_message.id}")
@@ -258,6 +338,8 @@ async def checklines():
                     await comeng_last_message.delete()
                     await last_message_metro.delete()
                     await comeng_last_message_metro.delete()
+                    await last_message_vline.delete()
+                    await comeng_last_message_vline.delete()
                     print("Message deleted successfully")
             except Exception as e:
                 print(f'Failed to delete the old message: {e}')
@@ -266,6 +348,8 @@ async def checklines():
             comeng_last_message=await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
             last_message_metro = await send_channel.send(embed=embed_metro)
             comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
+            last_message_vline = await send_channel.send(embed=embed_vline)
+            comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
 
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
