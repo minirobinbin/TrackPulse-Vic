@@ -196,7 +196,8 @@ async def checklines():
         
         if lineStatusOn:
             await log_channel.send('Loading line status...')
-            embed_metro = discord.Embed(title=f'Metro Trains Melbourne', color=0x008dd0)
+
+            embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Trains Melbourne', color=0x008dd0)
             #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
 
             lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
