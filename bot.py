@@ -18,6 +18,7 @@
 import operator
 from shutil import ExecError
 from tracemalloc import stop
+from click import password_option
 from cycler import V
 from discord.ext import commands, tasks
 from discord import app_commands
@@ -88,7 +89,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = True
+lineStatusOn = False
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -205,6 +206,7 @@ async def checklines():
             #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
 
             lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
+
             for line in lines:
                 json_info_str = route_api_request(line, "0")
                 json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
@@ -976,8 +978,10 @@ async def departures(ctx, station: str):
                 desto = runs[run_ref]['destination_name']
                 try:
                     trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
                 except:
                     trainType = ''
+                    trainNumber = ''
 
                 # train info
 
@@ -991,13 +995,13 @@ async def departures(ctx, station: str):
                 if platform_number == 'None':
                     platform_number = "unknown"
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType} - {trainNumber}")
                 fields = fields + 1
                 if fields == 9:
                     break
         # the V/Line part
         fields = 0
-        runIDS = ['']
+        departureTimes = ['']
         for departure in vdepartures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
@@ -1005,11 +1009,11 @@ async def departures(ctx, station: str):
                 pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
-                run_ref = departure['run_ref']
-                if run_ref in runIDS:
-                    break
+                if estimated_departure_utc in departureTimes:
+                    print(f'the deparute with that time was already added: {scheduled_departure_utc} -- {desto}')
                 else:
-                    runIDS.append(run_ref)
+                    departureTimes.append(estimated_departure_utc)
+                    run_ref = departure['run_ref']
                     at_platform = departure['at_platform']
                     platform_number = departure['platform_number']
                     route_id= departure['route_id'] 
@@ -1027,7 +1031,7 @@ async def departures(ctx, station: str):
                     route_name = get_route_name(route_id)
                     #add to embed
                     
-                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}")
+                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}**")
                     fields = fields + 1
                     if fields == 3:
                         break
