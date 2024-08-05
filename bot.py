@@ -224,6 +224,8 @@ async def checklines():
                 
                 print(f"route id: {route_id}")
                 
+                if description == "Service Information":
+                        description = "Good Service"
                 
                 # disruption info
                 disruptionDescription = ""
