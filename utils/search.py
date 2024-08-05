@@ -45,6 +45,26 @@ def route_api_request(route_id, route_type):
     else:
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
+
+def route_api_request_id(route_id):
+    
+    # API endpoint URL
+    url = getUrl(f'/v3/routes/?route_id={route_id}')
+    print(f"Route search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        formatted = format(data)
+        print(formatted)
+        return(formatted)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
         
 def routes_list(type):
     # API endpoint URL
