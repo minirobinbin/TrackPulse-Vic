@@ -89,7 +89,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = False
+lineStatusOn = True
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -194,11 +194,9 @@ async def checklines():
         global last_message_vline  # Referencing the global variable
         global comeng_last_message_vline  # Referencing the global variable
 
-        comeng_channel = bot.get_channel(1268152743638335519)
-        send_channel = bot.get_channel(1267419375388987505)
-        log_channel = bot.get_channel(1227224314483576982)
         statuses = [f'{datetime.now()}']
-        
+        log_channel = bot.get_channel(int(config['STARTUP_CHANNEL_ID']))
+
         if lineStatusOn:
             await log_channel.send('Loading line status...')
 
@@ -257,7 +255,7 @@ async def checklines():
                 # if disruptionDescription:
                 #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
 
-            embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line - In Beta', color=0x7f3e98)
+            embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line', color=0x7f3e98)
             lines = ['Geelong - Melbourne','Warrnambool - Melbourne via Apollo Bay & Geelong','Ballarat-Wendouree - Melbourne via Melton','Ararat - Melbourne via Ballarat','Maryborough - Melbourne via  Ballarat','Bendigo - Melbourne via Gisborne','Echuca-Moama - Melbourne via Bendigo or Heathcote','Swan Hill - Melbourne via Bendigo','Seymour - Melbourne via Broadmeadows','Shepparton - Melbourne via Seymour','Albury - Melbourne via Seymour','Traralgon - Melbourne via Morwell & Moe & Pakenham','Bairnsdale - Melbourne via Sale & Traralgon']
             for line in lines:
                 line = line.replace(" ","%20")
@@ -345,13 +343,26 @@ async def checklines():
                     print("Message deleted successfully")
             except Exception as e:
                 print(f'Failed to delete the old message: {e}')
+
+            comeng_channel = bot.get_channel(int(config['LINE_STATUS_2_CHANNEL_ID']))
+            print(comeng_channel)
+            send_channel = bot.get_channel(int(config['LINE_STATUS_CHANNEL_ID']))
+            print(send_channel)
             
-            last_message=await send_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')
-            comeng_last_message=await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
-            last_message_metro = await send_channel.send(embed=embed_metro)
-            comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
-            last_message_vline = await send_channel.send(embed=embed_vline)
-            comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
+            if send_channel is None:
+                print("ERROR: send_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+            if comeng_channel is None:
+                print("ERROR: comeng_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+            
+            try:
+                last_message= await send_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')
+                comeng_last_message= await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
+                last_message_metro = await send_channel.send(embed=embed_metro)
+                comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
+                last_message_vline = await send_channel.send(embed=embed_vline)
+                comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
+            except Exception as e:
+                print(f'ERROR: {e}')
 
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
