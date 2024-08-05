@@ -18,7 +18,6 @@
 import operator
 from shutil import ExecError
 from tracemalloc import stop
-from click import password_option
 from cycler import V
 from discord.ext import commands, tasks
 from discord import app_commands
