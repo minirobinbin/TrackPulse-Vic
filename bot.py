@@ -88,7 +88,7 @@ file.close()
 
 
 rareCheckerOn = False
-lineStatusOn = True
+lineStatusOn = False
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -998,12 +998,9 @@ async def departures(ctx, station: str):
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
-                route_name = get_route_name(route_id)
-                #add to embed
+                route_name = get_route_name(route_id)                
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
-                if platform_number == 'None':
-                    platform_number = "unknown"
                 
                 embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType} - {trainNumber}")
                 fields = fields + 1
