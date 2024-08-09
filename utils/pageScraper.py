@@ -12,7 +12,7 @@ def transportVicSearch(search):
     print('setting up browser')
     options = Options()
     options.headless = True
-    service = Service(ChromeDriverManager().install())
+    service = Service("utils/chromedriver/chromedriver.exe")
     driver = webdriver.Chrome(service=service, options=options)
     
     url = f'https://vic.transportsg.me/metro/tracker/consist?consist={search}'
