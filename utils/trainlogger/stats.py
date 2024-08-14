@@ -637,7 +637,7 @@ def getLongestTrips(user):
 
         # Check if the trip details list has at least 5 elements
         if len(trip_details) > 4:
-            formatted_trips += f'{distance}km - {trip_details[5]} to {trip_details[6]}  `Log Number {trip_details[0]}`\n'
+            formatted_trips += f'{distance}km - {trip_details[5]} to {trip_details[6]} `Log {trip_details[0]}`\n'
         else:
             formatted_trips += f'{distance}km - Incomplete Data `Log Number {trip_details[0]}`\n'
 
