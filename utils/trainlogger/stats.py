@@ -609,10 +609,59 @@ def getTotalTravelDistance(user):
     
     return distance
 
+def getLongestTrips(user):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    distance_list = []
+    
+    # Open and read the CSV file
+    with open(filename, newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            col6 = row[5]
+            col7 = row[6]
+            try:
+                distance = getStationDistance(load_station_data('utils/trainlogger/stationDistances.csv'), col6, col7)
+                distance_list.append((row, distance))
+                print(f"{col6} to {col7}: {distance}")
+            except:
+                print(f'{col6} to {col7} could not be calculated!')
+    
+    # Sort the list by distance in descending order (longest to shortest)
+    distance_list.sort(key=lambda x: x[1], reverse=True)
+    print(distance_list)
+    # Convert the list
+    formatted_trips = ''
+    for distance_list in distance_list:
+        trip_details = distance_list[0]
+        distance = distance_list[1]
+
+        # Check if the trip details list has at least 5 elements
+        if len(trip_details) > 4:
+            formatted_trips += f'{distance}km - {trip_details[5]} to {trip_details[6]}  `Log Number {trip_details[0]}`\n'
+        else:
+            formatted_trips += f'{distance}km - Incomplete Data `Log Number {trip_details[0]}`\n'
+
+    #     {
+    #         "Trip Number": trip[0][0],
+    #         "Train Set": trip[0][1],
+    #         "Train Type": trip[0][2],
+    #         "Date": trip[0][3],
+    #         "Route": {
+    #             "Start": trip[0][4],
+    #             "End": trip[0][-1],
+    #             "Stops": trip[0][4:]
+    #         },
+    #         "Distance (km)": trip[1]
+    #     }
+    #     for trip in trips
+    # ]
+    
+    return formatted_trips
+
 def topOperators(user):
     metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'N Class', 'Sprinter']
-    heritage = ['Tait', 'K Class',]
+    heritage = ['Tait', 'K Class']
     
     sydneyTrainsLines = ['T1', 'T2', 'T3', "T4", 'T5', "T6", 'T7', 'T8', 'T9']
     nswTrainsLines = ['Blue Mountains Line', 'Central Coast & Newcastle Line', 'Hunter Line', "South Coast Line", 'Southern Highlands Line', "North Coast Region", 'North Western Region', 'Southern Region', 'Western Region']
