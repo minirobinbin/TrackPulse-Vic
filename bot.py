@@ -2235,6 +2235,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
     app_commands.Choice(name="Lines", value="lines"),
     app_commands.Choice(name="Stations", value="stations"),
     app_commands.Choice(name="Trips", value="pairs"),
+    app_commands.Choice(name="Trip Length (VIC train only)", value="length"),
     app_commands.Choice(name="Sets", value="sets"),
     app_commands.Choice(name="Dates", value="dates"),
     app_commands.Choice(name="Types", value="types"),
@@ -2273,6 +2274,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
             try:
                 if stat == 'operators':
                     data = topOperators(userid.name)
+                elif stat == 'length':
+                    data = getLongestTrips(userid.name)  
                 elif mode == 'train':
                     data = topStats(userid.name, statSearch)
                 elif mode == 'tram':
@@ -2297,6 +2300,34 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('User has no logs!')  
+        if stat == 'length':
+            try:
+                lines = data.splitlines()
+                chunks = []
+                current_chunk = ""
+                await ctx.response.send_message('Here are your longest trips:')
+
+                for line in lines:
+                    # Check if adding this line would exceed the max_length
+                    if len(current_chunk) + len(line) + 1 > 1500:  # +1 for the newline character
+                        chunks.append(current_chunk)
+                        current_chunk = line
+                    else:
+                        if current_chunk:
+                            current_chunk += "\n" + line
+                        else:
+                            current_chunk = line
+
+                # Add the last chunk
+                if current_chunk:
+                    chunks.append(current_chunk)
+                    
+                for i, chunk in enumerate(chunks):
+                    await ctx.channel.send(chunk)
+                
+            except Exception as e:
+                await ctx.response.send_message(f"Error: `{e}`")
+                
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
         with open(csv_filename, mode='w', newline='') as csv_file:
