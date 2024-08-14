@@ -640,21 +640,6 @@ def getLongestTrips(user):
             formatted_trips += f'{distance}km - {trip_details[5]} to {trip_details[6]} `Log {trip_details[0]}`\n'
         else:
             formatted_trips += f'{distance}km - Incomplete Data `Log Number {trip_details[0]}`\n'
-
-    #     {
-    #         "Trip Number": trip[0][0],
-    #         "Train Set": trip[0][1],
-    #         "Train Type": trip[0][2],
-    #         "Date": trip[0][3],
-    #         "Route": {
-    #             "Start": trip[0][4],
-    #             "End": trip[0][-1],
-    #             "Stops": trip[0][4:]
-    #         },
-    #         "Distance (km)": trip[1]
-    #     }
-    #     for trip in trips
-    # ]
     
     return formatted_trips
 

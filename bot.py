@@ -1059,13 +1059,13 @@ async def train_line(ctx):
     # embed.set_image(url=getImage(train.upper()))
     
     # Create a new thread to call the function
-    days_queue = queue.Queue()
-    thread = threading.Thread(target=montagueDays, args=(days_queue,))
-    thread.start()
+    # days_queue = queue.Queue()
+    # thread = threading.Thread(target=montagueDays, args=(days_queue,))
+    # thread.start()
 
-    thread.join()
+    # thread.join()
     # Retrieve the result from the queue
-    days = days_queue.get()
+    # days = days_queue.get()
     
     api_queue = queue.Queue()
     thread = threading.Thread(target=montagueAPI, args=(api_queue,))    
@@ -1086,7 +1086,7 @@ async def train_line(ctx):
     date_week = apiData["date_week"]
     date_aus_string = apiData["date_aus_string"]
     
-    embed.add_field(name=f"{days} days", value='\u200b', inline=False)
+    embed.add_field(name=f"{convert_to_unix_time(f'{date}T00:00:00Z')} days", value='\u200b', inline=False)
 
     embed.add_field(name="Current Champion:", value=name)
     embed.add_field(name="Date:", value=date)
