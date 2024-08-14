@@ -10,12 +10,13 @@ def topStats(user, stat):
     with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
-        # Counters to keep track of line and station frequencies
+        # Counters to keep track of line, station, set, date, type, and station pair frequencies
         line_counter = Counter()
         station_counter = Counter()
         set_counter = Counter()
         date_counter = Counter()
         type_counter = Counter()
+        pair_counter = Counter()
 
         # Process each row in the CSV
         for row in reader:
@@ -24,28 +25,30 @@ def topStats(user, stat):
             start_station = row[5]
             end_station = row[6]
             set = row[1]
-            type = row[2]
+            train_type = row[2]
             date = row[3]
+            pair = (start_station, end_station)
+            
             # Update counters
             line_counter.update([line])
             station_counter.update([start_station, end_station])
             set_counter.update([set])
-            type_counter.update([type])
+            type_counter.update([train_type])
             date_counter.update([date])
+            pair_counter.update([pair])
 
-        # Get the 10 most common lines
+        # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
         most_common_stations = station_counter.most_common(100000)
         most_common_sets = set_counter.most_common(100000)
         most_common_types = type_counter.most_common(100000)
         most_common_dates = date_counter.most_common(100000)
-
-        # Get the 10 most common stations
+        most_common_pairs = pair_counter.most_common(100000)
 
         # Prepare the results as a list
         results = []
                 
-        # Append the most common lines to the results list
+        # Append the most common stats to the results list
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
@@ -56,29 +59,31 @@ def topStats(user, stat):
             for set, count in most_common_sets:
                 results.append(f"{set}: {count} times")
         if stat == "types":
-            for type, count in most_common_types:
-                results.append(f"{type}: {count} times")
+            for train_type, count in most_common_types:
+                results.append(f"{train_type}: {count} times")
         if stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        # # Append the most common stations to the results list
-        # results.append("\nThe 10 most frequent stations are:")
-        # for station, count in most_common_stations:
-        #     results.append(f"{station}: {count} times")
+        if stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
+
         print(results)
         return results
+
     
 # tram version
 def tramTopStats(user, stat):
     with open(f'utils/trainlogger/userdata/tram/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
-        # Counters to keep track of line and station frequencies
+        # Counters to keep track of line, station, set, date, type, and station pair frequencies
         line_counter = Counter()
         station_counter = Counter()
         set_counter = Counter()
         date_counter = Counter()
         type_counter = Counter()
+        pair_counter = Counter()
 
         # Process each row in the CSV
         for row in reader:
@@ -87,28 +92,30 @@ def tramTopStats(user, stat):
             start_station = row[5]
             end_station = row[6]
             set = row[1]
-            type = row[2]
+            train_type = row[2]
             date = row[3]
+            pair = (start_station, end_station)
+            
             # Update counters
             line_counter.update([line])
             station_counter.update([start_station, end_station])
             set_counter.update([set])
-            type_counter.update([type])
+            type_counter.update([train_type])
             date_counter.update([date])
+            pair_counter.update([pair])
 
-        # Get the 10 most common lines
+        # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
         most_common_stations = station_counter.most_common(100000)
         most_common_sets = set_counter.most_common(100000)
         most_common_types = type_counter.most_common(100000)
         most_common_dates = date_counter.most_common(100000)
-
-        # Get the 10 most common stations
+        most_common_pairs = pair_counter.most_common(100000)
 
         # Prepare the results as a list
         results = []
                 
-        # Append the most common lines to the results list
+        # Append the most common stats to the results list
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
@@ -119,15 +126,15 @@ def tramTopStats(user, stat):
             for set, count in most_common_sets:
                 results.append(f"{set}: {count} times")
         if stat == "types":
-            for type, count in most_common_types:
-                results.append(f"{type}: {count} times")
+            for train_type, count in most_common_types:
+                results.append(f"{train_type}: {count} times")
         if stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        # # Append the most common stations to the results list
-        # results.append("\nThe 10 most frequent stations are:")
-        # for station, count in most_common_stations:
-        #     results.append(f"{station}: {count} times")
+        if stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
+
         print(results)
         return results
 
@@ -137,12 +144,13 @@ def sydneyTrainTopStats(user, stat):
     with open(f'utils/trainlogger/userdata/sydney-trains/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
-        # Counters to keep track of line and station frequencies
+        # Counters to keep track of line, station, set, date, type, and station pair frequencies
         line_counter = Counter()
         station_counter = Counter()
         set_counter = Counter()
         date_counter = Counter()
         type_counter = Counter()
+        pair_counter = Counter()
 
         # Process each row in the CSV
         for row in reader:
@@ -151,28 +159,30 @@ def sydneyTrainTopStats(user, stat):
             start_station = row[5]
             end_station = row[6]
             set = row[1]
-            type = row[2]
+            train_type = row[2]
             date = row[3]
+            pair = (start_station, end_station)
+            
             # Update counters
             line_counter.update([line])
             station_counter.update([start_station, end_station])
             set_counter.update([set])
-            type_counter.update([type])
+            type_counter.update([train_type])
             date_counter.update([date])
+            pair_counter.update([pair])
 
-        # Get the 10 most common lines
+        # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
         most_common_stations = station_counter.most_common(100000)
         most_common_sets = set_counter.most_common(100000)
         most_common_types = type_counter.most_common(100000)
         most_common_dates = date_counter.most_common(100000)
-
-        # Get the 10 most common stations
+        most_common_pairs = pair_counter.most_common(100000)
 
         # Prepare the results as a list
         results = []
                 
-        # Append the most common lines to the results list
+        # Append the most common stats to the results list
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
@@ -183,15 +193,15 @@ def sydneyTrainTopStats(user, stat):
             for set, count in most_common_sets:
                 results.append(f"{set}: {count} times")
         if stat == "types":
-            for type, count in most_common_types:
-                results.append(f"{type}: {count} times")
+            for train_type, count in most_common_types:
+                results.append(f"{train_type}: {count} times")
         if stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        # # Append the most common stations to the results list
-        # results.append("\nThe 10 most frequent stations are:")
-        # for station, count in most_common_stations:
-        #     results.append(f"{station}: {count} times")
+        if stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
+
         print(results)
         return results
 
@@ -200,12 +210,13 @@ def sydneyTramTopStats(user, stat):
     with open(f'utils/trainlogger/userdata/sydney-trams/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
-        # Counters to keep track of line and station frequencies
+        # Counters to keep track of line, station, set, date, type, and station pair frequencies
         line_counter = Counter()
         station_counter = Counter()
         set_counter = Counter()
         date_counter = Counter()
         type_counter = Counter()
+        pair_counter = Counter()
 
         # Process each row in the CSV
         for row in reader:
@@ -214,28 +225,30 @@ def sydneyTramTopStats(user, stat):
             start_station = row[5]
             end_station = row[6]
             set = row[1]
-            type = row[2]
+            train_type = row[2]
             date = row[3]
+            pair = (start_station, end_station)
+            
             # Update counters
             line_counter.update([line])
             station_counter.update([start_station, end_station])
             set_counter.update([set])
-            type_counter.update([type])
+            type_counter.update([train_type])
             date_counter.update([date])
+            pair_counter.update([pair])
 
-        # Get the 10 most common lines
+        # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
         most_common_stations = station_counter.most_common(100000)
         most_common_sets = set_counter.most_common(100000)
         most_common_types = type_counter.most_common(100000)
         most_common_dates = date_counter.most_common(100000)
-
-        # Get the 10 most common stations
+        most_common_pairs = pair_counter.most_common(100000)
 
         # Prepare the results as a list
         results = []
                 
-        # Append the most common lines to the results list
+        # Append the most common stats to the results list
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
@@ -246,15 +259,15 @@ def sydneyTramTopStats(user, stat):
             for set, count in most_common_sets:
                 results.append(f"{set}: {count} times")
         if stat == "types":
-            for type, count in most_common_types:
-                results.append(f"{type}: {count} times")
+            for train_type, count in most_common_types:
+                results.append(f"{train_type}: {count} times")
         if stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        # # Append the most common stations to the results list
-        # results.append("\nThe 10 most frequent stations are:")
-        # for station, count in most_common_stations:
-        #     results.append(f"{station}: {count} times")
+        if stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
+
         print(results)
         return results
     
@@ -263,12 +276,13 @@ def busTopStats(user, stat):
     with open(f'utils/trainlogger/userdata/bus/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
-        # Counters to keep track of line and station frequencies
+        # Counters to keep track of line, station, set, date, type, and station pair frequencies
         line_counter = Counter()
         station_counter = Counter()
         set_counter = Counter()
         date_counter = Counter()
         type_counter = Counter()
+        pair_counter = Counter()
 
         # Process each row in the CSV
         for row in reader:
@@ -277,28 +291,30 @@ def busTopStats(user, stat):
             start_station = row[5]
             end_station = row[6]
             set = row[1]
-            type = row[2]
+            train_type = row[2]
             date = row[3]
+            pair = (start_station, end_station)
+            
             # Update counters
             line_counter.update([line])
             station_counter.update([start_station, end_station])
             set_counter.update([set])
-            type_counter.update([type])
+            type_counter.update([train_type])
             date_counter.update([date])
+            pair_counter.update([pair])
 
-        # Get the 10 most common lines
+        # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
         most_common_stations = station_counter.most_common(100000)
         most_common_sets = set_counter.most_common(100000)
         most_common_types = type_counter.most_common(100000)
         most_common_dates = date_counter.most_common(100000)
-
-        # Get the 10 most common stations
+        most_common_pairs = pair_counter.most_common(100000)
 
         # Prepare the results as a list
         results = []
                 
-        # Append the most common lines to the results list
+        # Append the most common stats to the results list
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
@@ -309,18 +325,17 @@ def busTopStats(user, stat):
             for set, count in most_common_sets:
                 results.append(f"{set}: {count} times")
         if stat == "types":
-            for type, count in most_common_types:
-                results.append(f"{type}: {count} times")
+            for train_type, count in most_common_types:
+                results.append(f"{train_type}: {count} times")
         if stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        # # Append the most common stations to the results list
-        # results.append("\nThe 10 most frequent stations are:")
-        # for station, count in most_common_stations:
-        #     results.append(f"{station}: {count} times")
+        if stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
+
         print(results)
         return results
-
 
 def allTopStats(user, stat):
     file_pathsChecker = [
@@ -338,6 +353,7 @@ def allTopStats(user, stat):
     set_counter = Counter()
     date_counter = Counter()
     type_counter = Counter()
+    pair_counter = Counter()
 
     # Process each file in the list
     for file_path in file_paths:
@@ -354,12 +370,15 @@ def allTopStats(user, stat):
                     set = row[1]
                     type = row[2]
                     date = row[3]
+                    pair = (start_station, end_station)
+
                     # Update counters
                     line_counter.update([line])
                     station_counter.update([start_station, end_station])
                     set_counter.update([set])
                     type_counter.update([type])
                     date_counter.update([date])
+                    pair_counter.update([pair])
 
     # Get the most common entries
     most_common_lines = line_counter.most_common(100000)
@@ -367,6 +386,7 @@ def allTopStats(user, stat):
     most_common_sets = set_counter.most_common(100000)
     most_common_types = type_counter.most_common(100000)
     most_common_dates = date_counter.most_common(100000)
+    most_common_pairs = pair_counter.most_common(100000)
 
     # Prepare the results as a list
     results = []
@@ -387,6 +407,9 @@ def allTopStats(user, stat):
     elif stat == "dates":
         for date, count in most_common_dates:
             results.append(f"{date}: {count} times")
+    elif stat == "pairs":
+            for (start, end), count in most_common_pairs:
+                results.append(f"{start} to {end}: {count} times")
     print(results)
     return results 
 
@@ -455,6 +478,10 @@ def globalTopStats(stat):
     elif stat == "dates":
         for date, count in most_common_dates:
             results.append(f"{date}: {count} times")
+    if stat == "pairs":
+        results.append('Global trips unavailable')
+            # for (start, end), count in most_common_pairs:
+            #     results.append(f"{start} to {end}: {count} times")
 
     print(results)
     return results

@@ -988,19 +988,6 @@ async def train_line(ctx):
     embed.set_author(name='howmanydayssincemontaguestreetbridgehasbeenhit.com', url="https://howmanydayssincemontaguestreetbridgehasbeenhit.com")
     await ctx.channel.send(embed=embed)'''
     
-# the map thing
-# IMPORTANT: Make this a thread!
-'''@bot.tree.command(name="map", description="testing")
-async def map(ctx):
-    channel = ctx.channel
-    await ctx.response.send_message("Generating Map, please wait", ephemeral=True)
-
-    genMap()
-    file = discord.File("utils/map/gen.png", filename="gen.png")
-    embed = discord.Embed(title='Metro Trains Location', color=0x5865f2)
-    embed.set_image(url="attachment://gen.png")
-    await channel.send(file=file, embed=embed)'''
-    
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1.", ultrahard = "Ultra hard mode.")
 async def game(ctx, ultrahard: bool=False, rounds: int = 1):
@@ -1412,31 +1399,7 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 
     # Run in a separate task
     asyncio.create_task(log())
-    
 
-# export command
-
-# NOT WORKING FIX SOON!
-'''@trainlogs.command(name='export', description='Export all your saved logs')
-async def export(ctx):
-    def create_zip_file(file_paths, output_filename):
-        with zipfile.ZipFile(output_filename, 'w') as zipf:
-            for file_path in file_paths:
-                if os.path.isfile(file_path):
-                    zipf.write(file_path, os.path.basename(file_path))
-                else:
-                    print(f"Warning: File not found - {file_path}")
-    file_paths = [
-        f'utils/trainlogger/userdata/{ctx.user.name}.csv'
-        f'utils/trainlogger/userdata/tram/{ctx.user.name}.csv'
-        f'utils/trainlogger/userdata/sydney-trains/{ctx.user.name}.csv'
-        f'utils/trainlogger/userdata/sydney-trams/{ctx.user.name}.csv'
-    ]
-    output_filename = f'temp/export-{ctx.user.name}.zip'
-    create_zip_file(file_paths, output_filename)
-
-    zipper = discord.File(f'temp/export-{ctx.user.name}.zip')
-    ctx.response.send_message('Here are your files:', file=file, ephemeral=True)'''
     
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
@@ -2164,6 +2127,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None):
 @app_commands.choices(stat=[
     app_commands.Choice(name="Lines", value="lines"),
     app_commands.Choice(name="Stations", value="stations"),
+    app_commands.Choice(name="Trips", value="pairs"),
     app_commands.Choice(name="Sets", value="sets"),
     app_commands.Choice(name="Dates", value="dates"),
     app_commands.Choice(name="Types", value="types"),
@@ -2318,13 +2282,14 @@ async def profile(ctx, user: discord.User = None):
             sets = topStats(username, 'sets')
             trains = topStats(username, 'types')
             dates = topStats(username, 'dates')
-          
+            trips = topStats(username, 'pairs')
+
             #other stats stuff:
             eDate =lowestDate(username, 'train')
             LeDate =highestDate(username, 'train')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\n**Total logs:** `{logAmounts(username, "train")}`\n**Stations visited:** `{stationPercent(username)}`\n**Lines visited:** `{linePercent(username)}`\n**Distance:** `{round(getTotalTravelDistance(username))}km`')
+            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n**Top Trip:** {trips[0]}\n\nUser started logging {joined}\nLast log {last}\n**Total logs:** `{logAmounts(username, "train")}`\n**Stations visited:** `{stationPercent(username)}`\n**Lines visited:** `{linePercent(username)}`\n**Distance:** `{round(getTotalTravelDistance(username))}km`')
                         
         except FileNotFoundError:
             embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
