@@ -93,6 +93,10 @@ lineStatusOn = False
 # Global variable to keep track of the last sent message
 last_message = None
 comeng_last_message = None
+last_message_metro = None
+comeng_last_message_metro = None
+last_message_vline = None
+comeng_last_message_vline = None
 
 # ENV READING
 config = dotenv_values(".env")
@@ -184,17 +188,22 @@ def check_lines_in_thread():
 async def checklines():
         global last_message  # Referencing the global variable
         global comeng_last_message  # Referencing the global variable
+        global last_message_metro  # Referencing the global variable
+        global comeng_last_message_metro  # Referencing the global variable
+        global last_message_vline  # Referencing the global variable
+        global comeng_last_message_vline  # Referencing the global variable
 
-        comeng_channel = bot.get_channel(1268152743638335519)
-        send_channel = bot.get_channel(1267419375388987505)
-        log_channel = bot.get_channel(1227224314483576982)
         statuses = [f'{datetime.now()}']
-        
+        log_channel = bot.get_channel(int(config['STARTUP_CHANNEL_ID']))
+
         if lineStatusOn:
             await log_channel.send('Loading line status...')
-            embed = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}')
-            
-            lines = ['Alamein','Belgrave','Craigieburn',"Cranbourne","Mernda","Frankston","Glen%20Waverley","Hurstbridge","Lilydale","Pakenham","Sandringham","Stony%20Point","Sunbury","Upfield","Werribee","Williamstown",]
+
+            embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Trains Melbourne', color=0x008dd0)
+            #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
+
+            lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
+
             for line in lines:
                 json_info_str = route_api_request(line, "0")
                 json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
@@ -218,6 +227,8 @@ async def checklines():
                 
                 print(f"route id: {route_id}")
                 
+                if description == "Service Information":
+                        description = "Good Service"
                 
                 # disruption info
                 disruptionDescription = ""
@@ -238,22 +249,119 @@ async def checklines():
                 print(f"Status color: {color}")
             
                 info = f'{description}'
-                embed.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
+                embed_metro.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
                 statuses.append(description)
                 # if disruptionDescription:
-                #     embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
-             
+                #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
+            embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line', color=0x7f3e98)
+            lines = ['Geelong - Melbourne','Warrnambool - Melbourne via Apollo Bay & Geelong','Ballarat-Wendouree - Melbourne via Melton','Ararat - Melbourne via Ballarat','Maryborough - Melbourne via  Ballarat','Bendigo - Melbourne via Gisborne','Echuca-Moama - Melbourne via Bendigo or Heathcote','Swan Hill - Melbourne via Bendigo','Seymour - Melbourne via Broadmeadows','Shepparton - Melbourne via Seymour','Albury - Melbourne via Seymour','Traralgon - Melbourne via Morwell & Moe & Pakenham','Bairnsdale - Melbourne via Sale & Traralgon']
+            for line in lines:
+                line = line.replace(" ","%20")
+                json_info_str = route_api_request(line, "3")
+                json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
+                json_info = json.loads(json_info_str)
+                
+                routes = json_info['routes']
+                status = json_info['status']
+                version = status['version']
+                health = status['health']
+                
+                route = routes[0]
+                route_service_status = route['route_service_status']
+                description = route_service_status['description']
+                timestamp = route_service_status['timestamp']
+                route_type = route['route_type']
+                route_id = route['route_id']
+                route_name = route['route_name']
+                route_number = route['route_number']
+                route_gtfs_id = route['route_gtfs_id']
+                geopath = route['geopath']
+                
+                print(f"route id: {route_id}")
+
+                route_name = route_name.replace("Geelong - Melbourne","Geelong")
+                route_name = route_name.replace("Warrnambool - Melbourne via Apollo Bay & Geelong","Warrnambool")
+                route_name = route_name.replace("Ballarat-Wendouree - Melbourne via Melton","Ballarat")
+                route_name = route_name.replace("Ararat - Melbourne via Ballarat","Ararat")
+                route_name = route_name.replace("Maryborough - Melbourne via  Ballarat","Maryborough")
+                route_name = route_name.replace("Bendigo - Melbourne via Gisborne","Bendigo")
+                route_name = route_name.replace("Echuca-Moama - Melbourne via Bendigo or Heathcote","Echuca")
+                route_name = route_name.replace("Swan Hill - Melbourne via Bendigo","Swan Hill")
+                route_name = route_name.replace("Seymour - Melbourne via Broadmeadows","Seymour")
+                route_name = route_name.replace("Shepparton - Melbourne via Seymour","Shepparton")
+                route_name = route_name.replace("Albury - Melbourne via Seymour","Albury")
+                route_name = route_name.replace("Traralgon - Melbourne via Morwell & Moe & Pakenham","Traralgon")
+                route_name = route_name.replace("Bairnsdale - Melbourne via Sale & Traralgon","Bairnsdale")
+                
+                
+                # disruption info
+                disruptionDescription = ""
+                try:
+                    # print(disruption_api_request(route_id))
+                    disruptions = disruption_api_request(route_id)
+                    print(disruptions)
+                    
+                    # Extracting title and description
+                    general_disruption = disruptions["disruptions"]["regional_train"][0]
+                    disruptionTitle = general_disruption["title"]
+                    disruptionDescription = general_disruption["description"]
+
+                    #Extracting the true description for V/Line Rail Distruptions
+                    disruption_vline = general_disruption["disruption_type"]
+                    currentness = general_disruption["disruption_status"]
+
+                    if currentness == "Planned":
+                        disruption_vline = "Good Service"
+                    
+                    if disruption_vline == "Service Information":
+                        disruption_vline = "Good Service"
+
+                            
+                except Exception as e:
+                    print(e)
+
+                color = genColor(disruption_vline)
+                print(f"Status color: {color}")
+            
+                info = f'{disruption_vline}'
+                embed_vline.add_field(name=f'{route_name}', value=f'{statusEmoji(disruption_vline)} {info}', inline=True)
+                statuses.append(disruption_vline)
+                # if disruptionDescription:
+                #     embed_vline.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
             try:
                 if last_message:  # Check if there is a message to delete
                     print(f"Attempting to delete message ID: {last_message.id}")
                     await last_message.delete()
                     await comeng_last_message.delete()
+                    await last_message_metro.delete()
+                    await comeng_last_message_metro.delete()
+                    await last_message_vline.delete()
+                    await comeng_last_message_vline.delete()
                     print("Message deleted successfully")
             except Exception as e:
-                print(f'Failed to delete the old message: {e}')   
-                
-            last_message = await send_channel.send(embed=embed)
-            comeng_last_message = await comeng_channel.send(embed=embed)
+                print(f'Failed to delete the old message: {e}')
+
+            comeng_channel = bot.get_channel(int(config['LINE_STATUS_2_CHANNEL_ID']))
+            print(comeng_channel)
+            send_channel = bot.get_channel(int(config['LINE_STATUS_CHANNEL_ID']))
+            print(send_channel)
+            
+            if send_channel is None:
+                print("ERROR: send_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+            if comeng_channel is None:
+                print("ERROR: comeng_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+            
+            try:
+                last_message= await send_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')
+                comeng_last_message= await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
+                last_message_metro = await send_channel.send(embed=embed_metro)
+                comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
+                last_message_vline = await send_channel.send(embed=embed_vline)
+                comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
+            except Exception as e:
+                print(f'ERROR: {e}')
 
             with open('logs.txt', 'a') as file:
                         file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
@@ -300,7 +408,7 @@ async def help(ctx):
 </logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
 </logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
         searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
-</search departures:1240101357847838814> - View the next 10 departures for a station
+</search departures:1240101357847838814> - View the next 9 Metro and 3 V/Line departures for a station
 </search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
         await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
@@ -880,28 +988,27 @@ async def departures(ctx, station: str):
                 desto = runs[run_ref]['destination_name']
                 try:
                     trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
                 except:
                     trainType = ''
+                    trainNumber = ''
 
                 # train info
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
-                route_name = get_route_name(route_id)
-                #add to embed
+                route_name = get_route_name(route_id)                
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
-                if platform_number == 'None':
-                    platform_number = "unknown"
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType} - {trainNumber}")
                 fields = fields + 1
                 if fields == 9:
                     break
         # the V/Line part
         fields = 0
-        runIDS = ['']
+        departureTimes = ['']
         for departure in vdepartures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
@@ -909,11 +1016,11 @@ async def departures(ctx, station: str):
                 pass
             else:
                 estimated_departure_utc = departure['estimated_departure_utc']
-                run_ref = departure['run_ref']
-                if run_ref in runIDS:
-                    break
+                if estimated_departure_utc in departureTimes:
+                    print(f'the deparute with that time was already added: {scheduled_departure_utc} -- {desto}')
                 else:
-                    runIDS.append(run_ref)
+                    departureTimes.append(estimated_departure_utc)
+                    run_ref = departure['run_ref']
                     at_platform = departure['at_platform']
                     platform_number = departure['platform_number']
                     route_id= departure['route_id'] 
@@ -931,7 +1038,7 @@ async def departures(ctx, station: str):
                     route_name = get_route_name(route_id)
                     #add to embed
                     
-                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}")
+                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}**")
                     fields = fields + 1
                     if fields == 3:
                         break

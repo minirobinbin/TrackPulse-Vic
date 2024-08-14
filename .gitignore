@@ -9,6 +9,7 @@ utils/game/scores/
 utils/trainlogger/userdatabackup
 photo-submissions/
 temp/
+utils/line-status-data.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
