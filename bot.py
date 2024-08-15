@@ -1916,10 +1916,17 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
             if mode == 'sydney-trams':
                 file_path = f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv'  
                 
+            
+            
             with open(file_path, mode='r', newline='') as file:
+                
+                if not id.startswith('#'):
+                    cleaned_id = '#' + id
+                else:
+                    cleaned_id = id
                 csv_reader = csv.reader(file)
                 for row in csv_reader:
-                    if row[0] == id:
+                    if row[0] == cleaned_id.upper():
                         # thing to find image:
                         hyphen_index = row[1].find("-")
                         if hyphen_index != -1:
