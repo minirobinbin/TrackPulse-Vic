@@ -1498,6 +1498,8 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
             if traintype == 'auto':
                 type = 'Unknown'
             else: type = traintype
+        if traintype == "Tait":
+            set = '381M-208T-230D-317M'
 
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
@@ -1927,21 +1929,25 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 csv_reader = csv.reader(file)
                 for row in csv_reader:
                     if row[0] == cleaned_id.upper():
+                        
                         # thing to find image:
-                        hyphen_index = row[1].find("-")
-                        if hyphen_index != -1:
-                            first_car = row[1][:hyphen_index]
-                            print(f'First car: {first_car}')
-                            image = getImage(first_car)
-                            if image == None:
-                                last_hyphen = row[1].rfind("-")
-                                if last_hyphen != -1:
-                                    last_car = row[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                    print(f'Last car: {last_car}')
-                                    image = getImage(last_car)
-                                    if image == None:
-                                        image = getImage(row[2])
-                                        print(f'the loco number is: {row[1]}')
+                        if row[2] == 'Tait':
+                            image = 'https://railway-photos.xm9g.xyz/photos/317M-6.jpg'
+                        else:
+                            hyphen_index = row[1].find("-")
+                            if hyphen_index != -1:
+                                first_car = row[1][:hyphen_index]
+                                print(f'First car: {first_car}')
+                                image = getImage(first_car)
+                                if image == None:
+                                    last_hyphen = row[1].rfind("-")
+                                    if last_hyphen != -1:
+                                        last_car = row[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                        print(f'Last car: {last_car}')
+                                        image = getImage(last_car)
+                                        if image == None:
+                                            image = getImage(row[2])
+                                            print(f'the loco number is: {row[1]}')
                                         
                             # Make the embed
                         if row[4] in vLineLines:
