@@ -418,8 +418,9 @@ async def help(ctx):
 
     
 @search.command(name="metro-line", description="Show info about a Metro line")
-@app_commands.describe(line = "What Metro line to show info about?")
-@app_commands.choices(line=[
+@app_commands.describe(line="What Metro line to show info about?")
+@app_commands.choices(
+    line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
@@ -435,65 +436,75 @@ async def help(ctx):
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-])
-
+    ]
+)
 async def line_info(ctx, line: str):
+    """
+    This function retrieves information about a Metro line and sends it as an embed to the Discord channel.
+
+    Args:
+        ctx (ApplicationContext): The context of the command.
+        line (str): The name of the Metro line to retrieve information about.
+
+    Returns:
+        None
+    """
+    # Retrieve line information from API
     json_info_str = route_api_request(line, "0")
     json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
     json_info = json.loads(json_info_str)
-    
-    routes = json_info['routes']
-    status = json_info['status']
-    version = status['version']
-    health = status['health']
-    
+
+    routes = json_info["routes"]
+    status = json_info["status"]
+    version = status["version"]
+    health = status["health"]
+
     route = routes[0]
-    route_service_status = route['route_service_status']
-    description = route_service_status['description']
-    timestamp = route_service_status['timestamp']
-    route_type = route['route_type']
-    route_id = route['route_id']
-    route_name = route['route_name']
-    route_number = route['route_number']
-    route_gtfs_id = route['route_gtfs_id']
-    geopath = route['geopath']
-    
+    route_service_status = route["route_service_status"]
+    description = route_service_status["description"]
+    timestamp = route_service_status["timestamp"]
+    route_type = route["route_type"]
+    route_id = route["route_id"]
+    route_name = route["route_name"]
+    route_number = route["route_number"]
+    route_gtfs_id = route["route_gtfs_id"]
+    geopath = route["geopath"]
+
     print(f"route id: {route_id}")
-    
-    
-    # disruption info
-    disruptionDescription = ""
+
+    # Retrieve disruption information
+    disruption_description = ""
     try:
-        # print(disruption_api_request(route_id))
         disruptions = disruption_api_request(route_id)
         print(disruptions)
-        
+
         # Extracting title and description
         general_disruption = disruptions["disruptions"]["metro_train"][0]
-        disruptionTitle = general_disruption["title"]
-        disruptionDescription = general_disruption["description"]
+        disruption_title = general_disruption["title"]
+        disruption_description = general_disruption["description"]
 
-        # print("Title:", title)
-        # print("Description:", description)
-        
     except Exception as e:
-        # await ctx.response.send_message(f"error:\n`{e}`")
         print(e)
 
+    # Determine the color of the embed based on the status description
     color = genColor(description)
     print(f"Status color: {color}")
-    
-    
+
+    # Create the embed with the retrieved information
     embed = discord.Embed(title=f"Route Information - {route_name}", color=color)
     embed.add_field(name="Route Name", value=route_name, inline=False)
     embed.add_field(name="Status Description", value=description, inline=False)
-    if disruptionDescription:
-        embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+    if disruption_description:
+        embed.add_field(name="Disruption Info", value=disruption_description, inline=False)
 
-    
+    # Send the embed to the Discord channel
     await ctx.response.send_message(embed=embed)
-    with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.datetime.now()} - user sent line info command with input {line}")
+
+    # Log the command usage
+    with open("logs.txt", "a") as file:
+        file.write(
+            f"\n{datetime.datetime.now()} - user sent line info command with input {line}"
+        )
 
 # @bot.tree.command(name="vline-line", description="Show info about a V/Line line")
 # @app_commands.describe(vline_line = "What V/Line line to show info about?")
@@ -2542,7 +2553,7 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'sydney-trains')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:NSWTrains:1255084911103184906> <:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
+            embed.add_field(name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -2576,10 +2587,10 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'bus')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
+            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats", value=f'{username} has no logged bus trips.')
+            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
 
         
         #games
