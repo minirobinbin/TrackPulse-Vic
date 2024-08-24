@@ -2470,6 +2470,25 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 ctx.response.send_message('User has no logs!')
     await sendLogs()
    
+@stats.command(name='sets', description='View which sets you have been on')
+@app_commands.choices(train=[
+    app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+    app_commands.Choice(name="Comeng", value="Comeng"),
+    app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+    app_commands.Choice(name="HCMT", value="HCMT"),
+])
+async def sets(ctx, train:str):
+    data =setlist(ctx.user.name, train)
+    if len(data <4000):
+        await ctx.response.send_message(data)
+    else:
+        #split into chunks less than 4000 chars
+        
+    try:
+        await ctx.response.send_message(data)
+    except Exception as e:
+        await ctx.response.send_message(f"Error: `{e}`")
+
    
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
