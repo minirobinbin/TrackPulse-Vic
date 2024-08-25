@@ -4,4 +4,4 @@ from utils.pageScraper import *
 from utils.trainlogger.stats import *
 from utils.locationFromNumber import *
 
-print(f'Longest trips:\n{getLongestTrips("comeng_17")}')
+print(setlist("xm9g", "Siemens Nexas"))

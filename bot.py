@@ -418,8 +418,9 @@ async def help(ctx):
 
     
 @search.command(name="metro-line", description="Show info about a Metro line")
-@app_commands.describe(line = "What Metro line to show info about?")
-@app_commands.choices(line=[
+@app_commands.describe(line="What Metro line to show info about?")
+@app_commands.choices(
+    line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
@@ -435,65 +436,75 @@ async def help(ctx):
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
-])
-
+    ]
+)
 async def line_info(ctx, line: str):
+    """
+    This function retrieves information about a Metro line and sends it as an embed to the Discord channel.
+
+    Args:
+        ctx (ApplicationContext): The context of the command.
+        line (str): The name of the Metro line to retrieve information about.
+
+    Returns:
+        None
+    """
+    # Retrieve line information from API
     json_info_str = route_api_request(line, "0")
     json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
     json_info = json.loads(json_info_str)
-    
-    routes = json_info['routes']
-    status = json_info['status']
-    version = status['version']
-    health = status['health']
-    
+
+    routes = json_info["routes"]
+    status = json_info["status"]
+    version = status["version"]
+    health = status["health"]
+
     route = routes[0]
-    route_service_status = route['route_service_status']
-    description = route_service_status['description']
-    timestamp = route_service_status['timestamp']
-    route_type = route['route_type']
-    route_id = route['route_id']
-    route_name = route['route_name']
-    route_number = route['route_number']
-    route_gtfs_id = route['route_gtfs_id']
-    geopath = route['geopath']
-    
+    route_service_status = route["route_service_status"]
+    description = route_service_status["description"]
+    timestamp = route_service_status["timestamp"]
+    route_type = route["route_type"]
+    route_id = route["route_id"]
+    route_name = route["route_name"]
+    route_number = route["route_number"]
+    route_gtfs_id = route["route_gtfs_id"]
+    geopath = route["geopath"]
+
     print(f"route id: {route_id}")
-    
-    
-    # disruption info
-    disruptionDescription = ""
+
+    # Retrieve disruption information
+    disruption_description = ""
     try:
-        # print(disruption_api_request(route_id))
         disruptions = disruption_api_request(route_id)
         print(disruptions)
-        
+
         # Extracting title and description
         general_disruption = disruptions["disruptions"]["metro_train"][0]
-        disruptionTitle = general_disruption["title"]
-        disruptionDescription = general_disruption["description"]
+        disruption_title = general_disruption["title"]
+        disruption_description = general_disruption["description"]
 
-        # print("Title:", title)
-        # print("Description:", description)
-        
     except Exception as e:
-        # await ctx.response.send_message(f"error:\n`{e}`")
         print(e)
 
+    # Determine the color of the embed based on the status description
     color = genColor(description)
     print(f"Status color: {color}")
-    
-    
+
+    # Create the embed with the retrieved information
     embed = discord.Embed(title=f"Route Information - {route_name}", color=color)
     embed.add_field(name="Route Name", value=route_name, inline=False)
     embed.add_field(name="Status Description", value=description, inline=False)
-    if disruptionDescription:
-        embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+    if disruption_description:
+        embed.add_field(name="Disruption Info", value=disruption_description, inline=False)
 
-    
+    # Send the embed to the Discord channel
     await ctx.response.send_message(embed=embed)
-    with open('logs.txt', 'a') as file:
-                file.write(f"\n{datetime.datetime.now()} - user sent line info command with input {line}")
+
+    # Log the command usage
+    with open("logs.txt", "a") as file:
+        file.write(
+            f"\n{datetime.datetime.now()} - user sent line info command with input {line}"
+        )
 
 # @bot.tree.command(name="vline-line", description="Show info about a V/Line line")
 # @app_commands.describe(vline_line = "What V/Line line to show info about?")
@@ -1498,6 +1509,8 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
             if traintype == 'auto':
                 type = 'Unknown'
             else: type = traintype
+        if traintype == "Tait":
+            set = '381M-208T-230D-317M'
 
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
@@ -1927,21 +1940,25 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 csv_reader = csv.reader(file)
                 for row in csv_reader:
                     if row[0] == cleaned_id.upper():
+                        
                         # thing to find image:
-                        hyphen_index = row[1].find("-")
-                        if hyphen_index != -1:
-                            first_car = row[1][:hyphen_index]
-                            print(f'First car: {first_car}')
-                            image = getImage(first_car)
-                            if image == None:
-                                last_hyphen = row[1].rfind("-")
-                                if last_hyphen != -1:
-                                    last_car = row[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                    print(f'Last car: {last_car}')
-                                    image = getImage(last_car)
-                                    if image == None:
-                                        image = getImage(row[2])
-                                        print(f'the loco number is: {row[1]}')
+                        if row[2] == 'Tait':
+                            image = 'https://railway-photos.xm9g.xyz/photos/317M-6.jpg'
+                        else:
+                            hyphen_index = row[1].find("-")
+                            if hyphen_index != -1:
+                                first_car = row[1][:hyphen_index]
+                                print(f'First car: {first_car}')
+                                image = getImage(first_car)
+                                if image == None:
+                                    last_hyphen = row[1].rfind("-")
+                                    if last_hyphen != -1:
+                                        last_car = row[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                        print(f'Last car: {last_car}')
+                                        image = getImage(last_car)
+                                        if image == None:
+                                            image = getImage(row[2])
+                                            print(f'the loco number is: {row[1]}')
                                         
                             # Make the embed
                         if row[4] in vLineLines:
@@ -2453,6 +2470,41 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 ctx.response.send_message('User has no logs!')
     await sendLogs()
    
+@stats.command(name='sets', description='View which sets you have been on')
+@app_commands.choices(train=[
+    app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+    app_commands.Choice(name="Comeng", value="Comeng"),
+    app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+    app_commands.Choice(name="HCMT", value="HCMT"),
+    app_commands.Choice(name='VLocity', value='VLocity'),
+    app_commands.Choice(name='Sprinter', value='Sprinter'),
+    app_commands.Choice(name='N Class', value='N Class'),
+])
+async def sets(ctx, train:str):
+    data =setlist(ctx.user.name, train)
+    
+    if len(data) <= 2000:
+        await ctx.response.send_message(data)
+    else:
+        await ctx.response.send_message(f"{train} sets you have been on:")
+        split_strings = []
+        start = 0
+        
+        while start < len(data):
+            # Find the index where the string should be split
+            if start + 2000 < len(data):
+                split_index = data.rfind('\n', start, start + 2000)
+                if split_index == -1:
+                    split_index = start + 2000
+            else:
+                split_index = len(data)
+            
+            split_strings.append(data[start:split_index])
+            start = split_index + 1  # Move past the newline or split point
+            
+        for item in split_strings:
+            await ctx.channel.send(item)
+
    
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
@@ -2536,7 +2588,7 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'sydney-trains')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:NSWTrains:1255084911103184906> <:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
+            embed.add_field(name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -2570,10 +2622,10 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'bus')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
+            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311>:oncoming_bus: Bus Log Stats", value=f'{username} has no logged bus trips.')
+            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
 
         
         #games
