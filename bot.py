@@ -915,7 +915,75 @@ async def train_line(ctx, train: str):
             await embed_update.edit(embed=embed)
             await mapEmbedUpdate.delete()
             await ctx.channel.send('Location info is only available for Metro services')
+            
+@search.command(name="tram", description="Search for a specific Tram")
+@app_commands.describe(tram="tram")
+async def tramsearch(ctx, tram: str):
+    await ctx.response.send_message(f"Searching, trip data may take longer to send...")
+    channel = ctx.channel
+    type = tramType(tram)
+    set = tram.upper()
+   
+    print(f'set: {set}')
+    print(f"TRAINTYPE {type}")
+    if type is None:
+        await channel.send("Train not found")
+    else:
+        embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
+        if set.endswith('-'):
+            embed.add_field(name=type, value=set[:-1])
+        else:
+            embed.add_field(name=type, value=set)
+        
+        embed.set_thumbnail(url=getIcon(type))
+        
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class']:
+            information = trainData(set)
+            print(information)
+            infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
+            if information[5]:
+                infoData+=f'\n**Name:** {information[5]}'
+                
+            # thing if the user has been on
+            def check_variable_in_csv(variable, file_path):
+                if not os.path.exists(file_path):
+                    print(f"The file {file_path} does not exist.")
+                    return False
 
+                with open(file_path, mode='r') as file:
+                    csv_reader = csv.reader(file)
+                    for row in csv_reader:
+                        if row[1] == variable:
+                            return True
+                return False 
+        
+            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+            trainridden = check_variable_in_csv(set, fPath)
+            if trainridden:
+                infoData +='\n\n✅ You have been on this train before'
+                
+            embed.add_field(name='Information', value=infoData)
+        else:
+            embed.add_field(name='Information', value='None available')
+            
+        
+        embed.set_image(url=getTramImage(tram.upper()))
+        
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        
+        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+        embed_update = await channel.send(embed=embed)
+        # if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+        loop = asyncio.get_event_loop()
+        task = loop.create_task(TRAMtransportVicSearch_async(ctx, tram.upper(), embed, embed_update))
+        await task
+            
+        # else:
+        #     embed.remove_field(3)
+        #     await embed_update.edit(embed=embed)
+        #     await mapEmbedUpdate.delete()
+        #     await ctx.channel.send('Location info is only available for Metro services')
+        
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
@@ -934,6 +1002,24 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
         embed.remove_field(3)
         embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
         await embed_update.edit(embed=embed)
+        
+async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
+    runs = await asyncio.to_thread(TRAMtransportVicSearch, tram)  # Find runs in a separate thread
+    if isinstance(runs, list):
+        print("thing is a list")
+        embed.remove_field(3)
+        for i, run in enumerate(runs):
+            if run.startswith(tuple("0123456789")):
+                embed.add_field(name=f"Run {i+1}", value=run, inline=False)
+            else:
+                embed.add_field(name='No runs found!', value='⠀')
+        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/tram/tracker/fleet?fleet={tram.upper()})')
+        await embed_update.edit(embed=embed)
+    else:
+        embed.remove_field(3)
+        embed.add_field(name=f"No runs currently found for {tram.upper()}", value='⠀')
+        await embed_update.edit(embed=embed)
+
 
 # Next departures for a station
 async def station_autocompletion(

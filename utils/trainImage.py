@@ -9,6 +9,14 @@ def getImage(number):
     URLresponse = requests.head(photo_url)
     if URLresponse.status_code == 200:
         return(photo_url)
+    
+def getTramImage(number):
+    photo_url = f"https://railway-photos.xm9g.xyz/trams/photos/{number}.jpg"
+
+    # Make a HEAD request to check if the photo exists
+    URLresponse = requests.head(photo_url)
+    if URLresponse.status_code == 200:
+        return(photo_url)
 
 
 def getIcon(type):
