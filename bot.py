@@ -2476,18 +2476,34 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
     app_commands.Choice(name="Comeng", value="Comeng"),
     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
     app_commands.Choice(name="HCMT", value="HCMT"),
+    app_commands.Choice(name='VLocity', value='VLocity'),
+    app_commands.Choice(name='Sprinter', value='Sprinter'),
+    app_commands.Choice(name='N Class', value='N Class'),
 ])
 async def sets(ctx, train:str):
     data =setlist(ctx.user.name, train)
-    if len(data <4000):
+    
+    if len(data) <= 2000:
         await ctx.response.send_message(data)
     else:
-        #split into chunks less than 4000 chars
+        await ctx.response.send_message(f"{train} sets you have been on:")
+        split_strings = []
+        start = 0
         
-    try:
-        await ctx.response.send_message(data)
-    except Exception as e:
-        await ctx.response.send_message(f"Error: `{e}`")
+        while start < len(data):
+            # Find the index where the string should be split
+            if start + 2000 < len(data):
+                split_index = data.rfind('\n', start, start + 2000)
+                if split_index == -1:
+                    split_index = start + 2000
+            else:
+                split_index = len(data)
+            
+            split_strings.append(data[start:split_index])
+            start = split_index + 1  # Move past the newline or split point
+            
+        for item in split_strings:
+            await ctx.channel.send(item)
 
    
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
