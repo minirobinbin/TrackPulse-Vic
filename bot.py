@@ -2571,7 +2571,7 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'tram')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Sop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "tram")}')
+            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "tram")}')
   
         except FileNotFoundError:
             embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
