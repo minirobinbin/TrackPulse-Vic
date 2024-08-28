@@ -45,6 +45,44 @@ def transportVicSearch(search):
         print('closing browser')
         driver.quit()
         print('closed browser')
+        
+def TRAMtransportVicSearch(search):
+    print('setting up browser')
+    options = Options()
+    options.headless = True
+    service = Service("utils/chromedriver/chromedriver.exe")
+    driver = webdriver.Chrome(service=service, options=options)
+    
+    url = f'https://vic.transportsg.me/tram/tracker/fleet?fleet={search}'
+    
+    # Open the URL in the browser
+    print('opening browser')
+    driver.get(url)
+    print('opened browser')
+    
+    try:
+        print('waiting for page load')
+        # Use WebDriverWait for explicit wait
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@class="trip "]')))
+        print('page loaded')
+        
+        # Find all elements with class "trip"
+        print('finding elements')
+        elements = driver.find_elements(By.XPATH, '//div[@class="trip "]')
+        
+        if elements:
+            print('found the element')
+            trip_texts = [element.text for element in elements]
+            print(trip_texts)
+            return trip_texts
+        else:
+            return ["Error: No trips found. Tram may be invalid or not currently running."]
+    except Exception as e:
+        return [f'Error: {e}']
+    finally:
+        print('closing browser')
+        driver.quit()
+        print('closed browser')
 
 def montagueDays(queue):
     service = Service(ChromeDriverManager().install())
