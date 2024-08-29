@@ -547,7 +547,21 @@ async def line_info(ctx, line: str):
     
 #     await ctx.response.send_message(embed=embed)
 
+'''@search.command(name='api', description='Search the PTV api directly')
+@app_commands.describe(query = "Search query", route_types='Refer to PTV api documentation for more information.') 
+async def api(ctx, query: str, route_types:int=None):
+    async def apisearch():
+        print(f'user searching ptv api for {query}')
+        file=f'temp/{ctx.user.id}-apiresponse.json'
+        response = search_api_request(query)
+        with open(file, "w") as file:
+            file.write(format(response))
 
+        print(f"String saved to {file}")
+        await ctx.response.send_message(f'', file=discord.File(file))
+    asyncio.create_task(apisearch())'''
+
+        
 @search.command(name="run", description="Show runs for a route")
 @app_commands.describe(runid = "route id")
 async def runs(ctx, runid: str):
@@ -725,57 +739,84 @@ async def route(ctx, rtype: str, number: int):
 
 # Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
-@app_commands.describe(number="Carriage number")
-async def line_info(ctx, number: str):
+@app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
+async def line_info(ctx, number: str, search_set:bool):
+    async def sendPhoto(photo_url):
+        # Make a HEAD request to check if the photo exists
+        URLresponse = requests.head(photo_url)
+        print(URLresponse.status_code)
+        if URLresponse.status_code == 200:
+            await channel.send(photo_url)
+            await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
+        else:
+            mAdded = search_query+'M'
+            # try with m added
+            photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
+            URLresponse = requests.head(photo_url)
+            if URLresponse.status_code == 200:
+                await channel.send(photo_url)
+                for i in range(2,5):
+                    photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
+                    print(f"searching for other images for {mAdded}")
+                    print(f"url: {photo_url}")
+                    URLresponse = requests.head(photo_url)
+                    if URLresponse.status_code == 200:
+                        await channel.send(photo_url)
+                        await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={mAdded}>)')
+                    else:
+                        print("no other images found")
+                        await channel.send(f"Photo not in xm9g database!")
+                        break
+            else:
+                await channel.send(f"Photo not in xm9g database!")
+                
+            
+            
+        for i in range(2,5):
+            photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
+            print(f"searching for other images for {search_query}")
+            print(f"url: {photo_url}")
+            URLresponse = requests.head(photo_url)
+            if URLresponse.status_code == 200:
+                await channel.send(photo_url)
+                await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
+            else:
+                print("no other images found")
+                break
+    
+    # start of the thing
     channel = ctx.channel
     search_query = number.upper()
     photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
     await ctx.response.send_message(f"Searching for `{search_query}`...")
+    
+    #get full set
+    try:
+        fullSet = setNumber(number).split("-")
+    except:
+        print(f'cannot get full set for {number}')
+        search_set=False
+                
+    await sendPhoto(photo_url)
+    
+    if search_set:
+        print(f'Searching full set: {fullSet}')
+        if fullSet[0] != number:
+            search_query=fullSet[0].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[0]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[0]}.jpg")
+        if fullSet[1] != number:
+            search_query=fullSet[1].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[1]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[1]}.jpg")
+        if fullSet[2] != number:
+            search_query=fullSet[2].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[2]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[2]}.jpg")
 
-   
-
-    # Make a HEAD request to check if the photo exists
-    URLresponse = requests.head(photo_url)
-    print(URLresponse.status_code)
-    if URLresponse.status_code == 200:
-        await channel.send(photo_url)
-        await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
-    else:
-        mAdded = search_query+'M'
-        # try with m added
-        photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
-        URLresponse = requests.head(photo_url)
-        if URLresponse.status_code == 200:
-            await channel.send(photo_url)
-            for i in range(2,5):
-                photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
-                print(f"searching for other images for {mAdded}")
-                print(f"url: {photo_url}")
-                URLresponse = requests.head(photo_url)
-                if URLresponse.status_code == 200:
-                    await channel.send(photo_url)
-                    await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={mAdded}>)')
-                else:
-                    print("no other images found")
-                    await channel.send(f"Photo not in xm9g database!")
-                    break
-        else:
-            await channel.send(f"Photo not in xm9g database!")
+    
+    
             
-        
-        
-    for i in range(2,5):
-        photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
-        print(f"searching for other images for {search_query}")
-        print(f"url: {photo_url}")
-        URLresponse = requests.head(photo_url)
-        if URLresponse.status_code == 200:
-            await channel.send(photo_url)
-            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
-        else:
-            print("no other images found")
-            break
-
 
 # Wongm search
 @search.command(name="wongm", description="Search Wongm's Rail Gallery")
