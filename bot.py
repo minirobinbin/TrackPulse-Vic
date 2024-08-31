@@ -2146,7 +2146,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
                     
                 # send reponse message
-                await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+                pfp = ctx.user.avatar.url
+                embed=discord.Embed(title='Train Logs', colour=0x7e3e98)
+                embed.set_author(name=ctx.user.name, url='https://comeng.xm9g.xyz', icon_url=pfp)
+                embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
+                await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
                 await logsthread.send(f'# {userid.name}\'s Train Logs')
                 formatted_data = ""
@@ -2664,7 +2668,11 @@ async def profile(ctx, user: discord.User = None):
             username = ctx.user.name
         else:
             username = user.name
-        embed = discord.Embed(title=f":bar_chart: {username}'s Profile")
+        pfp = ctx.user.avatar.url
+        embed = discord.Embed(title=f"Profile")
+        embed.set_author(name=username, url='https://comeng.xm9g.xyz',
+                     icon_url=pfp)
+
         
         # train logger
         try:
