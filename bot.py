@@ -1140,7 +1140,7 @@ async def departures(ctx, station: str):
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType} - {trainNumber}")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime}\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -1180,7 +1180,7 @@ async def departures(ctx, station: str):
                     fields = fields + 1
                     if fields == 3:
                         break
-        embed.set_footer(text="Note: The departures info does not currently take delays into account.\nV/Line departures info is in Beta")
+        embed.set_footer(text="V/Line departures info is in Beta")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.channel.send(embed=embed)          
 
