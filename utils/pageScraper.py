@@ -35,6 +35,6 @@ def montagueDays(q):
 
 		days = (datetime.now() - datetime.strptime(res.split('date":"')[1].split('"')[0], "%Y-%m-%d")).days
 
-		q.put(days)
+		q.put(str(days))
 	except Exception as e:
 		return [f'Error: {e}']
