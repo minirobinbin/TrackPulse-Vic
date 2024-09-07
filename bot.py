@@ -1128,6 +1128,7 @@ async def departures(ctx, station: str):
                 at_platform = departure['at_platform']
                 platform_number = departure['platform_number']
                 route_id= departure['route_id'] 
+                note = departure['departure_note']+'\n'
                 
                 # get info for the run:
                 desto = runs[run_ref]['destination_name']
@@ -1147,7 +1148,7 @@ async def departures(ctx, station: str):
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"Departing {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
+                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"{note if note else ''}Departing {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
                 fields = fields + 1
                 if fields == 9:
                     break
