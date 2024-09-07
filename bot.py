@@ -62,8 +62,7 @@ from utils.routeName import *
 from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
 from utils.photo import *
-
-
+from utils.plane.main import *
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -125,6 +124,7 @@ trainlogs = CommandGroups(name='logs')
 games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
+flight = CommandGroups(name='flight')
 
 @bot.event
 async def on_ready():
@@ -135,6 +135,8 @@ async def on_ready():
     bot.tree.add_command(games)
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
+    bot.tree.add_command(flight)
+
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -1185,6 +1187,42 @@ async def departures(ctx, station: str):
         await ctx.channel.send(embed=embed)          
 
     asyncio.create_task(nextdeps())
+
+# flight search (disables cause its not 100% done)
+'''@flight.command(name='departures-arrivals', description="Get the next departures for an airport.")
+@app_commands.describe(icao="Airport ICAO code")
+async def flightdepartures(ctx,icao:str):
+    async def flightdeps():
+        await ctx.response.defer()
+        deps = flightDepartures(icao=icao)
+        arr = flightArrivals(icao=icao)
+
+        if not deps:
+            await ctx.edit_original_response(content="No departures found in the past 5 hours.")
+            return
+
+        embed = discord.Embed(title="Flight Information", color=discord.Color.blue())
+
+        for flight in deps:
+            flight_id = flight.icao24
+            departure_time = datetime.fromtimestamp(flight.firstSeen).strftime('%Y-%m-%d %H:%M:%S')
+            depairport = flight.estDepartureAirport
+            flight_number = flight.callsign.strip()
+
+            embed.add_field(
+                name=f"Flight {flight_number}",
+                value=(
+                    f"ID: {flight_id}\n"
+                    f"Departure Time: {departure_time}\n"
+                    f"Departure Airport: {depairport}\n"
+
+                ),
+                inline=False
+            )
+
+        await ctx.edit_original_response(embed=embed)
+
+    asyncio.create_task(flightdeps())'''
 
 
 # Montague Bridge search

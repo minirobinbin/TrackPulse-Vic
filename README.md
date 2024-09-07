@@ -10,6 +10,7 @@
     to make a telegram bot message @BotFather
 - install requiements with `pip install -r requirements.txt`
 - install chrome (required for run searching, other stuff will work without)
+- for the plane stuff install [the OpenSky API](https://github.com/openskynetwork/opensky-api)
 - run `bot.py`
 - done!
 
