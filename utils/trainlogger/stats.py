@@ -1056,3 +1056,29 @@ def setlist(user, train):
     result_string += f"\n\n{len(ticked_sets)}/{len(sets)} ({percent_ticked}%) sets ridden"
     
     return(result_string)
+
+def terminiList(user):
+    termini = [
+        "Lilydale", "Belgrave", "Bairnsdale", "Taralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Geelong', "Warrnambool", "Ballarat", 'Ararat','Sunbury', 'Maryborough', 'Bendigo', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
+    ]
+    
+    # Read CSV file
+    with open(f'utils/trainlogger/userdata/{user}.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        csv_data = list(reader)
+
+   # Create a dictionary to count the occurrences of each item
+    item_counts = {}
+    for row in csv_data:
+        if row[5] in item_counts:
+            item_counts[row[5]] += 1
+        if row[6] in item_counts:
+            item_counts[row[6]] += 1
+        else:
+            item_counts[row[5]] = 1
+            item_counts[row[6]] = 1
+
+    # Create a string with ticks for matching items
+    result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in termini])
+     
+    return(result_string)

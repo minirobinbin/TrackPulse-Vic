@@ -1068,6 +1068,9 @@ async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
         embed.add_field(name=f"No runs currently found for {tram.upper()}", value='⠀')
         await embed_update.edit(embed=embed)
 
+    
+    
+    
 
 # Next departures for a station
 async def station_autocompletion(
@@ -2644,7 +2647,36 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
             except:
                 ctx.response.send_message('User has no logs!')
     await sendLogs()
-   
+
+@stats.command(name='termini', description='View which line termini you have been to')
+async def termini(ctx):
+    try:
+        data =terminiList(ctx.user.name)
+    except:
+        data = 'No logs found'
+    
+    if len(data) <= 2000:
+        await ctx.response.send_message(data)
+    else:
+        await ctx.response.send_message(f"Termini you have visited:")
+        split_strings = []
+        start = 0
+        
+        while start < len(data):
+            # Find the index where the string should be split
+            if start + 2000 < len(data):
+                split_index = data.rfind('\n', start, start + 2000)
+                if split_index == -1:
+                    split_index = start + 2000
+            else:
+                split_index = len(data)
+            
+            split_strings.append(data[start:split_index])
+            start = split_index + 1  # Move past the newline or split point
+            
+        for item in split_strings:
+            await ctx.channel.send(item)
+
 @stats.command(name='sets', description='View which sets you have been on')
 @app_commands.choices(train=[
     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
@@ -2656,7 +2688,10 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
     app_commands.Choice(name='N Class', value='N Class'),
 ])
 async def sets(ctx, train:str):
-    data =setlist(ctx.user.name, train)
+    try:
+        data =setlist(ctx.user.name, train)
+    except:
+        data = 'No logs found'
     
     if len(data) <= 2000:
         await ctx.response.send_message(data)
