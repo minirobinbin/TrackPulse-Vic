@@ -1090,7 +1090,7 @@ async def station_autocompletion(
 async def departures(ctx, station: str):
     async def nextdeps():
         channel = ctx.channel
-        await ctx.response.send_message(f"Loading Departures from {station}...")
+        await ctx.response.defer()
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation.title()}%20Station')
         # find the stop id!
@@ -1111,12 +1111,12 @@ async def departures(ctx, station: str):
             
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        vlineDepsData = departures_api_request(stop_id, 3)
+        # vlineDepsData = departures_api_request(stop_id, 3)
 
         departures = depsData['departures']
-        vdepartures = vlineDepsData['departures']
+        # vdepartures = vlineDepsData['departures']
         runs = depsData['runs']
-        vruns = vlineDepsData['runs']
+        # vruns = vlineDepsData['runs']
 
         # make embed with data
         embed= discord.Embed(title=f"Next trains departing {station} Station")
@@ -1152,11 +1152,12 @@ async def departures(ctx, station: str):
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
                 
-                embed.add_field(name=f'{getEmojiColor(route_name)} {desto}', value=f"{note if note else ''}\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
+                embed.add_field(name=f"{getEmojiColor(route_name)} {desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
                 fields = fields + 1
                 if fields == 9:
                     break
         # the V/Line part
+        '''
         fields = 0
         departureTimes = ['']
         for departure in vdepartures:
@@ -1191,10 +1192,10 @@ async def departures(ctx, station: str):
                     embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}**")
                     fields = fields + 1
                     if fields == 3:
-                        break
-        embed.set_footer(text="V/Line departures info is in Beta")
+                        break'''
+        embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
-        await ctx.channel.send(embed=embed)          
+        await ctx.edit_original_response(embed=embed)          
 
     asyncio.create_task(nextdeps())
 
