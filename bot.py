@@ -968,8 +968,8 @@ async def tramsearch(ctx, tram: str):
     type = tramType(tram)
     set = tram.upper()
    
-    print(f'set: {set}')
-    print(f"TRAINTYPE {type}")
+    print(f'Set: {set}')
+    print(f"Tram Type: {type}")
     if type is None:
         await channel.send("Train not found")
     else:
@@ -1001,10 +1001,10 @@ async def tramsearch(ctx, tram: str):
                             return True
                 return False 
         
-            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+            fPath = f'utils/trainlogger/userdata/tram/{ctx.user.name}.csv'
             trainridden = check_variable_in_csv(set, fPath)
             if trainridden:
-                infoData +='\n\n✅ You have been on this train before'
+                infoData +='\n\n✅ You have been on this tram before'
                 
             embed.add_field(name='Information', value=infoData)
         else:
@@ -1017,7 +1017,53 @@ async def tramsearch(ctx, tram: str):
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
+        
+        # map thing
+        mapEmbed = discord.Embed(title=f"{tram}'s location")
+        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
+        
+        # Generate the map location
+        async def addmap():                
+                
+                location = getTramLocation(set)
+                url = convertTrainLocationToGoogle(location)
+                try:
+                    if location is not None:
+                        for item in location:
+                            latitude = item['vehicle_position']['latitude']
+                            longitude = item['vehicle_position']['longitude']
+                            geopath=''
+                            # geopath = getGeopath(item["run_ref"])
+                            # print(f'geopath: {geopath}')
+
+                        await makeMapv2(latitude,longitude, tram, geopath)  # Adjust this line to asynchronously generate the map
+                except Exception as e:
+                    await mapEmbedUpdate.delete()
+                    await ctx.channel.send('No location data available.')
+                    print(f'ErROR: {e}')
+                    return
+                file_path = f"temp/{tram}-map.png"
+                if os.path.exists(file_path):
+                    # Delete the old message
+                    await mapEmbedUpdate.delete()
+                    
+                    file = discord.File(file_path, filename=f"{tram}-map.png")
+                    
+                    embed = discord.Embed(title=f"{tram}'s location", url=url)
+                    embed.remove_field(0)
+                    embed.set_image(url=f'attachment://{tram}-map.png')
+                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
+                
+                    # Send a new message with the file and embed
+                    await channel.send(file=file, embed=embed)
+                else:
+                    await mapEmbedUpdate.delete()
+                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
+                    print(f"Error: Map file '{file_path}' not found.")
+        
         # if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+        asyncio.create_task(addmap())
         loop = asyncio.get_event_loop()
         task = loop.create_task(TRAMtransportVicSearch_async(ctx, tram.upper(), embed, embed_update))
         await task

@@ -65,6 +65,67 @@ def getTrainLocation(Tnumber):
     
     return all_results
 
+tramRoutes = [
+    {"route_id": 721, "route_name": "1"},
+    {"route_id": 722, "route_name": "109"},
+    {"route_id": 724, "route_name": "16"},
+    {"route_id": 725, "route_name": "19"},
+    {"route_id": 887, "route_name": "57"},
+    {"route_id": 897, "route_name": "59"},
+    {"route_id": 909, "route_name": "64"},
+    {"route_id": 913, "route_name": "67"},
+    {"route_id": 940, "route_name": "70"},
+    {"route_id": 947, "route_name": "72"},
+    {"route_id": 958, "route_name": "75"},
+    {"route_id": 976, "route_name": "78"},
+    {"route_id": 1002, "route_name": "82"},
+    {"route_id": 1041, "route_name": "96"},
+    {"route_id": 1083, "route_name": "5"},
+    {"route_id": 1880, "route_name": "30"},
+    {"route_id": 1881, "route_name": "86"},
+    {"route_id": 2903, "route_name": "48"},
+    {"route_id": 3343, "route_name": "11"},
+    {"route_id": 8314, "route_name": "12"},
+    {"route_id": 11529, "route_name": "58"},
+    {"route_id": 11544, "route_name": "6"},
+    {"route_id": 15833, "route_name": "3"},
+    {"route_id": 15834, "route_name": "35"},
+]
+
+def getTramLocation(Tnumber):
+    def find_vehicle_by_descriptor_id(data, search_string):
+        results = []
+        parts = search_string.split('-')
+        
+        for run in data.get("runs", []):
+            if run.get("vehicle_descriptor") and all(part in run["vehicle_descriptor"]["id"] for part in parts):
+                result = {
+                    "vehicle_position": run["vehicle_position"],
+                    "run_ref": run["run_ref"]  # Include run_ref in the result
+                }
+                results.append(result)
+        print(f' RESILSTS THING: {results}')
+        return results
+
+    def process_route(route):
+        json_data = runs_api_request(route["route_id"])
+        results = find_vehicle_by_descriptor_id(json_data, Tnumber)
+        if results:
+            all_results.extend(results)
+    
+    all_results = []
+    threads = []
+    
+    for route in tramRoutes:
+        thread = threading.Thread(target=process_route, args=(route,))
+        threads.append(thread)
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
+    
+    return all_results
+
 def getGeopath(runId):
     data = runs_ref_api_request(runId)
     json_data = data
