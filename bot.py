@@ -399,7 +399,7 @@ async def task_loop():
 @bot.tree.command(name='help', description='Run help if you want to know about a command')
 async def help(ctx):
     async def helper():
-        generalCmds ="""</help:1261107050545549342> - Shows this command
+        generalCmds =f"""</help:1261107050545549342> - Shows this command
 </stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
         logCmds = """</logs add-train:1254387855820849154> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered.
 </logs add-sydney-train:1254387855820849154> - same as above but for trains in NSW
@@ -848,11 +848,12 @@ async def train_search(ctx, train: str):
     if type is None:
         await channel.send("Train not found")
     else:
-        embed = discord.Embed(title=f"Info for {train.upper()}:", color=0x0070c0)
+        embed = discord.Embed(title=f"{train.upper()}:", color=0x0070c0)
+        # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         if set.endswith('-'):
             embed.add_field(name=type, value=set[:-1])
         else:
-            embed.add_field(name=type, value=set)
+            embed.add_field(name=type, value=f'{set}')
         
         if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
@@ -890,7 +891,6 @@ async def train_search(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
