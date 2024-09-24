@@ -419,8 +419,10 @@ async def help(ctx):
     
 
     
-@search.command(name="metro-line", description="Show info about a Metro line")
+@bot.tree.command(name="metro-line", description="Show info about a Metro line")
 @app_commands.describe(line="What Metro line to show info about?")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(
     line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
@@ -821,8 +823,10 @@ async def line_info(ctx, number: str, search_set:bool):
             
 
 # Wongm search
-@search.command(name="wongm", description="Search Wongm's Rail Gallery")
+@bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def line_info(ctx, search: str):
     channel = ctx.channel
     print(f"removing spaces in search {search}")
@@ -834,10 +838,7 @@ async def line_info(ctx, search: str):
 
 
 # Train search
-@bot.tree.command(name="search-train", description="Search for a specific Train")
-@app_commands.describe(train="train")
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@search.command(name="train", description="Search for a specific Train")
 async def train_search(ctx, train: str):
     await ctx.response.defer()
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
