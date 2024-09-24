@@ -834,7 +834,7 @@ async def line_info(ctx, search: str):
 
 
 # Train search
-@search.command(name="train", description="Search for a specific Train")
+@bot.tree.command(name="train", description="Search for a specific Train")
 @app_commands.describe(train="train")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
