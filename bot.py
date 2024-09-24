@@ -1118,7 +1118,7 @@ async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
         await embed_update.edit(embed=embed)
 
     
-@app_commands.command()
+@app_commands.command(name='test', description="Test command")
 @app_commands.allowed_installs(guilds=False, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def useable_only_users(interaction: discord.Interaction):
