@@ -751,22 +751,22 @@ async def line_info(ctx, number: str, search_set:bool):
         print(URLresponse.status_code)
         if URLresponse.status_code == 200:
             await channel.send(photo_url)
-            await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
+            await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.net#:~:text={search_query}>)')
         else:
             mAdded = search_query+'M'
             # try with m added
-            photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}.jpg"
+            photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}.jpg"
             URLresponse = requests.head(photo_url)
             if URLresponse.status_code == 200:
                 await channel.send(photo_url)
                 for i in range(2,5):
-                    photo_url = f"https://railway-photos.xm9g.xyz/photos/{mAdded}-{i}.jpg"
+                    photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.jpg"
                     print(f"searching for other images for {mAdded}")
                     print(f"url: {photo_url}")
                     URLresponse = requests.head(photo_url)
                     if URLresponse.status_code == 200:
                         await channel.send(photo_url)
-                        await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={mAdded}>)')
+                        await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={mAdded}>)')
                     else:
                         print("no other images found")
                         await channel.send(f"Photo not in xm9g database!")
@@ -777,13 +777,13 @@ async def line_info(ctx, number: str, search_set:bool):
             
             
         for i in range(2,5):
-            photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}-{i}.jpg"
+            photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.jpg"
             print(f"searching for other images for {search_query}")
             print(f"url: {photo_url}")
             URLresponse = requests.head(photo_url)
             if URLresponse.status_code == 200:
                 await channel.send(photo_url)
-                await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.xyz#:~:text={search_query}>)')
+                await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>)')
             else:
                 print("no other images found")
                 break
@@ -791,7 +791,7 @@ async def line_info(ctx, number: str, search_set:bool):
     # start of the thing
     channel = ctx.channel
     search_query = number.upper()
-    photo_url = f"https://railway-photos.xm9g.xyz/photos/{search_query}.jpg"
+    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.jpg"
     await ctx.response.send_message(f"Searching for `{search_query}`...")
     
     #get full set
@@ -808,15 +808,15 @@ async def line_info(ctx, number: str, search_set:bool):
         if fullSet[0] != number:
             search_query=fullSet[0].upper()
             await ctx.channel.send(f'Photos for `{fullSet[0]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[0]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.jpg")
         if fullSet[1] != number:
             search_query=fullSet[1].upper()
             await ctx.channel.send(f'Photos for `{fullSet[1]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[1]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.jpg")
         if fullSet[2] != number:
             search_query=fullSet[2].upper()
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.xyz/photos/{fullSet[2]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.jpg")
 
     
     
@@ -859,7 +859,7 @@ async def train_search(ctx, train: str):
             embed.add_field(name=type, value=f'{set}')
         
         if train.upper() == "7005":  # Only old livery sprinter
-            embed.set_thumbnail(url="https://xm9g.xyz/discord-bot-assets/MPTB/Sprinter-VLine.png")
+            embed.set_thumbnail(url="https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
         else:
             embed.set_thumbnail(url=getIcon(type))
         
@@ -894,7 +894,7 @@ async def train_search(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
@@ -1016,7 +1016,7 @@ async def tramsearch(ctx, tram: str):
         
         embed.set_image(url=getTramImage(tram.upper()))
         
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.xyz#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
@@ -2132,7 +2132,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         
                         # thing to find image:
                         if row[2] == 'Tait':
-                            image = 'https://railway-photos.xm9g.xyz/photos/317M-6.jpg'
+                            image = 'https://railway-photos.xm9g.net/photos/317M-6.jpg'
                         else:
                             hyphen_index = row[1].find("-")
                             if hyphen_index != -1:
@@ -2210,7 +2210,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 # send reponse message
                 pfp = ctx.user.avatar.url
                 embed=discord.Embed(title='Train Logs', colour=0x7e3e98)
-                embed.set_author(name=ctx.user.name, url='https://comeng.xm9g.xyz', icon_url=pfp)
+                embed.set_author(name=ctx.user.name, url='https://comeng.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
@@ -2731,7 +2731,7 @@ async def sets(ctx, train:str):
             await ctx.channel.send(item)
 
    
-@bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.xyz and the bot.")
+@bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
     async def submitPhoto():
         target_guild_id = 1214139268725870602
@@ -2744,7 +2744,7 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.xyz.', ephemeral=True)
+                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.', ephemeral=True)
                     await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
                 else:
                     await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
@@ -2764,7 +2764,7 @@ async def profile(ctx, user: discord.User = None):
             username = user.name
         pfp = ctx.user.avatar.url
         embed = discord.Embed(title=f"Profile")
-        embed.set_author(name=username, url='https://comeng.xm9g.xyz',
+        embed.set_author(name=username, url='https://comeng.xm9g.net',
                      icon_url=pfp)
 
         

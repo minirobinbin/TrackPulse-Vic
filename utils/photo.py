@@ -4,7 +4,7 @@ import io
 
 def getPhotoCredits(train):
     # image credits:
-    url = 'https://railway-photos.xm9g.xyz/credit.csv'
+    url = 'https://railway-photos.xm9g.net/credit.csv'
     search_value = train.upper()
 
     response = requests.get(url)
