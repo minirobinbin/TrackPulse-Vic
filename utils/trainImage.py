@@ -3,7 +3,7 @@ import requests
 # THIS IS DIFFRNT TO THE ONE USED IN THE TRAIN PHOTO COMMAND!
 # THIS ONE ONLY RETURNS THE FIRST IMAGE AND ALSO REQUIRS CORRECT FORMATTING!!
 def getImage(number):
-    photo_url = f"https://railway-photos.xm9g.xyz/photos/{number}.jpg"
+    photo_url = f"https://railway-photos.xm9g.net/photos/{number}.jpg"
 
     # Make a HEAD request to check if the photo exists
     URLresponse = requests.head(photo_url)
@@ -11,7 +11,7 @@ def getImage(number):
         return(photo_url)
     
 def getTramImage(number):
-    photo_url = f"https://railway-photos.xm9g.xyz/trams/photos/{number}.jpg"
+    photo_url = f"https://railway-photos.xm9g.net/trams/photos/{number}.jpg"
 
     # Make a HEAD request to check if the photo exists
     URLresponse = requests.head(photo_url)
@@ -21,13 +21,13 @@ def getTramImage(number):
 
 def getIcon(type):
     cleaned_type = type.replace(' ', '-').replace("'", '')
-    url = f"https://xm9g.xyz/discord-bot-assets/MPTB/{cleaned_type}.png"
+    url = f"https://xm9g.net/discord-bot-assets/MPTB/{cleaned_type}.png"
     return(url)
 
 def getStationImage(station):
     type = station.title()
     cleaned_type = type.replace(' ', '%20')
-    url = f"https://railway-photos.xm9g.xyz/stations/photos/{cleaned_type}.jpg"
+    url = f"https://railway-photos.xm9g.net/stations/photos/{cleaned_type}.jpg"
     URLresponse = requests.head(url)
     if URLresponse.status_code == 200:
         return(url)
