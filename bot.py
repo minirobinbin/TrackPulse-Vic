@@ -1118,11 +1118,11 @@ async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
         await embed_update.edit(embed=embed)
 
     
-@search.command(name='test', description="Test command")
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-async def useable_only_users(interaction: discord.Interaction):
-    await interaction.response.send_message("I am only installed to users, but can be used anywhere.")
+# @app_commands.command(name='test', description="Test command")
+# @app_commands.allowed_installs(guilds=False, users=True)
+# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+# async def useable_only_users(interaction: discord.Interaction):
+#     await interaction.response.send_message("I am only installed to users, but can be used anywhere.")
     
 
 # Next departures for a station
@@ -1135,7 +1135,7 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@search.command(name="departures", description="Upcoming trains departing a station")
+@bot.tree.command(name="departures", description="Upcoming trains departing a station")
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
