@@ -2896,7 +2896,7 @@ async def ids(ctx: commands.Context) -> None:
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(train=[
     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-    app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),x``
+    app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
     app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
     # app_commands.Choice(name="HCMT", value="HCMT"),
