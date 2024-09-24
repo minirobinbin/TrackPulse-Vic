@@ -836,6 +836,8 @@ async def line_info(ctx, search: str):
 # Train search
 @search.command(name="train", description="Search for a specific Train")
 @app_commands.describe(train="train")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def train_search(ctx, train: str):
     await ctx.response.defer()
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
@@ -1132,6 +1134,8 @@ async def station_autocompletion(
 @search.command(name="departures", description="Upcoming trains departing a station")
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 # test
 async def departures(ctx, station: str):
     async def nextdeps():
