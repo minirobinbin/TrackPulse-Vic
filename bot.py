@@ -2891,6 +2891,24 @@ async def ids(ctx: commands.Context) -> None:
         else:
             await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
 
+@bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.choices(train=[
+    app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+    app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),x``
+    app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+    app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+    # app_commands.Choice(name="HCMT", value="HCMT"),
+    app_commands.Choice(name='VLocity', value='VLocity'),
+    app_commands.Choice(name='Sprinter', value='Sprinter'),
+    # app_commands.Choice(name='N Class', value='N Class'),
+])
+async def trainemoji(ctx, train:str):
+    async def sendemojis():
+        await ctx.response.send_message(setEmoji(train))
+        
+    asyncio.create_task(sendemojis())
 
 @bot.command()
 @commands.guild_only()
