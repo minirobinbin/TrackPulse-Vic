@@ -1660,10 +1660,12 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@trainlogs.command(name="add-train", description="Log a train you have been on")
+@bot.tree.command(name="log-train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
@@ -1753,8 +1755,10 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
 
     
 #thing to delete the stuff
-@trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
+@bot.tree.command(name='delete-log', description='Delete a logged trip. Defaults to the last logged trip.')
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(mode=[
      app_commands.Choice(name="Victorian Train", value="train"),
     app_commands.Choice(name="Melbourne Tram", value="tram"),
@@ -1802,10 +1806,12 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 
     
   # tram logger goes here
-@trainlogs.command(name="add-tram", description="Log a tram you have been on")
+@bot.tree.command(name="add-tram", description="Log a tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(route=[
         app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
         app_commands.Choice(name="3 Melbourne University - Malvern East", value="3"),
@@ -1883,10 +1889,12 @@ async def NSWstation_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@trainlogs.command(name="add-sydney-train", description="Log a Sydney/NSW train you have been on")
+@bot.tree.command(name="add-sydney-train", description="Log a Sydney/NSW train you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(line=[
         app_commands.Choice(name="T1 North Shore & Western Line", value="T1"),
         app_commands.Choice(name="T2 Inner West & Leppington Line", value="T2"),
@@ -1969,10 +1977,12 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 
 
 
-@trainlogs.command(name="add-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
+@bot.tree.command(name="add-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
@@ -2030,9 +2040,11 @@ async def busOpsautocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@trainlogs.command(name="add-bus", description="Log a Bus you have been on")
+@bot.tree.command(name="add-bus", description="Log a Bus you have been on")
 @app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(operator=busOpsautocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 # @app_commands.autocomplete(end=NSWstation_autocompletion)
 
 async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
@@ -2067,61 +2079,7 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
     asyncio.create_task(log())
     
  # Perth Train logger
-# NOT FINISHED   
-'''@trainlogs.command(name="add-perth-train", description="Log a Transperth Train you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=NSWstation_autocompletion)
-@app_commands.autocomplete(end=NSWstation_autocompletion)
-@app_commands.choices(line=[
-        app_commands.Choice(name="Fremantle line", value="Fremantle line"),
-        app_commands.Choice(name="Midland line", value="Midland line"),
-        app_commands.Choice(name="Armadale line", value="Armadale line"),
-        app_commands.Choice(name="Joondalup line", value="Joondalup line"),
-        app_commands.Choice(name="Thornlie line", value="Thornlie line"),
-        app_commands.Choice(name="Mandurah line", value="Mandurah line"),
-        app_commands.Choice(name="Airport line", value="Airport line"),
-        app_commands.Choice(name="Morley–Ellenbrook line", value="Morley–Ellenbrook line"),
-])
-@app_commands.choices(type=[
-        app_commands.Choice(name="A-series", value="A-series"),
-        app_commands.Choice(name="B-series", value="B-series"),
-        app_commands.Choice(name="C-series", value="C-series"),
-])
 
-async def logPerth(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
-    channel = ctx.channel
-    print(date)
-    async def log():
-        print("logging the perth train")
-
-        savedate = date.split('/')
-        if date.lower() == 'today':
-            current_time = time.localtime()
-            savedate = time.strftime("%Y-%m-%d", current_time)
-        else:
-            try:
-                savedate = time.strptime(date, "%d/%m/%Y")
-                savedate = time.strftime("%Y-%m-%d", savedate)
-            except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
-                return
-            except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
-                return
-
-        # idk how to get nsw train set numbers i cant find a list of all sets pls help
-        set = number
-        if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
-            return
-
-        # Add train to the list
-        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
-        
-                
-    # Run in a separate task
-    asyncio.create_task(log())'''
 
 # train logger reader
 
