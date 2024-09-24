@@ -124,7 +124,7 @@ trainlogs = CommandGroups(name='logs')
 games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
-flight = CommandGroups(name='flight')
+# flight = CommandGroups(name='flight')
 
 @bot.event
 async def on_ready():
@@ -135,7 +135,7 @@ async def on_ready():
     bot.tree.add_command(games)
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
-    bot.tree.add_command(flight)
+    # bot.tree.add_command(flight)
 
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
