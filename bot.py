@@ -1806,7 +1806,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 
     
   # tram logger goes here
-@bot.tree.command(name="add-tram", description="Log a tram you have been on")
+@bot.tree.command(name="log-melbourne-tram", description="Log a tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
@@ -1889,7 +1889,7 @@ async def NSWstation_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@bot.tree.command(name="add-sydney-train", description="Log a Sydney/NSW train you have been on")
+@bot.tree.command(name="log-sydney-train", description="Log a Sydney/NSW train you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
@@ -1977,7 +1977,7 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 
 
 
-@bot.tree.command(name="add-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
+@bot.tree.command(name="log-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
@@ -2040,7 +2040,7 @@ async def busOpsautocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@bot.tree.command(name="add-bus", description="Log a Bus you have been on")
+@bot.tree.command(name="log-bus", description="Log a Bus you have been on")
 @app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(operator=busOpsautocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
