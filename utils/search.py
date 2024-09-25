@@ -184,6 +184,42 @@ def specificRunAPIRequest(run_ref, route_type):
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
 
+def fareEstimate(minZone:int, maxZone:int, touchOnUTC=None, touchOffUTC=None):
+    # API endpoint URL
+    urlString = f'/v3/fare_estimate/min_zone/{minZone}/max_zone/{maxZone}'
+    if touchOnUTC != None:
+        if '?' in urlString:
+            marker ='&'
+        else:
+            marker = '?'
+        touchOnUTC = touchOnUTC.replace(' ', '%20').replace(":", "%3A")
+        urlString += f'{marker}journey_touch_on_utc={touchOnUTC}'
+
+    if touchOffUTC != None:
+        if '?' in urlString:
+            marker ='&'
+        else:
+            marker = '?'
+        touchOffUTC =touchOffUTC.replace(' ', '%20').replace(":", "%3A")
+        urlString += f'{marker}journey_touch_off_utc={touchOffUTC}'
+
+
+        
+    url = getUrl(urlString)
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+
 def trainData(search_value):
     csv_filename = 'utils/metrotrains.csv'
     with open(csv_filename, mode='r') as file:

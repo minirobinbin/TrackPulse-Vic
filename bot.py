@@ -40,6 +40,8 @@ from re import A
 from io import StringIO
 import numpy as np
 import io
+import pytz
+
 
 from utils import trainset
 from utils.search import *
@@ -818,10 +820,64 @@ async def line_info(ctx, number: str, search_set:bool):
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
             await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.jpg")
 
-    
-    
+ 
+# myki fair calculator   
+@bot.tree.command(name="calculate-fare", description="Calculate fare for a trip")   
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)       
+@app_commands.describe(start_zone = "Start zone", end_zone = "End zone")
+async def calculate_fair(ctx, start_zone:int, end_zone:int):
+    async def calc():
+        await ctx.response.defer()        
+        
+        start = start_zone
+        end = end_zone
+        if start > end:
+            start = end_zone
+            end = start_zone
+
+
+        try:
+            api_response = fareEstimate(start, end)
+            json_response = json.dumps(api_response)
+            data = json.loads(json_response)
+
+            result = data['FareEstimateResult']
+            
+            earlyBird = result['IsEarlyBird']
+            weekend = result['IsThisWeekendJourney']
+            
+            fairs = result['PassengerFares']
+            
+            embed=discord.Embed(title=f"Zone {start_zone} → {end_zone}", color=0xc2d840)
+            count=0
+            for fair in fairs:
+                type = fairs[count]['PassengerType']
+                Fare2HourPeak = fairs[count]['Fare2HourPeak']
+                Fare2HourOffPeak = fairs[count]['Fare2HourOffPeak']
+                FareDailyPeak = fairs[count]['FareDailyPeak']
+                WeekendCap = fairs[count]['WeekendCap']
+                HolidayCap = fairs[count]['HolidayCap']
+                Pass7Days = fairs[count]['Pass7Days']
+                Pass28To69DayPerDay = fairs[count]['Pass28To69DayPerDay']
+                Pass70PlusDayPerDay = fairs[count]['Pass70PlusDayPerDay']
+                count +=1
+
+                embed.add_field(name=type.title(), value=f'2 hour fare: `${Fare2HourPeak:.2f}`\nDaily cap: `${FareDailyPeak:.2f}`\nWeekend cap: `${WeekendCap:.2f}`\nHoliday cap: `${HolidayCap:.2f}`', inline=True)
+                
+            embed.add_field(name='Fare Info', value=f'Early Bird: {earlyBird}\nWeekend: {weekend}', inline=False)
+            await ctx.edit_original_response(embed=embed)          
+
+        except Exception as e:
+            await ctx.edit_original_response(content='Invalid information. Please try again.')
+            print(e)
+            
             
 
+        
+    asyncio.create_task(calc())
+    
+    
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
@@ -2892,8 +2948,8 @@ async def ids(ctx: commands.Context) -> None:
             await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
 
 @bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+# @app_commands.allowed_installs(guilds=True, users=True)
+# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(train=[
     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
     app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),

@@ -19,6 +19,6 @@ def getPhotoCredits(train):
             result_value = row[1]
             break
     if result_value == None:
-        result_value = "XM9G's Railway Photos"
+        result_value = "Billy Evans"
     return result_value
 
