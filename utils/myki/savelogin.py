@@ -10,3 +10,9 @@ def savelogin(username, password, id):
         
         # Write the inputs as a new row in the CSV
         writer.writerow([username, password])
+
+def readlogin(id):
+    with open(f'utils/myki/logins/{id}.csv', mode='r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            return row

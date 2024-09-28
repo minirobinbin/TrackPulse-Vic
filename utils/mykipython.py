@@ -13,7 +13,7 @@ import re
 
 def getMykiInfo(username:str, password:str):
     # Set up ChromeDriver
-    chrome_driver_path = r"chromedriver/chromedriver.exe"
+    chrome_driver_path = r"utils/chromedriver/chromedriver.exe"
 
     print('starting browser...')
     service = Service(chrome_driver_path)

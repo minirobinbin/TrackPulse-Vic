@@ -884,13 +884,33 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
     asyncio.create_task(calc())
 
 # thing to save myki credentials to bot:
-@myki.command(name='login', description='Save your PTV account username and password to the bot.')
+@myki.command(name='login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
 async def login(ctx, username: str, password: str):
     await ctx.response.defer(ephemeral=True)
     savelogin(username, password, ctx.user.id)
     await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{username}`\nPassword: `{password}`\nYour username and password are linked to your Discord account and cannot be seen by other users.')
     
-    
+@myki.command(name='view', description='View your mykis and their balances')
+async def viewmykis(ctx):
+    async def viewcards():
+        await ctx.response.defer()
+        
+        # get saved username and password:
+        try:
+            login = readlogin(ctx.user.id)
+        except:
+            await ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
+            return
+        data = getMykiInfo(login[0], login[1])
+        
+        # make embed
+        embed = discord.Embed(title="Your Mykis", color=0xc2d840)
+        for myki, info in data.items():
+            embed.add_field(name=f'{info[0]}    {info[2]}', value=f'{info[1]}')
+
+        await ctx.edit_original_response(embed=embed)
+        
+    asyncio.create_task(viewcards())
 
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
