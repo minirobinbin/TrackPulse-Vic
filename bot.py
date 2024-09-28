@@ -65,6 +65,9 @@ from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
 from utils.photo import *
 from utils.plane.main import *
+from utils.mykipython import *
+from utils.myki.savelogin import *
+
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -122,10 +125,12 @@ except FileExistsError as e:
 class CommandGroups(app_commands.Group):
     ...
 
-trainlogs = CommandGroups(name='logs')
+trainlogs = CommandGroups(name='log')
 games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
+myki = CommandGroups(name='myki')
+
 # flight = CommandGroups(name='flight')
 
 @bot.event
@@ -137,6 +142,7 @@ async def on_ready():
     bot.tree.add_command(games)
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
+    bot.tree.add_command(myki)
     # bot.tree.add_command(flight)
 
 
@@ -822,7 +828,7 @@ async def line_info(ctx, number: str, search_set:bool):
 
  
 # myki fair calculator   
-@bot.tree.command(name="calculate-fare", description="Calculate fare for a trip")   
+@myki.command(name="calculate-fare", description="Calculate fare for a trip")   
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)       
 @app_commands.describe(start_zone = "Start zone", end_zone = "End zone")
@@ -876,8 +882,16 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
 
         
     asyncio.create_task(calc())
+
+# thing to save myki credentials to bot:
+@myki.command(name='login', description='Save your PTV account username and password to the bot.')
+async def login(ctx, username: str, password: str):
+    await ctx.response.defer(ephemeral=True)
+    savelogin(username, password, ctx.user.id)
+    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{username}`\nPassword: `{password}`\nYour username and password are linked to your Discord account and cannot be seen by other users.')
     
     
+
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
@@ -1716,12 +1730,10 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ]
-@bot.tree.command(name="log-train", description="Log a train you have been on")
+@trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
@@ -1811,10 +1823,8 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
 
     
 #thing to delete the stuff
-@bot.tree.command(name='delete-log', description='Delete a logged trip. Defaults to the last logged trip.')
+@trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(mode=[
      app_commands.Choice(name="Victorian Train", value="train"),
     app_commands.Choice(name="Melbourne Tram", value="tram"),
@@ -1862,12 +1872,11 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 
     
   # tram logger goes here
-@bot.tree.command(name="log-melbourne-tram", description="Log a tram you have been on")
+@trainlogs.command(name="melbourne-tram", description="Log a tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+
 @app_commands.choices(route=[
         app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
         app_commands.Choice(name="3 Melbourne University - Malvern East", value="3"),
@@ -1945,12 +1954,11 @@ async def NSWstation_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@bot.tree.command(name="log-sydney-train", description="Log a Sydney/NSW train you have been on")
+@trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+
 @app_commands.choices(line=[
         app_commands.Choice(name="T1 North Shore & Western Line", value="T1"),
         app_commands.Choice(name="T2 Inner West & Leppington Line", value="T2"),
@@ -2033,7 +2041,7 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 
 
 
-@bot.tree.command(name="log-sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
+@trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
@@ -2096,7 +2104,7 @@ async def busOpsautocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ]
     
-@bot.tree.command(name="log-bus", description="Log a Bus you have been on")
+@trainlogs.command(name="bus", description="Log a Bus you have been on")
 @app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(operator=busOpsautocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
@@ -2965,7 +2973,7 @@ async def trainemoji(ctx, train:str):
         await ctx.response.send_message(setEmoji(train))
         
     asyncio.create_task(sendemojis())
-
+    
 @bot.command()
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
