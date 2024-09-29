@@ -890,7 +890,7 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
     await ctx.response.defer(ephemeral=True)
     encryptedPassword = encryptPW(encryptionpassword, ptvpassword)
     savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
-    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour username and password are encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
+    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour password is encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
 @myki.command(name='view', description='View your mykis and their balances')
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
@@ -913,12 +913,24 @@ async def viewmykis(ctx, encriptionpassword: str):
             return
         
         # run the myki scraper
-        data = getMykiInfo(login[0], decryptedPassword)
+        try:
+            data = getMykiInfo(login[0], decryptedPassword)
+        except Exception as e:
+            await ctx.edit_original_response(content=f"There has been an error: `{e}`")
+            return
+        
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
         for myki, info in data.items():
-            embed.add_field(name=f'{info[0]}    {info[2]}', value=f'{info[1]}')
+            # find mobile mykis:
+            prefix = "mobile myki, "
+            if info[0].startswith(prefix):
+                cardName= f':mobile_phone: {info[0][len(prefix):]}'
+            else:
+                cardName=info[0]
+            
+            embed.add_field(name=f'{cardName}    {info[2]}', value=f'{info[1]}')
 
         await ctx.edit_original_response(embed=embed)
         
