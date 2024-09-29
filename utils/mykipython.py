@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import re
+import threading
 
 # FROM https://github.com/Track-Pulse-VIC/mykipython
 

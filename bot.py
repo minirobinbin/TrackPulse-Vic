@@ -41,7 +41,7 @@ from io import StringIO
 import numpy as np
 import io
 import pytz
-
+from concurrent.futures import ThreadPoolExecutor
 
 from utils import trainset
 from utils.search import *
@@ -827,7 +827,7 @@ async def line_info(ctx, number: str, search_set:bool):
             await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.jpg")
 
  
-# myki fair calculator   
+# myki fare calculator   
 @myki.command(name="calculate-fare", description="Calculate fare for a trip")   
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)       
@@ -895,30 +895,30 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
 @myki.command(name='view', description='View your mykis and their balances')
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
 async def viewmykis(ctx, encriptionpassword: str):
-    async def viewcards():
-        await ctx.response.defer()
+    loop = asyncio.get_event_loop()
+    await ctx.response.defer()
+    def viewcards():
         # decrypt the password
         
         # get saved username and password:
         try:
             login = readlogin(ctx.user.id)
         except:
-            await ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
+            ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
             return
+
         try:
             decryptedPassword = decryptPW(encriptionpassword, login[1].encode())
-            
         except Exception as e:
-            await ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
+            ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
             return
         
         # run the myki scraper
         try:
             data = getMykiInfo(login[0], decryptedPassword)
         except Exception as e:
-            await ctx.edit_original_response(content=f"There has been an error: `{e}`")
+            ctx.edit_original_response(content=f"There has been an error: `{e}`")
             return
-        
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
@@ -926,15 +926,24 @@ async def viewmykis(ctx, encriptionpassword: str):
             # find mobile mykis:
             prefix = "mobile myki, "
             if info[0].startswith(prefix):
-                cardName= f':mobile_phone: {info[0][len(prefix):]}'
+                cardName = f':mobile_phone: {info[0][len(prefix):]}'
             else:
-                cardName=info[0]
+                cardName = info[0]
             
             embed.add_field(name=f'{cardName}    {info[2]}', value=f'{info[1]}')
-
-        await ctx.edit_original_response(embed=embed)
         
-    asyncio.create_task(viewcards())
+        return embed
+
+    # Create a ThreadPoolExecutor
+    with ThreadPoolExecutor() as executor:
+        # Run the viewcards function in a separate thread
+        result = await loop.run_in_executor(executor, viewcards)
+
+        # Edit the original response based on the result
+        if isinstance(result, discord.Embed):
+            await ctx.edit_original_response(embed=result)
+        else:
+            await ctx.edit_original_response(content=result)
 
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
