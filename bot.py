@@ -409,17 +409,17 @@ async def help(ctx):
     async def helper():
         generalCmds =f"""</help:1261107050545549342> - Shows this command
 </stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
-        logCmds = """</logs add-train:1254387855820849154> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered.
-</logs add-sydney-train:1254387855820849154> - same as above but for trains in NSW
-</logs add-tram:1254387855820849154> - same as above but for trams in Melbourne
-</logs add-sydney-tram:1254387855820849154> - same as above but for light rail in Sydney
+        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
+</log sydney-train:1289843416628330506> - same as above but for trains in New South Wales
+</log melbourne-tram:1289843416628330506> - same as above but for trams in Melbourne
+</log sydney-tram:1289843416628330506> - same as above but for light rail in Sydney
 
-</logs view:1254387855820849154> - view your logs
-</logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
-</logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
+</log view:1289843416628330506> - view all your logs or a specific log id
+</log delete:1289843416628330506> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </log view:1289843416628330506>
+</log stats:1289843416628330506> - view various stats and graphs from your logged trips."""
         searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
-</search departures:1240101357847838814> - View the next 9 Metro and 3 V/Line departures for a station
-</search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
+</departures:1288002114466877529> - View a station's next 9 Metro departures
+</metro-line:1288004355475111938> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
         await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
     asyncio.create_task(helper())
