@@ -884,16 +884,20 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
     asyncio.create_task(calc())
 
 # thing to save myki credentials to bot:
-@myki.command(name='login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
-async def login(ctx, username: str, password: str):
+@myki.command(name='save-login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
+@app_commands.describe(ptvusername = "PTV accpunt username", ptvpassword = "PTV account password", encryptionpassword = "A password to encrypt your PTV password")
+async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str):
     await ctx.response.defer(ephemeral=True)
-    savelogin(username, password, ctx.user.id)
-    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{username}`\nPassword: `{password}`\nYour username and password are linked to your Discord account and cannot be seen by other users.')
+    encryptedPassword = encryptPW(encryptionpassword, ptvpassword)
+    savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
+    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour username and password are encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
 @myki.command(name='view', description='View your mykis and their balances')
-async def viewmykis(ctx):
+@app_commands.describe(encriptionpassword = "Your encryption password from the login command")
+async def viewmykis(ctx, encriptionpassword: str):
     async def viewcards():
         await ctx.response.defer()
+        # decrypt the password
         
         # get saved username and password:
         try:
@@ -901,7 +905,15 @@ async def viewmykis(ctx):
         except:
             await ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
             return
-        data = getMykiInfo(login[0], login[1])
+        try:
+            decryptedPassword = decryptPW(encriptionpassword, login[1].encode())
+            
+        except Exception as e:
+            await ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
+            return
+        
+        # run the myki scraper
+        data = getMykiInfo(login[0], decryptedPassword)
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
