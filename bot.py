@@ -892,6 +892,7 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
     savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
     await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour password is encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
+
 @myki.command(name='view', description='View your mykis and their balances')
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
 async def viewmykis(ctx, encriptionpassword: str):

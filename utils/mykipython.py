@@ -1,3 +1,4 @@
+from tkinter.filedialog import test
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -98,6 +99,14 @@ def getMykiInfo(username:str, password:str):
                 cardNumber = match.group(0)
             else:
                 cardNumber =("Card number not found")
+                
+            # find more details: NOT DONE!!!
+            # detailsButton = driver.find_element(By.CLASS_NAME, 'myki-card--with-action')
+            # detailsButton.click
+            # test = WebDriverWait(driver, 10).until(
+            # EC.presence_of_all_elements_located((By.CLASS_NAME, 'myki-details-section__detail-item'))
+            # )   
+            # print(f'test thing: {test}')
             
             # print(f"Myki {index + 1}: {format_myki_text(name_text)} - Balance: {balance_text}")
             data[f'Myki {index + 1}'] = [format_myki_text(name_text),balance_text, cardNumber]
@@ -110,3 +119,4 @@ def getMykiInfo(username:str, password:str):
 
     driver.quit()
     return data
+
