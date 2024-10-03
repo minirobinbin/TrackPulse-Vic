@@ -1880,10 +1880,12 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
 @app_commands.choices(mode=[
-     app_commands.Choice(name="Victorian Train", value="train"),
+    app_commands.Choice(name="Victorian Train", value="train"),
     app_commands.Choice(name="Melbourne Tram", value="tram"),
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Bus", value="bus"),
+
 
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
