@@ -897,7 +897,7 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
 async def viewmykis(ctx, encriptionpassword: str):
     loop = asyncio.get_event_loop()
-    await ctx.response.defer()
+    await ctx.response.defer(ephemeral=True)
     def viewcards():
         # decrypt the password
         
