@@ -1874,7 +1874,7 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 
     # Run in a separate task
     asyncio.create_task(log())
-
+f
     
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
