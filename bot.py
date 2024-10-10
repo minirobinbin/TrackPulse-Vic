@@ -990,14 +990,18 @@ async def train_search(ctx, train: str):
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
     if type is None:
-        await channel.send("Train not found")
+       await ctx.edit_original_response(content="Train not found")
     else:
         embed = discord.Embed(title=f"{train.upper()}:", color=0x0070c0)
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
-        if set.endswith('-'):
-            embed.add_field(name=type, value=set[:-1])
-        else:
-            embed.add_field(name=type, value=f'{set}')
+        try:
+            if set.endswith('-'):
+                embed.add_field(name=type, value=set[:-1])
+            else:
+                embed.add_field(name=type, value=f'{set}')
+        except:
+            await ctx.edit_original_response(content="Train not found")
+            return
         
         if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
