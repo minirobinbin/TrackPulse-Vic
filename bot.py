@@ -135,6 +135,23 @@ myki = CommandGroups(name='myki')
 
 @bot.event
 async def on_ready():
+    # download the trainset data
+    def download_csv(url, save_path):
+        response = requests.get(url)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            with open(save_path, 'wb') as file:
+                file.write(response.content)
+            print(f"CSV downloaded successfully and saved as {save_path}")
+        else:
+            print(f"Failed to download CSV. Status code: {response.status_code}")
+            
+    csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
+    save_location = "utils/trainsets.csv"
+    print(f"Downloading trainset data from {csv_url} to {save_location}")
+    download_csv(csv_url, save_location)
+    
     print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
@@ -1874,7 +1891,7 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 
     # Run in a separate task
     asyncio.create_task(log())
-f
+
     
 #thing to delete the stuff
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')

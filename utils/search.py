@@ -221,7 +221,7 @@ def fareEstimate(minZone:int, maxZone:int, touchOnUTC=None, touchOffUTC=None):
         print(f"Error: {response.status_code} - {response.text}")
 
 def trainData(search_value):
-    csv_filename = 'utils/metrotrains.csv'
+    csv_filename = 'utils/trainsets.csv'
     with open(csv_filename, mode='r') as file:
         reader = csv.reader(file)
         header = next(reader)  # Skip the header row
