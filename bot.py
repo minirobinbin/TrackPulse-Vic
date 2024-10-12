@@ -833,15 +833,15 @@ async def line_info(ctx, number: str, search_set:bool):
         if fullSet[0] != number:
             search_query=fullSet[0].upper()
             await ctx.channel.send(f'Photos for `{fullSet[0]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.webp")
         if fullSet[1] != number:
             search_query=fullSet[1].upper()
             await ctx.channel.send(f'Photos for `{fullSet[1]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.webp")
         if fullSet[2] != number:
             search_query=fullSet[2].upper()
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
  
 # myki fare calculator   
