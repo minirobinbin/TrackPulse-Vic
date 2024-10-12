@@ -67,6 +67,7 @@ from utils.photo import *
 from utils.plane.main import *
 from utils.mykipython import *
 from utils.myki.savelogin import *
+from utils.special.yearinreview import *
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -3021,6 +3022,53 @@ async def profile(ctx, user: discord.User = None):
         await ctx.response.send_message(embed=embed)
         
     await profiles()
+    
+# year in review
+@bot.tree.command(name="year-in-review", description="View your year in review for a specific year.")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def yearinreview(ctx, year: int=2024):
+    async def yir():
+        await ctx.response.defer()
+        current_year = datetime.now().year
+        unix_time = int(time.time())
+        if current_year == year:
+            if unix_time < 1732971600:
+                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                return
+        try:
+        
+            embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
+            data = year_in_review(f'utils/trainlogger/userdata/{ctx.user.name}.csv', year)
+            
+            (lilydale_value, ringwood_value), count = data.get("top_pair")
+            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times", inline=False)
+            
+            top_lines = data['top_5_lines']
+            formatted_lines = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_lines)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Lines :railway_track:", value=formatted_lines or "No lines found.", inline=False)
+            
+            top_stations = data['top_5_stations']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} visits" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Stations :station:", value=formatted_stations or "No Stations found.", inline=False)
+            
+            top_stations = data['top_5_trains']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Train types :train:", value=formatted_stations or "No Trains found.", inline=False)
+            
+            top_stations = data['top_number']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Trains :bullettrain_side:", value=formatted_stations or "No Trains found.", inline=False)
+            
+            embed.set_thumbnail(url=ctx.user.avatar.url)
+            embed.set_footer(text="Trains Logged with TrackPulse VIC", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
+
+            await ctx.edit_original_response(embed=embed)
+            
+        except Exception as e:
+            await ctx.edit_original_response(embed=discord.Embed(title="Error", description=f"An error occurred while fetching data: {e}"))
+        
+    asyncio.create_task(yir())
 
 # Disabled to not fuck up the data by accident
 '''@bot.command()
@@ -3032,24 +3080,24 @@ async def ids(ctx: commands.Context) -> None:
         else:
             await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
 
-@bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
-# @app_commands.allowed_installs(guilds=True, users=True)
-# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-@app_commands.choices(train=[
-    app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-    app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
-    app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
-    app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-    # app_commands.Choice(name="HCMT", value="HCMT"),
-    app_commands.Choice(name='VLocity', value='VLocity'),
-    app_commands.Choice(name='Sprinter', value='Sprinter'),
-    # app_commands.Choice(name='N Class', value='N Class'),
-])
-async def trainemoji(ctx, train:str):
-    async def sendemojis():
-        await ctx.response.send_message(setEmoji(train))
+# @bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
+# # @app_commands.allowed_installs(guilds=True, users=True)
+# # @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+# @app_commands.choices(train=[
+#     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+#     app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
+#     app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+#     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+#     # app_commands.Choice(name="HCMT", value="HCMT"),
+#     app_commands.Choice(name='VLocity', value='VLocity'),
+#     app_commands.Choice(name='Sprinter', value='Sprinter'),
+#     # app_commands.Choice(name='N Class', value='N Class'),
+# ])
+# async def trainemoji(ctx, train:str):
+#     async def sendemojis():
+#         await ctx.response.send_message(setEmoji(train))
         
-    asyncio.create_task(sendemojis())
+#     asyncio.create_task(sendemojis())
     
 @bot.command()
 @commands.guild_only()
