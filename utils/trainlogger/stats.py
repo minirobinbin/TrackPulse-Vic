@@ -1059,7 +1059,7 @@ def setlist(user, train):
 
 def terminiList(user):
     termini = [
-        "Lilydale", "Belgrave", "Bairnsdale", "Taralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Geelong', "Warrnambool", "Ballarat", 'Ararat','Sunbury', 'Maryborough', 'Bendigo', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
+        "Lilydale", "Belgrave", "Bairnsdale", "Traralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Waurn Ponds', "Warrnambool", "Wendouree", 'Ararat','Sunbury', 'Maryborough', 'Bendigo', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
     ]
     
     # Read CSV file

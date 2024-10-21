@@ -41,7 +41,7 @@ from io import StringIO
 import numpy as np
 import io
 import pytz
-
+from concurrent.futures import ThreadPoolExecutor
 
 from utils import trainset
 from utils.search import *
@@ -67,6 +67,7 @@ from utils.photo import *
 from utils.plane.main import *
 from utils.mykipython import *
 from utils.myki.savelogin import *
+from utils.special.yearinreview import *
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -135,6 +136,23 @@ myki = CommandGroups(name='myki')
 
 @bot.event
 async def on_ready():
+    # download the trainset data
+    def download_csv(url, save_path):
+        response = requests.get(url)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            with open(save_path, 'wb') as file:
+                file.write(response.content)
+            print(f"CSV downloaded successfully and saved as {save_path}")
+        else:
+            print(f"Failed to download CSV. Status code: {response.status_code}")
+            
+    csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
+    save_location = "utils/trainsets.csv"
+    print(f"Downloading trainset data from {csv_url} to {save_location}")
+    download_csv(csv_url, save_location)
+    
     print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
@@ -409,17 +427,17 @@ async def help(ctx):
     async def helper():
         generalCmds =f"""</help:1261107050545549342> - Shows this command
 </stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
-        logCmds = """</logs add-train:1254387855820849154> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered.
-</logs add-sydney-train:1254387855820849154> - same as above but for trains in NSW
-</logs add-tram:1254387855820849154> - same as above but for trams in Melbourne
-</logs add-sydney-tram:1254387855820849154> - same as above but for light rail in Sydney
+        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
+</log sydney-train:1289843416628330506> - same as above but for trains in New South Wales
+</log melbourne-tram:1289843416628330506> - same as above but for trams in Melbourne
+</log sydney-tram:1289843416628330506> - same as above but for light rail in Sydney
 
-</logs view:1254387855820849154> - view your logs
-</logs delete:1254387855820849154> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </logs view:1254387855820849154>
-</logs stats:1254387855820849154> - view various stats and graphs from your logged trips."""
+</log view:1289843416628330506> - view all your logs or a specific log id
+</log delete:1289843416628330506> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </log view:1289843416628330506>
+</log stats:1289843416628330506> - view various stats and graphs from your logged trips."""
         searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
-</search departures:1240101357847838814> - View the next 9 Metro and 3 V/Line departures for a station
-</search metro-line:1240101357847838814> - View disruptions for a Metro Trains line
+</departures:1288002114466877529> - View a station's next 9 Metro departures
+</metro-line:1288004355475111938> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
         await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
     asyncio.create_task(helper())
@@ -816,18 +834,18 @@ async def line_info(ctx, number: str, search_set:bool):
         if fullSet[0] != number:
             search_query=fullSet[0].upper()
             await ctx.channel.send(f'Photos for `{fullSet[0]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.webp")
         if fullSet[1] != number:
             search_query=fullSet[1].upper()
             await ctx.channel.send(f'Photos for `{fullSet[1]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.webp")
         if fullSet[2] != number:
             search_query=fullSet[2].upper()
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.jpg")
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
  
-# myki fair calculator   
+# myki fare calculator   
 @myki.command(name="calculate-fare", description="Calculate fare for a trip")   
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)       
@@ -884,33 +902,67 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
     asyncio.create_task(calc())
 
 # thing to save myki credentials to bot:
-@myki.command(name='login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
-async def login(ctx, username: str, password: str):
+@myki.command(name='save-login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
+@app_commands.describe(ptvusername = "PTV accpunt username", ptvpassword = "PTV account password", encryptionpassword = "A password to encrypt your PTV password")
+async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str):
     await ctx.response.defer(ephemeral=True)
-    savelogin(username, password, ctx.user.id)
-    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{username}`\nPassword: `{password}`\nYour username and password are linked to your Discord account and cannot be seen by other users.')
+    encryptedPassword = encryptPW(encryptionpassword, ptvpassword)
+    savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
+    await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour password is encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
+
 @myki.command(name='view', description='View your mykis and their balances')
-async def viewmykis(ctx):
-    async def viewcards():
-        await ctx.response.defer()
+@app_commands.describe(encriptionpassword = "Your encryption password from the login command")
+async def viewmykis(ctx, encriptionpassword: str):
+    loop = asyncio.get_event_loop()
+    await ctx.response.defer(ephemeral=True)
+    def viewcards():
+        # decrypt the password
         
         # get saved username and password:
         try:
             login = readlogin(ctx.user.id)
         except:
-            await ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
+            ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
             return
-        data = getMykiInfo(login[0], login[1])
+
+        try:
+            decryptedPassword = decryptPW(encriptionpassword, login[1].encode())
+        except Exception as e:
+            ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
+            return
+        
+        # run the myki scraper
+        try:
+            data = getMykiInfo(login[0], decryptedPassword)
+        except Exception as e:
+            ctx.edit_original_response(content=f"There has been an error: `{e}`")
+            return
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
         for myki, info in data.items():
-            embed.add_field(name=f'{info[0]}    {info[2]}', value=f'{info[1]}')
-
-        await ctx.edit_original_response(embed=embed)
+            # find mobile mykis:
+            prefix = "mobile myki, "
+            if info[0].startswith(prefix):
+                cardName = f':mobile_phone: {info[0][len(prefix):]}'
+            else:
+                cardName = info[0]
+            
+            embed.add_field(name=f'{cardName}    {info[2]}', value=f'{info[1]}')
         
-    asyncio.create_task(viewcards())
+        return embed
+
+    # Create a ThreadPoolExecutor
+    with ThreadPoolExecutor() as executor:
+        # Run the viewcards function in a separate thread
+        result = await loop.run_in_executor(executor, viewcards)
+
+        # Edit the original response based on the result
+        if isinstance(result, discord.Embed):
+            await ctx.edit_original_response(embed=result)
+        else:
+            await ctx.edit_original_response(content=result)
 
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
@@ -939,14 +991,18 @@ async def train_search(ctx, train: str):
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
     if type is None:
-        await channel.send("Train not found")
+       await ctx.edit_original_response(content="Train not found")
     else:
         embed = discord.Embed(title=f"{train.upper()}:", color=0x0070c0)
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
-        if set.endswith('-'):
-            embed.add_field(name=type, value=set[:-1])
-        else:
-            embed.add_field(name=type, value=f'{set}')
+        try:
+            if set.endswith('-'):
+                embed.add_field(name=type, value=set[:-1])
+            else:
+                embed.add_field(name=type, value=f'{set}')
+        except:
+            await ctx.edit_original_response(content="Train not found")
+            return
         
         if train.upper() == "7005":  # Only old livery sprinter
             embed.set_thumbnail(url="https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
@@ -1846,10 +1902,12 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
 @trainlogs.command(name='delete', description='Delete a logged trip. Defaults to the last logged trip.')
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
 @app_commands.choices(mode=[
-     app_commands.Choice(name="Victorian Train", value="train"),
+    app_commands.Choice(name="Victorian Train", value="train"),
     app_commands.Choice(name="Melbourne Tram", value="tram"),
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Bus", value="bus"),
+
 
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
@@ -2964,6 +3022,53 @@ async def profile(ctx, user: discord.User = None):
         await ctx.response.send_message(embed=embed)
         
     await profiles()
+    
+# year in review
+@bot.tree.command(name="year-in-review", description="View your year in review for a specific year.")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def yearinreview(ctx, year: int=2024):
+    async def yir():
+        await ctx.response.defer()
+        current_year = datetime.now().year
+        unix_time = int(time.time())
+        if current_year == year:
+            if unix_time < 1732971600:
+                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                return
+        try:
+        
+            embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
+            data = year_in_review(f'utils/trainlogger/userdata/{ctx.user.name}.csv', year)
+            
+            (lilydale_value, ringwood_value), count = data.get("top_pair")
+            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times", inline=False)
+            
+            top_lines = data['top_5_lines']
+            formatted_lines = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_lines)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Lines :railway_track:", value=formatted_lines or "No lines found.", inline=False)
+            
+            top_stations = data['top_5_stations']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} visits" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Stations :station:", value=formatted_stations or "No Stations found.", inline=False)
+            
+            top_stations = data['top_5_trains']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Train types :train:", value=formatted_stations or "No Trains found.", inline=False)
+            
+            top_stations = data['top_number']
+            formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_stations)])
+            embed.add_field(name=f"{ctx.user.name}'s Top Trains :bullettrain_side:", value=formatted_stations or "No Trains found.", inline=False)
+            
+            embed.set_thumbnail(url=ctx.user.avatar.url)
+            embed.set_footer(text="Trains Logged with TrackPulse VIC", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
+
+            await ctx.edit_original_response(embed=embed)
+            
+        except Exception as e:
+            await ctx.edit_original_response(embed=discord.Embed(title="Error", description=f"An error occurred while fetching data: {e}"))
+        
+    asyncio.create_task(yir())
 
 # Disabled to not fuck up the data by accident
 '''@bot.command()
@@ -2975,24 +3080,24 @@ async def ids(ctx: commands.Context) -> None:
         else:
             await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
 
-@bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
-# @app_commands.allowed_installs(guilds=True, users=True)
-# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-@app_commands.choices(train=[
-    app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-    app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
-    app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
-    app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-    # app_commands.Choice(name="HCMT", value="HCMT"),
-    app_commands.Choice(name='VLocity', value='VLocity'),
-    app_commands.Choice(name='Sprinter', value='Sprinter'),
-    # app_commands.Choice(name='N Class', value='N Class'),
-])
-async def trainemoji(ctx, train:str):
-    async def sendemojis():
-        await ctx.response.send_message(setEmoji(train))
+# @bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
+# # @app_commands.allowed_installs(guilds=True, users=True)
+# # @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+# @app_commands.choices(train=[
+#     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+#     app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
+#     app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+#     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
+#     # app_commands.Choice(name="HCMT", value="HCMT"),
+#     app_commands.Choice(name='VLocity', value='VLocity'),
+#     app_commands.Choice(name='Sprinter', value='Sprinter'),
+#     # app_commands.Choice(name='N Class', value='N Class'),
+# ])
+# async def trainemoji(ctx, train:str):
+#     async def sendemojis():
+#         await ctx.response.send_message(setEmoji(train))
         
-    asyncio.create_task(sendemojis())
+#     asyncio.create_task(sendemojis())
     
 @bot.command()
 @commands.guild_only()

@@ -293,7 +293,7 @@ def readLogs(username):
         
         # Return the data instead of printing it
         if len(user_data) > 0:
-            return user_data
+            return user_data[::-1] 
         else:
             return []
     except FileNotFoundError:
@@ -317,7 +317,7 @@ def readTramLogs(username):
         
         # Return the data instead of printing it
         if len(user_data) > 0:
-            return user_data
+            return user_data[::-1]
         else:
             return []
     except FileNotFoundError:
@@ -341,7 +341,7 @@ def readSydneyTrainLogs(username):
         
         # Return the data instead of printing it
         if len(user_data) > 0:
-            return user_data
+            return user_data[::-1]
         else:
             return []
     except FileNotFoundError:
@@ -365,7 +365,7 @@ def readSydneyLightRailLogs(username):
         
         # Return the data instead of printing it
         if len(user_data) > 0:
-            return user_data
+            return user_data[::-1]
         else:
             return []
     except FileNotFoundError:
@@ -389,7 +389,7 @@ def readBusLogs(username):
         
         # Return the data instead of printing it
         if len(user_data) > 0:
-            return user_data
+            return user_data[::-1]
         else:
             return []
     except FileNotFoundError:
