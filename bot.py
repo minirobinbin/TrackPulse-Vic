@@ -1313,14 +1313,17 @@ async def departures(ctx, station: str):
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
         # vlineDepsData = departures_api_request(stop_id, 3)
-
-        departures = depsData['departures']
+        try:
+            departures = depsData['departures']
+            runs = depsData['runs']
+        except:
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
+            return
         # vdepartures = vlineDepsData['departures']
-        runs = depsData['runs']
         # vruns = vlineDepsData['runs']
 
         # make embed with data
-        embed= discord.Embed(title=f"Next trains departing {station} Station")
+        embed= discord.Embed(title=f"Next trains departing {station.title()} Station")
         fields = 0
         for departure in departures:
             scheduled_departure_utc = departure['scheduled_departure_utc']
@@ -1353,7 +1356,7 @@ async def departures(ctx, station: str):
                 
                 #VLINE PLATFORMS DONT WORK PLS HELP
                 
-                embed.add_field(name=f"{getEmojiColor(route_name)} {desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{route_name} Line\n{trainType} {trainNumber}\nRun `{run_ref}`")
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
                 fields = fields + 1
                 if fields == 9:
                     break
