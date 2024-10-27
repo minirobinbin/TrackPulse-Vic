@@ -75,14 +75,28 @@ print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
 
-file = open('utils\\stations.txt','r')
+file = open('utils\\datalists\\stations.txt','r')
 stations_list = []
 for line in file:
     line = line.strip()
     stations_list.append(line)
 file.close()
 
-file = open('utils\\busOps.txt','r')
+file = open('utils\\datalists\\lines.txt','r')
+lines_list = []
+for line in file:
+    line = line.strip()
+    lines_list.append(line)
+file.close()
+
+file = open('utils\\datalists\\nswstations.txt','r')
+NSWstations_list = []
+for line in file:
+    line = line.strip()
+    NSWstations_list.append(line)
+file.close()
+
+file = open('utils\\datalists\\busOps.txt','r')
 busOps = []
 for line in file:
     line = line.strip()
@@ -1281,7 +1295,7 @@ async def station_autocompletion(
     return [
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
-    ]
+    ][:25]
 @bot.tree.command(name="departures", description="Upcoming trains departing a station")
 @app_commands.describe(station="Station")
 @app_commands.autocomplete(station=station_autocompletion)
@@ -1808,37 +1822,51 @@ async def station_autocompletion(
     return [
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
-    ]
+    ][:25]
+    
+async def line_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = lines_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+#log train
 @trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
-@app_commands.choices(line=[
-        app_commands.Choice(name="Alamein", value="Alamein"),
-        app_commands.Choice(name="Belgrave", value="Belgrave"),
-        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
-        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
-        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
-        app_commands.Choice(name="Frankston", value="Frankston"),
-        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
-        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
-        app_commands.Choice(name="Lilydale", value="Lilydale"),
-        app_commands.Choice(name="Mernda", value="Mernda"),
-        app_commands.Choice(name="Pakenham", value="Pakenham"),
-        app_commands.Choice(name="Sandringham", value="Sandringham"),
-        app_commands.Choice(name="Stony Point", value="Stony Point"),
-        app_commands.Choice(name="Sunbury", value="Sunbury"),
-        app_commands.Choice(name="Upfield", value="Upfield"),
-        app_commands.Choice(name="Werribee", value="Werribee"),
-        app_commands.Choice(name="Williamstown", value="Williamstown"),
-        app_commands.Choice(name="Albury", value="Albury"),
-        app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
-        app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-        app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
-        app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
-        app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
-        app_commands.Choice(name="Unknown", value="Unknown")
-])
+@app_commands.autocomplete(line=line_autocompletion)
+
+# @app_commands.choices(line=[
+#         app_commands.Choice(name="Alamein", value="Alamein"),
+#         app_commands.Choice(name="Belgrave", value="Belgrave"),
+#         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+#         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+#         app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+#         app_commands.Choice(name="Frankston", value="Frankston"),
+#         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+#         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+#         app_commands.Choice(name="Lilydale", value="Lilydale"),
+#         app_commands.Choice(name="Mernda", value="Mernda"),
+#         app_commands.Choice(name="Pakenham", value="Pakenham"),
+#         app_commands.Choice(name="Sandringham", value="Sandringham"),
+#         app_commands.Choice(name="Stony Point", value="Stony Point"),
+#         app_commands.Choice(name="Sunbury", value="Sunbury"),
+#         app_commands.Choice(name="Upfield", value="Upfield"),
+#         app_commands.Choice(name="Werribee", value="Werribee"),
+#         app_commands.Choice(name="Williamstown", value="Williamstown"),
+#         app_commands.Choice(name="City Circle", value="City Circle"),
+#         app_commands.Choice(name="Albury", value="Albury"),
+#         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
+#         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
+#         app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
+#         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
+#         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
+#         app_commands.Choice(name="Unknown", value="Unknown")
+# ])
 @app_commands.choices(traintype=[
         app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
         app_commands.Choice(name="HCMT", value="HCMT"),
@@ -1852,6 +1880,7 @@ async def station_autocompletion(
         app_commands.Choice(name="Tait", value="Tait"),
         app_commands.Choice(name="K Class", value="K Class"),
         app_commands.Choice(name="Y Class", value="Y Class"),
+        app_commands.Choice(name="Other", value="Other"),
 ])
 
 # Train logger
@@ -2033,7 +2062,7 @@ async def NSWstation_autocompletion(
     return [
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
-    ]
+    ][:25]
     
 @trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
