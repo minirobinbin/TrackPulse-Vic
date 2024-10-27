@@ -232,10 +232,10 @@ def addSydneyTram(username, date, train_number, train_type, line, start, end):
     print(f"Data saved to {filename}")
     return id
 
-def addPerthTrain(username, date, train_number, train_type, line, start, end):
+def addAdelaideTrain(username, date, train_number, train_type, line, start, end):
 
     # Create a CSV file named after the username
-    filename = f"utils/trainlogger/userdata/perth-trains/{username}.csv"
+    filename = f"utils/trainlogger/userdata/adelaide-trains/{username}.csv"
     
     if not os.path.exists(filename):
         # Create the file if it does not exist
@@ -252,9 +252,9 @@ def addPerthTrain(username, date, train_number, train_type, line, start, end):
 
     # Write the data to the CSV file
     try:
-        os.listdir('utils\\trainlogger\\userdata\\perth-trains')
+        os.listdir('utils\\trainlogger\\userdata\\adelaide-trains')
     except FileNotFoundError:
-        os.mkdir('utils/trainlogger/userdata/perth-trains')
+        os.mkdir('utils/trainlogger/userdata/adelaide-trains')
         id = 0
 
     with open(filename, 'r+', newline='') as file:
@@ -375,6 +375,30 @@ def readSydneyLightRailLogs(username):
 def readBusLogs(username):
     # Create the filename based on the username
     filename = f"utils/trainlogger/userdata/bus/{username}.csv"
+    user_data = []
+
+    try:
+        # Open the CSV file and read the data
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            user_data = list(reader)
+            # data = file.readlines()
+            # print(data)
+            if user_data == []:
+                return 'no data'
+        
+        # Return the data instead of printing it
+        if len(user_data) > 0:
+            return user_data[::-1]
+        else:
+            return []
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return []
+
+def readAdelaideLogs(username):
+    # Create the filename based on the username
+    filename = f"utils/trainlogger/userdata/adelaide-trains/{username}.csv"
     user_data = []
 
     try:

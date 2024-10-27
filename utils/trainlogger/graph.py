@@ -108,6 +108,18 @@ label_colors = {
     'L2': '#ee1f35',
     'L3': '#ee1f35',
     
+    'Belair': '#509e2f',
+    'Gawler': '#c23b33',
+    'Grange': '#007dc3',
+    'Outer Harbor': '#007dc3',
+    'Port Dock': '#007dc3',
+    'Seaford': '#fe5000',
+    'Flinders': '#fe5000',
+    'The Ghan': '#a1233d',
+    'Indian Pacific': '#00467c',
+    'Great Southern': '#e17f30',
+    'The Overland': '#00543d',
+
     "X'Trapolis 100": '#008cce',
     "EDI Comeng": '#008cce',
     "Alstom Comeng": '#008cce',
