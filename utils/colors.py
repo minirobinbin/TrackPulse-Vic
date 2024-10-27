@@ -87,5 +87,7 @@ def getlineEmoji(type):
         return('<:Werribee1:1299616316273201194><:Werribee2:1299616318714150922><:Werribee3:1299616323386609714>')
     if type == "Williamstown":
         return('<:Williamstown1:1299616796265156688><:Williamstown2:1299616798081024061><:Williamstown3:1299616799997825085><:Williamstown4:1299616802023936030><:Williamstown5:1299616804297117716>')
+    if type == "City Loop":
+        return('<:CityCircle1:1299990618897911878><:CityCircle2:1299990620940669020><:CityCircle3:1299990622832164925><:CityCircle4:1299990625004949556>')
     else:
         return ''
