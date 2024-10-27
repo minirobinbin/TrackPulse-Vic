@@ -2753,7 +2753,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 # send reponse message
                 await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
                 await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-                await logsthread.send(f' # <:Adelaide_train_:1300008231510347807> {userid.name}\'s Adelaide Train Logs')
+                await logsthread.send(f' # <:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> {userid.name}\'s Adelaide Train Logs')
                 formatted_data = ""
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
@@ -3179,10 +3179,10 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'adelaide-trains')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:Adelaide_train_:1300008231510347807> Adelaide Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "adelaide-trains")}')
+            embed.add_field(name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "adelaide-trains")}')
                                   
         except FileNotFoundError:
-            embed.add_field(name="<:Adelaide_train_:1300008231510347807> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
+            embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
            
 # bus Logger
         try:
