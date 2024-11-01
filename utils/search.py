@@ -184,6 +184,23 @@ def specificRunAPIRequest(run_ref, route_type):
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
 
+def stoppingPatternAPIRequest(run_ref, route_type):
+    # API endpoint URL
+    url = getUrl(f'/v3/pattern/run/{run_ref}/route_type/{route_type}?expand=all')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+
 def fareEstimate(minZone:int, maxZone:int, touchOnUTC=None, touchOffUTC=None):
     # API endpoint URL
     urlString = f'/v3/fare_estimate/min_zone/{minZone}/max_zone/{maxZone}'

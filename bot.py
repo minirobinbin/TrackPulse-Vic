@@ -1259,7 +1259,7 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
         print("thing is a list")
         embed.remove_field(3)
         # Reverse the order of the runs list
-        for i, run in enumerate(reversed(runs)):
+        for i, run in enumerate(runs):
             print(run)
             if run.startswith('#'):
                 embed.add_field(name=f"Run", value=run, inline=False)
