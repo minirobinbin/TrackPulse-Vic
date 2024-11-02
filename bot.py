@@ -3305,6 +3305,8 @@ async def ids(ctx: commands.Context) -> None:
         
 #     asyncio.create_task(sendemojis())
     
+# HERE ARE THE INTERNAL USE COMMANDS
+
 @bot.command()
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
@@ -3337,6 +3339,11 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
                 ret += 1
 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+        
+@bot.command()
+async def ping(ctx):
+    latency = round(bot.latency * 1000)  # Convert latency to ms
+    await ctx.send(f"Pong! Latency: {latency} ms")
 
 # imptrant
 bot.run(BOT_TOKEN)
