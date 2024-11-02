@@ -68,6 +68,8 @@ from utils.plane.main import *
 from utils.mykipython import *
 from utils.myki.savelogin import *
 from utils.special.yearinreview import *
+from utils.stoppingpattern import *
+
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -809,12 +811,12 @@ async def line_info(ctx, number: str, search_set:bool):
         else:
             mAdded = search_query+'M'
             # try with m added
-            photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}.jpg"
+            photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}.webp"
             URLresponse = requests.head(photo_url)
             if URLresponse.status_code == 200:
                 await channel.send(photo_url)
                 for i in range(2,5):
-                    photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.jpg"
+                    photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.webp"
                     print(f"searching for other images for {mAdded}")
                     print(f"url: {photo_url}")
                     URLresponse = requests.head(photo_url)
@@ -831,7 +833,7 @@ async def line_info(ctx, number: str, search_set:bool):
             
             
         for i in range(2,5):
-            photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.jpg"
+            photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.webp"
             print(f"searching for other images for {search_query}")
             print(f"url: {photo_url}")
             URLresponse = requests.head(photo_url)
@@ -845,7 +847,7 @@ async def line_info(ctx, number: str, search_set:bool):
     # start of the thing
     channel = ctx.channel
     search_query = number.upper()
-    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.jpg"
+    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.webp"
     await ctx.response.send_message(f"Searching for `{search_query}`...")
     
     #get full set
@@ -1069,6 +1071,7 @@ async def train_search(ctx, train: str):
         
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        
         
         embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
@@ -2399,7 +2402,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         
                         # thing to find image:
                         if row[2] == 'Tait':
-                            image = 'https://railway-photos.xm9g.net/photos/317M-6.jpg'
+                            image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
                         else:
                             hyphen_index = row[1].find("-")
                             if hyphen_index != -1:
