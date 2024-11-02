@@ -2350,7 +2350,7 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 
 # train logger reader
 
-vLineLines = ['Geelong/Warrnambool', 'Ballarat/Maryborough/Ararat', 'Bendigo/Echuca/Swan Hill','Albury', 'Seymour/Shepparton', 'Traralgon/Bairnsdale']
+vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
 @app_commands.describe(user = "Who do you want to see the data of?", mode = 'Train or tram logs?')
