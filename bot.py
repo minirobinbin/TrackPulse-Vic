@@ -161,6 +161,7 @@ games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
 myki = CommandGroups(name='myki')
+completion = CommandGroups(name='completion')
 
 # flight = CommandGroups(name='flight')
 
@@ -191,6 +192,7 @@ async def on_ready():
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
     bot.tree.add_command(myki)
+    bot.tree.add_command(completion)
     # bot.tree.add_command(flight)
 
 
@@ -3023,7 +3025,7 @@ async def termini(ctx):
         for item in split_strings:
             await ctx.channel.send(item)
 
-@stats.command(name='sets', description='View which sets you have been on')
+@completion.command(name='sets', description='View which sets you have been on')
 @app_commands.choices(train=[
     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
     app_commands.Choice(name="Comeng", value="Comeng"),
@@ -3061,7 +3063,41 @@ async def sets(ctx, train:str):
         for item in split_strings:
             await ctx.channel.send(item)
 
-   
+@completion.command(name='stations', description='View which you have visited')
+@app_commands.choices(state=[
+    app_commands.Choice(name="Victoria", value="Victorian"),
+    app_commands.Choice(name="New South Wales", value="New South Wales"),
+    app_commands.Choice(name="South Australia", value="South Australian"),
+])
+async def sets(ctx, state:str):
+    try:
+        data =stationlist(ctx.user.name, state)
+    except Exception as e:
+        data = 'No logs found'
+        print(f'ERROR: {e}')
+    
+    if len(data) <= 2000:
+        await ctx.response.send_message(data)
+    else:
+        await ctx.response.send_message(f"{state} stations you have been to:")
+        split_strings = []
+        start = 0
+        
+        while start < len(data):
+            # Find the index where the string should be split
+            if start + 2000 < len(data):
+                split_index = data.rfind('\n', start, start + 2000)
+                if split_index == -1:
+                    split_index = start + 2000
+            else:
+                split_index = len(data)
+            
+            split_strings.append(data[start:split_index])
+            start = split_index + 1  # Move past the newline or split point
+            
+        for item in split_strings:
+            await ctx.channel.send(item)
+
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
     async def submitPhoto():
