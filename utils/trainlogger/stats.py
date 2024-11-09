@@ -1124,6 +1124,62 @@ def setlist(user, train):
     
     return(result_string)
 
+def stationlist(user, state):
+    # Load station list for Victorian state
+    if state == 'Victorian':
+        with open("utils/datalists/stations.txt", "r") as file:
+            sets = [line.strip() for line in file]
+         # Read CSV file
+        with open(f'utils/trainlogger/userdata/{user}.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            csv_data = list(reader)
+            
+    if state == 'New South Wales':
+        with open("utils/datalists/nswstations.txt", "r") as file:
+            sets = [line.strip() for line in file]
+        # Read CSV file
+        with open(f'utils/trainlogger/userdata/sydney-trains/{user}.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            csv_data = list(reader)
+    if state == 'South Australian':
+        with open("utils/datalists/adelaidestations.txt", "r") as file:
+            sets = [line.strip() for line in file]
+        # Read CSV file
+        with open(f'utils/trainlogger/userdata/adelaide-trains/{user}.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            csv_data = list(reader)
+
+    # Create a dictionary to count occurrences of each item
+    item_counts = {}
+    for row in csv_data:
+        # Add count for row[5] if it exists in the row
+        if row[5] in item_counts:
+            item_counts[row[5]] += 1
+        else:
+            item_counts[row[5]] = 1
+
+        # Add count for row[6] if it exists in the row
+        if row[6] in item_counts:
+            item_counts[row[6]] += 1
+        else:
+            item_counts[row[6]] = 1
+
+    # Create a result string with ticks for matching items
+    result_string = '\n'.join([
+        f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times"
+        if item in item_counts else f"`{item}`"
+        for item in sets
+    ])
+    
+    # Calculate the percentage of sets that have been ticked
+    ticked_sets = [item for item in sets if item in item_counts]
+    percent_ticked = round(len(ticked_sets) / len(sets) * 100, 2)
+
+    # Add the percentage to the end of the string
+    result_string += f"\n\n{len(ticked_sets)}/{len(sets)} ({percent_ticked}%) stations visited"
+    
+    return result_string
+
 def terminiList(user):
     termini = [
         "Lilydale", "Belgrave", "Bairnsdale", "Traralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Waurn Ponds', "Warrnambool", "Wendouree", 'Ararat','Sunbury', 'Maryborough', 'Bendigo', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
