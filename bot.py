@@ -275,7 +275,7 @@ async def help(ctx):
     async def helper():
         generalCmds =f"""</help:1261107050545549342> - Shows this command
 </stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
-        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
+        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The number of the carrige or loco you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
 </log sydney-train:1289843416628330506> - same as above but for trains in New South Wales
 </log melbourne-tram:1289843416628330506> - same as above but for trams in Melbourne
 </log sydney-tram:1289843416628330506> - same as above but for light rail in Sydney
@@ -857,7 +857,7 @@ async def train_search(ctx, train: str):
         else:
             embed.set_thumbnail(url=getIcon(type))
         
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class']:
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class"]:
             information = trainData(set)
             print(information)
             infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
