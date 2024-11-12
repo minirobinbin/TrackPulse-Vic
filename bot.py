@@ -2958,9 +2958,11 @@ async def profile(ctx, user: discord.User = None):
     async def profiles():
         if user == None:
             username = ctx.user.name
+            pfp = ctx.user.avatar.url
         else:
             username = user.name
-        pfp = user.avatar.url
+            pfp = user.avatar.url
+
         embed = discord.Embed(title=f"Profile")
         embed.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
 
