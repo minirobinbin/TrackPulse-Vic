@@ -2983,12 +2983,12 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:',
-                value=f'**Top Line:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Station:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Train:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Set:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n'
-                    f'**Top Trip:** {trips[1] if trips[0] == "Unknown" else trips[0]}\n\n'
+                value=f'**Top Line:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Station:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Train:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Set:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n'
+                    f'**Top Trip:** {trips[1] if trips[0].startswith("Unknown") else trips[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'**Total logs:** `{logAmounts(username, "train")}`\n'
@@ -3015,11 +3015,11 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:tram:1241165701390012476> Tram Log Stats:',
-                value=f'**Top Route:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Stop:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Class:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Tram Number:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n\n'
+                value=f'**Top Route:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Stop:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Class:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Tram Number:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'Total logs: {logAmounts(username, "tram")}'
@@ -3042,11 +3042,11 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:',
-                value=f'**Top Line:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Station:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Type:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Train Number:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n\n'
+                value=f'**Top Line:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Station:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Type:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Train Number:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'Total logs: {logAmounts(username, "sydney-trains")}'
@@ -3069,11 +3069,11 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:',
-                value=f'**Top Line:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Station:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Type:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Tram Number:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n\n'
+                value=f'**Top Line:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Station:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Type:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Tram Number:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'Total logs: {logAmounts(username, "sydney-trams")}'
@@ -3097,11 +3097,11 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:',
-                value=f'**Top Line:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Station:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Type:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Number:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n\n'
+                value=f'**Top Line:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Station:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Type:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Number:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'Total logs: {logAmounts(username, "adelaide-trains")}'
@@ -3124,11 +3124,11 @@ async def profile(ctx, user: discord.User = None):
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
             embed.add_field(
                 name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
-                value=f'**Top Route:** {lines[1] if lines[0] == "Unknown" else lines[0]}\n'
-                    f'**Top Stop:** {stations[1] if stations[0] == "Unknown" else stations[0]}\n'
-                    f'**Top Type:** {trains[1] if trains[0] == "Unknown" else trains[0]}\n'
-                    f'**Top Bus Number:** {sets[1] if sets[0] == "Unknown" else sets[0]}\n'
-                    f'**Top Date:** {dates[1] if dates[0] == "Unknown" else dates[0]}\n\n'
+                value=f'**Top Route:** {lines[1] if lines[0].startswith("Unknown") else lines[0]}\n'
+                    f'**Top Stop:** {stations[1] if stations[0].startswith("Unknown") else stations[0]}\n'
+                    f'**Top Type:** {trains[1] if trains[0].startswith("Unknown") else trains[0]}\n'
+                    f'**Top Bus Number:** {sets[1] if sets[0].startswith("Unknown") else sets[0]}\n'
+                    f'**Top Date:** {dates[1] if dates[0].startswith("Unknown") else dates[0]}\n\n'
                     f'User started logging {joined}\n'
                     f'Last log {last}\n'
                     f'Total logs: {logAmounts(username, "bus")}'
