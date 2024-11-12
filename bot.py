@@ -955,7 +955,7 @@ async def train_search(ctx, train: str):
                     embed = discord.Embed(title=f"{train}'s location", url=url)
                     embed.remove_field(0)
                     embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
+                    embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
                 
                     # Send a new message with the file and embed
                     await channel.send(file=file, embed=embed)
