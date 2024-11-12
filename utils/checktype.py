@@ -75,6 +75,11 @@ def trainType(number):
             return("Y Class")
         if car.startswith("T"):
             return("T Class")
+        if car.startswith("S"):
+            number = int(car[1:])
+            # Check if the number is between 300 and 317
+            if 300 <= number <= 317:
+                return("S Class (Diesel)")
         
         if car.startswith("TRAIN"):
             return("Error: TrainID sent")
