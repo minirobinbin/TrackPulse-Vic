@@ -835,6 +835,8 @@ async def train_search(ctx, train: str):
     channel = ctx.channel
     type = trainType(train)
     set = setNumber(train.upper())
+    
+    metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']
    
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
@@ -860,9 +862,24 @@ async def train_search(ctx, train: str):
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class"]:
             information = trainData(set)
             print(information)
-            infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
+            infoData=''
             if information[5]:
                 infoData+=f'\n**Name:** {information[5]}'
+                
+            if information[1]:
+                infoData+=f'**Entered Service:** {information[2]}\n'
+                
+            if information[3]:
+                infoData+=f'**Status:** {information[3]}\n'
+            
+            if information[4]:
+                infoData+=f'**Notes:** {information[4]}\n'
+            
+            if information[9]:
+                infoData+=f'**Operator:** {information[9]}\n'
+            
+            if information[8]:
+                infoData+=f'**Gauge:** {information[8]}\n'
                 
             # thing if the user has been on
             def check_variable_in_csv(variable, file_path):
@@ -888,16 +905,18 @@ async def train_search(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
         
-        
-        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+        if type in metroTrains:
+            embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+            
         embed_update = await ctx.edit_original_response(embed=embed)
         
-        # map thing
-        mapEmbed = discord.Embed(title=f"{train}'s location")
-        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
-        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
+        if type in metroTrains:
+            # map thing
+            mapEmbed = discord.Embed(title=f"{train}'s location")
+            mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+            mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
 
@@ -952,11 +971,7 @@ async def train_search(ctx, train: str):
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
             
-        else:
-            embed.remove_field(3)
-            await embed_update.edit(embed=embed)
-            await mapEmbedUpdate.delete()
-            await ctx.channel.send('Location info is only available for Metro services')
+        
             
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")
