@@ -73,6 +73,8 @@ def trainType(number):
         
         if car.startswith("Y"):
             return("Y Class")
+        if car.startswith("T"):
+            return("T Class")
         
         if car.startswith("TRAIN"):
             return("Error: TrainID sent")

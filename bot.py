@@ -242,194 +242,10 @@ async def log_rare_trains(rare_trains):
     else:
         await log_channel.send("None found")
 
-def check_lines_in_thread():
-    asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
+# def check_lines_in_thread():
+#     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
-async def checklines():
-        global last_message  # Referencing the global variable
-        global comeng_last_message  # Referencing the global variable
-        global last_message_metro  # Referencing the global variable
-        global comeng_last_message_metro  # Referencing the global variable
-        global last_message_vline  # Referencing the global variable
-        global comeng_last_message_vline  # Referencing the global variable
 
-        statuses = [f'{datetime.now()}']
-        log_channel = bot.get_channel(int(config['STARTUP_CHANNEL_ID']))
-
-        if lineStatusOn:
-            await log_channel.send('Loading line status...')
-
-            embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Trains Melbourne', color=0x008dd0)
-            #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
-
-            lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
-
-            for line in lines:
-                json_info_str = route_api_request(line, "0")
-                json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
-                json_info = json.loads(json_info_str)
-                
-                routes = json_info['routes']
-                status = json_info['status']
-                version = status['version']
-                health = status['health']
-                
-                route = routes[0]
-                route_service_status = route['route_service_status']
-                description = route_service_status['description']
-                timestamp = route_service_status['timestamp']
-                route_type = route['route_type']
-                route_id = route['route_id']
-                route_name = route['route_name']
-                route_number = route['route_number']
-                route_gtfs_id = route['route_gtfs_id']
-                geopath = route['geopath']
-                
-                print(f"route id: {route_id}")
-                
-                if description == "Service Information":
-                        description = "Good Service"
-                
-                # disruption info
-                disruptionDescription = ""
-                try:
-                    # print(disruption_api_request(route_id))
-                    disruptions = disruption_api_request(route_id)
-                    print(disruptions)
-                    
-                    # Extracting title and description
-                    general_disruption = disruptions["disruptions"]["metro_train"][0]
-                    disruptionTitle = general_disruption["title"]
-                    disruptionDescription = general_disruption["description"]
-                            
-                except Exception as e:
-                    print(e)
-
-                color = genColor(description)
-                print(f"Status color: {color}")
-            
-                info = f'{description}'
-                embed_metro.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
-                statuses.append(description)
-                # if disruptionDescription:
-                #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
-
-            embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line', color=0x7f3e98)
-            lines = ['Geelong - Melbourne','Warrnambool - Melbourne via Apollo Bay & Geelong','Ballarat-Wendouree - Melbourne via Melton','Ararat - Melbourne via Ballarat','Maryborough - Melbourne via  Ballarat','Bendigo - Melbourne via Gisborne','Echuca-Moama - Melbourne via Bendigo or Heathcote','Swan Hill - Melbourne via Bendigo','Seymour - Melbourne via Broadmeadows','Shepparton - Melbourne via Seymour','Albury - Melbourne via Seymour','Traralgon - Melbourne via Morwell & Moe & Pakenham','Bairnsdale - Melbourne via Sale & Traralgon']
-            for line in lines:
-                line = line.replace(" ","%20")
-                json_info_str = route_api_request(line, "3")
-                json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
-                json_info = json.loads(json_info_str)
-                
-                routes = json_info['routes']
-                status = json_info['status']
-                version = status['version']
-                health = status['health']
-                
-                route = routes[0]
-                route_service_status = route['route_service_status']
-                description = route_service_status['description']
-                timestamp = route_service_status['timestamp']
-                route_type = route['route_type']
-                route_id = route['route_id']
-                route_name = route['route_name']
-                route_number = route['route_number']
-                route_gtfs_id = route['route_gtfs_id']
-                geopath = route['geopath']
-                
-                print(f"route id: {route_id}")
-
-                route_name = route_name.replace("Geelong - Melbourne","Geelong")
-                route_name = route_name.replace("Warrnambool - Melbourne via Apollo Bay & Geelong","Warrnambool")
-                route_name = route_name.replace("Ballarat-Wendouree - Melbourne via Melton","Ballarat")
-                route_name = route_name.replace("Ararat - Melbourne via Ballarat","Ararat")
-                route_name = route_name.replace("Maryborough - Melbourne via  Ballarat","Maryborough")
-                route_name = route_name.replace("Bendigo - Melbourne via Gisborne","Bendigo")
-                route_name = route_name.replace("Echuca-Moama - Melbourne via Bendigo or Heathcote","Echuca")
-                route_name = route_name.replace("Swan Hill - Melbourne via Bendigo","Swan Hill")
-                route_name = route_name.replace("Seymour - Melbourne via Broadmeadows","Seymour")
-                route_name = route_name.replace("Shepparton - Melbourne via Seymour","Shepparton")
-                route_name = route_name.replace("Albury - Melbourne via Seymour","Albury")
-                route_name = route_name.replace("Traralgon - Melbourne via Morwell & Moe & Pakenham","Traralgon")
-                route_name = route_name.replace("Bairnsdale - Melbourne via Sale & Traralgon","Bairnsdale")
-                
-                
-                # disruption info
-                disruptionDescription = ""
-                try:
-                    # print(disruption_api_request(route_id))
-                    disruptions = disruption_api_request(route_id)
-                    print(disruptions)
-                    
-                    # Extracting title and description
-                    general_disruption = disruptions["disruptions"]["regional_train"][0]
-                    disruptionTitle = general_disruption["title"]
-                    disruptionDescription = general_disruption["description"]
-
-                    #Extracting the true description for V/Line Rail Distruptions
-                    disruption_vline = general_disruption["disruption_type"]
-                    currentness = general_disruption["disruption_status"]
-
-                    if currentness == "Planned":
-                        disruption_vline = "Good Service"
-                    
-                    if disruption_vline == "Service Information":
-                        disruption_vline = "Good Service"
-
-                            
-                except Exception as e:
-                    print(e)
-
-                color = genColor(disruption_vline)
-                print(f"Status color: {color}")
-            
-                info = f'{disruption_vline}'
-                embed_vline.add_field(name=f'{route_name}', value=f'{statusEmoji(disruption_vline)} {info}', inline=True)
-                statuses.append(disruption_vline)
-                # if disruptionDescription:
-                #     embed_vline.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
-
-            try:
-                if last_message:  # Check if there is a message to delete
-                    print(f"Attempting to delete message ID: {last_message.id}")
-                    await last_message.delete()
-                    await comeng_last_message.delete()
-                    await last_message_metro.delete()
-                    await comeng_last_message_metro.delete()
-                    await last_message_vline.delete()
-                    await comeng_last_message_vline.delete()
-                    print("Message deleted successfully")
-            except Exception as e:
-                print(f'Failed to delete the old message: {e}')
-
-            comeng_channel = bot.get_channel(int(config['LINE_STATUS_2_CHANNEL_ID']))
-            print(comeng_channel)
-            send_channel = bot.get_channel(int(config['LINE_STATUS_CHANNEL_ID']))
-            print(send_channel)
-            
-            if send_channel is None:
-                print("ERROR: send_channel is None. Check the channel ID and ensure the bot has access to the channel.")
-            if comeng_channel is None:
-                print("ERROR: comeng_channel is None. Check the channel ID and ensure the bot has access to the channel.")
-            
-            try:
-                last_message= await send_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')
-                comeng_last_message= await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
-                last_message_metro = await send_channel.send(embed=embed_metro)
-                comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
-                last_message_vline = await send_channel.send(embed=embed_vline)
-                comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
-            except Exception as e:
-                print(f'ERROR: {e}')
-
-            with open('logs.txt', 'a') as file:
-                        file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
-                        
-            # save line status to csv            
-            with open('utils/line-status-data.csv', mode='a', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(statuses)
                         
 
 @tasks.loop(minutes=10)
@@ -446,11 +262,11 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
-@tasks.loop(minutes=15)
-async def task_loop():
+# @tasks.loop(minutes=15)
+# async def task_loop():
     # Create a new thread to run checkRareTrainsOnRoute
-    thread = threading.Thread(target=check_lines_in_thread)
-    thread.start()
+    # thread = threading.Thread(target=check_lines_in_thread)
+    # thread.start()
 
 
 # Help command
@@ -459,7 +275,7 @@ async def help(ctx):
     async def helper():
         generalCmds =f"""</help:1261107050545549342> - Shows this command
 </stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
-        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The carrige number you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
+        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The number of the carrige or loco you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
 </log sydney-train:1289843416628330506> - same as above but for trains in New South Wales
 </log melbourne-tram:1289843416628330506> - same as above but for trams in Melbourne
 </log sydney-tram:1289843416628330506> - same as above but for light rail in Sydney
@@ -1019,6 +835,8 @@ async def train_search(ctx, train: str):
     channel = ctx.channel
     type = trainType(train)
     set = setNumber(train.upper())
+    
+    metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']
    
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
@@ -1041,12 +859,27 @@ async def train_search(ctx, train: str):
         else:
             embed.set_thumbnail(url=getIcon(type))
         
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class']:
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class"]:
             information = trainData(set)
             print(information)
-            infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
+            infoData=''
             if information[5]:
                 infoData+=f'\n**Name:** {information[5]}'
+                
+            if information[1]:
+                infoData+=f'**Entered Service:** {information[2]}\n'
+                
+            if information[3]:
+                infoData+=f'**Status:** {information[3]}\n'
+            
+            if information[4]:
+                infoData+=f'**Notes:** {information[4]}\n'
+            
+            if information[9]:
+                infoData+=f'**Operator:** {information[9]}\n'
+            
+            if information[8]:
+                infoData+=f'**Gauge:** {information[8]}\n'
                 
             # thing if the user has been on
             def check_variable_in_csv(variable, file_path):
@@ -1072,16 +905,18 @@ async def train_search(ctx, train: str):
             
         
         embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
         
-        
-        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+        if type in metroTrains:
+            embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+            
         embed_update = await ctx.edit_original_response(embed=embed)
         
-        # map thing
-        mapEmbed = discord.Embed(title=f"{train}'s location")
-        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
-        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
+        if type in metroTrains:
+            # map thing
+            mapEmbed = discord.Embed(title=f"{train}'s location")
+            mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+            mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
 
@@ -1120,7 +955,7 @@ async def train_search(ctx, train: str):
                     embed = discord.Embed(title=f"{train}'s location", url=url)
                     embed.remove_field(0)
                     embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
+                    embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
                 
                     # Send a new message with the file and embed
                     await channel.send(file=file, embed=embed)
@@ -1136,11 +971,7 @@ async def train_search(ctx, train: str):
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
             
-        else:
-            embed.remove_field(3)
-            await embed_update.edit(embed=embed)
-            await mapEmbedUpdate.delete()
-            await ctx.channel.send('Location info is only available for Metro services')
+        
             
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")
@@ -2480,9 +2311,9 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
                     
                 # send reponse message
-                pfp = ctx.user.avatar.url
+                pfp = userid.avatar.url
                 embed=discord.Embed(title='Train Logs', colour=0x7e3e98)
-                embed.set_author(name=ctx.user.name, url='https://comeng.xm9g.net', icon_url=pfp)
+                embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
@@ -3328,6 +3159,198 @@ async def profile(ctx, user: discord.User = None):
         await ctx.response.send_message(embed=embed)
         
     await profiles()
+
+'''
+@bot.tree.command(name="line-status", description="View your line status for all lines.")
+async def checklines(ctx):
+    async def doit():
+            # global last_message  # Referencing the global variable
+            # global comeng_last_message  # Referencing the global variable
+            # global last_message_metro  # Referencing the global variable
+            # global comeng_last_message_metro  # Referencing the global variable
+            # global last_message_vline  # Referencing the global variable
+            # global comeng_last_message_vline  # Referencing the global variable
+            await ctx.response.defer()
+            
+            statuses = [f'{datetime.now()}']
+            log_channel = bot.get_channel(int(config['STARTUP_CHANNEL_ID']))
+
+            if lineStatusOn:
+                await log_channel.send('Loading line status...')
+
+                embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Trains Melbourne', color=0x008dd0)
+                #embed_metro = discord.Embed(title=f'Line status - {convert_to_unix_time(datetime.now())}', color=0x008dd0)
+
+                lines = ['Alamein','Belgrave','Craigieburn','Cranbourne','Mernda','Frankston','Glen%20Waverley','Hurstbridge','Lilydale','Pakenham','Sandringham','Stony%20Point','Sunbury','Upfield','Werribee','Williamstown',]
+
+                for line in lines:
+                    json_info_str = route_api_request(line, "0")
+                    json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
+                    json_info = json.loads(json_info_str)
+                    
+                    routes = json_info['routes']
+                    status = json_info['status']
+                    version = status['version']
+                    health = status['health']
+                    
+                    route = routes[0]
+                    route_service_status = route['route_service_status']
+                    description = route_service_status['description']
+                    timestamp = route_service_status['timestamp']
+                    route_type = route['route_type']
+                    route_id = route['route_id']
+                    route_name = route['route_name']
+                    route_number = route['route_number']
+                    route_gtfs_id = route['route_gtfs_id']
+                    geopath = route['geopath']
+                    
+                    print(f"route id: {route_id}")
+                    
+                    if description == "Service Information":
+                            description = "Good Service"
+                    
+                    # disruption info
+                    disruptionDescription = ""
+                    try:
+                        # print(disruption_api_request(route_id))
+                        disruptions = disruption_api_request(route_id)
+                        print(disruptions)
+                        
+                        # Extracting title and description
+                        general_disruption = disruptions["disruptions"]["metro_train"][0]
+                        disruptionTitle = general_disruption["title"]
+                        disruptionDescription = general_disruption["description"]
+                                
+                    except Exception as e:
+                        print(e)
+
+                    color = genColor(description)
+                    print(f"Status color: {color}")
+                
+                    info = f'{description}'
+                    embed_metro.add_field(name=f'{route_name}', value=f'{statusEmoji(description)} {info}', inline=True)
+                    statuses.append(description)
+                    # if disruptionDescription:
+                    #     embed_metro.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
+                embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line', color=0x7f3e98)
+                lines = ['Geelong - Melbourne','Warrnambool - Melbourne via Apollo Bay & Geelong','Ballarat-Wendouree - Melbourne via Melton','Ararat - Melbourne via Ballarat','Maryborough - Melbourne via  Ballarat','Bendigo - Melbourne via Gisborne','Echuca-Moama - Melbourne via Bendigo or Heathcote','Swan Hill - Melbourne via Bendigo','Seymour - Melbourne via Broadmeadows','Shepparton - Melbourne via Seymour','Albury - Melbourne via Seymour','Traralgon - Melbourne via Morwell & Moe & Pakenham','Bairnsdale - Melbourne via Sale & Traralgon']
+                for line in lines:
+                    line = line.replace(" ","%20")
+                    json_info_str = route_api_request(line, "3")
+                    json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
+                    json_info = json.loads(json_info_str)
+                    
+                    routes = json_info['routes']
+                    status = json_info['status']
+                    version = status['version']
+                    health = status['health']
+                    
+                    route = routes[0]
+                    route_service_status = route['route_service_status']
+                    description = route_service_status['description']
+                    timestamp = route_service_status['timestamp']
+                    route_type = route['route_type']
+                    route_id = route['route_id']
+                    route_name = route['route_name']
+                    route_number = route['route_number']
+                    route_gtfs_id = route['route_gtfs_id']
+                    geopath = route['geopath']
+                    
+                    print(f"route id: {route_id}")
+
+                    route_name = route_name.replace("Geelong - Melbourne","Geelong")
+                    route_name = route_name.replace("Warrnambool - Melbourne via Apollo Bay & Geelong","Warrnambool")
+                    route_name = route_name.replace("Ballarat-Wendouree - Melbourne via Melton","Ballarat")
+                    route_name = route_name.replace("Ararat - Melbourne via Ballarat","Ararat")
+                    route_name = route_name.replace("Maryborough - Melbourne via  Ballarat","Maryborough")
+                    route_name = route_name.replace("Bendigo - Melbourne via Gisborne","Bendigo")
+                    route_name = route_name.replace("Echuca-Moama - Melbourne via Bendigo or Heathcote","Echuca")
+                    route_name = route_name.replace("Swan Hill - Melbourne via Bendigo","Swan Hill")
+                    route_name = route_name.replace("Seymour - Melbourne via Broadmeadows","Seymour")
+                    route_name = route_name.replace("Shepparton - Melbourne via Seymour","Shepparton")
+                    route_name = route_name.replace("Albury - Melbourne via Seymour","Albury")
+                    route_name = route_name.replace("Traralgon - Melbourne via Morwell & Moe & Pakenham","Traralgon")
+                    route_name = route_name.replace("Bairnsdale - Melbourne via Sale & Traralgon","Bairnsdale")
+                    
+                    
+                    # disruption info
+                    disruptionDescription = ""
+                    try:
+                        # print(disruption_api_request(route_id))
+                        disruptions = disruption_api_request(route_id)
+                        print(disruptions)
+                        
+                        # Extracting title and description
+                        general_disruption = disruptions["disruptions"]["regional_train"][0]
+                        disruptionTitle = general_disruption["title"]
+                        disruptionDescription = general_disruption["description"]
+
+                        #Extracting the true description for V/Line Rail Distruptions
+                        disruption_vline = general_disruption["disruption_type"]
+                        currentness = general_disruption["disruption_status"]
+
+                        if currentness == "Planned":
+                            disruption_vline = "Good Service"
+                        
+                        if disruption_vline == "Service Information":
+                            disruption_vline = "Good Service"
+
+                                
+                    except Exception as e:
+                        print(e)
+
+                    color = genColor(disruption_vline)
+                    print(f"Status color: {color}")
+                
+                    info = f'{disruption_vline}'
+                    embed_vline.add_field(name=f'{route_name}', value=f'{statusEmoji(disruption_vline)} {info}', inline=True)
+                    statuses.append(disruption_vline)
+                    # if disruptionDescription:
+                    #     embed_vline.add_field(name="Disruption Info",value=disruptionDescription, inline=False) h
+
+                try:
+                    if last_message:  # Check if there is a message to delete
+                        print(f"Attempting to delete message ID: {last_message.id}")
+                        await last_message.delete()
+                        await comeng_last_message.delete()
+                        await last_message_metro.delete()
+                        await comeng_last_message_metro.delete()
+                        await last_message_vline.delete()
+                        await comeng_last_message_vline.delete()
+                        print("Message deleted successfully")
+                except Exception as e:
+                    print(f'Failed to delete the old message: {e}')
+
+                comeng_channel = bot.get_channel(int(config['LINE_STATUS_2_CHANNEL_ID']))
+                print(comeng_channel)
+                send_channel = bot.get_channel(int(config['LINE_STATUS_CHANNEL_ID']))
+                print(send_channel)
+                
+                if send_channel is None:
+                    print("ERROR: send_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+                if comeng_channel is None:
+                    print("ERROR: comeng_channel is None. Check the channel ID and ensure the bot has access to the channel.")
+                
+                try:
+                    # last_message= await ctx.edit_original_response(f'# Line status - {convert_to_unix_time(datetime.now())}')
+                    # comeng_last_message= await comeng_channel.send(f'# Line status - {convert_to_unix_time(datetime.now())}')    
+                    last_message_metro = await ctx.edit_original_response(embed=embed_metro)
+                    # comeng_last_message_metro = await comeng_channel.send(embed=embed_metro)
+                    # last_message_vline = await send_channel.send(embed=embed_vline)
+                    # comeng_last_message_vline = await comeng_channel.send(embed=embed_vline)
+                except Exception as e:
+                    print(f'ERROR: {e}')
+
+                with open('logs.txt', 'a') as file:
+                            file.write(f"LINE STATUS CHECKED AUTOMATICALLY")
+                            
+                # save line status to csv            
+                with open('utils/line-status-data.csv', mode='a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(statuses)
+                    
+    asyncio.create_task(doit())'''
     
 # year in review
 @bot.tree.command(name="year-in-review", description="View your year in review for a specific year.")
