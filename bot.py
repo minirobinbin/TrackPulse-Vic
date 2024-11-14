@@ -984,7 +984,7 @@ async def tramsearch(ctx, tram: str):
     print(f'Set: {set}')
     print(f"Tram Type: {type}")
     if type is None:
-        await channel.send("Train not found")
+        await channel.send("Tram not found")
     else:
         embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
         if set.endswith('-'):
