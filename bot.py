@@ -3484,6 +3484,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
+            ctx.send(f"Sucsess!")
         except Exception as e:
             ctx.send(f"Error: `{e}`")
     else:
