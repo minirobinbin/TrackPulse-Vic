@@ -164,11 +164,7 @@ myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 
 # flight = CommandGroups(name='flight')
-
-@bot.event
-async def on_ready():
-    # download the trainset data
-    def download_csv(url, save_path):
+def download_csv(url, save_path):
         response = requests.get(url)
         
         # Check if the request was successful
@@ -178,7 +174,10 @@ async def on_ready():
             print(f"CSV downloaded successfully and saved as {save_path}")
         else:
             print(f"Failed to download CSV. Status code: {response.status_code}")
-            
+
+@bot.event
+async def on_ready():
+    # download the trainset data     
     csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
     save_location = "utils/trainsets.csv"
     print(f"Downloading trainset data from {csv_url} to {save_location}")
@@ -3475,6 +3474,21 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
 async def ping(ctx):
     latency = round(bot.latency * 1000)  # Convert latency to ms
     await ctx.send(f"Pong! Latency: {latency} ms")
-
+    
+@bot.command()
+async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
+    if str(ctx.author.id) == USER_ID:
+        csv_url = url
+        save_location = "utils/trainsets.csv"
+        await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
+        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        try:
+            download_csv(csv_url, save_location)
+        except Exception as e:
+            ctx.send(f"Error: `{e}`")
+    else:
+        print(f'{USER_ID} tried to synd the database.')
+        await ctx.send("You are not authorized to use this command.")
+    
 # imptrant
 bot.run(BOT_TOKEN)
