@@ -164,11 +164,7 @@ myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 
 # flight = CommandGroups(name='flight')
-
-@bot.event
-async def on_ready():
-    # download the trainset data
-    def download_csv(url, save_path):
+def download_csv(url, save_path):
         response = requests.get(url)
         
         # Check if the request was successful
@@ -178,7 +174,10 @@ async def on_ready():
             print(f"CSV downloaded successfully and saved as {save_path}")
         else:
             print(f"Failed to download CSV. Status code: {response.status_code}")
-            
+
+@bot.event
+async def on_ready():
+    # download the trainset data     
     csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
     save_location = "utils/trainsets.csv"
     print(f"Downloading trainset data from {csv_url} to {save_location}")
@@ -859,7 +858,7 @@ async def train_search(ctx, train: str):
         else:
             embed.set_thumbnail(url=getIcon(type))
         
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class"]:
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
             information = trainData(set)
             print(information)
             infoData=''
@@ -984,7 +983,7 @@ async def tramsearch(ctx, tram: str):
     print(f'Set: {set}')
     print(f"Tram Type: {type}")
     if type is None:
-        await channel.send("Train not found")
+        await channel.send("Tram not found")
     else:
         embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
         if set.endswith('-'):
@@ -2997,9 +2996,11 @@ async def profile(ctx, user: discord.User = None):
     async def profiles():
         if user == None:
             username = ctx.user.name
+            pfp = ctx.user.avatar.url
         else:
             username = user.name
-        pfp = ctx.user.avatar.url
+            pfp = user.avatar.url
+
         embed = discord.Embed(title=f"Profile")
         embed.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
 
@@ -3018,7 +3019,22 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'train')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Train:** {trains[0]}\n**Top Set:** {sets[0]}\n**Top Date:** {dates[0]}\n**Top Trip:** {trips[0]}\n\nUser started logging {joined}\nLast log {last}\n**Total logs:** `{logAmounts(username, "train")}`\n**Stations visited:** `{stationPercent(username)}`\n**Lines visited:** `{linePercent(username)}`\n**Distance:** `{round(getTotalTravelDistance(username))}km`')
+            embed.add_field(
+    name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:',
+    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Train:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Set:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n'
+          f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'**Total logs:** `{logAmounts(username, "train")}`\n'
+          f'**Stations visited:** `{stationPercent(username)}`\n'
+          f'**Lines visited:** `{linePercent(username)}`\n'
+          f'**Distance:** `{round(getTotalTravelDistance(username))}km`'
+)
+
                         
         except FileNotFoundError:
             embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
@@ -3036,7 +3052,18 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'tram')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:tram:1241165701390012476> Tram Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Class:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "tram")}')
+            embed.add_field(
+    name='<:tram:1241165701390012476> Tram Log Stats:',
+    value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Class:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'Total logs: {logAmounts(username, "tram")}'
+)
+
   
         except FileNotFoundError:
             embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
@@ -3053,7 +3080,18 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'sydney-trains')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Train Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trains")}')
+            embed.add_field(
+    name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:',
+    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Train Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'Total logs: {logAmounts(username, "sydney-trains")}'
+)
+
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -3070,7 +3108,18 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'sydney-trams')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Tram Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "sydney-trams")}')
+            embed.add_field(
+    name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:',
+    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'Total logs: {logAmounts(username, "sydney-trams")}'
+)
+
                                   
         except FileNotFoundError:
             embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -3088,7 +3137,18 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'adelaide-trains')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:', value=f'**Top Line:** {lines[0]}\n**Top Station:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "adelaide-trains")}')
+            embed.add_field(
+    name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:',
+    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'Total logs: {logAmounts(username, "adelaide-trains")}'
+)
+
                                   
         except FileNotFoundError:
             embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
@@ -3105,7 +3165,18 @@ async def profile(ctx, user: discord.User = None):
             LeDate =highestDate(username, 'bus')
             joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
             last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:', value=f'**Top Route:** {lines[0]}\n**Top Stop:** {stations[0]}\n**Top Type:** {trains[0]}\n**Top Bus Number:** {sets[0]}\n**Top Date:** {dates[0]}\n\nUser started logging {joined}\nLast log {last}\nTotal logs: {logAmounts(username, "bus")}')
+            embed.add_field(
+    name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
+    value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+          f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+          f'**Top Bus Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+          f'User started logging {joined}\n'
+          f'Last log {last}\n'
+          f'Total logs: {logAmounts(username, "bus")}'
+)
+
                                   
         except FileNotFoundError:
             embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
@@ -3442,6 +3513,22 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
 async def ping(ctx):
     latency = round(bot.latency * 1000)  # Convert latency to ms
     await ctx.send(f"Pong! Latency: {latency} ms")
-
+    
+@bot.command()
+async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
+    if str(ctx.author.id) == USER_ID:
+        csv_url = url
+        save_location = "utils/trainsets.csv"
+        await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
+        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        try:
+            download_csv(csv_url, save_location)
+            ctx.send(f"Sucsess!")
+        except Exception as e:
+            ctx.send(f"Error: `{e}`")
+    else:
+        print(f'{USER_ID} tried to synd the database.')
+        await ctx.send("You are not authorized to use this command.")
+    
 # imptrant
 bot.run(BOT_TOKEN)
