@@ -167,6 +167,41 @@ def disruption_api_request(routeId):
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
         
+def stationDisruption(stop_id):
+    # API endpoint URL
+    url = getUrl(f'/v3/disruptions/stop/{stop_id}')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+        
+def allDisruption():
+    # API endpoint URL
+    url = getUrl(f'/v3/disruptions')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+
+       
 def specificRunAPIRequest(run_ref, route_type):
     # API endpoint URL
     url = getUrl(f'/v3/runs/{run_ref}/route_type/{route_type}?expand=VehiclePosition')

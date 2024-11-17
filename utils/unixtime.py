@@ -15,7 +15,7 @@ def convert_to_unix_time(date: datetime.datetime) -> str:
 
 def convert_iso_to_unix_time(iso_time: str, format=None) -> str:
     # Parse the ISO 8601 formatted time string
-    date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+10:00'))
+    date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
 
     # Convert to the computer's current timezone
     date_local = date.astimezone()

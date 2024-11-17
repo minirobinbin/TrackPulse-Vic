@@ -1260,11 +1260,16 @@ async def departures(ctx, station: str):
                     fields = fields + 1
                     if fields == 3:
                         break'''
+                        
+        # Disrptions
+        # disruptionsData = allDisruption()
+        
         embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.edit_original_response(embed=embed)          
 
     asyncio.create_task(nextdeps())
+
 
 # flight search (disables cause its not 100% done)
 '''@flight.command(name='departures-arrivals', description="Get the next departures for an airport.")
