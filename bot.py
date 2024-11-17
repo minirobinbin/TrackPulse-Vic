@@ -2177,7 +2177,46 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
                 
     # Run in a separate task
     asyncio.create_task(log())
-    
+# NOT DONE!
+'''
+# Plane logger flight logger
+@trainlogs.command(name="flight", description="Log a flight you have been on")
+@app_commands.describe(rego = "Aircraft Registration", type = 'Type of aircraft', date = "Date in DD/MM/YYYY format", airline = 'Airline', start='Departure Airport ICAO', end = 'Arrival Airport ICAO')
+# @app_commands.autocomplete(operator=busOpsautocompletion)
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+
+async def logPlane(ctx, airline:str, start:str, end:str, rego: str, type:str, date:str='today'):
+    channel = ctx.channel
+    print(date)
+    async def log():
+        print("logging the plane")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        set = rego
+
+        # Add train to the list
+        id = addFlight(ctx.user.name, set.upper(), type, savedate, 'None', start.upper(), end.upper(), airline.title())
+        await ctx.response.send_message(f"Added flight on {airline} on {savedate} from {start.upper()} to {end.upper()} with aircraft {set} ({type}) to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+'''
  # Perth Train logger
 
 

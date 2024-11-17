@@ -188,6 +188,50 @@ def addBus(username, date, train_number, train_type, line, start, end, operator)
 
     print(f"Data saved to {filename}")
     return id
+# B
+def addFlight(username, date, train_number, train_type, line, start, end, operator):
+
+    # Create a CSV file named after the username
+    filename = f"utils/trainlogger/userdata/flights/{username}.csv"
+    
+    if not os.path.exists(filename):
+        # Create the file if it does not exist
+        with open(filename, 'w') as file:
+            file.write('')  # Write an empty string to create the file
+        print(f"File created: {filename}")
+    else:
+        print(f"File already exists: {filename}")
+    
+    if date.endswith('-'):
+        date = date[:-1]
+
+    id = None
+
+    # Write the data to the CSV file
+    try:
+        os.listdir('utils\\trainlogger\\userdata\\flights')
+    except FileNotFoundError:
+        os.mkdir('utils/trainlogger/userdata/flights')
+        id = 0
+
+    with open(filename, 'r+', newline='') as file:
+        data = file.readlines()
+        if data == []:
+            id = 0
+        else:
+            id = data[-1].split(',')[0][1:]
+    
+    id = dectohex(hextodec(id)+1)
+    
+    with open(filename, 'a', newline='') as file:
+        writer = csv.writer(file)
+        # file.write('\n')
+        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, operator])
+
+
+    print(f"Data saved to {filename}")
+    return id
+
 
 def addSydneyTram(username, date, train_number, train_type, line, start, end):
 
