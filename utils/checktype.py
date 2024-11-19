@@ -86,6 +86,8 @@ def trainType(number):
             
         elif int(car) >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
             return "HCMT"
+        elif len(car) == 4 and car.startswith('8'):
+            return "X'Trapolis 2.0"
         elif (1100 <= int(car) <= 1228) or (1230 <= int(car) <= 1328) or (1330 <= int(car) <= 1392) or (int(car) == 1399) or (1593 <= int(car) <= 1598) or (2100 <= int(car) <= 2132) or (2134 <= int(car) <= 2141) or (2200 <= int(car) <= 2232) or (2234 <= int(car) <= 2241) or (2300 <= int(car) <= 2332) or (2334 <= int(car) <= 2341):
             return "VLocity"
         elif (7001 <= int(car) <= 7022):

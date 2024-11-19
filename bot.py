@@ -835,7 +835,7 @@ async def train_search(ctx, train: str):
     type = trainType(train)
     set = setNumber(train.upper())
     
-    metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']
+    metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
    
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
@@ -858,7 +858,7 @@ async def train_search(ctx, train: str):
         else:
             embed.set_thumbnail(url=getIcon(type))
         
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
+        if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
             information = trainData(set)
             print(information)
             infoData=''
