@@ -50,7 +50,7 @@ def year_in_review(csv_file, year):
         trip_dates.sort(key=lambda x: x[0])
 
         # Function to get top 5 entries
-        def get_top_n(counts_dict, n=3):
+        def get_top_n(counts_dict, n=4):
             return nlargest(n, counts_dict.items(), key=lambda x: x[1])
 
         # Get top 5 for each category
