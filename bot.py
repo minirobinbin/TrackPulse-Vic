@@ -2279,6 +2279,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         # thing to find image:
                         if row[2] == 'Tait':
                             image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
+                        
+                        if not '-' in row[1]:
+                            image = getImage(row[1])
+
                         else:
                             hyphen_index = row[1].find("-")
                             if hyphen_index != -1:
@@ -2367,20 +2371,23 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         image = None
                         
                         # thing to find image:
-                        hyphen_index = sublist[1].find("-")
-                        if hyphen_index != -1:
-                            first_car = sublist[1][:hyphen_index]
-                            print(f'First car: {first_car}')
-                            image = getImage(first_car)
-                            if image == None:
-                                last_hyphen = sublist[1].rfind("-")
-                                if last_hyphen != -1:
-                                    last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                    print(f'Last car: {last_car}')
-                                    image = getImage(last_car)
-                                    if image == None:
-                                        image = getImage(sublist[2])
-                                        print(f'the loco number is: {sublist[1]}')
+                        if not ('-' in sublist[1]):
+                            image = getImage(sublist[1])
+                        else:
+                            hyphen_index = sublist[1].find("-")
+                            if hyphen_index != -1:
+                                first_car = sublist[1][:hyphen_index]
+                                print(f'First car: {first_car}')
+                                image = getImage(first_car)
+                                if image == None:
+                                    last_hyphen = sublist[1].rfind("-")
+                                    if last_hyphen != -1:
+                                        last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                        print(f'Last car: {last_car}')
+                                        image = getImage(last_car)
+                                        if image == None:
+                                            image = getImage(sublist[2])
+                                            print(f'the loco number is: {sublist[1]}')
                                         
                         #send in thread to reduce spam!
                             # Make the embed

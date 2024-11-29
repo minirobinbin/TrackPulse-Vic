@@ -9,4 +9,3 @@ from utils.stoppingpattern import *
 
 # print(getStoppingPattern(951228, 0))
 
-runs_ref_api_request(950144)
