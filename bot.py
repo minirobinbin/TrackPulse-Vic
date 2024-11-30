@@ -3421,16 +3421,16 @@ async def yearinreview(ctx, year: int=2024):
         unix_time = int(time.time())
         if current_year == year:
             if unix_time < 1732971600:
-                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
-                return
-                
+                # await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                # return
+                pass
         try:
         
             embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
             data = year_in_review(f'utils/trainlogger/userdata/{ctx.user.name}.csv', year)
             
             (lilydale_value, ringwood_value), count = data.get("top_pair")
-            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times\n{vline_metroprecent(ctx.user.name, year)}", inline=False)
+            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n\n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times\n:metro: {vline_metroprecent(ctx.user.name, year)}", inline=False)
             
             top_lines = data['top_5_lines']
             formatted_lines = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_lines)])
