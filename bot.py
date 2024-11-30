@@ -1103,7 +1103,7 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
             else:
                 embed.add_field(name='No runs found!', value='⠀')
 
-        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})')
+        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})')
         await embed_update.edit(embed=embed)
     else:
         embed.remove_field(3)

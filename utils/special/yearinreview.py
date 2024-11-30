@@ -132,4 +132,3 @@ def vline_metroprecent(csv_file, year):
     data = f'`{percentage_a:.2f}%` Metro, `{percentage_b:.2f}%` V/Line, `{percentage_c:.2f}%` heritage, `{percentage_d:.2f}%` other.'
     return data
 
-print(vline_metroprecent('xm9g', 2024))
