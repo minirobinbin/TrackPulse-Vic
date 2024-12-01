@@ -881,7 +881,8 @@ async def train_search(ctx, train: str):
                 infoData+=f'**Gauge:** {information[8]}\n'
             
             if information[1]:
-                embed.add_field(name='Livery', value=f'{information[1]}')
+                embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
+                
                 
             # thing if the user has been on
             def check_variable_in_csv(variable, file_path):
@@ -904,7 +905,8 @@ async def train_search(ctx, train: str):
             embed.add_field(name='Information', value=infoData)
         else:
             embed.add_field(name='Information', value='None available')
-            
+        
+        embed.add_field(name='Runs', value=f'[View on Transport Vic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})', inline=False)
         
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
@@ -967,13 +969,13 @@ async def train_search(ctx, train: str):
                     print(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
-        '''
+        
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             asyncio.create_task(addmap())
-            loop = asyncio.get_event_loop()
-            task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
-            await task
-            '''
+            # loop = asyncio.get_event_loop()
+            # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
+            # await task
+            
         
             
 @search.command(name="tram", description="Search for a specific Tram")
@@ -1093,7 +1095,7 @@ async def tramsearch(ctx, tram: str):
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
-    runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
+    '''runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
     if isinstance(runs, list):
         print("thing is a list")
         embed.remove_field(3)
@@ -1112,7 +1114,9 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
     else:
         embed.remove_field(3)
         embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
-        await embed_update.edit(embed=embed)
+        await embed_update.edit(embed=embed)'''
+    
+
         
 async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
     runs = await asyncio.to_thread(TRAMtransportVicSearch, tram)  # Find runs in a separate thread
