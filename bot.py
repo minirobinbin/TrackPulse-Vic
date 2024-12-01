@@ -865,7 +865,7 @@ async def train_search(ctx, train: str):
             if information[5]:
                 infoData+=f'\n**Name:** {information[5]}'
                 
-            if information[1]:
+            if information[2]:
                 infoData+=f'**Entered Service:** {information[2]}\n'
                 
             if information[3]:
@@ -879,6 +879,9 @@ async def train_search(ctx, train: str):
             
             if information[8]:
                 infoData+=f'**Gauge:** {information[8]}\n'
+            
+            if information[1]:
+                embed.add_field(name='Livery', value=f'{information[1]}')
                 
             # thing if the user has been on
             def check_variable_in_csv(variable, file_path):
