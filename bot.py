@@ -908,10 +908,10 @@ async def train_search(ctx, train: str):
         
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        
+        """
         if type in metroTrains:
             embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
-            
+            """
         embed_update = await ctx.edit_original_response(embed=embed)
         
         if type in metroTrains:
@@ -967,12 +967,13 @@ async def train_search(ctx, train: str):
                     print(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
+        '''
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             asyncio.create_task(addmap())
             loop = asyncio.get_event_loop()
             task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             await task
-            
+            '''
         
             
 @search.command(name="tram", description="Search for a specific Tram")
