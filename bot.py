@@ -863,7 +863,7 @@ async def train_search(ctx, train: str):
             print(information)
             infoData=''
             if information[5]:
-                infoData+=f'\n**Name:** {information[5]}'
+                infoData+=f'\n**Name:** {information[5]}\n'
                 
             if information[2]:
                 infoData+=f'**Entered Service:** {information[2]}\n'
@@ -1158,8 +1158,27 @@ async def station_autocompletion(
 @app_commands.autocomplete(station=station_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.choices(
+    line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Frankston", value="Frankston"),
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+    ]
+)
 # test
-async def departures(ctx, station: str):
+async def departures(ctx, station: str, line:str='all'):
     async def nextdeps():
         channel = ctx.channel
         await ctx.response.defer()
@@ -1191,46 +1210,89 @@ async def departures(ctx, station: str):
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
             return
         # vdepartures = vlineDepsData['departures']
-        # vruns = vlineDepsData['runs']
-
+        # vruns = vlineDepsData['runs']            
+        
         # make embed with data
-        embed= discord.Embed(title=f"Next trains departing {station.title()} Station")
+        if line == "all":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station")
+        else:
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line")
+
         fields = 0
+        
         for departure in departures:
-            scheduled_departure_utc = departure['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
-                # print(f"time in past")
-                pass
+            route_id= departure['route_id'] 
+            if line != "all":
+                if get_route_name(route_id) != line:
+                    print(f"Not on the {line} line.")
+                else:
+                    scheduled_departure_utc = departure['scheduled_departure_utc']
+                    if isPast(scheduled_departure_utc):
+                        # print(f"time in past")
+                        pass
+                    else:
+                        estimated_departure_utc = departure['estimated_departure_utc']
+                        run_ref = departure['run_ref']
+                        at_platform = departure['at_platform']
+                        platform_number = departure['platform_number']
+                        note = departure['departure_note']
+                        
+                        # get info for the run:
+                        desto = runs[run_ref]['destination_name']
+                        try:
+                            trainType = runs[run_ref]['vehicle_descriptor']['description']
+                            trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                        except:
+                            trainType = ''
+                            trainNumber = ''
+
+                        # train info
+
+                        #convert to timestamp
+                        depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                        #get route name:
+                        route_name = get_route_name(route_id)                
+                        
+                        #VLINE PLATFORMS DONT WORK PLS HELP
+                        
+                        embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                        fields = fields + 1
+                        if fields == 9:
+                            break
             else:
-                estimated_departure_utc = departure['estimated_departure_utc']
-                run_ref = departure['run_ref']
-                at_platform = departure['at_platform']
-                platform_number = departure['platform_number']
-                route_id= departure['route_id'] 
-                note = departure['departure_note']
-                
-                # get info for the run:
-                desto = runs[run_ref]['destination_name']
-                try:
-                    trainType = runs[run_ref]['vehicle_descriptor']['description']
-                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                except:
-                    trainType = ''
-                    trainNumber = ''
+                scheduled_departure_utc = departure['scheduled_departure_utc']
+                if isPast(scheduled_departure_utc):
+                    # print(f"time in past")
+                    pass
+                else:
+                    estimated_departure_utc = departure['estimated_departure_utc']
+                    run_ref = departure['run_ref']
+                    at_platform = departure['at_platform']
+                    platform_number = departure['platform_number']
+                    note = departure['departure_note']
+                    
+                    # get info for the run:
+                    desto = runs[run_ref]['destination_name']
+                    try:
+                        trainType = runs[run_ref]['vehicle_descriptor']['description']
+                        trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                    except:
+                        trainType = ''
+                        trainNumber = ''
 
-                # train info
+                    # train info
 
-                #convert to timestamp
-                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                #get route name:
-                route_name = get_route_name(route_id)                
-                
-                #VLINE PLATFORMS DONT WORK PLS HELP
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                fields = fields + 1
-                if fields == 9:
-                    break
+                    #convert to timestamp
+                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                    #get route name:
+                    route_name = get_route_name(route_id)                
+                    
+                    #VLINE PLATFORMS DONT WORK PLS HELP
+                    
+                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                    fields = fields + 1
+                    if fields == 9:
+                        break
         # the V/Line part
         '''
         fields = 0
@@ -1272,7 +1334,9 @@ async def departures(ctx, station: str):
         # Disrptions
         # disruptionsData = allDisruption()
         
-        embed.set_footer(text="V/Line departures are unavailable")
+        if fields == 0:
+            embed.add_field(name="No upcoming departures", value="⠀")
+        # embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.edit_original_response(embed=embed)          
 
