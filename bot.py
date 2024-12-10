@@ -120,7 +120,7 @@ for line in file:
 file.close()
 
 
-
+vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 rareCheckerOn = False
 lineStatusOn = False
@@ -1693,34 +1693,6 @@ async def line_autocompletion(
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-
-# @app_commands.choices(line=[
-#         app_commands.Choice(name="Alamein", value="Alamein"),
-#         app_commands.Choice(name="Belgrave", value="Belgrave"),
-#         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
-#         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
-#         app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
-#         app_commands.Choice(name="Frankston", value="Frankston"),
-#         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
-#         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
-#         app_commands.Choice(name="Lilydale", value="Lilydale"),
-#         app_commands.Choice(name="Mernda", value="Mernda"),
-#         app_commands.Choice(name="Pakenham", value="Pakenham"),
-#         app_commands.Choice(name="Sandringham", value="Sandringham"),
-#         app_commands.Choice(name="Stony Point", value="Stony Point"),
-#         app_commands.Choice(name="Sunbury", value="Sunbury"),
-#         app_commands.Choice(name="Upfield", value="Upfield"),
-#         app_commands.Choice(name="Werribee", value="Werribee"),
-#         app_commands.Choice(name="Williamstown", value="Williamstown"),
-#         app_commands.Choice(name="City Circle", value="City Circle"),
-#         app_commands.Choice(name="Albury", value="Albury"),
-#         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
-#         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-#         app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
-#         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
-#         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
-#         app_commands.Choice(name="Unknown", value="Unknown")
-# ])
 @app_commands.choices(traintype=[
         app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
         app_commands.Choice(name="HCMT", value="HCMT"),
@@ -1738,8 +1710,9 @@ async def line_autocompletion(
 ])
 
 # Train logger
-async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto'):
+async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto', notes:str=None):
     channel = ctx.channel
+    await ctx.response.defer()
     print(date)
     async def log():
         print("logging the thing")
@@ -1753,17 +1726,17 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
 
         # checking if train number is valid
         if number != 'Unknown':
             set = setNumber(number.upper())
             if set == None:
-                await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+                await ctx.edit_original_response(f'Invalid train number: {number.upper()}',ephemeral=True)
                 return
             type = trainType(number.upper())
         else:
@@ -1774,12 +1747,56 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
             else: type = traintype
         if traintype == "Tait":
             set = '381M-208T-230D-317M'
-
+            
         # Add train to the list
-        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
+        # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
-                
+        if line in vLineLines:
+            embed = discord.Embed(title="Train Logged",colour=0x7e3e98)
+        elif line == 'Unknown':
+                embed = discord.Embed(title="Train Logged")
+        else:
+            try:
+                embed = discord.Embed(title="Train Logged",colour=lines_dictionary[line][1])
+            except:
+                embed = discord.Embed(title="Train Logged")
+        
+        embed.add_field(name="Set", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        if notes:
+            embed.add_field(name="Notes", value=notes)
+        # thing to find image:
+        print(f"Finding image for {number}")
+        if type == 'Tait':
+            image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
+        
+        if not '-' in set:
+            image = getImage(set)
+
+        else:
+            hyphen_index = set.find("-")
+            if hyphen_index != -1:
+                first_car = set[:hyphen_index]
+                print(f'First car: {first_car}')
+                image = getImage(first_car)
+                if image == None:
+                    last_hyphen = set.rfind("-")
+                    if last_hyphen != -1:
+                        last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                        print(f'Last car: {last_car}')
+                        image = getImage(last_car)
+                        if image == None:
+                            image = getImage(type)
+                            print(f'the loco number is: {set}')
+        if image != None:
+            embed.set_thumbnail(url=image)
+        
+        await ctx.edit_original_response(embed=embed)
+        
+                        
     # Run in a separate task
     asyncio.create_task(log())
 
