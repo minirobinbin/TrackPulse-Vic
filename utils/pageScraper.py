@@ -7,9 +7,9 @@ import requests
 
 def transportVicSearch(search, tram=False):
     if tram:
-        url = f'https://vic.transportsg.me/tram/tracker/fleet?fleet={search}'
+        url = f'https://transportvic.me/tram/tracker/fleet?fleet={search}'
     else:
-        url = f'https://vic.transportsg.me/metro/tracker/consist?consist={search}'
+        url = f'https://transportvic.me/metro/tracker/consist?consist={search}'
 
     try:
         res = requests.get(url).text

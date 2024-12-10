@@ -863,9 +863,9 @@ async def train_search(ctx, train: str):
             print(information)
             infoData=''
             if information[5]:
-                infoData+=f'\n**Name:** {information[5]}'
+                infoData+=f'\n**Name:** {information[5]}\n'
                 
-            if information[1]:
+            if information[2]:
                 infoData+=f'**Entered Service:** {information[2]}\n'
                 
             if information[3]:
@@ -879,6 +879,10 @@ async def train_search(ctx, train: str):
             
             if information[8]:
                 infoData+=f'**Gauge:** {information[8]}\n'
+            
+            if information[1]:
+                embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
+                
                 
             # thing if the user has been on
             def check_variable_in_csv(variable, file_path):
@@ -901,14 +905,15 @@ async def train_search(ctx, train: str):
             embed.add_field(name='Information', value=infoData)
         else:
             embed.add_field(name='Information', value='None available')
-            
+        
+        embed.add_field(name='Runs', value=f'[View on Transport Vic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})', inline=False)
         
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        
+        """
         if type in metroTrains:
             embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
-            
+            """
         embed_update = await ctx.edit_original_response(embed=embed)
         
         if type in metroTrains:
@@ -964,11 +969,12 @@ async def train_search(ctx, train: str):
                     print(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
+        
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             asyncio.create_task(addmap())
-            loop = asyncio.get_event_loop()
-            task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
-            await task
+            # loop = asyncio.get_event_loop()
+            # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
+            # await task
             
         
             
@@ -1089,7 +1095,7 @@ async def tramsearch(ctx, tram: str):
         
             
 async def transportVicSearch_async(ctx, train, embed, embed_update):
-    runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
+    '''runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
     if isinstance(runs, list):
         print("thing is a list")
         embed.remove_field(3)
@@ -1103,12 +1109,14 @@ async def transportVicSearch_async(ctx, train, embed, embed_update):
             else:
                 embed.add_field(name='No runs found!', value='⠀')
 
-        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/metro/tracker/consist?consist={train.upper()})')
+        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})')
         await embed_update.edit(embed=embed)
     else:
         embed.remove_field(3)
         embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
-        await embed_update.edit(embed=embed)
+        await embed_update.edit(embed=embed)'''
+    
+
         
 async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
     runs = await asyncio.to_thread(TRAMtransportVicSearch, tram)  # Find runs in a separate thread
@@ -1150,8 +1158,27 @@ async def station_autocompletion(
 @app_commands.autocomplete(station=station_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+@app_commands.choices(
+    line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Frankston", value="Frankston"),
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+    ]
+)
 # test
-async def departures(ctx, station: str):
+async def departures(ctx, station: str, line:str='all'):
     async def nextdeps():
         channel = ctx.channel
         await ctx.response.defer()
@@ -1183,46 +1210,89 @@ async def departures(ctx, station: str):
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
             return
         # vdepartures = vlineDepsData['departures']
-        # vruns = vlineDepsData['runs']
-
+        # vruns = vlineDepsData['runs']            
+        
         # make embed with data
-        embed= discord.Embed(title=f"Next trains departing {station.title()} Station")
+        if line == "all":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station")
+        else:
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line")
+
         fields = 0
+        
         for departure in departures:
-            scheduled_departure_utc = departure['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
-                # print(f"time in past")
-                pass
+            route_id= departure['route_id'] 
+            if line != "all":
+                if get_route_name(route_id) != line:
+                    print(f"Not on the {line} line.")
+                else:
+                    scheduled_departure_utc = departure['scheduled_departure_utc']
+                    if isPast(scheduled_departure_utc):
+                        # print(f"time in past")
+                        pass
+                    else:
+                        estimated_departure_utc = departure['estimated_departure_utc']
+                        run_ref = departure['run_ref']
+                        at_platform = departure['at_platform']
+                        platform_number = departure['platform_number']
+                        note = departure['departure_note']
+                        
+                        # get info for the run:
+                        desto = runs[run_ref]['destination_name']
+                        try:
+                            trainType = runs[run_ref]['vehicle_descriptor']['description']
+                            trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                        except:
+                            trainType = ''
+                            trainNumber = ''
+
+                        # train info
+
+                        #convert to timestamp
+                        depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                        #get route name:
+                        route_name = get_route_name(route_id)                
+                        
+                        #VLINE PLATFORMS DONT WORK PLS HELP
+                        
+                        embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                        fields = fields + 1
+                        if fields == 9:
+                            break
             else:
-                estimated_departure_utc = departure['estimated_departure_utc']
-                run_ref = departure['run_ref']
-                at_platform = departure['at_platform']
-                platform_number = departure['platform_number']
-                route_id= departure['route_id'] 
-                note = departure['departure_note']
-                
-                # get info for the run:
-                desto = runs[run_ref]['destination_name']
-                try:
-                    trainType = runs[run_ref]['vehicle_descriptor']['description']
-                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                except:
-                    trainType = ''
-                    trainNumber = ''
+                scheduled_departure_utc = departure['scheduled_departure_utc']
+                if isPast(scheduled_departure_utc):
+                    # print(f"time in past")
+                    pass
+                else:
+                    estimated_departure_utc = departure['estimated_departure_utc']
+                    run_ref = departure['run_ref']
+                    at_platform = departure['at_platform']
+                    platform_number = departure['platform_number']
+                    note = departure['departure_note']
+                    
+                    # get info for the run:
+                    desto = runs[run_ref]['destination_name']
+                    try:
+                        trainType = runs[run_ref]['vehicle_descriptor']['description']
+                        trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                    except:
+                        trainType = ''
+                        trainNumber = ''
 
-                # train info
+                    # train info
 
-                #convert to timestamp
-                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                #get route name:
-                route_name = get_route_name(route_id)                
-                
-                #VLINE PLATFORMS DONT WORK PLS HELP
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                fields = fields + 1
-                if fields == 9:
-                    break
+                    #convert to timestamp
+                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                    #get route name:
+                    route_name = get_route_name(route_id)                
+                    
+                    #VLINE PLATFORMS DONT WORK PLS HELP
+                    
+                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                    fields = fields + 1
+                    if fields == 9:
+                        break
         # the V/Line part
         '''
         fields = 0
@@ -1264,7 +1334,9 @@ async def departures(ctx, station: str):
         # Disrptions
         # disruptionsData = allDisruption()
         
-        embed.set_footer(text="V/Line departures are unavailable")
+        if fields == 0:
+            embed.add_field(name="No upcoming departures", value="⠀")
+        # embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.edit_original_response(embed=embed)          
 
@@ -3438,16 +3510,16 @@ async def yearinreview(ctx, year: int=2024):
         unix_time = int(time.time())
         if current_year == year:
             if unix_time < 1732971600:
-                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
-                return
-            
+                # await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                # return
+                pass
         try:
         
             embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
             data = year_in_review(f'utils/trainlogger/userdata/{ctx.user.name}.csv', year)
             
             (lilydale_value, ringwood_value), count = data.get("top_pair")
-            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times", inline=False)
+            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n\n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times\n:metro: {vline_metroprecent(ctx.user.name, year)}", inline=False)
             
             top_lines = data['top_5_lines']
             formatted_lines = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_lines)])
@@ -3464,6 +3536,8 @@ async def yearinreview(ctx, year: int=2024):
             top_stations = data['top_number']
             formatted_stations = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_stations)])
             embed.add_field(name=f"{ctx.user.name}'s Top Trains :bullettrain_side:", value=formatted_stations or "No Trains found.", inline=False)
+            
+            # v/line vs metro percent
             
             embed.set_thumbnail(url=ctx.user.avatar.url)
             embed.set_footer(text="Trains Logged with TrackPulse VIC", icon_url="https://xm9g.net/discord-bot-assets/logo.png")

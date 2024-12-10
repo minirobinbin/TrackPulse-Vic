@@ -7,7 +7,7 @@ def year_in_review(csv_file, year):
         reader = csv.reader(file)
         
         # Skip the header
-        next(reader)
+        # next(reader)
 
         # Initializing variables to hold summary data
         train_counts = defaultdict(int)
@@ -80,3 +80,55 @@ def year_in_review(csv_file, year):
         }
 
         return summary
+
+def vline_metroprecent(csv_file, year):
+    metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
+    vlineTrains = ['VLocity', 'N Class', 'Sprinter']
+    heritage = ['Tait', 'K Class', 'S Class', 'A Class', 'R Class']
+    
+    metro_count = 0
+    vline_count = 0
+    heritage_count = 0
+    other_count = 0
+    
+    DATE_IDX = 3
+
+    try:
+        with open(f'utils/trainlogger/userdata/{csv_file}.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                trip_date = row[DATE_IDX]
+                trip_year = trip_date.split('-')[0]
+                if trip_year == str(year):
+                    train_type = row[2]
+                    # Debugging the train type
+                    if train_type in metroTrains:
+                        metro_count += 1
+                    elif train_type in vlineTrains:
+                        vline_count += 1
+                    elif train_type in heritage:
+                        heritage_count += 1
+                    else:
+                        other_count += 1
+
+    except Exception as e:
+        return f"Error reading file: {str(e)}"
+    
+    total = metro_count + vline_count + heritage_count + other_count
+
+    # Avoid division by zero if total is 0
+    if total == 0:
+        return "Cannot calculate percentages, no trips found for the given year"
+
+    # Calculate the percentage of each variable
+    percentage_a = (metro_count / total) * 100
+    percentage_b = (vline_count / total) * 100
+    percentage_c = (heritage_count / total) * 100
+    percentage_d = (other_count / total) * 100
+
+    # Debugging output
+    print(f"Total: {total}, Metro: {metro_count}, Vline: {vline_count}, Heritage: {heritage_count}, Other: {other_count}")
+    
+    data = f'`{percentage_a:.2f}%` Metro, `{percentage_b:.2f}%` V/Line, `{percentage_c:.2f}%` heritage, `{percentage_d:.2f}%` other.'
+    return data
+
