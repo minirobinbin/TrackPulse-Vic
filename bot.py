@@ -1798,17 +1798,17 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.edit_original_response(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nMake sure to use a possible date.')
                 return
             except TypeError:
-                await ctx.edit_original_response(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
         # checking if train number is valid
         if number != 'Unknown':
             set = setNumber(number.upper())
             if set == None:
-                await ctx.edit_original_response(f'Invalid train number: {number.upper()}',ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
             type = trainType(number.upper())
         else:
