@@ -1220,79 +1220,52 @@ async def departures(ctx, station: str, line:str='all'):
 
         fields = 0
         
+        departures = [departure for departure in departures if get_route_name(departure['route_id']) == line or line == "all"]
+
+        
         for departure in departures:
             route_id= departure['route_id'] 
-            if line != "all":
-                if get_route_name(route_id) != line:
-                    print(f"Not on the {line} line.")
-                else:
-                    scheduled_departure_utc = departure['scheduled_departure_utc']
-                    if isPast(scheduled_departure_utc):
-                        # print(f"time in past")
-                        pass
-                    else:
-                        estimated_departure_utc = departure['estimated_departure_utc']
-                        run_ref = departure['run_ref']
-                        at_platform = departure['at_platform']
-                        platform_number = departure['platform_number']
-                        note = departure['departure_note']
-                        
-                        # get info for the run:
-                        desto = runs[run_ref]['destination_name']
-                        try:
-                            trainType = runs[run_ref]['vehicle_descriptor']['description']
-                            trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                        except:
-                            trainType = ''
-                            trainNumber = ''
-
-                        # train info
-
-                        #convert to timestamp
-                        depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                        #get route name:
-                        route_name = get_route_name(route_id)                
-                        
-                        #VLINE PLATFORMS DONT WORK PLS HELP
-                        
-                        embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                        fields = fields + 1
-                        if fields == 9:
-                            break
+            scheduled_departure_utc = departure['scheduled_departure_utc']
+            if isPast(scheduled_departure_utc):
+                # print(f"time in past")
+                pass
             else:
-                scheduled_departure_utc = departure['scheduled_departure_utc']
-                if isPast(scheduled_departure_utc):
-                    # print(f"time in past")
-                    pass
-                else:
-                    estimated_departure_utc = departure['estimated_departure_utc']
-                    run_ref = departure['run_ref']
-                    at_platform = departure['at_platform']
-                    platform_number = departure['platform_number']
-                    note = departure['departure_note']
-                    
-                    # get info for the run:
-                    desto = runs[run_ref]['destination_name']
-                    try:
-                        trainType = runs[run_ref]['vehicle_descriptor']['description']
-                        trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                    except:
-                        trainType = ''
-                        trainNumber = ''
+                estimated_departure_utc = departure['estimated_departure_utc']
+                run_ref = departure['run_ref']
+                at_platform = departure['at_platform']
+                platform_number = departure['platform_number']
+                note = departure['departure_note']
+                
+                # get info for the run:
+                desto = runs[run_ref]['destination_name']
+                try:
+                    trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                except:
+                    trainType = ''
+                    trainNumber = ''
 
-                    # train info
+                # train info
 
-                    #convert to timestamp
-                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                    #get route name:
-                    route_name = get_route_name(route_id)                
-                    
-                    #VLINE PLATFORMS DONT WORK PLS HELP
-                    
-                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                    fields = fields + 1
-                    if fields == 9:
-                        break
+                #convert to timestamp
+                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                #get route name:
+                route_name = get_route_name(route_id)                
+                
+                #VLINE PLATFORMS DONT WORK PLS HELP
+                
+                # thing for stony point
+                if route_name == "Stony Point":
+                    trainType = "Sprinter"
+                    if station.title() == "Frankston":
+                        platform_number = "3"
+                    else:
+                        platform_number = "1"
+                
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                fields = fields + 1
+                if fields == 9:
+                    break
         # the V/Line part
         '''
         fields = 0
