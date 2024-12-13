@@ -1755,7 +1755,7 @@ async def line_autocompletion(
 ])
 
 # Train logger
-async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto', notes:str=None):
+async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
     channel = ctx.channel
     await ctx.response.defer()
     print(date)
