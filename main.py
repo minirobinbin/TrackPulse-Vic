@@ -10,4 +10,25 @@ from utils.trainlogger.logembed import *
 
 # print(getStoppingPattern(951228, 0))
 
-print(logEmbed('#2F,549M-1125T-550M,EDI Comeng,2024-05-18,Flemington Racecourse,Flemington Racecourse,Southern Cross'))
+
+import requests
+
+# URL of the API endpoint
+url = "https://data-exchange-api.vicroads.vic.gov.au/opendata/v1/gtfsr/metrotrain-tripupdates"
+
+# Headers for the request
+headers = {
+    "Cache-Control": "no-cache",
+    "Ocp-Apim-Subscription-Key": "713db7df09e24badada81c928f745747"
+}
+
+# Make the GET request
+response = requests.get(url, headers=headers)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # If successful, print the content of the response
+    print(response.text)
+else:
+    # If not successful, print the status code and reason for the error
+    print(f"Request failed with status code {response.status_code}: {response.reason}")
