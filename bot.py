@@ -2379,6 +2379,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip', value=f"{row[5]} to {row[6]}")
                         if row[5] != 'N/A' and row[6] != 'N/A':
                             embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
+                        if row[7]:
+                            embed.add_field(name='Notes:', value=row[7])
                         try:
                             embed.set_thumbnail(url=image)
                         except:
@@ -2471,6 +2473,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         if sublist[5] != 'N/A' and sublist[6] != 'N/A':
                             embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
+                        if sublist[7]:
+                            embed.add_field(name='Notes:', value=sublist[7])
                         try:
                             embed.set_thumbnail(url=image)
                         except:
