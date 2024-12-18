@@ -863,22 +863,24 @@ async def train_search(ctx, train: str):
             print(information)
             infoData=''
             if information[5]:
-                infoData+=f'\n**Name:** {information[5]}\n'
+                infoData+=f'\n- **Name:** {information[5]}\n'
                 
             if information[2]:
-                infoData+=f'**Entered Service:** {information[2]}\n'
+                infoData+=f'- **Entered Service:** {information[2]}\n'
                 
             if information[3]:
-                infoData+=f'**Status:** {information[3]}\n'
+                infoData+=f'- **Status:** {information[3]}\n'
             
             if information[4]:
-                infoData+=f'**Notes:** {information[4]}\n'
+                infoData+=f'- **Notes:** {information[4]}\n'
+            if information[7]:
+                infoData+=f'- **Interior:** {information[7]}\n'
             
             if information[9]:
-                infoData+=f'**Operator:** {information[9]}\n'
+                infoData+=f'- **Operator:** {information[9]}\n'
             
             if information[8]:
-                infoData+=f'**Gauge:** {information[8]}\n'
+                infoData+=f'- **Gauge:** {information[8]}\n'
             
             if information[1]:
                 embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
