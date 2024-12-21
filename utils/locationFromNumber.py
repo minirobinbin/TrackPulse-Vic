@@ -32,8 +32,7 @@ routes = [
     {"route_id": 1482, "route_name": "Showgrounds - Flemington Racecourse"}
 ]
 
-def getTrainLocation(Tnumber):
-    def find_vehicle_by_descriptor_id(data, search_string):
+def find_vehicle_by_descriptor_id(data, search_string):
         results = []
         parts = search_string.split('-')
         
@@ -46,6 +45,8 @@ def getTrainLocation(Tnumber):
                 results.append(result)
         print(f' RESILSTS THING: {results}')
         return results
+
+def getTrainLocation(Tnumber):
 
     def process_route(route):
         json_data = runs_api_request(route["route_id"])
@@ -94,19 +95,6 @@ tramRoutes = [
 ]
 
 def getTramLocation(Tnumber):
-    def find_vehicle_by_descriptor_id(data, search_string):
-        results = []
-        parts = search_string.split('-')
-        
-        for run in data.get("runs", []):
-            if run.get("vehicle_descriptor") and all(part in run["vehicle_descriptor"]["id"] for part in parts):
-                result = {
-                    "vehicle_position": run["vehicle_position"],
-                    "run_ref": run["run_ref"]  # Include run_ref in the result
-                }
-                results.append(result)
-        print(f' RESILSTS THING: {results}')
-        return results
 
     def process_route(route):
         json_data = runs_api_request(route["route_id"])

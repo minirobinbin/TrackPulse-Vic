@@ -826,7 +826,7 @@ async def line_info(ctx, search: str):
 
 
 
-# Train search
+# Train search train
 @search.command(name="train", description="Search for a specific Train")
 async def train_search(ctx, train: str):
     await ctx.response.defer()
@@ -918,22 +918,23 @@ async def train_search(ctx, train: str):
         
         if type in metroTrains:
             # map thing
-            mapEmbed = discord.Embed(title=f"{train}'s location")
+            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
 
                 # Generate the map asynchronously
-                
-                
                 # After map generation, send it
                 if type == "HCMT": # because ptv api lists hcmts like "9005M-9905M" for some fucking reason
                     hcmtcar1 = set.split('-')
                     location = getTrainLocation(hcmtcar1[0]+'M')
                 else:
                     location = getTrainLocation(set)
+                print(f"Location: {location}")
                 url = convertTrainLocationToGoogle(location)
+                stoppingPattern = getStoppingPatternFromCar(location)
+                print(f"STOPPING PATTERN: {stoppingPattern}")
                 try:
                     if location is not None:
                         for item in location:
@@ -958,6 +959,14 @@ async def train_search(ctx, train: str):
                     
                     embed = discord.Embed(title=f"{train}'s location", url=url)
                     embed.remove_field(0)
+
+                    # add the stops to the embed.
+                    stopsString = ''
+                    for stop_name, stop_time in stoppingPattern:
+                        # Add each stop and its timestamp to the embed
+                        stopsString += (f'{stop_name} - {convert_iso_to_unix_time(stop_time)}\n')
+                    embed.add_field(name="Stopping Pattern", value=stopsString, inline=False)
+                    
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
                 
@@ -3531,6 +3540,9 @@ async def yearinreview(ctx, year: int=2024):
             await ctx.edit_original_response(embed=discord.Embed(title="Error", description=f"An error occurred while fetching data: {e}"))
         
     asyncio.create_task(yir())
+    
+    
+# THING TO UPDATE CSV
 
 # Disabled to not fuck up the data by accident
 '''@bot.command()
