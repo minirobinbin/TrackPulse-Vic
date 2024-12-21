@@ -11,4 +11,3 @@ from utils.stoppingpattern import *
 # print(getStoppingPatternFromCar("444M"))
 # departures_api_request(1119,0)
 
-runs_ref_api_request(951272)

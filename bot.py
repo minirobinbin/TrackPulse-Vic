@@ -120,7 +120,7 @@ for line in file:
 file.close()
 
 
-
+vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 rareCheckerOn = False
 lineStatusOn = False
@@ -863,22 +863,24 @@ async def train_search(ctx, train: str):
             print(information)
             infoData=''
             if information[5]:
-                infoData+=f'\n**Name:** {information[5]}\n'
+                infoData+=f'\n- **Name:** {information[5]}\n'
                 
             if information[2]:
-                infoData+=f'**Entered Service:** {information[2]}\n'
+                infoData+=f'- **Entered Service:** {information[2]}\n'
                 
             if information[3]:
-                infoData+=f'**Status:** {information[3]}\n'
+                infoData+=f'- **Status:** {information[3]}\n'
             
             if information[4]:
-                infoData+=f'**Notes:** {information[4]}\n'
+                infoData+=f'- **Notes:** {information[4]}\n'
+            if information[7]:
+                infoData+=f'- **Interior:** {information[7]}\n'
             
             if information[9]:
-                infoData+=f'**Operator:** {information[9]}\n'
+                infoData+=f'- **Operator:** {information[9]}\n'
             
             if information[8]:
-                infoData+=f'**Gauge:** {information[8]}\n'
+                infoData+=f'- **Gauge:** {information[8]}\n'
             
             if information[1]:
                 embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
@@ -1243,79 +1245,52 @@ async def departures(ctx, station: str, line:str='all'):
 
         fields = 0
         
+        departures = [departure for departure in departures if get_route_name(departure['route_id']) == line or line == "all"]
+
+        
         for departure in departures:
             route_id= departure['route_id'] 
-            if line != "all":
-                if get_route_name(route_id) != line:
-                    print(f"Not on the {line} line.")
-                else:
-                    scheduled_departure_utc = departure['scheduled_departure_utc']
-                    if isPast(scheduled_departure_utc):
-                        # print(f"time in past")
-                        pass
-                    else:
-                        estimated_departure_utc = departure['estimated_departure_utc']
-                        run_ref = departure['run_ref']
-                        at_platform = departure['at_platform']
-                        platform_number = departure['platform_number']
-                        note = departure['departure_note']
-                        
-                        # get info for the run:
-                        desto = runs[run_ref]['destination_name']
-                        try:
-                            trainType = runs[run_ref]['vehicle_descriptor']['description']
-                            trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                        except:
-                            trainType = ''
-                            trainNumber = ''
-
-                        # train info
-
-                        #convert to timestamp
-                        depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                        #get route name:
-                        route_name = get_route_name(route_id)                
-                        
-                        #VLINE PLATFORMS DONT WORK PLS HELP
-                        
-                        embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                        fields = fields + 1
-                        if fields == 9:
-                            break
+            scheduled_departure_utc = departure['scheduled_departure_utc']
+            if isPast(scheduled_departure_utc):
+                # print(f"time in past")
+                pass
             else:
-                scheduled_departure_utc = departure['scheduled_departure_utc']
-                if isPast(scheduled_departure_utc):
-                    # print(f"time in past")
-                    pass
-                else:
-                    estimated_departure_utc = departure['estimated_departure_utc']
-                    run_ref = departure['run_ref']
-                    at_platform = departure['at_platform']
-                    platform_number = departure['platform_number']
-                    note = departure['departure_note']
-                    
-                    # get info for the run:
-                    desto = runs[run_ref]['destination_name']
-                    try:
-                        trainType = runs[run_ref]['vehicle_descriptor']['description']
-                        trainNumber = runs[run_ref]['vehicle_descriptor']['id']
-                    except:
-                        trainType = ''
-                        trainNumber = ''
+                estimated_departure_utc = departure['estimated_departure_utc']
+                run_ref = departure['run_ref']
+                at_platform = departure['at_platform']
+                platform_number = departure['platform_number']
+                note = departure['departure_note']
+                
+                # get info for the run:
+                desto = runs[run_ref]['destination_name']
+                try:
+                    trainType = runs[run_ref]['vehicle_descriptor']['description']
+                    trainNumber = runs[run_ref]['vehicle_descriptor']['id']
+                except:
+                    trainType = ''
+                    trainNumber = ''
 
-                    # train info
+                # train info
 
-                    #convert to timestamp
-                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                    #get route name:
-                    route_name = get_route_name(route_id)                
-                    
-                    #VLINE PLATFORMS DONT WORK PLS HELP
-                    
-                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
-                    fields = fields + 1
-                    if fields == 9:
-                        break
+                #convert to timestamp
+                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                #get route name:
+                route_name = get_route_name(route_id)                
+                
+                #VLINE PLATFORMS DONT WORK PLS HELP
+                
+                # thing for stony point
+                if route_name == "Stony Point":
+                    trainType = "Sprinter"
+                    if station.title() == "Frankston":
+                        platform_number = "3"
+                    else:
+                        platform_number = "1"
+                
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                fields = fields + 1
+                if fields == 9:
+                    break
         # the V/Line part
         '''
         fields = 0
@@ -1788,34 +1763,6 @@ async def line_autocompletion(
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-
-# @app_commands.choices(line=[
-#         app_commands.Choice(name="Alamein", value="Alamein"),
-#         app_commands.Choice(name="Belgrave", value="Belgrave"),
-#         app_commands.Choice(name="Craigieburn", value="Craigieburn"),
-#         app_commands.Choice(name="Cranbourne", value="Cranbourne"),
-#         app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
-#         app_commands.Choice(name="Frankston", value="Frankston"),
-#         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
-#         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
-#         app_commands.Choice(name="Lilydale", value="Lilydale"),
-#         app_commands.Choice(name="Mernda", value="Mernda"),
-#         app_commands.Choice(name="Pakenham", value="Pakenham"),
-#         app_commands.Choice(name="Sandringham", value="Sandringham"),
-#         app_commands.Choice(name="Stony Point", value="Stony Point"),
-#         app_commands.Choice(name="Sunbury", value="Sunbury"),
-#         app_commands.Choice(name="Upfield", value="Upfield"),
-#         app_commands.Choice(name="Werribee", value="Werribee"),
-#         app_commands.Choice(name="Williamstown", value="Williamstown"),
-#         app_commands.Choice(name="City Circle", value="City Circle"),
-#         app_commands.Choice(name="Albury", value="Albury"),
-#         app_commands.Choice(name="Ballarat/Maryborough/Ararat", value="Ballarat/Maryborough/Ararat"),
-#         app_commands.Choice(name="Bendigo/Echuca/Swan Hill", value="Bendigo/Echuca/Swan Hill"),
-#         app_commands.Choice(name="Geelong/Warrnambool", value="Geelong/Warrnambool"),
-#         app_commands.Choice(name="Seymour/Shepparton", value="Seymour/Shepparton"),
-#         app_commands.Choice(name="Traralgon/Bairnsdale", value="Traralgon/Bairnsdale"),
-#         app_commands.Choice(name="Unknown", value="Unknown")
-# ])
 @app_commands.choices(traintype=[
         app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
         app_commands.Choice(name="HCMT", value="HCMT"),
@@ -1833,8 +1780,9 @@ async def line_autocompletion(
 ])
 
 # Train logger
-async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', traintype:str='auto'):
+async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
     channel = ctx.channel
+    await ctx.response.defer()
     print(date)
     async def log():
         print("logging the thing")
@@ -1848,17 +1796,17 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nMake sure to use a possible date.')
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
         # checking if train number is valid
         if number != 'Unknown':
             set = setNumber(number.upper())
             if set == None:
-                await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+                await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
             type = trainType(number.upper())
         else:
@@ -1869,12 +1817,56 @@ async def logtrain(ctx, line:str, number:str='Unknown', date:str='today', start:
             else: type = traintype
         if traintype == "Tait":
             set = '381M-208T-230D-317M'
-
+            
         # Add train to the list
-        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
+        # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
-                
+        if line in vLineLines:
+            embed = discord.Embed(title="Train Logged",colour=0x7e3e98)
+        elif line == 'Unknown':
+                embed = discord.Embed(title="Train Logged")
+        else:
+            try:
+                embed = discord.Embed(title="Train Logged",colour=lines_dictionary[line][1])
+            except:
+                embed = discord.Embed(title="Train Logged")
+        
+        embed.add_field(name="Set", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        if notes:
+            embed.add_field(name="Notes", value=notes)
+        # thing to find image:
+        print(f"Finding image for {number}")
+        if type == 'Tait':
+            image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
+        
+        if not '-' in set:
+            image = getImage(set)
+
+        else:
+            hyphen_index = set.find("-")
+            if hyphen_index != -1:
+                first_car = set[:hyphen_index]
+                print(f'First car: {first_car}')
+                image = getImage(first_car)
+                if image == None:
+                    last_hyphen = set.rfind("-")
+                    if last_hyphen != -1:
+                        last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                        print(f'Last car: {last_car}')
+                        image = getImage(last_car)
+                        if image == None:
+                            image = getImage(type)
+                            print(f'the loco number is: {set}')
+        if image != None:
+            embed.set_thumbnail(url=image)
+        
+        await ctx.edit_original_response(embed=embed)
+        
+                        
     # Run in a separate task
     asyncio.create_task(log())
 
@@ -2410,6 +2402,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip', value=f"{row[5]} to {row[6]}")
                         if row[5] != 'N/A' and row[6] != 'N/A':
                             embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
+                        if row[7]:
+                            embed.add_field(name='Notes:', value=row[7])
                         try:
                             embed.set_thumbnail(url=image)
                         except:
@@ -2502,6 +2496,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         if sublist[5] != 'N/A' and sublist[6] != 'N/A':
                             embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
+                        if sublist[7]:
+                            embed.add_field(name='Notes:', value=sublist[7])
                         try:
                             embed.set_thumbnail(url=image)
                         except:
@@ -3636,9 +3632,9 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            ctx.send(f"Sucsess!")
+            await ctx.send(f"Sucsess!")
         except Exception as e:
-            ctx.send(f"Error: `{e}`")
+            await ctx.send(f"Error: `{e}`")
     else:
         print(f'{USER_ID} tried to synd the database.')
         await ctx.send("You are not authorized to use this command.")
