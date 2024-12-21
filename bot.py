@@ -962,10 +962,24 @@ async def train_search(ctx, train: str):
 
                     # add the stops to the embed.
                     stopsString = ''
+                    fieldCounter = 1
+                    currentFieldLength = 0
+
                     for stop_name, stop_time in stoppingPattern:
-                        # Add each stop and its timestamp to the embed
-                        stopsString += (f'{stop_name} - {convert_iso_to_unix_time(stop_time)}\n')
-                    embed.add_field(name="Stopping Pattern", value=stopsString, inline=False)
+                        stopEntry = f'<:nor:1319978092910870528> {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                        if currentFieldLength + len(stopEntry) > 1000:
+                            # Add the current field and start a new one
+                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                            stopsString = stopEntry
+                            fieldCounter += 1
+                            currentFieldLength = len(stopEntry)
+                        else:
+                            stopsString += stopEntry
+                            currentFieldLength += len(stopEntry)
+
+                    # Add the last field if there's any content left
+                    if stopsString:
+                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
