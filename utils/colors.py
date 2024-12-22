@@ -175,11 +175,11 @@ def getMapEmoji(line, type):
     
     if line == "Sunbury" or line =="Upfield" or line =="Craigieburn":
         if type == "terminus":
-            return('<:nt:1319981273552392222>')
+            return('<:nt:1320523324308197397>')
         if type == "terminus2":
-            return('<:nt2:1320227125986328596>')
+            return('<:nt2:1320523326153687061>')
         if type == "stop":
-            return('<:nst:1319980933008592989>')
+            return('<:nst:1320523322311573585>')
         if type == "interchange":
             return('<:ni:1320142983722434583>')
         if type == "cont1":

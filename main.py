@@ -6,8 +6,8 @@
 from utils.stoppingpattern import *
 
 # # from ptv.client import PTVClient
-# print(getStoppingPattern(951272, 0)
-# )
+print(getStoppingPattern(951272, 0)
+)
 # print(getStoppingPatternFromCar("444M"))
 # departures_api_request(1119,0)
 
