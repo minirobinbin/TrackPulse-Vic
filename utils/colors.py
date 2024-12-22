@@ -91,3 +91,133 @@ def getlineEmoji(type):
         return('<:CityCircle1:1299990618897911878><:CityCircle2:1299990620940669020><:CityCircle3:1299990622832164925><:CityCircle4:1299990625004949556>')
     else:
         return ''
+    
+def getMapEmoji(line, type):
+    if line == "Lilydale" or line =="Belgrave" or line =="Alamein" or line =='Glen Waverley':
+        if type == "terminus":
+            return('<:bt:1319982837348438067>')
+        if type == "terminus2":
+            return('<:bt2:1320227114879946833>')
+        if type == "stop":
+            return('<:bst:1319980922497536040>')
+        if type == "interchange":
+            return('<:bi:1320141641650016337>')
+        if type == "cont1":
+            return('<:bbr:1320142969860263976>')
+        if type == "cont2":
+            return('<:bbr2:1320142972171587746>')
+        else:
+            return '⚠'
+        
+    if line == "Pakenham" or line =="Cranbourne":
+        if type == "terminus":
+            return('<:dt:1319982841580224572>')
+        if type == "terminus2":
+            return('<:dt2:1320227120307507330>')
+        if type == "stop":
+            return('<:dst:1319980927988006958>')
+        if type == "interchange":
+            return('<:ci:1320142974306484244>')
+        if type == "cont1":
+            return('<:dbr:1320145219978530919>')
+        if type == "cont2":
+            return('<:dbr2:1320145221698195556>')
+        else:
+            return '⚠'
+        
+    if line == "Stony Point":
+        if type == "terminus":
+            return('<:st:1319982846106144901>')
+        if type == "terminus2":
+            return('<:st2:1320227127626432532>')
+        if type == "stop":
+            return('<:sst:1319980938263924746>')
+        if type == "interchange":
+            return('<:si:1320142987388391537>')
+        if type == "cont1":
+            return('<:stbr:1320145236105891952>')
+        if type == "cont2":
+            return('<:stbr2:1320145237858844763>')
+        else:
+            return '⚠'
+        
+    if line == "Frankston" or line =="Werribee" or line =="Williamstown":
+        if type == "terminus":
+            return('<:ft:1319982844533280831>')
+        if type == "terminus2":
+            return('<:ft2:1320227124099022918>')
+        if type == "stop":
+            return('<:fst:1319980930722435082>')
+        if type == "interchange":
+            return('<:fi:1320142976013307946>')
+        if type == "cont1":
+            return('<:fbr:1320145223493353566>')
+        if type == "cont2":
+            return('<:fbr2:1320145225527722015>')
+        else:
+            return '⚠'
+        
+    if line == "Sandringham":
+        if type == "terminus":
+            return('<:crt:1319982839701180436>')
+        if type == "terminus2":
+            return('<:crt2:1320227116654264391>')
+        if type == "stop":
+            return('<:csst:1319980924775170178>')
+        if type == "interchange":
+            return('<:sant:1320142985198829620>')
+        if type == "cont1":
+            return('<:csbr:1320145216149258364>')
+        if type == "cont2":
+            return('<:csbr2:1320145218200404018>')
+        else:
+            return '⚠'
+    
+    if line == "Sunbury" or line =="Upfield" or line =="Craigieburn":
+        if type == "terminus":
+            return('<:nt:1319981273552392222>')
+        if type == "terminus2":
+            return('<:nt2:1320227125986328596>')
+        if type == "stop":
+            return('<:nst:1319980933008592989>')
+        if type == "interchange":
+            return('<:ni:1320142983722434583>')
+        if type == "cont1":
+            return('<:nbr:1320145231290695680>')
+        if type == "cont2":
+            return('<:nbr2:1320145280569442426>')
+        else:
+            return '⚠'
+        
+    if line == "Mernda" or line =="Hurstbridge":
+        if type == "terminus":
+            return('<:ct:1319982465594429442>')
+        if type == "terminus2":
+            return('<:ct2:1320227118491373609>')
+        if type == "stop":
+            return('<:cst:1319980926440312884>')
+        if type == "interchange":
+            return('<:chi:1320148570925564046>')
+        if type == "cont1":
+            return('<:cbr:1320145212823175189>')
+        if type == "cont2":
+            return('<:cbr2:1320145214467215411>')
+        else:
+            return '⚠'
+        
+    if line == "Flemington Racecourse":
+        if type == "terminus":
+            return('<:frt:1320142981877203037>')
+        if type == "terminus2":
+            return('<:frt2:1320227122299539486>')
+        if type == "stop":
+            return('<:frs:1320142979943497748>')
+        if type == "interchange":
+            return('<:fri:1320142978114916382>')
+        if type == "cont1":
+            return('<:frbr:1320145227326951434>')
+        if type == "cont2":
+            return('<:frbr2:1320145229243875411>')
+        else:
+            return '⚠'
+        

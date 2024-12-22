@@ -119,6 +119,13 @@ for line in file:
     busOps.append(line)
 file.close()
 
+file = open('utils\\datalists\\interchangestations.txt','r')
+interchange_stations = []
+for line in file:
+    line = line.strip()
+    interchange_stations.append(line)
+file.close()
+
 
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
@@ -828,7 +835,7 @@ async def line_info(ctx, search: str):
 
 # Train search train
 @search.command(name="train", description="Search for a specific Train")
-async def train_search(ctx, train: str):
+async def train_search(ctx, train: str, show_run_info:bool=True):
     await ctx.response.defer()
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
@@ -918,7 +925,7 @@ async def train_search(ctx, train: str):
             """
         embed_update = await ctx.edit_original_response(embed=embed)
         
-        if type in metroTrains:
+        if type in metroTrains and show_run_info:
             # map thing
             mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
@@ -933,6 +940,7 @@ async def train_search(ctx, train: str):
                     location = getTrainLocation(hcmtcar1[0]+'M')
                 else:
                     location = getTrainLocation(set)
+                line = ""
                 print(f"Location: {location}")
                 url = convertTrainLocationToGoogle(location)
                 stoppingPattern = getStoppingPatternFromCar(location)
@@ -942,11 +950,12 @@ async def train_search(ctx, train: str):
                         for item in location:
                             latitude = item['vehicle_position']['latitude']
                             longitude = item['vehicle_position']['longitude']
+                            line = get_route_name(item['route_id'])
                             geopath=''
                             # geopath = getGeopath(item["run_ref"])
                             # print(f'geopath: {geopath}')
 
-                        await makeMapv2(latitude,longitude, train, geopath)  # Adjust this line to asynchronously generate the map
+                        await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
                     await mapEmbedUpdate.delete()
                     await ctx.channel.send('No location data available.')
@@ -967,10 +976,33 @@ async def train_search(ctx, train: str):
                     fieldCounter = 1
                     currentFieldLength = 0
 
+                    first_stop = True
+                    fieldCounter = 0
+                    stopsString = ""
+                    currentFieldLength = 0
+
                     for stop_name, stop_time in stoppingPattern:
-                        stopEntry = f'<:nor:1319978092910870528> {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                        if first_stop:
+                            stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                            first_stop = False
+                        else:
+                            # Check if it's the last stop in the list
+                            if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
+                                emoji_type = "terminus2"
+                            else:
+                                # Check stop_name in interchange_stations
+                                if stop_name in interchange_stations:
+                                    emoji_type = "interchange"
+                                else:
+                                    emoji_type = "stop"
+                            stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+
                         if currentFieldLength + len(stopEntry) > 1000:
                             # Add the current field and start a new one
+                            if fieldCounter == 0:  # First field
+                                stopsString += f'{getMapEmoji(line, "cont1")}\n'
+                            else:
+                                stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
                             embed.add_field(name=f"⠀", value=stopsString, inline=False)
                             stopsString = stopEntry
                             fieldCounter += 1
@@ -981,6 +1013,9 @@ async def train_search(ctx, train: str):
 
                     # Add the last field if there's any content left
                     if stopsString:
+                        if fieldCounter > 0:  # Not the first field
+                            stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
+                        # stopsString = stopsString.rstrip('\n') + f'{getMapEmoji(line, "cont1")}\n'
                         embed.add_field(name=f"⠀", value=stopsString, inline=False)
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
@@ -1000,8 +1035,6 @@ async def train_search(ctx, train: str):
             # loop = asyncio.get_event_loop()
             # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             # await task
-            
-        
             
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")

@@ -40,7 +40,8 @@ def find_vehicle_by_descriptor_id(data, search_string):
             if run.get("vehicle_descriptor") and all(part in run["vehicle_descriptor"]["id"] for part in parts):
                 result = {
                     "vehicle_position": run["vehicle_position"],
-                    "run_ref": run["run_ref"]  # Include run_ref in the result
+                    "run_ref": run["run_ref"],  # Include run_ref in the result
+                    "route_id": run["route_id"]
                 }
                 results.append(result)
         print(f' RESILSTS THING: {results}')
@@ -66,6 +67,7 @@ def getTrainLocation(Tnumber):
         thread.join()
     
     return all_results
+
 
 tramRoutes = [
     {"route_id": 721, "route_name": "1"},
