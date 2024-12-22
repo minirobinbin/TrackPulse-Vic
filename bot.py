@@ -928,7 +928,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
         if type in metroTrains and show_run_info:
             # map thing
             mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
-            mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
+            mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
@@ -958,7 +958,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                         await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
                     await mapEmbedUpdate.delete()
-                    await ctx.channel.send('No location data available.')
+                    await ctx.channel.send('No trip data available.')
                     print(f'ErROR: {e}')
                     return
                 file_path = f"temp/{train}-map.png"
@@ -968,7 +968,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     
                     file = discord.File(file_path, filename=f"{train}-map.png")
                     
-                    embed = discord.Embed(title=f"{train}'s location", url=url)
+                    embed = discord.Embed(title=f"{train}'s current trip", url=url)
                     embed.remove_field(0)
 
                     # add the stops to the embed.
