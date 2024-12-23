@@ -81,3 +81,26 @@ def getStoppingPatternFromCar(relistsData):
 
     return closest
                 
+def getStoppingPatternFromRunRef(relistsData):
+    runRef = None
+    dataList = []
+
+    for item in relistsData:
+        runRef = item['run_ref']
+        data = getStoppingPattern(runRef, 0)
+        # print(f'F DATA: {data}')
+        dataList.append(data)
+        
+    # Current time in Melbourne (AEST/AEDT)
+    local_tz = pytz.timezone('Australia/Melbourne')
+    current_time = datetime.now(local_tz)
+    
+    closest = None
+    min_diff = float('inf')  # Initialize with infinity
+    
+    for data in dataList:
+        if data:  # Check if data is not empty
+            closest = data
+
+    return closest
+                

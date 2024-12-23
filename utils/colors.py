@@ -127,17 +127,17 @@ def getMapEmoji(line, type):
         
     if line == "Stony Point":
         if type == "terminus":
-            return('<:st:1319982846106144901>')
+            return('<:st:1320631767904030791>')
         if type == "terminus2":
-            return('<:st2:1320227127626432532>')
+            return('<:st2:1320631769656987658>')
         if type == "stop":
-            return('<:sst:1319980938263924746>')
+            return('<:sst:1320631765567799337>')
         if type == "interchange":
             return('<:si:1320142987388391537>')
         if type == "cont1":
-            return('<:stbr:1320145236105891952>')
+            return('<:stbr:1320631771406274671>')
         if type == "cont2":
-            return('<:stbr2:1320145237858844763>')
+            return('<:stbr2:1320631773209690194>')
         else:
             return '⚠'
         

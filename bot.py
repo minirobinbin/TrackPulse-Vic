@@ -69,6 +69,7 @@ from utils.mykipython import *
 from utils.myki.savelogin import *
 from utils.special.yearinreview import *
 from utils.stoppingpattern import *
+from utils.locationfromid import *
 
 
 
@@ -968,7 +969,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     
                     file = discord.File(file_path, filename=f"{train}-map.png")
                     
-                    embed = discord.Embed(title=f"{train}'s current trip", url=url)
+                    embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1])
                     embed.remove_field(0)
 
                     # add the stops to the embed.
@@ -1032,6 +1033,91 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
         
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
             asyncio.create_task(addmap())
+            # loop = asyncio.get_event_loop()
+            # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
+            # await task
+            
+# search run id   
+@search.command(name="runid", description="Shows the run for a specific run id, found in the departures command")
+@app_commands.describe(runid="Run ID")
+async def runidsearch(ctx, runid:int):
+    await ctx.response.defer()
+    async def addmap():
+        try:
+            runData = getTrainLocationFromID(str(runid))
+            line = ""
+            stoppingPattern = getStoppingPatternFromRunRef(runData)
+            print(f"STOPPING PATTERN: {stoppingPattern}")
+            try:
+                if runData is not None:
+                    for item in runData:
+                        # latitude = item['vehicle_position']['latitude']
+                        # longitude = item['vehicle_position']['longitude']
+                        line = get_route_name(item['route_id'])
+
+            except Exception as e:
+                await ctx.edit_original_response(content='No trip data available.')
+                print(f'ErROR: {e}')
+                return
+                
+            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1])
+
+            # add the stops to the embed.
+            stopsString = ''
+            fieldCounter = 1
+            currentFieldLength = 0
+
+            first_stop = True
+            fieldCounter = 0
+            stopsString = ""
+            currentFieldLength = 0
+
+            for stop_name, stop_time in stoppingPattern:
+                if first_stop:
+                    stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                    first_stop = False
+                else:
+                    # Check if it's the last stop in the list
+                    if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
+                        emoji_type = "terminus2"
+                    else:
+                        # Check stop_name in interchange_stations
+                        if stop_name in interchange_stations:
+                            emoji_type = "interchange"
+                        else:
+                            emoji_type = "stop"
+                    stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+
+                if currentFieldLength + len(stopEntry) > 1000:
+                    # Add the current field and start a new one
+                    if fieldCounter == 0:  # First field
+                        stopsString += f'{getMapEmoji(line, "cont1")}\n'
+                    else:
+                        stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
+                    embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                    stopsString = stopEntry
+                    fieldCounter += 1
+                    currentFieldLength = len(stopEntry)
+                else:
+                    stopsString += stopEntry
+                    currentFieldLength += len(stopEntry)
+
+            # Add the last field if there's any content left
+            if stopsString:
+                if fieldCounter > 0:  # Not the first field
+                    stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
+                # stopsString = stopsString.rstrip('\n') + f'{getMapEmoji(line, "cont1")}\n'
+                embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                    
+            # Send a new message with the file and embed
+            await ctx.edit_original_response(embed=embed)
+
+        except:
+            await ctx.edit_original_response(content='No trip data available.')       
+    # Run transportVicSearch in a separate thread
+        
+        
+    asyncio.create_task(addmap())
             # loop = asyncio.get_event_loop()
             # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             # await task
@@ -1320,7 +1406,7 @@ async def departures(ctx, station: str, line:str='all'):
                     else:
                         platform_number = "1"
                 
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}")
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nRun ID: `{run_ref}`")
                 fields = fields + 1
                 if fields == 9:
                     break

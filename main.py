@@ -3,11 +3,12 @@
 # from utils.pageScraper import *
 # from utils.trainlogger.stats import *
 # from utils.locationFromNumber import *
-from utils.stoppingpattern import *
+from utils.locationfromid import *
 
 # # from ptv.client import PTVClient
-print(getStoppingPattern(951272, 0)
-)
+# print(getStoppingPattern(951272, 0)
+# )
 # print(getStoppingPatternFromCar("444M"))
 # departures_api_request(1119,0)
 
+print(getTrainLocationFromID('950807'))
