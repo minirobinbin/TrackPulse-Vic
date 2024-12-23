@@ -447,7 +447,7 @@ async def api(ctx, query: str, route_types:int=None):
     asyncio.create_task(apisearch())'''
 
         
-@search.command(name="run", description="Show runs for a route")
+"""@search.command(name="run", description="Show runs for a route")
 @app_commands.describe(runid = "route id")
 async def runs(ctx, runid: str):
     
@@ -478,7 +478,7 @@ async def runs(ctx, runid: str):
     await ctx.response.send_message(embed=embed)
     with open('logs.txt', 'a') as file:
                 file.write(f"\n{datetime.datetime.now()} - user sent run search command with input {runid}")
-    
+    """
     
  
 
