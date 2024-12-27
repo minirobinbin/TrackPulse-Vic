@@ -2430,7 +2430,7 @@ async def logPlane(ctx, airline:str, start:str, end:str, rego: str, type:str, da
  # Perth Train logger
 
 
-# train logger reader
+# train logger reader log view
 
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
@@ -3215,218 +3215,222 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
     
 @stats.command(name='profile', description="Shows a users trip log stats, and leaderboard wins")    
 async def profile(ctx, user: discord.User = None):
-    async def profiles():
-        if user == None:
-            username = ctx.user.name
-            pfp = ctx.user.avatar.url
-        else:
-            username = user.name
-            pfp = user.avatar.url
+    try:
+        async def profiles():
+            if user == None:
+                username = ctx.user.name
+                pfp = ctx.user.avatar.url
+            else:
+                username = user.name
+                pfp = user.avatar.url
 
-        embed = discord.Embed(title=f"Profile")
-        embed.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
+            embed = discord.Embed(title=f"Profile")
+            embed.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
 
-        
-        # train logger
-        try:
-            lines = topStats(username, 'lines')
-            stations = topStats(username, 'stations')
-            sets = topStats(username, 'sets')
-            trains = topStats(username, 'types')
-            dates = topStats(username, 'dates')
-            trips = topStats(username, 'pairs')
-
-            #other stats stuff:
-            eDate =lowestDate(username, 'train')
-            LeDate =highestDate(username, 'train')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:',
-    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Train:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Set:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n'
-          f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'**Total logs:** `{logAmounts(username, "train")}`\n'
-          f'**Stations visited:** `{stationPercent(username)}`\n'
-          f'**Lines visited:** `{linePercent(username)}`\n'
-          f'**Distance:** `{round(getTotalTravelDistance(username))}km`'
-)
-
-                        
-        except FileNotFoundError:
-            embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
-                   
-        # Tram Logger
-        try:
-            lines = tramTopStats(username, 'lines')
-            stations = tramTopStats(username, 'stations')
-            sets = tramTopStats(username, 'sets')
-            trains = tramTopStats(username, 'types')
-            dates = tramTopStats(username, 'dates')
             
-            #other stats stuff:
-            eDate =lowestDate(username, 'tram')
-            LeDate =highestDate(username, 'tram')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:tram:1241165701390012476> Tram Log Stats:',
-    value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Class:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'Total logs: {logAmounts(username, "tram")}'
-)
+            # train logger
+            try:
+                lines = topStats(username, 'lines')
+                stations = topStats(username, 'stations')
+                sets = topStats(username, 'sets')
+                trains = topStats(username, 'types')
+                dates = topStats(username, 'dates')
+                trips = topStats(username, 'pairs')
 
-  
-        except FileNotFoundError:
-            embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
+                #other stats stuff:
+                eDate =lowestDate(username, 'train')
+                LeDate =highestDate(username, 'train')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats:',
+        value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Train:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Set:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'**Total logs:** `{logAmounts(username, "train")}`\n'
+            f'**Stations visited:** `{stationPercent(username)}`\n'
+            f'**Lines visited:** `{linePercent(username)}`\n'
+            f'**Distance:** `{round(getTotalTravelDistance(username))}km`'
+    )
 
- # sydney trains Logger
-        try:
-            lines = sydneyTrainTopStats(username, 'lines')
-            stations = sydneyTrainTopStats(username, 'stations')
-            sets = sydneyTrainTopStats(username, 'sets')
-            trains = sydneyTrainTopStats(username, 'types')
-            dates = sydneyTrainTopStats(username, 'dates')
-             #other stats stuff:
-            eDate =lowestDate(username, 'sydney-trains')
-            LeDate =highestDate(username, 'sydney-trains')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:',
-    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Train Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'Total logs: {logAmounts(username, "sydney-trains")}'
-)
+                            
+            except FileNotFoundError:
+                embed.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
+                    
+            # Tram Logger
+            try:
+                lines = tramTopStats(username, 'lines')
+                stations = tramTopStats(username, 'stations')
+                sets = tramTopStats(username, 'sets')
+                trains = tramTopStats(username, 'types')
+                dates = tramTopStats(username, 'dates')
+                
+                #other stats stuff:
+                eDate =lowestDate(username, 'tram')
+                LeDate =highestDate(username, 'tram')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:tram:1241165701390012476> Tram Log Stats:',
+        value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Class:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "tram")}'
+    )
 
-                                  
-        except FileNotFoundError:
-            embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
+    
+            except FileNotFoundError:
+                embed.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
 
-# sydney tram Logger
-        try:
-            lines = sydneyTramTopStats(username, 'lines')
-            stations = sydneyTramTopStats(username, 'stations')
-            sets = sydneyTramTopStats(username, 'sets')
-            trains = sydneyTramTopStats(username, 'types')
-            dates = sydneyTramTopStats(username, 'dates')
-             #other stats stuff:
-            eDate =lowestDate(username, 'sydney-trams')
-            LeDate =highestDate(username, 'sydney-trams')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:',
-    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'Total logs: {logAmounts(username, "sydney-trams")}'
-)
+    # sydney trains Logger
+            try:
+                lines = sydneyTrainTopStats(username, 'lines')
+                stations = sydneyTrainTopStats(username, 'stations')
+                sets = sydneyTrainTopStats(username, 'sets')
+                trains = sydneyTrainTopStats(username, 'types')
+                dates = sydneyTrainTopStats(username, 'dates')
+                #other stats stuff:
+                eDate =lowestDate(username, 'sydney-trains')
+                LeDate =highestDate(username, 'sydney-trains')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats:',
+        value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Train Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "sydney-trains")}'
+    )
 
-                                  
-        except FileNotFoundError:
-            embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
- 
- 
-# adelaide Logger
-        try:
-            lines = adelaideTopStats(username, 'lines')
-            stations = adelaideTopStats(username, 'stations')
-            sets = adelaideTopStats(username, 'sets')
-            trains = adelaideTopStats(username, 'types')
-            dates = adelaideTopStats(username, 'dates')
-             #other stats stuff:
-            eDate =lowestDate(username, 'adelaide-trains')
-            LeDate =highestDate(username, 'adelaide-trains')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:',
-    value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'Total logs: {logAmounts(username, "adelaide-trains")}'
-)
+                                    
+            except FileNotFoundError:
+                embed.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
 
-                                  
-        except FileNotFoundError:
-            embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
-           
-# bus Logger
-        try:
-            lines = busTopStats(username, 'lines')
-            stations = busTopStats(username, 'stations')
-            sets = busTopStats(username, 'sets')
-            trains = busTopStats(username, 'types')
-            dates = busTopStats(username, 'dates')
-             #other stats stuff:
-            eDate =lowestDate(username, 'bus')
-            LeDate =highestDate(username, 'bus')
-            joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
-            last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
-            embed.add_field(
-    name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
-    value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-          f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
-          f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
-          f'**Top Bus Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
-          f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-          f'User started logging {joined}\n'
-          f'Last log {last}\n'
-          f'Total logs: {logAmounts(username, "bus")}'
-)
+    # sydney tram Logger
+            try:
+                lines = sydneyTramTopStats(username, 'lines')
+                stations = sydneyTramTopStats(username, 'stations')
+                sets = sydneyTramTopStats(username, 'sets')
+                trains = sydneyTramTopStats(username, 'types')
+                dates = sydneyTramTopStats(username, 'dates')
+                #other stats stuff:
+                eDate =lowestDate(username, 'sydney-trams')
+                LeDate =highestDate(username, 'sydney-trams')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:',
+        value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "sydney-trams")}'
+    )
 
-                                  
-        except FileNotFoundError:
-            embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
+                                    
+            except FileNotFoundError:
+                embed.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
+    
+    
+    # adelaide Logger
+            try:
+                lines = adelaideTopStats(username, 'lines')
+                stations = adelaideTopStats(username, 'stations')
+                sets = adelaideTopStats(username, 'sets')
+                trains = adelaideTopStats(username, 'types')
+                dates = adelaideTopStats(username, 'dates')
+                #other stats stuff:
+                eDate =lowestDate(username, 'adelaide-trains')
+                LeDate =highestDate(username, 'adelaide-trains')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:',
+        value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "adelaide-trains")}'
+    )
 
+                                    
+            except FileNotFoundError:
+                embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
+            
+    # bus Logger
+            try:
+                lines = busTopStats(username, 'lines')
+                stations = busTopStats(username, 'stations')
+                sets = busTopStats(username, 'sets')
+                trains = busTopStats(username, 'types')
+                dates = busTopStats(username, 'dates')
+                #other stats stuff:
+                eDate =lowestDate(username, 'bus')
+                LeDate =highestDate(username, 'bus')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
+        value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Bus Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "bus")}'
+    )
+
+                                    
+            except FileNotFoundError:
+                embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
+
+            
+            #games
+            stats = fetchUserStats(username)
+            
+            if stats[0] != 'no stats':
+                item, wins, losses = stats[0]
+                embed.add_field(name=':question: Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
+            else:
+                embed.add_field(name=':question: Station Guesser', value='No data',inline=False)
+            if stats[1] != 'no stats':
+                item, wins, losses = stats[1]
+                embed.add_field(name=':interrobang: Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
+            else:
+                embed.add_field(name=':interrobang: Ultrahard Station Guesser', value='No data',inline=False)
+            if stats[2] != 'no stats':
+                item, wins, losses = stats[2]
+                embed.add_field(name=':left_right_arrow: Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+            else:
+                embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
+            
+            
+            await ctx.response.send_message(embed=embed)
+            
+        await profiles()
         
-        #games
-        stats = fetchUserStats(username)
-        
-        if stats[0] != 'no stats':
-            item, wins, losses = stats[0]
-            embed.add_field(name=':question: Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
-        else:
-            embed.add_field(name=':question: Station Guesser', value='No data',inline=False)
-        if stats[1] != 'no stats':
-            item, wins, losses = stats[1]
-            embed.add_field(name=':interrobang: Ultrahard Station Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%')
-        else:
-            embed.add_field(name=':interrobang: Ultrahard Station Guesser', value='No data',inline=False)
-        if stats[2] != 'no stats':
-            item, wins, losses = stats[2]
-            embed.add_field(name=':left_right_arrow: Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
-        else:
-            embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
-        
-        
-        await ctx.response.send_message(embed=embed)
-        
-    await profiles()
+    except Exception as e:
+        await ctx.response.send_message(f"Error: `{e}`")
 
 '''
 @bot.tree.command(name="line-status", description="View your line status for all lines.")
