@@ -2291,8 +2291,7 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
@@ -2353,8 +2352,7 @@ async def busOpsautocompletion(
 @trainlogs.command(name="bus", description="Log a Bus you have been on")
 @app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
 @app_commands.autocomplete(operator=busOpsautocompletion)
-@app_commands.allowed_installs(guilds=True, users=True)
-@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+
 # @app_commands.autocomplete(end=NSWstation_autocompletion)
 
 async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
