@@ -3621,7 +3621,18 @@ async def checklines(ctx):
                     writer.writerow(statuses)
                     
     asyncio.create_task(doit())'''
-    
+
+#about/credits
+@bot.tree.command(name="about", description="View information about the bot.")
+async def about(ctx):
+    await ctx.response.defer()
+    embed = discord.Embed(title="About", description="TrackPulse VIC is a Discord bot that allows users to log their train, tram, and bus trips in Victoria, New South Wales, South Australia, and the ACT. It also provides real-time line status updates for Metro Trains Melbourne, as well as a range of other features.", color=discord.Color.blue())
+    embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n", inline=True)
+    embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Comeng17](https://github.com/Comeng17)',inline=True)
+    embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
+    await ctx.edit_original_response(embed=embed)
+
+
 # year in review
 @bot.tree.command(name="year-in-review", description="View your year in review for a specific year.")
 @app_commands.allowed_installs(guilds=True, users=True)
