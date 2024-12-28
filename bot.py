@@ -928,7 +928,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
         
         if type in metroTrains and show_run_info:
             # map thing
-            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
+            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0, timestamp=discord.utils.utcnow())
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
@@ -1060,7 +1060,7 @@ async def runidsearch(ctx, runid:int):
                 print(f'ErROR: {e}')
                 return
                 
-            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1])
+            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -3456,7 +3456,7 @@ async def run_in_thread(ctx, operator):
 
     # Process metro lines
     if operator == 'metro':
-        embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Trains Melbourne', color=0x008dd0)
+        embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Line Status', color=0x008dd0, timestamp=discord.utils.utcnow())
         lines = ['Alamein', 'Belgrave', 'Craigieburn', 'Cranbourne', 'Mernda', 'Frankston', 'Glen%20Waverley', 'Hurstbridge', 'Lilydale', 'Pakenham', 'Sandringham', 'Stony%20Point', 'Sunbury', 'Upfield', 'Werribee', 'Williamstown']
         
         # Process each line in a separate background thread to avoid blocking
@@ -3491,7 +3491,7 @@ async def run_in_thread(ctx, operator):
 
     # Process V/Line lines
     elif operator == 'vline':
-        embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line', color=0x7f3e98)
+        embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line Line Status', color=0x7f3e98, timestamp=discord.utils.utcnow())
         lines = ['Geelong - Melbourne', 'Warrnambool - Melbourne via Apollo Bay & Geelong', 'Ballarat-Wendouree - Melbourne via Melton', 'Ararat - Melbourne via Ballarat', 'Maryborough - Melbourne via  Ballarat', 'Bendigo - Melbourne via Gisborne', 'Echuca-Moama - Melbourne via Bendigo or Heathcote', 'Swan Hill - Melbourne via Bendigo', 'Seymour - Melbourne via Broadmeadows', 'Shepparton - Melbourne via Seymour', 'Albury - Melbourne via Seymour', 'Traralgon - Melbourne via Morwell & Moe & Pakenham', 'Bairnsdale - Melbourne via Sale & Traralgon']
         
         for line in lines:
