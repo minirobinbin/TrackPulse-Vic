@@ -928,7 +928,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
         
         if type in metroTrains and show_run_info:
             # map thing
-            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0, timestamp=discord.utils.utcnow())
+            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
@@ -969,7 +969,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     
                     file = discord.File(file_path, filename=f"{train}-map.png")
                     
-                    embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1])
+                    embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
                     embed.remove_field(0)
 
                     # add the stops to the embed.
