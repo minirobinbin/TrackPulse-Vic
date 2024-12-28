@@ -70,7 +70,7 @@ from utils.myki.savelogin import *
 from utils.special.yearinreview import *
 from utils.stoppingpattern import *
 from utils.locationfromid import *
-
+from utils.stationDisruptions import *
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -1358,9 +1358,9 @@ async def departures(ctx, station: str, line:str='all'):
         
         # make embed with data
         if line == "all":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station")
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow())
         else:
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line")
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow())
 
         fields = 0
         
@@ -1447,12 +1447,16 @@ async def departures(ctx, station: str, line:str='all'):
                     fields = fields + 1
                     if fields == 3:
                         break'''
-                        
-        # Disrptions
-        # disruptionsData = allDisruption()
-        
+                                        
         if fields == 0:
             embed.add_field(name="No upcoming departures", value="⠀")
+            
+        # disruptions:
+        disruptions = getStationDisruptions(stop_id)
+        for disruption in disruptions:
+            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']})", 
+                                value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
+        
         # embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.edit_original_response(embed=embed)          
