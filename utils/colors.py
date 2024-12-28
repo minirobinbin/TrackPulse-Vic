@@ -106,6 +106,8 @@ def getMapEmoji(line, type):
             return('<:bbr:1320142969860263976>')
         if type == "cont2":
             return('<:bbr2:1320142972171587746>')
+        if type == 'skipped':
+            return('<:be:1322709966758350848>')
         else:
             return '⚠'
         
@@ -122,6 +124,8 @@ def getMapEmoji(line, type):
             return('<:dbr:1320145219978530919>')
         if type == "cont2":
             return('<:dbr2:1320145221698195556>')
+        if type == 'skipped':
+            return('<:de:1322710023268339774>')
         else:
             return '⚠'
         
@@ -138,6 +142,8 @@ def getMapEmoji(line, type):
             return('<:stbr:1320631771406274671>')
         if type == "cont2":
             return('<:stbr2:1320631773209690194>')
+        if type == 'skipped':
+            return('<:ste:1322710199437365298>')
         else:
             return '⚠'
         
@@ -154,6 +160,8 @@ def getMapEmoji(line, type):
             return('<:fbr:1320145223493353566>')
         if type == "cont2":
             return('<:fbr2:1320145225527722015>')
+        if type == 'skipped':
+            return('<:fe:1322710042230653009>')
         else:
             return '⚠'
         
@@ -170,6 +178,8 @@ def getMapEmoji(line, type):
             return('<:csbr:1320145216149258364>')
         if type == "cont2":
             return('<:csbr2:1320145218200404018>')
+        if type == 'skipped':
+            return('<:cse:1322709995078287482>')
         else:
             return '⚠'
     
@@ -186,6 +196,8 @@ def getMapEmoji(line, type):
             return('<:nbr:1320145231290695680>')
         if type == "cont2":
             return('<:nbr2:1320145280569442426>')
+        if type == 'skipped':
+            return('<:ne:1322710100061847636>')
         else:
             return '⚠'
         
@@ -202,6 +214,8 @@ def getMapEmoji(line, type):
             return('<:cbr:1320145212823175189>')
         if type == "cont2":
             return('<:cbr2:1320145214467215411>')
+        if type == 'skipped':
+            return('<:ce:1322709978859180053>')
         else:
             return '⚠'
         
@@ -218,6 +232,8 @@ def getMapEmoji(line, type):
             return('<:frbr:1320145227326951434>')
         if type == "cont2":
             return('<:frbr2:1320145229243875411>')
+        if type == 'skipped':
+            return('<:fre:1322710073570627654>')
         else:
             return '⚠'
         

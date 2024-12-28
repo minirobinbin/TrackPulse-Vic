@@ -972,31 +972,35 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
                     embed.remove_field(0)
 
-                    # add the stops to the embed.
+                    # Add the stops to the embed.
                     stopsString = ''
-                    fieldCounter = 1
+                    fieldCounter = 0
                     currentFieldLength = 0
 
                     first_stop = True
-                    fieldCounter = 0
-                    stopsString = ""
-                    currentFieldLength = 0
 
-                    for stop_name, stop_time in stoppingPattern:
-                        if first_stop:
-                            stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
-                            first_stop = False
+                    for stop_name, stop_time, status in stoppingPattern:
+                        if status == 'Skipped':
+                            # For skipped stops
+                            stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
                         else:
-                            # Check if it's the last stop in the list
-                            if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
-                                emoji_type = "terminus2"
+                            if first_stop:
+                                stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                                first_stop = False
                             else:
-                                # Check stop_name in interchange_stations
-                                if stop_name in interchange_stations:
-                                    emoji_type = "interchange"
+                                # Check if it's the last stop in the list
+                                if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
+                                    emoji_type = "terminus2"
                                 else:
-                                    emoji_type = "stop"
-                            stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                                    # Check stop_name in interchange_stations
+                                    if stop_name in interchange_stations:
+                                        emoji_type = "interchange"
+                                    else:
+                                        emoji_type = "stop"
+                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                        
+                        # Add newline for formatting
+                        stopEntry += '\n'
 
                         if currentFieldLength + len(stopEntry) > 1000:
                             # Add the current field and start a new one
@@ -1016,7 +1020,6 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     if stopsString:
                         if fieldCounter > 0:  # Not the first field
                             stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                        # stopsString = stopsString.rstrip('\n') + f'{getMapEmoji(line, "cont1")}\n'
                         embed.add_field(name=f"⠀", value=stopsString, inline=False)
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
@@ -1072,21 +1075,28 @@ async def runidsearch(ctx, runid:int):
             stopsString = ""
             currentFieldLength = 0
 
-            for stop_name, stop_time in stoppingPattern:
-                if first_stop:
-                    stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
-                    first_stop = False
+            for stop_name, stop_time, status in stoppingPattern:
+                if status == 'Skipped':
+                    # For skipped stops
+                    stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
                 else:
-                    # Check if it's the last stop in the list
-                    if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
-                        emoji_type = "terminus2"
+                    if first_stop:
+                        stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                        first_stop = False
                     else:
-                        # Check stop_name in interchange_stations
-                        if stop_name in interchange_stations:
-                            emoji_type = "interchange"
+                        # Check if it's the last stop in the list
+                        if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
+                            emoji_type = "terminus2"
                         else:
-                            emoji_type = "stop"
-                    stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}\n'
+                            # Check stop_name in interchange_stations
+                            if stop_name in interchange_stations:
+                                emoji_type = "interchange"
+                            else:
+                                emoji_type = "stop"
+                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                
+                # Add newline for formatting
+                stopEntry += '\n'
 
                 if currentFieldLength + len(stopEntry) > 1000:
                     # Add the current field and start a new one
@@ -1106,7 +1116,6 @@ async def runidsearch(ctx, runid:int):
             if stopsString:
                 if fieldCounter > 0:  # Not the first field
                     stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                # stopsString = stopsString.rstrip('\n') + f'{getMapEmoji(line, "cont1")}\n'
                 embed.add_field(name=f"⠀", value=stopsString, inline=False)
                     
             # Send a new message with the file and embed
@@ -1346,15 +1355,17 @@ async def departures(ctx, station: str, line:str='all'):
             
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        # vlineDepsData = departures_api_request(stop_id, 3)
+        vlineDepsData = departures_api_request(stop_id, 3)
         try:
             departures = depsData['departures']
             runs = depsData['runs']
+            # V/Line
+            Vdepartures = vlineDepsData['departures']
+            Vruns = vlineDepsData['runs']
         except:
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
             return
-        # vdepartures = vlineDepsData['departures']
-        # vruns = vlineDepsData['runs']            
+         
         
         # make embed with data
         if line == "all":
@@ -1411,53 +1422,46 @@ async def departures(ctx, station: str, line:str='all'):
                 if fields == 9:
                     break
         # the V/Line part
-        '''
-        fields = 0
-        departureTimes = ['']
-        for departure in vdepartures:
-            scheduled_departure_utc = departure['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
-                # print(f"time in past")
-                pass
-            else:
-                estimated_departure_utc = departure['estimated_departure_utc']
-                if estimated_departure_utc in departureTimes:
-                    print(f'the deparute with that time was already added: {scheduled_departure_utc} -- {desto}')
-                else:
-                    departureTimes.append(estimated_departure_utc)
-                    run_ref = departure['run_ref']
-                    at_platform = departure['at_platform']
-                    platform_number = departure['platform_number']
-                    route_id= departure['route_id'] 
-                    
-                    # get info for the run:
-                    desto = vruns[run_ref]['destination_name']
-                    try:
-                        trainType = runs[run_ref]['vehicle_descriptor']['description']
-                    except:
-                        trainType = ''
+        '''fields = 0
+        
+        Vdepartures = [Vdeparture for Vdeparture in Vdepartures if get_route_name(Vdeparture['route_id']) == line or line == "all"]
 
-                    #convert to timestamp
-                    depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                    #get route name:
-                    route_name = get_route_name(route_id)
-                    #add to embed
-                    
-                    embed.add_field(name=f"<:vline:1241165814258729092> {desto.replace(' Railway Station', '')}", value=f"Departing {depTime}\n Platform {platform_number}\nLine: {route_name}\n{trainType}\n**RUNID: {run_ref}**")
-                    fields = fields + 1
-                    if fields == 3:
-                        break'''
+        
+        for Vdeparture in Vdepartures:
+            route_id= Vdeparture['route_id'] 
+            scheduled_departure_utc = Vdeparture['scheduled_departure_utc']
+            if isPast(scheduled_departure_utc):
+                print(f"time in past")
+                # pass
+            else:
+                estimated_departure_utc = Vdeparture['estimated_departure_utc']
+                run_ref = Vdeparture['run_ref']
+                at_platform = Vdeparture['at_platform']
+                platform_number = Vdeparture['platform_number']
+                note = Vdeparture['departure_note']
+                
+                #convert to timestamp
+                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
+                #get route name:
+                route_name = get_route_name(route_id)                
+                
+                #VLINE PLATFORMS DONT WORK PLS HELP
+                
+                embed.add_field(name=f"{getlineEmoji(route_name)}\ndesto here {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\nRun ID: `{run_ref}`")
+                fields = fields + 1
+                if fields == 9:
+                    break
                                         
         if fields == 0:
-            embed.add_field(name="No upcoming departures", value="⠀")
+            embed.add_field(name="No upcoming departures", value="⠀")'''
             
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
         for disruption in disruptions:
-            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']})", 
+            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         
-        # embed.set_footer(text="V/Line departures are unavailable")
+        embed.set_footer(text="V/Line departures are unavailable")
         embed.set_thumbnail(url=getStationImage(station))
         await ctx.edit_original_response(embed=embed)          
 
@@ -1891,6 +1895,7 @@ async def line_autocompletion(
         app_commands.Choice(name="HCMT", value="HCMT"),
         app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
         app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+        app_commands.Choice(name="X'Trapolis 2.0", value="X'Trapolis 2.0"),
         app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
         app_commands.Choice(name="VLocity", value="VLocity"),
         app_commands.Choice(name="N Class", value="N Class"),
@@ -3490,6 +3495,7 @@ async def run_in_thread(ctx, operator):
             statuses.append(description)
 
     # Process V/Line lines
+    # Made by Comeng17
     elif operator == 'vline':
         embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line Line Status', color=0x7f3e98, timestamp=discord.utils.utcnow())
         lines = ['Geelong - Melbourne', 'Warrnambool - Melbourne via Apollo Bay & Geelong', 'Ballarat-Wendouree - Melbourne via Melton', 'Ararat - Melbourne via Ballarat', 'Maryborough - Melbourne via  Ballarat', 'Bendigo - Melbourne via Gisborne', 'Echuca-Moama - Melbourne via Bendigo or Heathcote', 'Swan Hill - Melbourne via Bendigo', 'Seymour - Melbourne via Broadmeadows', 'Shepparton - Melbourne via Seymour', 'Albury - Melbourne via Seymour', 'Traralgon - Melbourne via Morwell & Moe & Pakenham', 'Bairnsdale - Melbourne via Sale & Traralgon']
@@ -3547,6 +3553,7 @@ async def about(ctx):
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Comeng17](https://github.com/Comeng17)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
+    embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     await ctx.edit_original_response(embed=embed)
 
 

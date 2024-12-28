@@ -3,13 +3,7 @@
 # from utils.pageScraper import *
 # from utils.trainlogger.stats import *
 # from utils.locationFromNumber import *
-from utils.stationDisruptions import *
+from utils.stoppingpattern import *
 
 # # from ptv.client import PTVClient
-# print(getStoppingPattern(951272, 0)
-# )
-# departures_api_request(1119,0)
-
-# print(getTrainLocationFromID('951254'))
-
-print(getStationDisruptions(1071))
+print(getStoppingPattern(951613, 0))

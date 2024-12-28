@@ -14,6 +14,8 @@ def convert_to_unix_time(date: datetime.datetime) -> str:
     return f'<t:{int(time.mktime(datetime.datetime(*date_tuple).timetuple()))}:R>'
 
 def convert_iso_to_unix_time(iso_time: str, format=None) -> str:
+    if iso_time == "Skipped":
+        return "Skipped"
     # Parse the ISO 8601 formatted time string
     date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
 

@@ -221,7 +221,7 @@ def specificRunAPIRequest(run_ref, route_type):
 
 def stoppingPatternAPIRequest(run_ref, route_type):
     # API endpoint URL
-    url = getUrl(f'/v3/pattern/run/{run_ref}/route_type/{route_type}?expand=all')
+    url = getUrl(f'/v3/pattern/run/{run_ref}/route_type/{route_type}?expand=all&include_skipped_stops=true')
     print(f"search url: {url}")
     
     # Make the GET request

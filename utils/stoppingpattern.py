@@ -32,7 +32,7 @@ def getStoppingPattern(runRef, routeType):
     departures = data.get('departures', [])
     stops = data.get('stops', {})
 
-    # Create a list of tuples with departure_sequence, stop_id, stop_name, and scheduled departure
+    # Create a list of tuples with departure_sequence, stop_id, stop_name, scheduled departure, and skipped status
     departures_info = []
     for departure in departures:
         stop_id = departure['stop_id']
@@ -41,13 +41,20 @@ def getStoppingPattern(runRef, routeType):
         scheduled_departure = departure.get('scheduled_departure_utc', 'Unknown')
         estimated_departure = departure.get('estimated_departure_utc', 'Unknown')
 
-        departures_info.append((departure['departure_sequence'], stop_name, estimated_departure if estimated_departure else scheduled_departure))
+        # Check for skipped stops
+        skipped_stops = departure.get('skipped_stops', [])
+        for skipped in skipped_stops:
+            skipped_name = skipped.get('stop_name', 'Unknown')
+            departures_info.append((departure['departure_sequence'], skipped_name, 'Skipped', 'Skipped'))
+
+        departures_info.append((departure['departure_sequence'], stop_name, 
+                                estimated_departure if estimated_departure else scheduled_departure, 'Scheduled'))
 
     # Sort by departure_sequence
     sorted_departures = sorted(departures_info, key=lambda x: x[0])
 
-    # Return list of tuples with stop name and scheduled departure time
-    return [(name, time) for _, name, time in sorted_departures]
+    # Return list of tuples with stop name, time, and status (Scheduled or Skipped)
+    return [(name, time, status) for _, name, time, status in sorted_departures]
 
 def getStoppingPatternFromCar(relistsData):
     runRef = None
