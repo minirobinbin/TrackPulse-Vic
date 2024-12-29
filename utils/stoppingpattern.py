@@ -91,13 +91,13 @@ def getStoppingPatternFromCar(relistsData):
 
     return closest
                 
-def getStoppingPatternFromRunRef(relistsData):
+def getStoppingPatternFromRunRef(relistsData, routeType):
     runRef = None
     dataList = []
 
     for item in relistsData:
         runRef = item['run_ref']
-        data = getStoppingPattern(runRef, 0)
+        data = getStoppingPattern(runRef, routeType)
         # print(f'F DATA: {data}')
         dataList.append(data)
         

@@ -1006,7 +1006,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                                 stopsString += f'{getMapEmoji(line, "cont1")}\n'
                             else:
                                 stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                            embed.add_field(name=f"⠀", value=stopsString, inline=True)
+                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
                             stopsString = stopEntry
                             fieldCounter += 1
                             currentFieldLength = len(stopEntry)
@@ -1018,7 +1018,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     if stopsString:
                         if fieldCounter > 0:  # Not the first field
                             stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                        embed.add_field(name=f"⠀", value=stopsString, inline=True)
+                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
@@ -1040,28 +1040,38 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
             
 # search run id   
 @search.command(name="runid", description="Shows the run for a specific run id, found in the departures command")
-@app_commands.describe(runid="Run ID")
-async def runidsearch(ctx, runid:int):
+@app_commands.describe(runid="Run ID", operator="Metro or V/Line run id (Metro is default)")
+@app_commands.choices(operator=[
+        app_commands.Choice(name="Metro", value="metro"),
+        app_commands.Choice(name="V/Line", value="vline"),
+])
+async def runidsearch(ctx, runid:int, operator:str="metro"):
     await ctx.response.defer()
     async def addmap():
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
-            stoppingPattern = getStoppingPatternFromRunRef(runData)
+            if operator == "metro":
+                stoppingPattern = getStoppingPatternFromRunRef(runData, 0)
+            elif operator == "vline":
+                stoppingPattern = getStoppingPatternFromRunRef(runData, 3)
             print(f"STOPPING PATTERN: {stoppingPattern}")
             try:
-                if runData is not None:
-                    for item in runData:
-                        # latitude = item['vehicle_position']['latitude']
-                        # longitude = item['vehicle_position']['longitude']
-                        line = get_route_name(item['route_id'])
+                if operator == "metro":
+                    if runData is not None:
+                        for item in runData:
+                            # latitude = item['vehicle_position']['latitude']
+                            # longitude = item['vehicle_position']['longitude']
+                            line = get_route_name(item['route_id'])
+                elif operator == "vline":
+                    line = 'V/Line'
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
                 print(f'ErROR: {e}')
                 return
                 
-            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1] if line != 'V/Line' else 0x7f3f98, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''

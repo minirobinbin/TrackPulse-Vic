@@ -4,6 +4,6 @@
 # from utils.trainlogger.stats import *
 # from utils.locationFromNumber import *
 from utils.stoppingpattern import *
-
 # # from ptv.client import PTVClient
-print(getStoppingPattern(951613, 0))
+
+print(getStoppingPattern(11525, 3))

@@ -236,4 +236,7 @@ def getMapEmoji(line, type):
             return('<:fre:1322710073570627654>')
         else:
             return '⚠'
+    
+    else:
+        return '⚠'
         
