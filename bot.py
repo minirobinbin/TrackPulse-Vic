@@ -293,7 +293,7 @@ async def help(ctx):
 </departures:1288002114466877529> - View a station's next 9 Metro departures
 </metro-line:1288004355475111938> - View disruptions for a Metro Trains line
 </search route:1240101357847838814> - View disruptions for a tram or bus route"""
-        await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}")
+        await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}\n## Support server: https://discord.gg/nfAqAnceQ5")
     asyncio.create_task(helper())
 
     
@@ -3174,25 +3174,36 @@ async def sets(ctx, state:str):
 
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
+    await ctx.response.defer(ephemeral=True)
     async def submitPhoto():
         target_guild_id = 1214139268725870602
         target_channel_id = 1238821549352685568
         
+        showcase_channel = 1322889624250486848
+        
         target_guild = bot.get_guild(target_guild_id)
         if target_guild:
             channel = target_guild.get_channel(target_channel_id)
+            public_channel = target_guild.get_channel(showcase_channel)
             if channel:
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await ctx.response.send_message('Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.', ephemeral=True)
                     await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
+                    
+                    # publically send embed
+                    embed = discord.Embed(title='Photo Submission', 
+                      description=f'Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}')
+                    file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
+                    embed.set_image(url=f"attachment://{photo.filename}")
+                    await public_channel.send(embed=embed, file=file)
+                    await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
                 else:
-                    await ctx.response.send_message("Please upload a valid image file.", ephemeral=True)
+                    await ctx.edit_original_response(content="Please upload a valid image file.")
             else:
-                await ctx.response.send_message("Error: Target channel not found.", ephemeral=True)
+                await ctx.edit_original_response(content="Error: Target channel not found.")
         else:
-            await ctx.response.send_message("Error: Target guild not found.", ephemeral=True)
+            await ctx.edit_original_response(content="Error: Target guild not found.")
 
     await submitPhoto()
     
