@@ -64,7 +64,6 @@ from utils.routeName import *
 from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
 from utils.photo import *
-from utils.plane.main import *
 from utils.mykipython import *
 from utils.myki.savelogin import *
 from utils.special.yearinreview import *
