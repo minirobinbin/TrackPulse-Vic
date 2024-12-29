@@ -236,6 +236,24 @@ def getMapEmoji(line, type):
             return('<:fre:1322710073570627654>')
         else:
             return '⚠'
+        
+    if line == "V/Line":
+        if type == "terminus":
+            return('<:vt:1322740727729487944>')
+        if type == "terminus2":
+            return('<:vt2:1322740741126099006>')
+        if type == "stop":
+            return('<:vst:1322740715125735454>')
+        if type == "interchange":
+            return('<:vi:1322740701514960996>')
+        if type == "cont1":
+            return('<:vbr:1322740666429603860>')
+        if type == "cont2":
+            return('<:vbr2:1322740683773055046>')
+        if type == 'skipped':
+            return('<:ve:1322740553758150666>')
+        else:
+            return '⚠'
     
     else:
         return '⚠'
