@@ -3620,7 +3620,7 @@ async def ids(ctx: commands.Context) -> None:
 @bot.command()
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
-    if ctx.author.id in [707866373602148363,780303451980038165,1002449671224041502]:
+    if ctx.author.id in [780303451980038165,1002449671224041502]:
         if not guilds:
             if spec == "~":
                 synced = await ctx.bot.tree.sync(guild=ctx.guild)
@@ -3649,7 +3649,19 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
                 ret += 1
 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
-        
+
+# sends a message to a specific channel
+@bot.command()
+async def send(ctx, user: discord.Member, *, message: str):
+    if ctx.author.id in [780303451980038165, 1002449671224041502]:
+        try:
+            await user.send(message)
+            await ctx.send(f"Sent message to {user.mention}.")
+        except discord.errors.Forbidden:
+            await ctx.send("Couldn't send a message to that user.")
+    else:
+        await ctx.send("You are not authorized to use this command.")
+
 @bot.command()
 async def ping(ctx):
     latency = round(bot.latency * 1000)  # Convert latency to ms
