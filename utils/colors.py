@@ -291,6 +291,28 @@ def getMapEmoji(line, type):
         else:
             return '⚠'
     
+    if line == "bus" or line =="tram":
+        if type == "terminus":
+            return('<:frt:1322903781842616411>')
+        if type == "terminus2":
+            return('<:frt2:1322903791523332148>')
+        if type == "stop":
+            return('<:frs:1322903770073530449>')
+        if type == "interchange":
+            return('<:fri:1322903741422108786>')
+        if type == "cont1":
+            return('<:frbr:1322903633892868127>')
+        if type == "cont2":
+            return('<:frbr2:1322903649290289245>')
+        if type == 'skipped':
+            return('<:fre:1322903729959211143>')
+        if type == 'interchange_first':
+            return('<:frit:1322897739062706236>')
+        if type == 'interchange_last':
+            return('<:frit2:1322897752191008839>')
+        else:
+            return '⚠'
+    
     else:
         return '⚠'
         
