@@ -2,38 +2,32 @@ import os
 import csv
 import pandas as pd
 import seaborn as sns
-import json
-from utils.search import *
 from matplotlib import pyplot as plt
+import json
+from utils.search import runs_api_request
 
 def add_to_csv(data):
     with open('output.csv', 'w', newline='') as csvfile:
         fieldnames = ['run_id', 'latitude', 'longitude']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
-        
-        for entry in data:
-            if 'vehicle_position' in entry and entry['vehicle_position'] is not None:
-                latitude = entry['vehicle_position']['latitude']
-                longitude = entry['vehicle_position']['longitude']
-                writer.writerow({'run_id': entry['run_id'], 'latitude': latitude, 'longitude': longitude})
-                print(f"Added run_id: {entry['run_id']} with latitude: {latitude}, longitude: {longitude} to CSV")
+        writer.writerows([
+            {'run_id': entry['run_id'], 
+             'latitude': entry['vehicle_position']['latitude'], 
+             'longitude': entry['vehicle_position']['longitude']} 
+            for entry in data if 'vehicle_position' in entry and entry['vehicle_position'] is not None
+        ])
 
-
-
-def genMap():
-    # File access
+def generate_map():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_dir, "train_locations.csv")
     image_path = os.path.join(current_dir, "Potatoe.png")
-    
+
     try:
-        # Open CSV file in write mode with newline='' for Windows compatibility
         with open(data_path, 'w', newline='') as csv_file:
-            header = ['Latitude', 'Longitude']
             csv_writer = csv.writer(csv_file)
-            csv_writer.writerow(header)
-            
+            csv_writer.writerow(['Latitude', 'Longitude'])
+
             RouteID = [
                 {"route_id": 1, "route_name": "Alamein"},
                 {"route_id": 2, "route_name": "Belgrave"},
@@ -53,48 +47,33 @@ def genMap():
                 {"route_id": 17, "route_name": "Williamstown"},
                 {"route_id": 1482, "route_name": "Showgrounds - Flemington Racecourse"}
             ]
-    
-            
-            # Get data for all routes
+
+            all_locations = []
             for route in RouteID:
-                # Read train type from data
-                api_response = runs_api_request(route['route_id'])  # Assuming this function works correctly
-                json_response = json.dumps(api_response)
-                data = json.loads(json_response)
-                
-                # Loop through 'runs' in the JSON data
-                for run in data['runs']:
+                api_response = runs_api_request(route['route_id'])  # Assuming this function returns a dictionary
+                for run in api_response.get('runs', []):
                     if run.get('vehicle_position'):
                         lat = run['vehicle_position'].get('latitude', '')
                         lon = run['vehicle_position'].get('longitude', '')
-                        csv_writer.writerow([lat, lon])
+                        all_locations.append([lat, lon])
                         print(f'Appended: lat {lat}, long {lon} to the csv')
+
+            # Write all data at once for better performance
+            csv_writer.writerows(all_locations)
+
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred while processing routes: {e}")
 
-    # read the csv 
-    df = pd.read_csv(data_path, skiprows=1, names=['Latitude', 'Longitude'])
-    print(df.head())
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(data_path, names=['Latitude', 'Longitude'])
 
-    # thing to filter the data
-    # state = 'VIC'
-    # status = 'Operational'
-    # filtered_df = df[df['state'] == state]
-    # filtered_df = filtered_df[filtered_df['operationalstatus'] == status]
-
-
-    # plot graph
-    # bg_image = plt.imread(image_path)
-    # plt.imshow(bg_image, aspect='auto')
-    sns.scatterplot(data=df, x="Longitude", y="Latitude")
-   
-
-    # settings
-    # plt.xlim(-37.89974170269387, -38.08037565853107)  
-    # plt.ylim(145.12596528142748, 144.72817232260618) 
-    plt.legend([], frameon=False)
-    plt.axis('off')
+    # Plot the data directly using pandas plot for simplicity
+    fig, ax = plt.subplots(figsize=(10, 10))
+    df.plot.scatter(x="Longitude", y="Latitude", ax=ax)
+    ax.axis('off')
     
-    # Save the specific area of the plot as an image
+    # Save the plot as an image
     plt.savefig(os.path.join(current_dir, "gen.png"), bbox_inches='tight', pad_inches=0.0)
-    os.remove('utils/map/train_locations.csv')
+
+    # Clean up the CSV file
+    os.remove(data_path)

@@ -1006,7 +1006,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                                 stopsString += f'{getMapEmoji(line, "cont1")}\n'
                             else:
                                 stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                            embed.add_field(name=f"⠀", value=stopsString, inline=True)
                             stopsString = stopEntry
                             fieldCounter += 1
                             currentFieldLength = len(stopEntry)
@@ -1018,7 +1018,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     if stopsString:
                         if fieldCounter > 0:  # Not the first field
                             stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                        embed.add_field(name=f"⠀", value=stopsString, inline=True)
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
@@ -1102,7 +1102,7 @@ async def runidsearch(ctx, runid:int):
                         stopsString += f'{getMapEmoji(line, "cont1")}\n'
                     else:
                         stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                    embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                    embed.add_field(name=f"⠀", value=stopsString, inline=True)
                     stopsString = stopEntry
                     fieldCounter += 1
                     currentFieldLength = len(stopEntry)
@@ -1114,7 +1114,7 @@ async def runidsearch(ctx, runid:int):
             if stopsString:
                 if fieldCounter > 0:  # Not the first field
                     stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                embed.add_field(name=f"⠀", value=stopsString, inline=True)
                     
             # Send a new message with the file and embed
             await ctx.edit_original_response(embed=embed)
