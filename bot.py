@@ -1054,6 +1054,15 @@ async def runidsearch(ctx, runid:int, operator:str="metro"):
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 0)
             elif operator == "vline":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 3)
+                def strip_station_name(name):
+                    return name.replace('Railway Station', '').strip()
+
+                # Filter out entries where the station name has a slash and status is 'Skipped', then strip 'Railway Station'
+                stoppingPattern = [
+                    (strip_station_name(station[0]), station[1], station[2]) 
+                    for station in stoppingPattern 
+                    if not ('/' in station[0] and station[1] == 'Skipped')
+]
             print(f"STOPPING PATTERN: {stoppingPattern}")
             try:
                 if operator == "metro":
