@@ -1184,11 +1184,11 @@ async def tramsearch(ctx, tram: str):
         
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
-        embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+        # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await channel.send(embed=embed)
         
         # map thing
-        mapEmbed = discord.Embed(title=f"{tram}'s location")
+        '''mapEmbed = discord.Embed(title=f"{tram}'s location")
         mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
         mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
@@ -1230,12 +1230,8 @@ async def tramsearch(ctx, tram: str):
                     await mapEmbedUpdate.delete()
                     await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
                     print(f"Error: Map file '{file_path}' not found.")
-        
-        # if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
-        asyncio.create_task(addmap())
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(TRAMtransportVicSearch_async(ctx, tram.upper(), embed, embed_update))
-        await task
+        '''
+
             
         # else:
         #     embed.remove_field(3)
@@ -1245,46 +1241,10 @@ async def tramsearch(ctx, tram: str):
         
         
             
-async def transportVicSearch_async(ctx, train, embed, embed_update):
-    '''runs = await asyncio.to_thread(transportVicSearch, train)  # Find runs in a separate thread
-    if isinstance(runs, list):
-        print("thing is a list")
-        embed.remove_field(3)
-        # Reverse the order of the runs list
-        for i, run in enumerate(runs):
-            print(run)
-            if run.startswith('#'):
-                embed.add_field(name=f"Run", value=run, inline=False)
-                if i>=3:
-                    break
-            else:
-                embed.add_field(name='No runs found!', value='⠀')
 
-        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})')
-        await embed_update.edit(embed=embed)
-    else:
-        embed.remove_field(3)
-        embed.add_field(name=f"No runs currently found for {train.upper()}", value='⠀')
-        await embed_update.edit(embed=embed)'''
     
 
         
-async def TRAMtransportVicSearch_async(ctx, tram, embed, embed_update):
-    runs = await asyncio.to_thread(TRAMtransportVicSearch, tram)  # Find runs in a separate thread
-    if isinstance(runs, list):
-        print("thing is a list")
-        embed.remove_field(3)
-        for i, run in enumerate(runs):
-            if run.startswith(tuple("0123456789")):
-                embed.add_field(name=f"Run {i+1}", value=run, inline=False)
-            else:
-                embed.add_field(name='No runs found!', value='⠀')
-        embed.add_field(name='Data Source', value=f'[View on TransportVic](https://vic.transportsg.me/tram/tracker/fleet?fleet={tram.upper()})')
-        await embed_update.edit(embed=embed)
-    else:
-        embed.remove_field(3)
-        embed.add_field(name=f"No runs currently found for {tram.upper()}", value='⠀')
-        await embed_update.edit(embed=embed)
 
     
 # @app_commands.command(name='test', description="Test command")
