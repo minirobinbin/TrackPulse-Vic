@@ -915,9 +915,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
             embed.add_field(name='Information', value=infoData)
         else:
             embed.add_field(name='Information', value='None available')
-        
-        embed.add_field(name='Runs', value=f'[View on Transport Vic](https://transportvic.me/metro/tracker/consist?consist={train.upper()})', inline=False)
-        
+                
         embed.set_image(url=getImage(train.upper()))
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
         """
