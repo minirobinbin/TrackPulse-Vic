@@ -108,6 +108,10 @@ def getMapEmoji(line, type):
             return('<:bbr2:1320142972171587746>')
         if type == 'skipped':
             return('<:be:1322709966758350848>')
+        if type == 'interchange_first':
+            return('<:bit:1322897569042399243>')
+        if type == 'interchange_last':
+            return('<:bit2:1322897579683479576>')
         else:
             return '⚠'
         
@@ -126,6 +130,10 @@ def getMapEmoji(line, type):
             return('<:dbr2:1320145221698195556>')
         if type == 'skipped':
             return('<:de:1322710023268339774>')
+        if type == 'interchange_first':
+            return('<:dit:1322897682561372242>')
+        if type == 'interchange_last':
+            return('<:dit2:1322897692258467891>')
         else:
             return '⚠'
         
@@ -144,6 +152,10 @@ def getMapEmoji(line, type):
             return('<:stbr2:1320631773209690194>')
         if type == 'skipped':
             return('<:ste:1322710199437365298>')
+        if type == 'interchange_first':
+            return('<:stit:1322897817332617366>')
+        if type == 'interchange_last':
+            return('<:stit2:1322897830788206592>')
         else:
             return '⚠'
         
@@ -162,6 +174,10 @@ def getMapEmoji(line, type):
             return('<:fbr2:1320145225527722015>')
         if type == 'skipped':
             return('<:fe:1322710042230653009>')
+        if type == 'interchange_first':
+            return('<:fit:1322897707483791451>')
+        if type == 'interchange_last':
+            return('<:fit2:1322897720624807986>')
         else:
             return '⚠'
         
@@ -180,6 +196,10 @@ def getMapEmoji(line, type):
             return('<:csbr2:1320145218200404018>')
         if type == 'skipped':
             return('<:cse:1322709995078287482>')
+        if type == 'interchange_first':
+            return('<:crit:1322897623962878052>')
+        if type == 'interchange_last':
+            return('<:crit2:1322897635664855104>')
         else:
             return '⚠'
     
@@ -198,6 +218,10 @@ def getMapEmoji(line, type):
             return('<:nbr2:1320145280569442426>')
         if type == 'skipped':
             return('<:ne:1322710100061847636>')
+        if type == 'interchange_first':
+            return('<:nit:1322897779131023462>')
+        if type == 'interchange_last':
+            return('<:nit2:1322897794184515615>')
         else:
             return '⚠'
         
@@ -216,6 +240,10 @@ def getMapEmoji(line, type):
             return('<:cbr2:1320145214467215411>')
         if type == 'skipped':
             return('<:ce:1322709978859180053>')
+        if type == 'interchange_first':
+            return('<:cit:1322897599937642596>')
+        if type == 'interchange_last':
+            return('<:cit2:1322897612159979542>')
         else:
             return '⚠'
         
@@ -234,6 +262,10 @@ def getMapEmoji(line, type):
             return('<:frbr2:1320145229243875411>')
         if type == 'skipped':
             return('<:fre:1322710073570627654>')
+        if type == 'interchange_first':
+            return('<:frit:1322897739062706236>')
+        if type == 'interchange_last':
+            return('<:frit2:1322897752191008839>')
         else:
             return '⚠'
         
@@ -252,6 +284,10 @@ def getMapEmoji(line, type):
             return('<:vbr2:1322740683773055046>')
         if type == 'skipped':
             return('<:ve:1322740553758150666>')
+        if type == 'interchange_first':
+            return('<:vit:1322740867869708329>')
+        if type == 'interchange_last':
+            return('<:vit2:1322740857685803060>')
         else:
             return '⚠'
     

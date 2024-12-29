@@ -982,36 +982,44 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                             stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
                         else:
                             if first_stop:
-                                stopEntry = f'{getMapEmoji(line, "terminus")} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                                # Check if the first stop is also an interchange
+                                if stop_name in interchange_stations:
+                                    emoji_type = "interchange_first"
+                                else:
+                                    emoji_type = "terminus"
+                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
                                 first_stop = False
                             else:
                                 # Check if it's the last stop in the list
                                 if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
-                                    emoji_type = "terminus2"
+                                    if stop_name in interchange_stations:
+                                        emoji_type = "interchange_last"
+                                    else:
+                                        emoji_type = "terminus2"
                                 else:
-                                    # Check stop_name in interchange_stations
+                                    # Check stop_name in interchange_stations for other stops
                                     if stop_name in interchange_stations:
                                         emoji_type = "interchange"
                                     else:
                                         emoji_type = "stop"
                                 stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
-                        
-                        # Add newline for formatting
-                        stopEntry += '\n'
+                            
+                            # Add newline for formatting
+                            stopEntry += '\n'
 
-                        if currentFieldLength + len(stopEntry) > 1000:
-                            # Add the current field and start a new one
-                            if fieldCounter == 0:  # First field
-                                stopsString += f'{getMapEmoji(line, "cont1")}\n'
+                            if currentFieldLength + len(stopEntry) > 1000:
+                                # Add the current field and start a new one
+                                if fieldCounter == 0:  # First field
+                                    stopsString += f'{getMapEmoji(line, "cont1")}\n'
+                                else:
+                                    stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
+                                embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                                stopsString = stopEntry
+                                fieldCounter += 1
+                                currentFieldLength = len(stopEntry)
                             else:
-                                stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                            stopsString = stopEntry
-                            fieldCounter += 1
-                            currentFieldLength = len(stopEntry)
-                        else:
-                            stopsString += stopEntry
-                            currentFieldLength += len(stopEntry)
+                                stopsString += stopEntry
+                                currentFieldLength += len(stopEntry)
 
                     # Add the last field if there's any content left
                     if stopsString:
