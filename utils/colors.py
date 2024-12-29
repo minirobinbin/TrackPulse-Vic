@@ -249,19 +249,19 @@ def getMapEmoji(line, type):
         
     if line == "Flemington Racecourse":
         if type == "terminus":
-            return('<:frt:1320142981877203037>')
+            return('<:frt:1322903781842616411>')
         if type == "terminus2":
-            return('<:frt2:1320227122299539486>')
+            return('<:frt2:1322903791523332148>')
         if type == "stop":
-            return('<:frs:1320142979943497748>')
+            return('<:frs:1322903770073530449>')
         if type == "interchange":
-            return('<:fri:1320142978114916382>')
+            return('<:fri:1322903741422108786>')
         if type == "cont1":
-            return('<:frbr:1320145227326951434>')
+            return('<:frbr:1322903633892868127>')
         if type == "cont2":
-            return('<:frbr2:1320145229243875411>')
+            return('<:frbr2:1322903649290289245>')
         if type == 'skipped':
-            return('<:fre:1322710073570627654>')
+            return('<:fre:1322903729959211143>')
         if type == 'interchange_first':
             return('<:frit:1322897739062706236>')
         if type == 'interchange_last':
