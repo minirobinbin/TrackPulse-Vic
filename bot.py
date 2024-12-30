@@ -191,7 +191,6 @@ async def on_ready():
     print(f"Downloading trainset data from {csv_url} to {save_location}")
     download_csv(csv_url, save_location)
     
-    print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
     bot.tree.add_command(trainlogs)
@@ -201,7 +200,8 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     # bot.tree.add_command(flight)
-
+    activity = discord.Activity(type=discord.ActivityType.watching, name='melbourne trains')
+    await bot.change_presence(activity=activity)
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -213,6 +213,7 @@ async def on_ready():
         print("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
+    print("Bot started")
 # Threads
 
 # Rare train finder
@@ -252,8 +253,7 @@ async def log_rare_trains(rare_trains):
 # def check_lines_in_thread():
 #     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
-
-                        
+                 
 
 @tasks.loop(minutes=10)
 async def task_loop():
