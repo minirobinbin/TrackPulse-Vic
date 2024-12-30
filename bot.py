@@ -23,7 +23,6 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
-from flask import app
 import requests
 import re
 import asyncio
@@ -1577,7 +1576,7 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)'''
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", ultrahard = "Ultra hard mode.")
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
 async def game(ctx, ultrahard: bool=False, rounds: int = 1):
     
     channel = ctx.channel
@@ -1587,8 +1586,8 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 25:
-            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+        if rounds > 100:
+            await ctx.response.send_message("You can only play a maximum of 100 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
