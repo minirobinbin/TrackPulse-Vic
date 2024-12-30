@@ -23,6 +23,7 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
+from flask import app
 import requests
 import re
 import asyncio
@@ -42,6 +43,7 @@ import numpy as np
 import io
 import pytz
 from concurrent.futures import ThreadPoolExecutor
+import traceback
 
 from utils import trainset
 from utils.search import *
@@ -982,7 +984,6 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                             stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
                         else:
                             if first_stop:
-                                # Check if the first stop is also an interchange
                                 if stop_name in interchange_stations:
                                     emoji_type = "interchange_first"
                                 else:
@@ -997,29 +998,29 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                                     else:
                                         emoji_type = "terminus2"
                                 else:
-                                    # Check stop_name in interchange_stations for other stops
+                                    # Check stop_name in interchange_stations
                                     if stop_name in interchange_stations:
                                         emoji_type = "interchange"
                                     else:
                                         emoji_type = "stop"
                                 stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
-                            
-                            # Add newline for formatting
-                            stopEntry += '\n'
+                        
+                        # Add newline for formatting
+                        stopEntry += '\n'
 
-                            if currentFieldLength + len(stopEntry) > 1000:
-                                # Add the current field and start a new one
-                                if fieldCounter == 0:  # First field
-                                    stopsString += f'{getMapEmoji(line, "cont1")}\n'
-                                else:
-                                    stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                                embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                                stopsString = stopEntry
-                                fieldCounter += 1
-                                currentFieldLength = len(stopEntry)
+                        if currentFieldLength + len(stopEntry) > 1000:
+                            # Add the current field and start a new one
+                            if fieldCounter == 0:  # First field
+                                stopsString += f'{getMapEmoji(line, "cont1")}\n'
                             else:
-                                stopsString += stopEntry
-                                currentFieldLength += len(stopEntry)
+                                stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
+                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                            stopsString = stopEntry
+                            fieldCounter += 1
+                            currentFieldLength = len(stopEntry)
+                        else:
+                            stopsString += stopEntry
+                            currentFieldLength += len(stopEntry)
 
                     # Add the last field if there's any content left
                     if stopsString:
@@ -1047,23 +1048,39 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
             
 # search run id   
 @search.command(name="runid", description="Shows the run for a specific run id, found in the departures command")
-@app_commands.describe(runid="Run ID", operator="Metro or V/Line run id (Metro is default)")
-@app_commands.choices(operator=[
+@app_commands.describe(runid="Run ID", mode="Mode of transport to search runs for")
+@app_commands.choices(mode=[
         app_commands.Choice(name="Metro", value="metro"),
         app_commands.Choice(name="V/Line", value="vline"),
+        app_commands.Choice(name="Tram", value="tram"),
+        app_commands.Choice(name="Bus", value="bus"),
+        app_commands.Choice(name="Night Bus", value="nightbus"),
+        
 ])
-async def runidsearch(ctx, runid:int, operator:str="metro"):
+async def runidsearch(ctx, runid:int, mode:str="metro"):
     await ctx.response.defer()
     async def addmap():
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
-            if operator == "metro":
+            if mode == "metro":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 0)
-            elif operator == "vline":
+                print('Mode is metro')
+            elif mode == "tram":
+                stoppingPattern = getStoppingPatternFromRunRef(runData, 1)
+                print('Mode is tram')
+            elif mode == "bus":
+                stoppingPattern = getStoppingPatternFromRunRef(runData, 2)
+                print('Mode is bus')
+            elif mode == "vline":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 3)
+                print('Mode is vline')
                 def strip_station_name(name):
                     return name.replace('Railway Station', '').strip()
+                    
+            elif mode == "nightbus":
+                stoppingPattern = getStoppingPatternFromRunRef(runData, 4)
+                print('Mode is nightbus')
 
                 # Filter out entries where the station name has a slash and status is 'Skipped', then strip 'Railway Station'
                 stoppingPattern = [
@@ -1073,21 +1090,36 @@ async def runidsearch(ctx, runid:int, operator:str="metro"):
 ]
             print(f"STOPPING PATTERN: {stoppingPattern}")
             try:
-                if operator == "metro":
+                if mode == "metro":
                     if runData is not None:
                         for item in runData:
                             # latitude = item['vehicle_position']['latitude']
                             # longitude = item['vehicle_position']['longitude']
                             line = get_route_name(item['route_id'])
-                elif operator == "vline":
+                            print(f'Line: {line}')
+                elif mode == "vline":
                     line = 'V/Line'
+                    print(f'Line: {line}')
+                else: # just make the mode the type name
+                    line = mode
+                    print(f'Line: {line}')
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
                 print(f'ErROR: {e}')
                 return
-                
-            embed = discord.Embed(title=f"Run {runid}", colour=lines_dictionary[line][1] if line != 'V/Line' else 0x7f3f98, timestamp=discord.utils.utcnow())
+            
+            # embed colour
+            if mode == "metro":
+                colour = lines_dictionary[line][1]
+            elif mode == "vline":
+                colour = 0x7f3f98
+            elif mode == "tram":
+                colour = 0x71bd46
+            elif mode == "bus" or mode == 'nightbus':
+                colour = 0xf78b24
+            
+            embed = discord.Embed(title=f"Run {runid}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -1105,7 +1137,6 @@ async def runidsearch(ctx, runid:int, operator:str="metro"):
                     stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
                 else:
                     if first_stop:
-                        # Check if the first stop is also an interchange
                         if stop_name in interchange_stations:
                             emoji_type = "interchange_first"
                         else:
@@ -1120,41 +1151,43 @@ async def runidsearch(ctx, runid:int, operator:str="metro"):
                             else:
                                 emoji_type = "terminus2"
                         else:
-                            # Check stop_name in interchange_stations for other stops
+                            # Check stop_name in interchange_stations
                             if stop_name in interchange_stations:
                                 emoji_type = "interchange"
                             else:
                                 emoji_type = "stop"
                         stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
-                    
-                    # Add newline for formatting
-                    stopEntry += '\n'
+                
+                # Add newline for formatting
+                stopEntry += '\n'
 
-                    if currentFieldLength + len(stopEntry) > 1000:
-                        # Add the current field and start a new one
-                        if fieldCounter == 0:  # First field
-                            stopsString += f'{getMapEmoji(line, "cont1")}\n'
-                        else:
-                            stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                        stopsString = stopEntry
-                        fieldCounter += 1
-                        currentFieldLength = len(stopEntry)
+                if currentFieldLength + len(stopEntry) > 1000:
+                    # Add the current field and start a new one
+                    if fieldCounter == 0:  # First field
+                        stopsString += f'{getMapEmoji(line, "cont1")}\n'
                     else:
-                        stopsString += stopEntry
-                        currentFieldLength += len(stopEntry)
+                        stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
+                    embed.add_field(name=f"⠀", value=stopsString, inline=True)
+                    stopsString = stopEntry
+                    fieldCounter += 1
+                    currentFieldLength = len(stopEntry)
+                else:
+                    stopsString += stopEntry
+                    currentFieldLength += len(stopEntry)
 
             # Add the last field if there's any content left
             if stopsString:
                 if fieldCounter > 0:  # Not the first field
                     stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                embed.add_field(name=f"⠀", value=stopsString, inline=True)
                     
             # Send a new message with the file and embed
             await ctx.edit_original_response(embed=embed)
 
-        except:
-            await ctx.edit_original_response(content='No trip data available.')       
+        except Exception as e:
+            await ctx.edit_original_response(content='No trip data available.')   
+            print(f'ErROR: {e}') 
+            print(traceback.format_exc())  # This will print a detailed stack trace 
     # Run transportVicSearch in a separate thread
         
         
