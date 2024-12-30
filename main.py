@@ -6,4 +6,6 @@
 from utils.stoppingpattern import *
 # # from ptv.client import PTVClient
 
-print(getStoppingPattern(11525, 3))
+# print(getStoppingPattern(11525, 3))
+
+
