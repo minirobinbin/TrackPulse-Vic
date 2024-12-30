@@ -1629,7 +1629,7 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
                     
                     # Check if the user's response matches the correct station
-                    if user_response.content[1:].lower() == station.lower():
+                    if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
                         if ultrahard:
                             await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
                         else:
