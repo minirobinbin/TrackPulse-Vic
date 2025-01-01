@@ -488,7 +488,7 @@ async def line_info(ctx, number: str, search_set:bool):
         URLresponse = requests.head(photo_url)
         print(URLresponse.status_code)
         if URLresponse.status_code == 200:
-            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | View in browser]({photo_url})')
+            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
         else:
             mAdded = search_query+'M'
             # try with m added
