@@ -3271,13 +3271,15 @@ async def profile(ctx, user: discord.User = None):
             else:
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
             
+            # other stats
+            embed.set_footer(text=f"Favorite command: {getFavoriteCommand(ctx.user.id)[0]}")
             
             await ctx.edit_original_response(embed=embed)
             
         await profiles()
         
     except Exception as e:
-        await ctx.edit_original_response(f"Error: `{e}`")
+        await ctx.edit_original_response(content = f"Error: `{e}`")
 
 
 @bot.tree.command(name="line-status", description="View your line status for all lines.")
