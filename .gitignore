@@ -13,7 +13,7 @@ utils/line-status-data.csv
 logins/
 trainsets.csv
 metrotrains.csv
-utisl/stats/data/
+utils/stats/data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
