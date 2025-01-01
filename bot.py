@@ -23,7 +23,6 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
-from flask import app
 import requests
 import re
 import asyncio
@@ -192,7 +191,6 @@ async def on_ready():
     print(f"Downloading trainset data from {csv_url} to {save_location}")
     download_csv(csv_url, save_location)
     
-    print("Bot started")
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
     bot.tree.add_command(trainlogs)
@@ -202,7 +200,8 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     # bot.tree.add_command(flight)
-
+    activity = discord.Activity(type=discord.ActivityType.watching, name='melbourne trains')
+    await bot.change_presence(activity=activity)
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -214,6 +213,7 @@ async def on_ready():
         print("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
+    print("Bot started")
 # Threads
 
 # Rare train finder
@@ -253,8 +253,7 @@ async def log_rare_trains(rare_trains):
 # def check_lines_in_thread():
 #     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
-
-                        
+                 
 
 @tasks.loop(minutes=10)
 async def task_loop():
@@ -1577,7 +1576,7 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)'''
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", ultrahard = "Ultra hard mode.")
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
 async def game(ctx, ultrahard: bool=False, rounds: int = 1):
     
     channel = ctx.channel
@@ -1587,8 +1586,8 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 25:
-            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+        if rounds > 100:
+            await ctx.response.send_message("You can only play a maximum of 100 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
@@ -1662,7 +1661,7 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
                     
                     # Check if the user's response matches the correct station
-                    if user_response.content[1:].lower() == station.lower():
+                    if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
                         if ultrahard:
                             await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
                         else:
