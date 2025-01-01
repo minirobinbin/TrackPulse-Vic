@@ -42,7 +42,7 @@ def getStoppingPattern(runRef, routeType):
 
         # Add the current stop first
         departures_info.append((departure['departure_sequence'], stop_name, 
-                                estimated_departure if estimated_departure else scheduled_departure, 'Scheduled'))
+                                estimated_departure if estimated_departure else scheduled_departure, 'Scheduled', scheduled_departure))
 
         # Then check for and add skipped stops
         skipped_stops = departure.get('skipped_stops', [])
@@ -51,13 +51,13 @@ def getStoppingPattern(runRef, routeType):
             # remove "Station" from the name
             if skipped_name.endswith(' Station'):
                 skipped_name = skipped_name[:-8]  # Remove " Station"
-            # Use the same sequence number but add a small increment to ensure they come after the main stop
-            departures_info.append((departure['departure_sequence'] + 0.1, skipped_name, 'Skipped', 'Skipped'))
+                # na is cause express stops dont have timeings
+            departures_info.append((departure['departure_sequence'] + 0.1, skipped_name, 'N/A', 'Skipped', 'N/A'))
 
     # Sort by departure_sequence
     sorted_departures = sorted(departures_info, key=lambda x: x[0])
 
-    return [(name, time, status) for _, name, time, status in sorted_departures]
+    return [(name, time, status, schedule) for _, name, time, status, schedule in sorted_departures]
 
 def getStoppingPatternFromCar(relistsData):
     runRef = None

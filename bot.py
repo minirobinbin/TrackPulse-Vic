@@ -836,17 +836,21 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
 
                     first_stop = True
 
-                    for stop_name, stop_time, status in stoppingPattern:
+                    for stop_name, stop_time, status, schedule in stoppingPattern:
                         if status == 'Skipped':
                             # For skipped stops
-                            stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
+                            stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'
                         else:
+                            # Calculate delay in minutes
+                            delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
+                            delay_str = f"+{delay} min" if delay > 0 else ""
+
                             if first_stop:
                                 if stop_name in interchange_stations:
                                     emoji_type = "interchange_first"
                                 else:
                                     emoji_type = "terminus"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
                                 first_stop = False
                             else:
                                 # Check if it's the last stop in the list
@@ -861,7 +865,8 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                                         emoji_type = "interchange"
                                     else:
                                         emoji_type = "stop"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
+
                         
                         # Add newline for formatting
                         stopEntry += '\n'
@@ -990,17 +995,22 @@ async def runidsearch(ctx, runid:int, mode:str="metro"):
             stopsString = ""
             currentFieldLength = 0
 
-            for stop_name, stop_time, status in stoppingPattern:
+            # from here to the other comment should be the same as the train search command
+            for stop_name, stop_time, status, schedule in stoppingPattern:
                 if status == 'Skipped':
                     # For skipped stops
-                    stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'  
+                    stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'
                 else:
+                    # Calculate delay in minutes
+                    delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
+                    delay_str = f"+{delay} min" if delay > 0 else ""
+
                     if first_stop:
                         if stop_name in interchange_stations:
                             emoji_type = "interchange_first"
                         else:
                             emoji_type = "terminus"
-                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
                         first_stop = False
                     else:
                         # Check if it's the last stop in the list
@@ -1015,7 +1025,8 @@ async def runidsearch(ctx, runid:int, mode:str="metro"):
                                 emoji_type = "interchange"
                             else:
                                 emoji_type = "stop"
-                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)}'
+                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
+                # until here should be the same as train search
                 
                 # Add newline for formatting
                 stopEntry += '\n'
