@@ -1,9 +1,9 @@
 import os
 import csv
 
-def manage_user_command(user_id, command_name):
+def log_command(user_id, command_name):
     # Ensure the CSV file exists for the user
-    file_path = f"{user_id}.csv"
+    file_path = f"utils/stats/data/{user_id}.csv"
     if not os.path.exists(file_path):
         with open(file_path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
@@ -28,3 +28,4 @@ def manage_user_command(user_id, command_name):
         writer.writerow(['Command', 'Count'])  # Write header
         for command, count in existing_data.items():
             writer.writerow([command, count])
+    print(f"Logged command {command_name} for user {user_id}")
