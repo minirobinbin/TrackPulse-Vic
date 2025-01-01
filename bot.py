@@ -182,7 +182,7 @@ def download_csv(url, save_path):
                 file.write(response.content)
             print(f"CSV downloaded successfully and saved as {save_path}")
         else:
-            print(f"Failed to download CSV. Status code: {response.status_code}")
+            raise Exception(f"Failed to download CSV. Status code: {response.status_code}")
 
 @bot.event
 async def on_ready():
@@ -3543,6 +3543,33 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         csv_url = url
         save_location = "utils/trainsets.csv"
         await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
+        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        try:
+            download_csv(csv_url, save_location)
+            await ctx.send(f"Sucsess!")
+        except Exception as e:
+            await ctx.send(f"Error: `{e}`")
+    else:
+        print(f'{USER_ID} tried to synd the database.')
+        await ctx.send("You are not authorized to use this command.")
+        
+@bot.command()
+async def syncgame(ctx):
+    if str(ctx.author.id) == USER_ID:
+        log_command(ctx.author.id, 'sync-db')
+        csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
+        save_location = "utils/game/images/guesser.csv"
+        await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
+        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        try:
+            download_csv(csv_url, save_location)
+            await ctx.send(f"Sucsess!")
+        except Exception as e:
+            await ctx.send(f"Error: `{e}`")
+            
+        csv_url = 'https://railway-photos.xm9g.net/botgames/ultrahard.csv'
+        save_location = "utils/game/images/ultrahard.csv"
+        await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
