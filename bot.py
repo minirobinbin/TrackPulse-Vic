@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
 
 
+from calendar import c
 import operator
 from shutil import ExecError
 from tracemalloc import stop
@@ -1447,6 +1448,12 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
         data = rows[1:]
 
         ignoredRounds = 0
+        
+        # stuff for end of game stats
+        incorrectAnswers = 0
+        correctAnswers = 0
+        participants = []
+        
         for round in range(rounds):
             roundResponse = False
             # Get a random row
@@ -1461,7 +1468,7 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
             if ultrahard:
                 embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have {unixTimeinXSeconds(30)} to answer.\n\n**Difficulty:** `{difficulty}`")
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. Time is up {unixTimeinXSeconds(30)}!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -1511,6 +1518,8 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLb(user_response.author.id, user_response.author.name, 'guesser')
+                        if user_response.author.name not in participants:
+                            participants.append(user_response.author.name)
                             
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
@@ -1533,6 +1542,9 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                             addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLoss(user_response.author.id, user_response.author.name, 'guesser')
+                        if user_response.author.name not in participants:
+                            participants.append(user_response.author.name)
+                        
             except asyncio.TimeoutError:
                 if ultrahard:
                     await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
@@ -1548,6 +1560,16 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                         
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
+                
+                # round summary at the end
+                embed = discord.Embed(title="Game Summary")
+                embed.add_field(name="Rounds played", value=rounds, inline=True)
+                embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                embed.add_field(name="Participants", value=', '.join(participants))
+                
+                await ctx.channel.send(embed=embed)
+                
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
