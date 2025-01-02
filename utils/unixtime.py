@@ -48,3 +48,6 @@ def convert_times(iso_time):
         unix_time -= time.timezone  # Correct for UTC if local timezone is not UTC
     
     return unix_time
+
+def unixTimeinXSeconds(seconds: int) -> str:
+    return f'<t:{int(time.time()) + seconds}:R>'

@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
 
 
+from calendar import c
 import operator
 from shutil import ExecError
 from tracemalloc import stop
@@ -1051,13 +1052,12 @@ async def runidsearch(ctx, runid:int, mode:str="metro"):
                     stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
                 embed.add_field(name=f"⠀", value=stopsString, inline=True)
                     
-            # Send a new message with the file and embed
             await ctx.edit_original_response(embed=embed)
 
         except Exception as e:
             await ctx.edit_original_response(content='No trip data available.')   
             print(f'ErROR: {e}') 
-            print(traceback.format_exc())  # This will print a detailed stack trace 
+            print(traceback.format_exc())  
     # Run transportVicSearch in a separate thread
         
         
@@ -1414,11 +1414,11 @@ async def train_line(ctx):
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
-async def game(ctx, ultrahard: bool=False, rounds: int = 1):
+async def game(ctx,rounds: int = 1, ultrahard: bool=False):
     
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-guesser')
-    async def run_game():
+    async def run_game(): 
 
         # Check if a game is already running in this channel
         if channel in channel_game_status and channel_game_status[channel]:
@@ -1447,7 +1447,15 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
         header = rows[0]
         data = rows[1:]
 
+        ignoredRounds = 0
+        
+        # stuff for end of game stats
+        incorrectAnswers = 0
+        correctAnswers = 0
+        participants = []
+        
         for round in range(rounds):
+            roundResponse = False
             # Get a random row
             random_row = random.choice(data)
 
@@ -1460,7 +1468,7 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
             if ultrahard:
                 embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty}`")
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. Time is up {unixTimeinXSeconds(30)}!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -1505,37 +1513,62 @@ async def game(ctx, ultrahard: bool=False, rounds: int = 1):
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
                         correct = True
+                        roundResponse = True
+                        correctAnswers += 1
                         if ultrahard:
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLb(user_response.author.id, user_response.author.name, 'guesser')
+                        if user_response.author.mention not in participants:
+                            participants.append(user_response.author.mention)
                             
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
                             await ctx.channel.send(f"Round {round+1} skipped.")
+                            roundResponse = True
                             break
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                            roundResponse = True
                     elif user_response.content.lower() == '!stop':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
-                            await ctx.channel.send(f"Game ended.")
-                            return
+                            await ctx.channel.send(f"Game ended.")  
+                            break
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                     else:
                         await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                        roundResponse = True
+                        incorrectAnswers += 1
                         if ultrahard:
                             addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLoss(user_response.author.id, user_response.author.name, 'guesser')
+                        if user_response.author.mention not in participants:
+                            participants.append(user_response.author.mention)
+                        
             except asyncio.TimeoutError:
                 if ultrahard:
                     await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
                 else:
                     await ctx.channel.send(f"Times up. The answer was ||{station.title()}||")
             finally:
+                if not roundResponse:
+                    ignoredRounds += 1
+                print(f'Ignored rounds: {ignoredRounds}')
+                if ignoredRounds == 2 and roundResponse == False:
+                    await ctx.channel.send("No responses for 2 rounds. Game ended.")
+                    break
+                        
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
+                
+        embed = discord.Embed(title="Game Summary")
+        embed.add_field(name="Rounds played", value=rounds, inline=True)
+        embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+        embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+        embed.add_field(name="Participants", value=', '.join(participants))
+        await ctx.channel.send(embed=embed)       
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
