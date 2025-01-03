@@ -1452,6 +1452,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
         # stuff for end of game stats
         incorrectAnswers = 0
         correctAnswers = 0
+        skippedGames = 0
         participants = []
         
         for round in range(rounds):
@@ -1525,6 +1526,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
                             await ctx.channel.send(f"Round {round+1} skipped.")
+                            skippedGames += 1
                             roundResponse = True
                             break
                         else:
@@ -1532,8 +1534,14 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             roundResponse = True
                     elif user_response.content.lower() == '!stop':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
-                            await ctx.channel.send(f"Game ended.")  
-                            break
+                            await ctx.channel.send(f"Game ended.")
+                            embed = discord.Embed(title="Game Summary")
+                            embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                            embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                            embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                            embed.add_field(name="Participants", value=', '.join(participants))
+                            await ctx.channel.send(embed=embed)   
+                            return
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                     else:
@@ -1564,11 +1572,11 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                 channel_game_status[channel] = False
                 
         embed = discord.Embed(title="Game Summary")
-        embed.add_field(name="Rounds played", value=rounds, inline=True)
+        embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
         embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
         embed.add_field(name="Participants", value=', '.join(participants))
-        await ctx.channel.send(embed=embed)       
+        await ctx.channel.send(embed=embed)      
 
     # Run the game in a separate task
     asyncio.create_task(run_game())
