@@ -704,13 +704,23 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
     set = setNumber(train.upper())
     
     metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
+    vlineTrains = ['VLocity', 'Sprinter', 'N Class']
    
     print(f'set: {set}')
     print(f"TRAINTYPE {type}")
+    
+    # get colour for the embed
+    if type in metroTrains:
+        colour = 0x008dd0
+    elif type in vlineTrains:
+        colour = 0x7f3f98
+    else:
+        colour = 0x444345
+    
     if type is None:
        await ctx.edit_original_response(content="Train not found")
     else:
-        embed = discord.Embed(title=f"{train.upper()}:", color=0x0070c0)
+        embed = discord.Embed(title=f"{train.upper()}:", color=colour)
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         try:
             if set.endswith('-'):
@@ -755,7 +765,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                 
                 
             # thing if the user has been on
-            def check_variable_in_csv(variable, file_path):
+            def checkTrainRidden(variable, file_path):
                 if not os.path.exists(file_path):
                     print(f"The file {file_path} does not exist.")
                     return False
@@ -768,16 +778,20 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                 return False 
         
             fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
-            trainridden = check_variable_in_csv(set, fPath)
+            trainridden = checkTrainRidden(set, fPath)
             if trainridden:
                 infoData +='\n\n✅ You have been on this train before'
                 
             embed.add_field(name='Information', value=infoData)
         else:
             embed.add_field(name='Information', value='None available')
-                
-        embed.set_image(url=getImage(train.upper()))
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
+        
+        image = getImage(train.upper())
+        if image != None:
+            embed.set_image(url=image)            
+            embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
+        else:
+            embed.add_field(name="Source:", value='[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
         """
         if type in metroTrains:
             embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
