@@ -1256,7 +1256,10 @@ async def departures(ctx, station: str, line:str='all'):
                     return stop['stop_id']
             return 'None'
         
-        stop_id = find_stop_id(search, f"{station.title()} Station")
+        try:
+            stop_id = find_stop_id(search, f"{station.title()} Station")
+        except:
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
         print(f'STOP ID for {station} Station: {stop_id}')
         if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")

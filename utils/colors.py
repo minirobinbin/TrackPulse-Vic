@@ -315,23 +315,23 @@ def getMapEmoji(line, type):
     
     else:
         if type == "terminus":
-            return('<:ot:1325074450047307796>')
+            return('<:ot:1325248217599705118>')
         if type == "terminus2":
-            return('<:ot2:1325074460130414694>')
+            return('<:ot2:1325248229419258018>')
         if type == "stop":
-            return('<:ost:1325074438638796900>')
+            return('<:ost:1325248202537963631>')
         if type == "interchange":
-            return('<:oi:1325074403884666932>')
+            return('<:oi:1325248161815462048>')
         if type == "cont1":
-            return('<:obr:1325074358221410356>')
+            return('<:obr:1325248124125446265>')
         if type == "cont2":
-            return('<:obr2:1325074375002558595>')
+            return('<:obr2:1325248137144827995>')
         if type == 'skipped':
-            return('<:oe:1325074391427579995>')
+            return('<:oe:1325248147467010070>')
         if type == 'interchange_first':
-            return('<:oit:1325074416018653268>')
+            return('<:oit:1325248174675198104>')
         if type == 'interchange_last':
-            return('<:oit2:1325074427703988225>')
+            return('<:oit2:1325248188709343293>')
         else:
             return '⚠'
     
