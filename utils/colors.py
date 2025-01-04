@@ -348,7 +348,9 @@ def getEmojiForDeparture(trainType):
         return('<:xtrap:1325040397688377364> x6')
     elif trainType == "3 Car Xtrapolis":
         return('<:xtrap:1325040397688377364> x3') 
-    elif trainType == "7-Car HCMT":
-        return('<:siemens:1325040408866193449> x7')
+    elif trainType == "7-car HCMT":
+        return('<:hcmt:1325040456496713768> x7')
     elif trainType == "Sprinter":
         return('<:sprinter:1325040386913075200>')
+    else:
+        return(trainType)
