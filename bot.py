@@ -1483,7 +1483,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
             if ultrahard:
                 embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. Time is up {unixTimeinXSeconds(30)}!\n\n**Difficulty:** `{difficulty}`")
+                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -1530,6 +1530,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                         correct = True
                         roundResponse = True
                         correctAnswers += 1
+                        ignoredRounds = 0
                         if ultrahard:
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
