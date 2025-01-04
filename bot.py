@@ -925,20 +925,21 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
             # await task
             
 # search run id   
-@search.command(name="runid", description="Shows the run for a specific run id, found in the departures command")
-@app_commands.describe(runid="Run ID", mode="Mode of transport to search runs for")
+@search.command(name="td-number", description="Shows the run for a specific TDN, found in the departures command")
+@app_commands.describe(td="TD Number", mode="Mode of transport to search TDN for")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Metro", value="metro"),
-        app_commands.Choice(name="V/Line", value="vline"),
-        app_commands.Choice(name="Tram", value="tram"),
-        app_commands.Choice(name="Bus", value="bus"),
-        app_commands.Choice(name="Night Bus", value="nightbus"),
+        # app_commands.Choice(name="V/Line", value="vline"),
+        # app_commands.Choice(name="Tram", value="tram"),
+        # app_commands.Choice(name="Bus", value="bus"),
+        # app_commands.Choice(name="Night Bus", value="nightbus"),
         
 ])
-async def runidsearch(ctx, runid:int, mode:str="metro"):
+async def runidsearch(ctx, td:str, mode:str="metro"):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
+        runid = TDNtoRunID(td)
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
@@ -998,7 +999,7 @@ async def runidsearch(ctx, runid:int, mode:str="metro"):
             elif mode == "bus" or mode == 'nightbus':
                 colour = 0xf78b24
             
-            embed = discord.Embed(title=f"Run {runid}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"TD {runid}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -1313,6 +1314,9 @@ async def departures(ctx, station: str, line:str='all'):
 
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
+                
+                # Convert PTV run REF to TDN
+                TDN = RunIDtoTDN(run_ref)
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -1329,7 +1333,7 @@ async def departures(ctx, station: str, line:str='all'):
                     else:
                         platform_number = "1"
                 
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nRun ID: `{run_ref}`")
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 fields = fields + 1
                 if fields == 9:
                     break
