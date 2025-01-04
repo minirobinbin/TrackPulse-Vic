@@ -858,7 +858,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                         else:
                             # Calculate delay in minutes
                             delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
-                            delay_str = f"+{delay} min" if delay > 0 else ""
+                            delay_str = f"+{delay}m" if delay > 0 else ""
 
                             if first_stop:
                                 if stop_name in interchange_stations:
@@ -1019,7 +1019,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
                 else:
                     # Calculate delay in minutes
                     delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
-                    delay_str = f"+{delay} min" if delay > 0 else ""
+                    delay_str = f"+{delay}m" if delay > 0 else ""
 
                     if first_stop:
                         if stop_name in interchange_stations:

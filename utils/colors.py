@@ -314,7 +314,26 @@ def getMapEmoji(line, type):
             return '⚠'
     
     else:
-        return '⚠'
+        if type == "terminus":
+            return('<:ot:1325074450047307796>')
+        if type == "terminus2":
+            return('<:ot2:1325074460130414694>')
+        if type == "stop":
+            return('<:ost:1325074438638796900>')
+        if type == "interchange":
+            return('<:oi:1325074403884666932>')
+        if type == "cont1":
+            return('<:obr:1325074358221410356>')
+        if type == "cont2":
+            return('<:obr2:1325074375002558595>')
+        if type == 'skipped':
+            return('<:oe:1325074391427579995>')
+        if type == 'interchange_first':
+            return('<:oit:1325074416018653268>')
+        if type == 'interchange_last':
+            return('<:oit2:1325074427703988225>')
+        else:
+            return '⚠'
     
 def getEmojiForDeparture(trainType):
     if trainType == "6 Car Comeng":
