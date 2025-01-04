@@ -146,5 +146,3 @@ def TDNtoRunID(tdn):
     aski2 = str(aski)[1]
     final = '9' + aski1 + aski2 + tdn[1:]
     return(final)
-
-print(TDNtoRunID('8816'))

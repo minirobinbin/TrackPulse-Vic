@@ -1528,6 +1528,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     
                     # Check if the user's response matches the correct station
                     if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
+                        log_command(user_response.author.id, 'game-station-guesser-correct')
                         if ultrahard:
                             await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
                         else:
@@ -1547,6 +1548,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
                             await ctx.channel.send(f"Round {round+1} skipped.")
+                            log_command(user_response.author.id, 'game-station-guesser-skip')
                             skippedGames += 1
                             roundResponse = True
                             break
@@ -1556,6 +1558,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     elif user_response.content.lower() == '!stop':
                         if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
                             await ctx.channel.send(f"Game ended.")
+                            log_command(user_response.author.id, 'game-station-guesser-stop')
                             embed = discord.Embed(title="Game Summary")
                             embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
                             embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
@@ -1567,6 +1570,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                     else:
                         await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                        log_command(user_response.author.id, 'game-station-guesser-incorrect')
                         roundResponse = True
                         incorrectAnswers += 1
                         if ultrahard:
