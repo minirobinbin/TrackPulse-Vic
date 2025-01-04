@@ -1311,7 +1311,8 @@ async def departures(ctx, station: str, line:str='all'):
                     trainType = ''
                     trainNumber = ''
 
-                # train info
+                # train emoji
+                trainType = getEmojiForDeparture(trainType)
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -1531,6 +1532,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                         roundResponse = True
                         correctAnswers += 1
                         ignoredRounds = 0
+                        print(f'Ignored rounds: {ignoredRounds}')
                         if ultrahard:
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
