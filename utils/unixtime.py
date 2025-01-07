@@ -32,3 +32,22 @@ def convert_iso_to_unix_time(iso_time: str, format=None) -> str:
     else:
         # Format Unix time for Discord's timestamp
         return f'<t:{unix_time}:R>'
+    
+
+def convert_times(iso_time):
+    # Replace 'Z' with '+0000' for UTC
+    if iso_time.endswith('Z'):
+        iso_time = iso_time[:-1] + '+0000'
+    time_struct = time.strptime(iso_time, '%Y-%m-%dT%H:%M:%S%z')
+    
+    # Convert to Unix timestamp
+    unix_time = int(time.mktime(time_struct))
+    
+    # Adjust for UTC if necessary (since mktime uses local time)
+    if iso_time.endswith('+0000'):
+        unix_time -= time.timezone  # Correct for UTC if local timezone is not UTC
+    
+    return unix_time
+
+def unixTimeinXSeconds(seconds: int) -> str:
+    return f'<t:{int(time.time()) + seconds}:R>'

@@ -314,5 +314,43 @@ def getMapEmoji(line, type):
             return '⚠'
     
     else:
-        return '⚠'
-        
+        if type == "terminus":
+            return('<:ot:1325248217599705118>')
+        if type == "terminus2":
+            return('<:ot2:1325248229419258018>')
+        if type == "stop":
+            return('<:ost:1325248202537963631>')
+        if type == "interchange":
+            return('<:oi:1325248161815462048>')
+        if type == "cont1":
+            return('<:obr:1325248124125446265>')
+        if type == "cont2":
+            return('<:obr2:1325248137144827995>')
+        if type == 'skipped':
+            return('<:oe:1325248147467010070>')
+        if type == 'interchange_first':
+            return('<:oit:1325248174675198104>')
+        if type == 'interchange_last':
+            return('<:oit2:1325248188709343293>')
+        else:
+            return '⚠'
+    
+def getEmojiForDeparture(trainType):
+    if trainType == "6 Car Comeng":
+        return('<:edi:1325040436946931754> x6')
+    elif trainType == "3 Car Comeng":
+        return('<:edi:1325040436946931754> x3')
+    elif trainType == "6 Car Siemens":
+        return('<:siemens:1325040408866193449> x6')
+    elif trainType == "3 Car Siemens":
+        return('<:siemens:1325040408866193449> x3')  
+    elif trainType == "6 Car Xtrapolis":
+        return('<:xtrap:1325040397688377364> x6')
+    elif trainType == "3 Car Xtrapolis":
+        return('<:xtrap:1325040397688377364> x3') 
+    elif trainType == "7-car HCMT":
+        return('<:hcmt:1325040456496713768> x7')
+    elif trainType == "Sprinter":
+        return('<:sprinter:1325040386913075200>')
+    else:
+        return(trainType)
