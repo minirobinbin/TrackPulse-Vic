@@ -2869,7 +2869,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 elif stat == 'length':
                     data = getLongestTrips(userid.name)  
                 elif mode == 'train':
-                    data = topStats(userid.name, statSearch)
+                    data = topStats(userid.name, statSearch, year)
                 elif mode == 'tram':
                     data = tramTopStats(userid.name, statSearch)   
                 elif mode == 'sydney-trains':
@@ -2949,7 +2949,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 if global_stats:
                     barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
                 else:
-                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name}', ctx.user.name)
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― {name} in {year}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name)
                 await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.channel.send('User has no logs!')
