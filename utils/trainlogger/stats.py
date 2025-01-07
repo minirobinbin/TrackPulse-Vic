@@ -6,7 +6,7 @@ from utils.trainlogger.stationDistance import *
 from collections import Counter
 import os
 
-def topStats(user, stat):
+def topStats(user, stat, year):
     with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         
@@ -21,21 +21,22 @@ def topStats(user, stat):
         # Process each row in the CSV
         for row in reader:
             # Row format: LogID, TrainID, TrainType, Date, Line, Start, End
-            line = row[4]
-            start_station = row[5]
-            end_station = row[6]
-            set = row[1]
-            train_type = row[2]
             date = row[3]
-            pair = (start_station, end_station)
-            
-            # Update counters
-            line_counter.update([line])
-            station_counter.update([start_station, end_station])
-            set_counter.update([set])
-            type_counter.update([train_type])
-            date_counter.update([date])
-            pair_counter.update([pair])
+            if year == 0 or date.startswith(str(year)):
+                line = row[4]
+                start_station = row[5]
+                end_station = row[6]
+                train_set = row[1]  # Changed to 'train_set' since 'set' is a Python keyword
+                train_type = row[2]
+                pair = (start_station, end_station)
+                
+                # Update counters
+                line_counter.update([line])
+                station_counter.update([start_station, end_station])
+                set_counter.update([train_set])
+                type_counter.update([train_type])
+                date_counter.update([date])
+                pair_counter.update([pair])
 
         # Get the 10 most common entries
         most_common_lines = line_counter.most_common(100000)
@@ -52,19 +53,19 @@ def topStats(user, stat):
         if stat == "lines":
             for line, count in most_common_lines:
                 results.append(f"{line}: {count} times")
-        if stat == "stations":
+        elif stat == "stations":
             for station, count in most_common_stations:
                 results.append(f"{station}: {count} times")
-        if stat == "sets":
-            for set, count in most_common_sets:
-                results.append(f"{set}: {count} times")
-        if stat == "types":
+        elif stat == "sets":
+            for train_set, count in most_common_sets:
+                results.append(f"{train_set}: {count} times")
+        elif stat == "types":
             for train_type, count in most_common_types:
                 results.append(f"{train_type}: {count} times")
-        if stat == "dates":
+        elif stat == "dates":
             for date, count in most_common_dates:
                 results.append(f"{date}: {count} times")
-        if stat == "pairs":
+        elif stat == "pairs":
             for (start, end), count in most_common_pairs:
                 results.append(f"{start} to {end}: {count} times")
 

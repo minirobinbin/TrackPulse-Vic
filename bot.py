@@ -200,7 +200,7 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     # bot.tree.add_command(flight)
-    activity = discord.Activity(type=discord.ActivityType.watching, name='melbourne trains')
+    activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
     await bot.change_presence(activity=activity)
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
@@ -624,80 +624,51 @@ async def route(ctx, rtype: str, number: int):
 
 # Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
-@app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
-async def line_info(ctx, number: str, search_set:bool):
-    async def sendPhoto(photo_url):
-        # Make a HEAD request to check if the photo exists
-        URLresponse = requests.head(photo_url)
-        print(URLresponse.status_code)
-        if URLresponse.status_code == 200:
-            await channel.send(photo_url)
-            await channel.send(f'[Photo by {getPhotoCredits(search_query)}](<https://railway-photos.xm9g.net#:~:text={search_query}>)')
+@app_commands.describe(number="Carriage number")
+async def line_info(ctx, number: str):
+    async def sendPhotoEmbed(search_query, title):
+        base_url = "https://railway-photos.xm9g.net"  # Assuming this is the base URL for your photos
+        embeds = []
+        photo_count = 1
+        
+        def add_photo_to_embed(url, query):
+            nonlocal photo_count
+            if requests.head(url).status_code == 200:
+                embed = discord.Embed(url=base_url, color=0x00ff00)
+                embed.set_image(url=url)
+                embed.set_footer(text=f"Photo {photo_count} by {getPhotoCredits(query)}")
+                embeds.append(embed)
+                photo_count += 1
+
+        # Check for main photo
+        main_photo = f"{base_url}/photos/{search_query}.webp"
+        add_photo_to_embed(main_photo, search_query)
+
+        if photo_count == 1:  # If no main photo found, try with 'M'
+            mAdded = search_query + 'M'
+            photo_url_m = f"{base_url}/photos/{mAdded}.webp"
+            add_photo_to_embed(photo_url_m, search_query)
+            if photo_count > 1:  # If we found the 'M' photo, look for additional ones
+                for i in range(2, 5):
+                    photo_url_m_num = f"{base_url}/photos/{mAdded}-{i}.webp"
+                    add_photo_to_embed(photo_url_m_num, f'{search_query}-{i}')
+        else:  # If main photo was found, look for additional photos
+            for i in range(2, 5):
+                additional_photo = f"{base_url}/photos/{search_query}-{i}.webp"
+                add_photo_to_embed(additional_photo, f'{search_query}-{i}')
+
+        # Send all collected embeds
+        if embeds:
+            await ctx.channel.send(embeds=embeds)
         else:
-            mAdded = search_query+'M'
-            # try with m added
-            photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}.webp"
-            URLresponse = requests.head(photo_url)
-            if URLresponse.status_code == 200:
-                await channel.send(photo_url)
-                for i in range(2,5):
-                    photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.webp"
-                    print(f"searching for other images for {mAdded}")
-                    print(f"url: {photo_url}")
-                    URLresponse = requests.head(photo_url)
-                    if URLresponse.status_code == 200:
-                        await channel.send(photo_url)
-                        await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={mAdded}>)')
-                    else:
-                        print("no other images found")
-                        await channel.send(f"Photo not in xm9g database!")
-                        break
-            else:
-                await channel.send(f"Photo not in xm9g database!")
-                
-            
-            
-        for i in range(2,5):
-            photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.webp"
-            print(f"searching for other images for {search_query}")
-            print(f"url: {photo_url}")
-            URLresponse = requests.head(photo_url)
-            if URLresponse.status_code == 200:
-                await channel.send(photo_url)
-                await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>)')
-            else:
-                print("no other images found")
-                break
-    
-    # start of the thing
-    channel = ctx.channel
+            await ctx.channel.send(f"Photo not in xm9g database!")
+
+    # Start of the function
+    await ctx.response.send_message(f"Searching for `{number.upper()}`...")
+
     search_query = number.upper()
-    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.webp"
-    await ctx.response.send_message(f"Searching for `{search_query}`...")
-    
-    #get full set
-    try:
-        fullSet = setNumber(number).split("-")
-    except:
-        print(f'cannot get full set for {number}')
-        search_set=False
-                
-    await sendPhoto(photo_url)
-    
-    if search_set:
-        print(f'Searching full set: {fullSet}')
-        if fullSet[0] != number:
-            search_query=fullSet[0].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[0]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.webp")
-        if fullSet[1] != number:
-            search_query=fullSet[1].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[1]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.webp")
-        if fullSet[2] != number:
-            search_query=fullSet[2].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[2]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
+    await sendPhotoEmbed(search_query, search_query)
+
 
  
 # myki fare calculator   
@@ -2995,7 +2966,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
 
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all'):
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all', year:int=0):
     async def sendLogs():
         statSearch = stat
         userid = user if user else ctx.user
