@@ -3124,12 +3124,12 @@ async def profile(ctx, user: discord.User = None):
             
             # train logger
             try:
-                lines = topStats(username, 'lines')
-                stations = topStats(username, 'stations')
-                sets = topStats(username, 'sets')
-                trains = topStats(username, 'types')
-                dates = topStats(username, 'dates')
-                trips = topStats(username, 'pairs')
+                lines = topStats(username, 'lines', 0, 'train')
+                stations = topStats(username, 'stations', 0, 'train')
+                sets = topStats(username, 'sets', 0, 'train')
+                trains = topStats(username, 'types', 0, 'train')
+                dates = topStats(username, 'dates', 0, 'train')
+                trips = topStats(username, 'pairs', 0, 'train')
 
                 #other stats stuff:
                 eDate =lowestDate(username, 'train')
@@ -3158,11 +3158,11 @@ async def profile(ctx, user: discord.User = None):
                     
             # Tram Logger
             try:
-                lines = tramTopStats(username, 'lines')
-                stations = tramTopStats(username, 'stations')
-                sets = tramTopStats(username, 'sets')
-                trains = tramTopStats(username, 'types')
-                dates = tramTopStats(username, 'dates')
+                lines = topStats(username, 'lines', 0, 'tram')
+                stations = topStats(username, 'stations', 0, 'tram')
+                sets = topStats(username, 'sets', 0, 'tram')
+                trains = topStats(username, 'types', 0, 'tram')
+                dates = topStats(username, 'dates', 0, 'tram')
                 
                 #other stats stuff:
                 eDate =lowestDate(username, 'tram')
@@ -3187,11 +3187,11 @@ async def profile(ctx, user: discord.User = None):
 
     # sydney trains Logger
             try:
-                lines = sydneyTrainTopStats(username, 'lines')
-                stations = sydneyTrainTopStats(username, 'stations')
-                sets = sydneyTrainTopStats(username, 'sets')
-                trains = sydneyTrainTopStats(username, 'types')
-                dates = sydneyTrainTopStats(username, 'dates')
+                lines = topStats(username, 'lines', 0, 'sydney-trains')
+                stations = topStats(username, 'stations', 0, 'sydney-trains')
+                sets = topStats(username, 'sets', 0, 'sydney-trains')
+                trains = topStats(username, 'types', 0, 'sydney-trains')
+                dates = topStats(username, 'dates', 0, 'sydney-trains')
                 #other stats stuff:
                 eDate =lowestDate(username, 'sydney-trains')
                 LeDate =highestDate(username, 'sydney-trains')
@@ -3215,11 +3215,11 @@ async def profile(ctx, user: discord.User = None):
 
     # sydney tram Logger
             try:
-                lines = sydneyTramTopStats(username, 'lines')
-                stations = sydneyTramTopStats(username, 'stations')
-                sets = sydneyTramTopStats(username, 'sets')
-                trains = sydneyTramTopStats(username, 'types')
-                dates = sydneyTramTopStats(username, 'dates')
+                lines = topStats(username, 'lines', 0, 'sydney-trams')
+                stations = topStats(username, 'stations', 0, 'sydney-trams')
+                sets = topStats(username, 'sets', 0, 'sydney-trams')
+                trains = topStats(username, 'types', 0, 'sydney-trams')
+                dates = topStats(username, 'dates', 0, 'sydney-trams')
                 #other stats stuff:
                 eDate =lowestDate(username, 'sydney-trams')
                 LeDate =highestDate(username, 'sydney-trams')
@@ -3244,11 +3244,11 @@ async def profile(ctx, user: discord.User = None):
     
     # adelaide Logger
             try:
-                lines = adelaideTopStats(username, 'lines')
-                stations = adelaideTopStats(username, 'stations')
-                sets = adelaideTopStats(username, 'sets')
-                trains = adelaideTopStats(username, 'types')
-                dates = adelaideTopStats(username, 'dates')
+                lines = topStats(username, 'lines', 0, 'adelaide-trains')
+                stations = topStats(username, 'stations', 0, 'adelaide-trains')
+                sets = topStats(username, 'sets', 0, 'adelaide-trains')
+                trains = topStats(username, 'types', 0, 'adelaide-trains')
+                dates = topStats(username, 'dates', 0, 'adelaide-trains')
                 #other stats stuff:
                 eDate =lowestDate(username, 'adelaide-trains')
                 LeDate =highestDate(username, 'adelaide-trains')
@@ -3272,11 +3272,11 @@ async def profile(ctx, user: discord.User = None):
             
     # bus Logger
             try:
-                lines = busTopStats(username, 'lines')
-                stations = busTopStats(username, 'stations')
-                sets = busTopStats(username, 'sets')
-                trains = busTopStats(username, 'types')
-                dates = busTopStats(username, 'dates')
+                lines = topStats(username, 'lines', 0, 'bus')
+                stations = topStats(username, 'stations', 0, 'bus')
+                sets = topStats(username, 'sets', 0, 'bus')
+                trains = topStats(username, 'types', 0, 'bus')
+                dates = topStats(username, 'dates', 0, 'bus')
                 #other stats stuff:
                 eDate =lowestDate(username, 'bus')
                 LeDate =highestDate(username, 'bus')
