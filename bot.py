@@ -3163,7 +3163,8 @@ async def profile(ctx, user: discord.User = None):
                 sets = topStats(username, 'sets', 0, 'tram')
                 trains = topStats(username, 'types', 0, 'tram')
                 dates = topStats(username, 'dates', 0, 'tram')
-                
+                trips = topStats(username, 'pairs', 0, 'tram')
+
                 #other stats stuff:
                 eDate =lowestDate(username, 'tram')
                 LeDate =highestDate(username, 'tram')
@@ -3192,6 +3193,8 @@ async def profile(ctx, user: discord.User = None):
                 sets = topStats(username, 'sets', 0, 'sydney-trains')
                 trains = topStats(username, 'types', 0, 'sydney-trains')
                 dates = topStats(username, 'dates', 0, 'sydney-trains')
+                trips = topStats(username, 'pairs', 0, 'sydney-trains')
+                
                 #other stats stuff:
                 eDate =lowestDate(username, 'sydney-trains')
                 LeDate =highestDate(username, 'sydney-trains')
@@ -3203,6 +3206,7 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Train Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
@@ -3220,6 +3224,8 @@ async def profile(ctx, user: discord.User = None):
                 sets = topStats(username, 'sets', 0, 'sydney-trams')
                 trains = topStats(username, 'types', 0, 'sydney-trams')
                 dates = topStats(username, 'dates', 0, 'sydney-trams')
+                trips = topStats(username, 'pairs', 0, 'sydney-trams')
+                
                 #other stats stuff:
                 eDate =lowestDate(username, 'sydney-trams')
                 LeDate =highestDate(username, 'sydney-trams')
@@ -3231,6 +3237,7 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
@@ -3249,6 +3256,8 @@ async def profile(ctx, user: discord.User = None):
                 sets = topStats(username, 'sets', 0, 'adelaide-trains')
                 trains = topStats(username, 'types', 0, 'adelaide-trains')
                 dates = topStats(username, 'dates', 0, 'adelaide-trains')
+                trips = topStats(username, 'pairs', 0, 'adelaide-trains')
+
                 #other stats stuff:
                 eDate =lowestDate(username, 'adelaide-trains')
                 LeDate =highestDate(username, 'adelaide-trains')
@@ -3260,6 +3269,7 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
@@ -3277,6 +3287,8 @@ async def profile(ctx, user: discord.User = None):
                 sets = topStats(username, 'sets', 0, 'bus')
                 trains = topStats(username, 'types', 0, 'bus')
                 dates = topStats(username, 'dates', 0, 'bus')
+                trips = topStats(username, 'pairs', 0, 'bus')
+                
                 #other stats stuff:
                 eDate =lowestDate(username, 'bus')
                 LeDate =highestDate(username, 'bus')
@@ -3288,6 +3300,7 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Bus Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
