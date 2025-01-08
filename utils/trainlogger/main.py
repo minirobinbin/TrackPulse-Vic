@@ -319,6 +319,49 @@ def addAdelaideTrain(username, date, train_number, train_type, line, start, end)
     print(f"Data saved to {filename}")
     return id
 
+def addPerthTrain(username, date, train_number, train_type, line, start, end):
+
+    # Create a CSV file named after the username
+    filename = f"utils/trainlogger/userdata/perth-trains/{username}.csv"
+    
+    if not os.path.exists(filename):
+        # Create the file if it does not exist
+        with open(filename, 'w') as file:
+            file.write('')  # Write an empty string to create the file
+        print(f"File created: {filename}")
+    else:
+        print(f"File already exists: {filename}")
+    
+    if date.endswith('-'):
+        date = date[:-1]
+
+    id = None
+
+    # Write the data to the CSV file
+    try:
+        os.listdir('utils\\trainlogger\\userdata\\perth-trains')
+    except FileNotFoundError:
+        os.mkdir('utils/trainlogger/userdata/perth-trains')
+        id = 0
+
+    with open(filename, 'r+', newline='') as file:
+        data = file.readlines()
+        if data == []:
+            id = 0
+        else:
+            id = data[-1].split(',')[0][1:]
+    
+    id = dectohex(hextodec(id)+1)
+    
+    with open(filename, 'a', newline='') as file:
+        writer = csv.writer(file)
+        # file.write('\n')
+        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end])
+
+
+    print(f"Data saved to {filename}")
+    return id
+
 def readLogs(username):
 
     # Create the filename based on the username
@@ -443,6 +486,30 @@ def readBusLogs(username):
 def readAdelaideLogs(username):
     # Create the filename based on the username
     filename = f"utils/trainlogger/userdata/adelaide-trains/{username}.csv"
+    user_data = []
+
+    try:
+        # Open the CSV file and read the data
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            user_data = list(reader)
+            # data = file.readlines()
+            # print(data)
+            if user_data == []:
+                return 'no data'
+        
+        # Return the data instead of printing it
+        if len(user_data) > 0:
+            return user_data[::-1]
+        else:
+            return []
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return []
+    
+def readPerthLogs(username):
+    # Create the filename based on the username
+    filename = f"utils/trainlogger/userdata/perth-trains/{username}.csv"
     user_data = []
 
     try:

@@ -108,6 +108,10 @@ def getMapEmoji(line, type):
             return('<:bbr2:1320142972171587746>')
         if type == 'skipped':
             return('<:be:1322709966758350848>')
+        if type == 'interchange_first':
+            return('<:bit:1322897569042399243>')
+        if type == 'interchange_last':
+            return('<:bit2:1322897579683479576>')
         else:
             return '⚠'
         
@@ -126,6 +130,10 @@ def getMapEmoji(line, type):
             return('<:dbr2:1320145221698195556>')
         if type == 'skipped':
             return('<:de:1322710023268339774>')
+        if type == 'interchange_first':
+            return('<:dit:1322897682561372242>')
+        if type == 'interchange_last':
+            return('<:dit2:1322897692258467891>')
         else:
             return '⚠'
         
@@ -144,6 +152,10 @@ def getMapEmoji(line, type):
             return('<:stbr2:1320631773209690194>')
         if type == 'skipped':
             return('<:ste:1322710199437365298>')
+        if type == 'interchange_first':
+            return('<:stit:1322897817332617366>')
+        if type == 'interchange_last':
+            return('<:stit2:1322897830788206592>')
         else:
             return '⚠'
         
@@ -162,6 +174,10 @@ def getMapEmoji(line, type):
             return('<:fbr2:1320145225527722015>')
         if type == 'skipped':
             return('<:fe:1322710042230653009>')
+        if type == 'interchange_first':
+            return('<:fit:1322897707483791451>')
+        if type == 'interchange_last':
+            return('<:fit2:1322897720624807986>')
         else:
             return '⚠'
         
@@ -180,6 +196,10 @@ def getMapEmoji(line, type):
             return('<:csbr2:1320145218200404018>')
         if type == 'skipped':
             return('<:cse:1322709995078287482>')
+        if type == 'interchange_first':
+            return('<:crit:1322897623962878052>')
+        if type == 'interchange_last':
+            return('<:crit2:1322897635664855104>')
         else:
             return '⚠'
     
@@ -198,6 +218,10 @@ def getMapEmoji(line, type):
             return('<:nbr2:1320145280569442426>')
         if type == 'skipped':
             return('<:ne:1322710100061847636>')
+        if type == 'interchange_first':
+            return('<:nit:1322897779131023462>')
+        if type == 'interchange_last':
+            return('<:nit2:1322897794184515615>')
         else:
             return '⚠'
         
@@ -216,24 +240,32 @@ def getMapEmoji(line, type):
             return('<:cbr2:1320145214467215411>')
         if type == 'skipped':
             return('<:ce:1322709978859180053>')
+        if type == 'interchange_first':
+            return('<:cit:1322897599937642596>')
+        if type == 'interchange_last':
+            return('<:cit2:1322897612159979542>')
         else:
             return '⚠'
         
     if line == "Flemington Racecourse":
         if type == "terminus":
-            return('<:frt:1320142981877203037>')
+            return('<:frt:1322903781842616411>')
         if type == "terminus2":
-            return('<:frt2:1320227122299539486>')
+            return('<:frt2:1322903791523332148>')
         if type == "stop":
-            return('<:frs:1320142979943497748>')
+            return('<:frs:1322903770073530449>')
         if type == "interchange":
-            return('<:fri:1320142978114916382>')
+            return('<:fri:1322903741422108786>')
         if type == "cont1":
-            return('<:frbr:1320145227326951434>')
+            return('<:frbr:1322903633892868127>')
         if type == "cont2":
-            return('<:frbr2:1320145229243875411>')
+            return('<:frbr2:1322903649290289245>')
         if type == 'skipped':
-            return('<:fre:1322710073570627654>')
+            return('<:fre:1322903729959211143>')
+        if type == 'interchange_first':
+            return('<:frit:1322897739062706236>')
+        if type == 'interchange_last':
+            return('<:frit2:1322897752191008839>')
         else:
             return '⚠'
         
@@ -252,9 +284,73 @@ def getMapEmoji(line, type):
             return('<:vbr2:1322740683773055046>')
         if type == 'skipped':
             return('<:ve:1322740553758150666>')
+        if type == 'interchange_first':
+            return('<:vit:1322740867869708329>')
+        if type == 'interchange_last':
+            return('<:vit2:1322740857685803060>')
+        else:
+            return '⚠'
+    
+    if line == "bus" or line =="tram":
+        if type == "terminus":
+            return('<:frt:1322903781842616411>')
+        if type == "terminus2":
+            return('<:frt2:1322903791523332148>')
+        if type == "stop":
+            return('<:frs:1322903770073530449>')
+        if type == "interchange":
+            return('<:fri:1322903741422108786>')
+        if type == "cont1":
+            return('<:frbr:1322903633892868127>')
+        if type == "cont2":
+            return('<:frbr2:1322903649290289245>')
+        if type == 'skipped':
+            return('<:fre:1322903729959211143>')
+        if type == 'interchange_first':
+            return('<:frit:1322897739062706236>')
+        if type == 'interchange_last':
+            return('<:frit2:1322897752191008839>')
         else:
             return '⚠'
     
     else:
-        return '⚠'
-        
+        if type == "terminus":
+            return('<:ot:1325248217599705118>')
+        if type == "terminus2":
+            return('<:ot2:1325248229419258018>')
+        if type == "stop":
+            return('<:ost:1325248202537963631>')
+        if type == "interchange":
+            return('<:oi:1325248161815462048>')
+        if type == "cont1":
+            return('<:obr:1325248124125446265>')
+        if type == "cont2":
+            return('<:obr2:1325248137144827995>')
+        if type == 'skipped':
+            return('<:oe:1325248147467010070>')
+        if type == 'interchange_first':
+            return('<:oit:1325248174675198104>')
+        if type == 'interchange_last':
+            return('<:oit2:1325248188709343293>')
+        else:
+            return '⚠'
+    
+def getEmojiForDeparture(trainType):
+    if trainType == "6 Car Comeng":
+        return('<:edi:1325040436946931754> x6')
+    elif trainType == "3 Car Comeng":
+        return('<:edi:1325040436946931754> x3')
+    elif trainType == "6 Car Siemens":
+        return('<:siemens:1325040408866193449> x6')
+    elif trainType == "3 Car Siemens":
+        return('<:siemens:1325040408866193449> x3')  
+    elif trainType == "6 Car Xtrapolis":
+        return('<:xtrap:1325040397688377364> x6')
+    elif trainType == "3 Car Xtrapolis":
+        return('<:xtrap:1325040397688377364> x3') 
+    elif trainType == "7-car HCMT":
+        return('<:hcmt:1325040456496713768> x7')
+    elif trainType == "Sprinter":
+        return('<:sprinter:1325040386913075200>')
+    else:
+        return(trainType)

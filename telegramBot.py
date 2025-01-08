@@ -25,7 +25,7 @@ from io import StringIO
 
 from utils.search import *
 from utils.colors import *
-from utils.stats import *
+from utils.stats.stats import *
 from utils.pageScraper import *
 from utils.trainImage import *
 from utils.checktype import *
