@@ -293,28 +293,177 @@ async def task_loop():
 
 
 # Help command
-@bot.tree.command(name='help', description='Run help if you want to know about a command')
-async def help(ctx):
-    async def helper():
-        log_command(ctx.user.id, 'help')
-        generalCmds =f"""</help:1261107050545549342> - Shows this command
-</stats profile:1240101357847838815> - View your profile with various stats across your logs and game wins"""
-        logCmds = """</log train:1289843416628330506> - Add a train in Victoria you have been on, arguments: `line` - The line the train was on, `number` - The number of the carrige or loco you went on (the full set will autofill for Melbourne only), `date` - will autofill to today if empty, `start` - station you got on at, `end` - station you got off at, `traintype` - type of train, will autofill if train number entered (Melbourne Only).
-</log sydney-train:1289843416628330506> - same as above but for trains in New South Wales
-</log melbourne-tram:1289843416628330506> - same as above but for trams in Melbourne
-</log sydney-tram:1289843416628330506> - same as above but for light rail in Sydney
+help_commands = ['/search train','/departures','/search td-number','/log train','/log stats','/log view','/search train-photo','/submit-photo','/help']
 
-</log view:1289843416628330506> - view all your logs or a specific log id
-</log delete:1289843416628330506> - delete one of your logs, leave id blank to delete the last log from the selected mode. The id can be seen with </log view:1289843416628330506>
-</log stats:1289843416628330506> - view various stats and graphs from your logged trips."""
-        searchCmds = """</search train:1240101357847838814> - Input a carriage number to see info about it, such as it's type, next services, livery and more!
-</departures:1288002114466877529> - View a station's next 9 Metro departures
-</metro-line:1288004355475111938> - View disruptions for a Metro Trains line
-</search route:1240101357847838814> - View disruptions for a tram or bus route"""
-        await ctx.response.send_message(f"# Command help\n{generalCmds}\n## Log Commands\n{logCmds}\n## Search commands\n{searchCmds}\n## Support server: https://discord.gg/nfAqAnceQ5")
-    asyncio.create_task(helper())
+async def help_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = help_commands.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
 
+@bot.tree.command(name="help", description="Lists available commands by category, or learn more about a specific command.")
+@app_commands.describe(category="Choose a command category", command='Learn more about how to use a specific command.')
+@app_commands.choices(category=[
+    app_commands.Choice(name="General", value="general"),
+    app_commands.Choice(name="Search", value="search"),
+    app_commands.Choice(name="Logs", value="logs"),
+    app_commands.Choice(name="Fun", value="fun"),
+])
+@app_commands.autocomplete(command=help_autocompletion)
+
+async def help(ctx, category: app_commands.Choice[str] = None, command:str=None):
+    log_command(ctx.user.id, 'help')
+    categories = {
+        "search": [
+            "</search train:1240101357847838814> - Shows information about a specific train. For multiple units use the carriage number otherwise use the locomotive number. Will show live tracking info if avaliable",
+            "</departures:1288002114466877529> - Shows the next Metro trains departing a station. Includes information about which exact train is running the service.",
+            "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
+            "</search tram:1240101357847838814> - Shows information about a specific tram.",
+            "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
+            "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
+            "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
+            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
+        ],
+        "general": [
+            "</about:1322339128121102357> - Shows information about the bot."
+            "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
+            "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
+        ],
+        "fun": [
+            "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
+            "</games station-order:1240101357847838813> - Play a game where you recall which stations are up or down from a specific station.",
+            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
+        ],
+        "logs":
+            [
+            "</log train:1289843416628330506> - Log a Melbourne/Victorian train you have been on. The full set and type will be autofilled by inputting a carriage number, for locomotive serviced use the locomotive number. If you don't know any of the information you can type 'Unknown'.",
+            "</log tram:1289843416628330506> - Log a Melbourne tram, works in a similar way to log train.",
+            "</log sydney-train:1289843416628330506> - Log a Sydney train, works in a similar way to log train however the set and type will not be autofilled.",
+            "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
+            "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
+            "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
+            "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
+            "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
+            "</completion stations:1304404972229623829> - View which stations you have been to.",
+            ]
+    }
     
+    commands = {
+        "/log train": """/log train is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
+
+                        **Options:**
+
+                        Required:
+                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, tyoe "Unknown".
+                        Number: which carriage you rode. Examples include "1M", "2111", "N452", "9026". If you don't know, type "Unknown".
+                        Start: the starting station of your trip. You can choose from the list or type your own.
+                        End: the ending station of your trip. You can choose from the list or type your own.
+
+                        Optional:
+                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
+                        Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
+                        Notes: add any notes you want to add to your log.
+                        """,
+        "/search train": """/search train is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
+
+                        **Options:**
+
+                        Required:
+                        Train: input the Number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
+
+                        Optional:
+                        Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. 
+                        """,
+        "/log stats": """/log stats is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
+
+                        **Options:**
+
+                        Required:
+                        Stat: choose a statistic to view from the list. The choices are:\n"Lines": which lines you've riden and how many times you've riden them,\n"Stations": which stations you've gotten on/off at and how many times you've gotten on/off at them,\n"Trips": which trips you've taken and how many times you've taken them,\n"Trip Length (VIC Train Only)": every VIC Train trip you've taken, with the first log it appears in, sorted by length,\n"Sets": which train sets you've riden and how many times you've riden them,\n"Dates": which dates you've logged and how many logs you logged that day,\n"Types": which types of train you've riden and how many times you've riden them and\n"Operators": which Public Transport Operators you've used and how many times you've used them
+
+                        Optional:
+                        Format: what format you want the statistic to be displayed in.\nEach statistic has a default format, generally chosen to display the data in the most convenient way. Choose from the list to override the default format 
+                        Global_stats: True or False. False by default. If you choose true, it will use all the logs in the system instead of one specific person.
+                        User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
+                        Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.
+                        """,
+        "/help": """/help is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
+        '/search train-photo': '''/search train-photo is a command to view the all the photos in the Xm9G photo archive for a specific train.
+
+                        **Options:**
+
+                        Required:
+                        Number: input the number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
+                        Optional:
+                        Search_set: True or False. False by default. If you choose true, it will include the photos from the other carriages in the train set (if there are others).''',
+        '/departures': '''/departures is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
+
+                        **Options:**
+
+                        Required:
+                        Station: the station you wish to see the departures from. You must choose from the list.
+
+                        Optional:
+                        Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
+        '/submit-photo': """/submit-photo is a command that allows you to submit a photograph of a train to the archive this bot pulls from.\nThese photos will be used by the bot in the /search train and /search train-photo commands to represent a specific trainset, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all 3 uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
+
+                        **Options:**
+
+                        Required:
+                        Photo: attach the photo you would like to submit
+                        Car_number: input the ID of the train the photo is of. Examples include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. Note that Xm9G manually reads this so any info in any understandable form is acceptable.
+                        Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
+                        Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.""",
+        '/search td-number': '''/search td-number is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from /departures.
+
+                        **Options:**
+
+                        Required:
+                        Td: input the TDN for the run.
+
+                        Optional:
+                        Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
+        '/log view': '''/log view is a command allows you to view all the logs recorded by a user.
+
+                        Options:
+
+                        Optional:
+                        Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
+                        User: pick a user who's logs you wish to view. By default it's set to you.
+                        Id: a specific log's ID that you want to view, eg "#18A"'''            
+    }
+
+    if category is None and command is None:
+        embed = discord.Embed(title="Help Categories", description="Please select a category, or select an exact command to learn more info about it.", color=discord.Color.blue())
+
+    elif command is None:
+        chosen_category = category.value
+        if chosen_category in categories:
+            commands_in_category = categories[chosen_category]  # Renamed to avoid shadowing 'commands'
+            embed = discord.Embed(title=f"{chosen_category.capitalize()} Commands", description="Here are the available commands:", color=discord.Color.blue())
+            
+            # Reset joinedcommands for each field to avoid duplication
+            for cmd in commands_in_category:
+                embed.add_field(name="\u200b", value=cmd, inline=False)  # Use zero-width space for invisible field name
+        else:
+            embed = discord.Embed(title="Invalid Category", description="Please choose a valid category.", color=discord.Color.red())
+    elif category is None:
+        chosen_command = command
+        if chosen_command in commands:
+            command_data = commands[chosen_command]  # Avoid shadowing 'commands'
+            embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
+        else:
+            embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
+    else: 
+        ctx.response.send_message('You cant choose both a category and a command!')
+        return
+    
+    await ctx.response.send_message(embed=embed)
+
 
     
 @bot.tree.command(name="metro-line", description="Show info about a Metro line")
@@ -496,7 +645,7 @@ async def route(ctx, rtype: str, number: int):
 # Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
-async def line_info(ctx, number: str, search_set:bool):
+async def line_info(ctx, number: str, search_set:bool=False):
     async def sendPhoto(photo_url):
         log_command(ctx.user.id, 'photo_search')
         # Make a HEAD request to check if the photo exists
@@ -2501,8 +2650,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip', value=f"{row[5]} to {row[6]}")
                         if row[5] != 'N/A' and row[6] != 'N/A':
                             embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
-                        if row[7]:
-                            embed.add_field(name='Notes:', value=row[7])
+                        try:
+                            if row[7]:
+                                embed.add_field(name='Notes:', value=row[7])
+                        except:
+                            pass
                         try:
                             embed.set_thumbnail(url=image)
                         except:
