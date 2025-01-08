@@ -86,7 +86,8 @@ def allTopStats(user, stat, year):
         f'utils/trainlogger/userdata/sydney-trains/{user}.csv',
         f'utils/trainlogger/userdata/sydney-trams/{user}.csv',
         f'utils/trainlogger/userdata/bus/{user}.csv',
-        f'utils/trainlogger/userdata/adelaide-trains/{user}.csv'
+        f'utils/trainlogger/userdata/adelaide-trains/{user}.csv',
+        f'utils/trainlogger/userdata/perth-trains/{user}.csv'
     ]
     file_paths = [path for path in file_pathsChecker if os.path.exists(path)]
 

@@ -115,6 +115,20 @@ for line in file:
     Adelaidelines_list.append(line)
 file.close()
 
+file = open('utils\\datalists\\perthlines.txt','r')
+Perthlines_list = []
+for line in file:
+    line = line.strip()
+    Perthlines_list.append(line)
+file.close()
+
+file = open('utils\\datalists\\perthstations.txt','r')
+Perthstations_list = []
+for line in file:
+    line = line.strip()
+    Perthstations_list.append(line)
+file.close()
+
 file = open('utils\\datalists\\busOps.txt','r')
 busOps = []
 for line in file:
@@ -1918,9 +1932,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Train", value="perth-trains"),
     app_commands.Choice(name="Bus", value="bus"),
-
-
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
     
@@ -2208,6 +2221,85 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
                 
     # Run in a separate task
     asyncio.create_task(log())
+    
+# Perth logger
+async def Perthstation_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = Perthstations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
+async def Perthline_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = Perthlines_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
+@trainlogs.command(name="perth-train", description="Log a Perth train you have been on")
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.autocomplete(start=Perthstation_autocompletion)
+@app_commands.autocomplete(end=Perthstation_autocompletion)
+@app_commands.autocomplete(line=Perthline_autocompletion)
+
+# Perth logger
+async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today'):
+    channel = ctx.channel
+    log_command(ctx.user.id, 'log-perth-train')
+    print(date)
+    async def log():
+        print("logging the perth train")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+        
+        if 201 <= int(number) >=248:
+            type = 'A-Series'
+        elif 301 <= int(number) >=348:
+            type = 'A-Series'
+        elif 4049 <= int(number) >=4126:
+            type = 'B-Series'
+        elif 6049 <= int(number) >=6126:
+            type = 'B-Series'
+        elif 5049 <= int(number) >=5126:
+            type = 'B-Series'
+        elif int(number)< 5126:
+            type = 'C-Series'
+        else:
+            type = 'Unknown'
+        
+        # Add train to the list
+        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
 
 
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
@@ -2311,7 +2403,6 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
     # Run in a separate task
     asyncio.create_task(log())
 
- # Perth Train logger
 
 
 # train logger reader log view
@@ -2327,6 +2418,8 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
         app_commands.Choice(name="NSW Trains", value="sydney-trains"),
         app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
         app_commands.Choice(name="Adelaide Trains & Journey Beyond", value="adelaide-trains"),
+        app_commands.Choice(name="Perth Trains", value="perth-trains"),
+
 ])
 
 async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
@@ -2353,7 +2446,9 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
             if mode == 'sydney-trams':
                 file_path = f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv' 
             if mode == 'adelaide-trains':
-                file_path = f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv'   
+                file_path = f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv' 
+            if mode == 'perth-trains':
+                file_path = f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv'   
                 
             
             
@@ -2716,7 +2811,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no Adelaide trains logged!",ephemeral=True)
                     return
                 print(userid.name)
-                data = readAdelaideLogs(userid.name)
+                data = readPerthLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no Adelaide trains logged!",ephemeral=True)
@@ -2756,8 +2851,64 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)  
+                        time.sleep(0.5)
+                          
+            # for perth:
+            if mode == 'perth-trains':
+                if user == None:
+                    userid = ctx.user
+                else:
+                    userid = user
+                
+                try:
+                    file = discord.File(f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv')
+                except FileNotFoundError:
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no Perth trains logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no Perth trains logged!",ephemeral=True)
+                    return
+                print(userid.name)
+                data = readAdelaideLogs(userid.name)
+                if data == 'no data':
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no Perth trains logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no Perth trains logged!",ephemeral=True)
+                    return
             
+                # create thread
+                logsthread = await ctx.channel.create_thread(
+                    name=f'{userid.name}\'s Perth Train Logs',
+                    auto_archive_duration=60,
+                    type=discord.ChannelType.public_thread
+                )
+                
+                # send reponse message
+                await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+                await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+                await logsthread.send(f'# <:transperthtrain:1326470161385128019> {userid.name}\'s Perth Train Logs')
+                formatted_data = ""
+                for sublist in data:
+                    if len(sublist) >= 7:  # Ensure the sublist has enough items
+                        image = None
+                                                
+                        #send in thread to reduce spam!
+                        thread = await ctx.channel.create_thread(name=f"{userid.name}'s Perth Train logs")
+                            # Make the embed
+                        if sublist[4] == 'Unknown':
+                            embed = discord.Embed(title=f"Log {sublist[0]}")
+                        else:
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf68a24)
+                        embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                        embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                        embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                        embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                        embed.add_field(name=f'Number', value="{} ({})".format(sublist[1], sublist[2]))
+                        # embed.set_thumbnail(url=image)
+    
+                        await logsthread.send(embed=embed)
+                        time.sleep(0.5)  
             # for bus:
             if mode == 'bus':
                 if user == None:
@@ -2841,12 +2992,13 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
     # app_commands.Choice(name="All Trains", value="all-trains"),
     # app_commands.Choice(name="All Trams", value="all-trams"),
 
-    app_commands.Choice(name="Train VIC", value="train"),
-    app_commands.Choice(name="Tram VIC", value="tram"),
+    app_commands.Choice(name="Victorian Trains", value="train"),
+    app_commands.Choice(name="Melbourne Trams", value="tram"),
     app_commands.Choice(name="Bus", value="bus"),
-    app_commands.Choice(name="Train NSW", value="sydney-trains"),
-    app_commands.Choice(name="Tram NSW", value="sydney-trams"),
+    app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
 async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all', year:int=0):
@@ -2881,7 +3033,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         # top operators thing:
         if stat == 'operators':
             try:
-                pieChart(data, f'Top Operators in Victoria ― {name}', ctx.user.name)
+                pieChart(data, f'Top Operators ― {name}', ctx.user.name)
                 await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('User has no logs!')  
@@ -3275,10 +3427,38 @@ async def profile(ctx, user: discord.User = None):
             f'Last log {last}\n'
             f'Total logs: {logAmounts(username, "adelaide-trains")}'
     )
+            except FileNotFoundError:
+                embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:", value=f'{username} has no logged trips in Adelaide!')
 
+        # perth Logger
+            try:
+                lines = topStats(username, 'lines', 0, 'perth-trains')
+                stations = topStats(username, 'stations', 0, 'perth-trains')
+                sets = topStats(username, 'sets', 0, 'perth-trains')
+                trains = topStats(username, 'types', 0, 'perth-trains')
+                dates = topStats(username, 'dates', 0, 'perth-trains')
+                trips = topStats(username, 'pairs', 0, 'perth-trains')
+
+                #other stats stuff:
+                eDate =lowestDate(username, 'perth-trains')
+                LeDate =highestDate(username, 'perth-trains')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:transperthtrain:1326470161385128019> Perth Train Log Stats:',
+        value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "perth-trains")}'
+    )
                                     
             except FileNotFoundError:
-                embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats", value=f'{username} has no logged trips in Adelaide!')
+                embed.add_field(name="<:transperthtrain:1326470161385128019> Perth Train Log Stats", value=f'{username} has no logged trips in Perth!')
             
     # bus Logger
             try:
@@ -3309,7 +3489,7 @@ async def profile(ctx, user: discord.User = None):
 
                                     
             except FileNotFoundError:
-                embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips.')
+                embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips!')
 
             
             #games
