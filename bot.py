@@ -3881,7 +3881,7 @@ async def ids(ctx: commands.Context) -> None:
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
     if ctx.author.id in [780303451980038165,1002449671224041502,1002449671224041502]:
-        log_command(ctx.author.id, 'sync')
+
         if not guilds:
             if spec == "~":
                 synced = await ctx.bot.tree.sync(guild=ctx.guild)
