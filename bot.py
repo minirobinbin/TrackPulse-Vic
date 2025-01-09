@@ -293,7 +293,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['/search train','/departures','/search td-number','/log train','/log stats','/log view','/search train-photo','/submit-photo','/help']
+help_commands = ['Which /log command should I use?','/about','/completion sets','completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/myki save-login','/myki view','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -312,6 +312,7 @@ async def help_autocompletion(
     app_commands.Choice(name="Search", value="search"),
     app_commands.Choice(name="Logs", value="logs"),
     app_commands.Choice(name="Fun", value="fun"),
+    app_commands.Choice(name="Myki", value="myki"),
 ])
 @app_commands.autocomplete(command=help_autocompletion)
 
@@ -329,7 +330,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
         ],
         "general": [
-            "</about:1322339128121102357> - Shows information about the bot."
+            "</about:1322339128121102357> - Shows information about the bot.",
             "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
             "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
         ],
@@ -339,21 +340,67 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
         ],
         "logs":
-            [
+        [
             "</log train:1289843416628330506> - Log a Melbourne/Victorian train you have been on. The full set and type will be autofilled by inputting a carriage number, for locomotive serviced use the locomotive number. If you don't know any of the information you can type 'Unknown'.",
             "</log tram:1289843416628330506> - Log a Melbourne tram, works in a similar way to log train.",
             "</log sydney-train:1289843416628330506> - Log a Sydney train, works in a similar way to log train however the set and type will not be autofilled.",
             "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
             "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
             "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
+            "</log bus:1289843416628330506> - Log any bus or coach.",
+            'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
+            "</log view:1289843416628330506> - View your logs",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
-            ]
+            "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to."
+        ],
+        "myki":
+        [
+            "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
+            "Please note that the following commands are currently broken and won't work:",
+            "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
+            "</myki view:1289843416628330507> - View your Mykis and their balance."
+        ]
     }
     
     commands = {
-        "/log train": """/log train is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
+        "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
+        '/about': '''</about:1322339128121102357> is a command that displays a brief summary of this bot and credits''',
+        '/completion sets': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/completion stations': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
+
+                        **Options:**
+
+                        Required:
+                        Station: the station you wish to see the departures from. You must choose from the list.
+
+                        Optional:
+                        Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
+        '/games station-guesser': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/games station-order': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        "/help": """</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
+        '/line-status': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log adelaide-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log bus': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log perth-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        "/log stats": """</log stats:1289843416628330506> is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
+
+                        **Options:**
+
+                        Required:
+                        Stat: choose a statistic to view from the list. The choices are:\n"Lines": which lines you've riden and how many times you've riden them,\n"Stations": which stations you've gotten on/off at and how many times you've gotten on/off at them,\n"Trips": which trips you've taken and how many times you've taken them,\n"Trip Length (VIC Train Only)": every VIC Train trip you've taken, with the first log it appears in, sorted by length,\n"Sets": which train sets you've riden and how many times you've riden them,\n"Dates": which dates you've logged and how many logs you logged that day,\n"Types": which types of train you've riden and how many times you've riden them and\n"Operators": which Public Transport Operators you've used and how many times you've used them
+
+                        Optional:
+                        Format: what format you want the statistic to be displayed in.\nEach statistic has a default format, generally chosen to display the data in the most convenient way. Choose from the list to override the default format 
+                        Global_stats: True or False. False by default. If you choose true, it will use all the logs in the system instead of one specific person.
+                        User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
+                        Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.
+                        """,
+        '/log sydney-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log sydney-tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        "/log train": """</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
 
                         **Options:**
 
@@ -368,7 +415,30 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
                         Notes: add any notes you want to add to your log.
                         """,
-        "/search train": """/search train is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
+        '/log tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
+
+                        Options:
+
+                        Optional:
+                        Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
+                        User: pick a user who's logs you wish to view. By default it's set to you.
+                        Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
+        '/metro-line': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/myki calculate-fare': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/search route': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
+
+                        **Options:**
+
+                        Required:
+                        Td: input the TDN for the run.
+
+                        Optional:
+                        Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
+        "/search train": """</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
 
                         **Options:**
 
@@ -378,21 +448,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Optional:
                         Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. 
                         """,
-        "/log stats": """/log stats is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
-
-                        **Options:**
-
-                        Required:
-                        Stat: choose a statistic to view from the list. The choices are:\n"Lines": which lines you've riden and how many times you've riden them,\n"Stations": which stations you've gotten on/off at and how many times you've gotten on/off at them,\n"Trips": which trips you've taken and how many times you've taken them,\n"Trip Length (VIC Train Only)": every VIC Train trip you've taken, with the first log it appears in, sorted by length,\n"Sets": which train sets you've riden and how many times you've riden them,\n"Dates": which dates you've logged and how many logs you logged that day,\n"Types": which types of train you've riden and how many times you've riden them and\n"Operators": which Public Transport Operators you've used and how many times you've used them
-
-                        Optional:
-                        Format: what format you want the statistic to be displayed in.\nEach statistic has a default format, generally chosen to display the data in the most convenient way. Choose from the list to override the default format 
-                        Global_stats: True or False. False by default. If you choose true, it will use all the logs in the system instead of one specific person.
-                        User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
-                        Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.
-                        """,
-        "/help": """/help is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
-        '/search train-photo': '''/search train-photo is a command to view the all the photos in the Xm9G photo archive for a specific train.
+        '/search train-photo': '''</search train-photo:1240101357847838814> is a command to view the all the photos in the Xm9G photo archive for a specific train.
 
                         **Options:**
 
@@ -400,16 +456,11 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Number: input the number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
                         Optional:
                         Search_set: True or False. False by default. If you choose true, it will include the photos from the other carriages in the train set (if there are others).''',
-        '/departures': '''/departures is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
-
-                        **Options:**
-
-                        Required:
-                        Station: the station you wish to see the departures from. You must choose from the list.
-
-                        Optional:
-                        Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
-        '/submit-photo': """/submit-photo is a command that allows you to submit a photograph of a train to the archive this bot pulls from.\nThese photos will be used by the bot in the /search train and /search train-photo commands to represent a specific trainset, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all 3 uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
+        '/search tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/submit-photo': """</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all 3 uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
 
                         **Options:**
 
@@ -418,23 +469,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Car_number: input the ID of the train the photo is of. Examples include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. Note that Xm9G manually reads this so any info in any understandable form is acceptable.
                         Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
                         Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.""",
-        '/search td-number': '''/search td-number is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from /departures.
-
-                        **Options:**
-
-                        Required:
-                        Td: input the TDN for the run.
-
-                        Optional:
-                        Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
-        '/log view': '''/log view is a command allows you to view all the logs recorded by a user.
-
-                        Options:
-
-                        Optional:
-                        Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
-                        User: pick a user who's logs you wish to view. By default it's set to you.
-                        Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"'''            
+        '/wongm': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>'''
     }
 
     if category is None and command is None:
@@ -456,6 +492,70 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         if chosen_command in commands:
             command_data = commands[chosen_command]  # Avoid shadowing 'commands'
             embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
+            if command == 'Which /log command should I use?': embed.add_field(name="", value="""Victoria:
+                        Metro Trains Melbourne: </log train:1289843416628330506>
+                        V/Line Rail: </log train:1289843416628330506>
+                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Yarra Trams: </log tram:1289843416628330506>
+                        PTV Bus: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: </log train:1289843416628330506>
+                        Heritage Railway: </log train:1289843416628330506>
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""New South Wales:
+                        Sydney Trains: </log sydney-train:1289843416628330506>
+                        Sydney Metro: </log sydney-train:1289843416628330506>
+                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        V/Line Rail: </log train:1289843416628330506>
+                        Sydney Light Rail: </log sydney-tram:1289843416628330506>
+                        Newcastle Light Rail: </log sydney-tram:1289843416628330506>
+                        Sydney Ferries: Currently Not Available
+                        Newcastle Ferries: Currently Not Available
+                        Transport for NSW Bus: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""New South Wales Cont.:
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""South Australia:
+                        Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Adelaide Metro Tram: Currently Not Available
+                        Adelaide Metro Bus: </log bus:1289843416628330506>
+                        Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Western Australia:
+                        Transperth Rail: </log perth-train:1289843416628330506>
+                        Transwa Rail: </log perth-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Transperth Ferries: Currently Not Available
+                        Transperth Bus: </log bus:1289843416628330506>
+                        Transwa Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Northern Territory
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Darwinbus: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available
+
+                        Other regions:
+                        Any Bus/Coach: </log bus:1289843416628330506>""")
         else:
             embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
     else: 
@@ -3951,8 +4051,8 @@ async def ids(ctx: commands.Context) -> None:
 @bot.command()
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
-    if ctx.author.id in [780303451980038165,1002449671224041502]:
-        log_command(ctx.author.id, 'sync')
+    if ctx.author.id in [780303451980038165,1002449671224041502,1002449671224041502]:
+
         if not guilds:
             if spec == "~":
                 synced = await ctx.bot.tree.sync(guild=ctx.guild)
