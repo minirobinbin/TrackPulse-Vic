@@ -790,7 +790,32 @@ async def line_info(ctx, number: str, search_set:bool=False):
     # start of the thing
     channel = ctx.channel
     search_query = number.upper()
-    await sendPhotoEmbed(search_query, search_query)
+    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.webp"
+    await ctx.response.send_message(f"Searching for `{search_query}`...")
+    
+    #get full set
+    try:
+        fullSet = setNumber(number).split("-")
+    except:
+        print(f'cannot get full set for {number}')
+        search_set=False
+                
+    await sendPhoto(photo_url)
+    
+    if search_set:
+        print(f'Searching full set: {fullSet}')
+        if fullSet[0] != number:
+            search_query=fullSet[0].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[0]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.webp")
+        if fullSet[1] != number:
+            search_query=fullSet[1].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[1]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.webp")
+        if fullSet[2] != number:
+            search_query=fullSet[2].upper()
+            await ctx.channel.send(f'Photos for `{fullSet[2]}`')
+            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
 
  
