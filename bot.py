@@ -437,7 +437,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Optional:
                         Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
                         User: pick a user who's logs you wish to view. By default it's set to you.
-                        Id: a specific log's ID that you want to view, eg "#18A"'''            
+                        Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"'''            
     }
 
     if category is None and command is None:
@@ -3187,7 +3187,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         time.sleep(0.5)  
     asyncio.create_task(sendLogs())
 
-# train logger stats
+# train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
 @app_commands.choices(stat=[
@@ -3258,10 +3258,27 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 await ctx.response.send_message('User has no logs!')  
         if stat == 'length':
             try:
+                # create thread
+                try:
+                    logsthread = await ctx.channel.create_thread(
+                        name=f"{userid.name}'s longest trips in Victoria",
+                        auto_archive_duration=60,
+                        type=discord.ChannelType.public_thread
+                    )
+                except Exception as e:
+                    await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                    
+                # send reponse message
+                pfp = userid.avatar.url
+                embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=0x0070c0)
+                embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+                embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
+                await ctx.response.send_message(embed=embed)
+                
                 lines = data.splitlines()
                 chunks = []
                 current_chunk = ""
-                await ctx.response.send_message('Here are your longest trips in Victoria:')
+                await logsthread.send('Here are your longest trips in Victoria:')
 
                 for line in lines:
                     # Check if adding this line would exceed the max_length
@@ -3279,7 +3296,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     chunks.append(current_chunk)
                     
                 for i, chunk in enumerate(chunks):
-                    await ctx.channel.send(chunk)
+                    await logsthread.send(chunk)
                 
             except Exception as e:
                 await ctx.response.send_message(f"Error: `{e}`")
@@ -3299,22 +3316,37 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 ctx.response.send_message('You have no logs!')
             
         elif format == 'l&g':
-            await ctx.response.send_message('Here are your stats:')
+            # create thread
+            try:
+                logsthread = await ctx.channel.create_thread(
+                    name=stat.title(),
+                    auto_archive_duration=60,
+                    type=discord.ChannelType.public_thread
+                )
+            except Exception as e:
+                await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                
+            # send reponse message
+            pfp = userid.avatar.url
+            embed=discord.Embed(title=stat.title(), colour=0x0070c0)
+            embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+            embed.add_field(name='Click here to view your stats:', value=f'<#{logsthread.id}>')
+            await ctx.response.send_message(embed=embed)
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
                 count += 1
                 if len(message) > 1900:
-                    await ctx.channel.send(message)
+                    await logsthread.send(message)
                     message = ''
             try:
                 if global_stats:
                     barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
                 else:
                     barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name)
-                await ctx.channel.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                await logsthread.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
-                await ctx.channel.send('User has no logs!')
+                await logsthread.send('User has no logs!')
         elif format == 'pie':
             try:
                 if global_stats:
@@ -3376,16 +3408,35 @@ async def termini(ctx):
     app_commands.Choice(name='N Class', value='N Class'),
 ])
 async def sets(ctx, train:str):
+    userid = ctx.user
+    await ctx.response.defer()
     log_command(ctx.user.id, 'log-sets')
     try:
         data =setlist(ctx.user.name, train)
     except:
-        data = 'No logs found'
+        await ctx.edit_original_response(content='No logs found!')
     
+    # create thread
+    try:
+        logsthread = await ctx.channel.create_thread(
+            name=f'{train} sets {userid.name} has been on',
+            auto_archive_duration=60,
+            type=discord.ChannelType.public_thread
+        )
+    except Exception as e:
+        await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+        
+    # send reponse message
+    pfp = userid.avatar.url
+    embed=discord.Embed(title=f'{train} sets {userid.name} has been on', colour=0x0070c0)
+    embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+    embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
+    await ctx.edit_original_response(embed=embed)
+
     if len(data) <= 2000:
-        await ctx.response.send_message(data)
+        await logsthread.send(data)
     else:
-        await ctx.response.send_message(f"{train} sets you have been on:")
+        await logsthread.send(f"{train} sets you have been on:")
         split_strings = []
         start = 0
         
@@ -3399,10 +3450,11 @@ async def sets(ctx, train:str):
                 split_index = len(data)
             
             split_strings.append(data[start:split_index])
-            start = split_index + 1  # Move past the newline or split point
+            start = split_index + 1
             
         for item in split_strings:
-            await ctx.channel.send(item)
+            await logsthread.send(item)
+
 
 @completion.command(name='stations', description='View which you have visited')
 @app_commands.choices(state=[
@@ -3411,17 +3463,36 @@ async def sets(ctx, train:str):
     app_commands.Choice(name="South Australia", value="South Australian"),
 ])
 async def sets(ctx, state:str):
+    userid = ctx.user
+    await ctx.response.defer()
     log_command(ctx.user.id, 'log-stations')
     try:
         data =stationlist(ctx.user.name, state)
     except Exception as e:
-        data = 'No logs found'
+        await ctx.edit_original_response(content='No logs found')
         print(f'ERROR: {e}')
+        
+    # create thread
+    try:
+        logsthread = await ctx.channel.create_thread(
+            name=f'{state} stations {userid.name} has been to',
+            auto_archive_duration=60,
+            type=discord.ChannelType.public_thread
+        )
+    except Exception as e:
+        await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+        
+    # send reponse message
+    pfp = userid.avatar.url
+    embed=discord.Embed(title=f'{state} stations {userid.name} has been to', colour=0x0070c0)
+    embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+    embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
+    await ctx.edit_original_response(embed=embed)
     
     if len(data) <= 2000:
-        await ctx.response.send_message(data)
+        await logsthread.send(data)
     else:
-        await ctx.response.send_message(f"{state} stations you have been to:")
+        await logsthread.send(f"{state} stations you have been to:")
         split_strings = []
         start = 0
         
@@ -3438,7 +3509,7 @@ async def sets(ctx, state:str):
             start = split_index + 1  # Move past the newline or split point
             
         for item in split_strings:
-            await ctx.channel.send(item)
+            await logsthread.send(item)
 
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
