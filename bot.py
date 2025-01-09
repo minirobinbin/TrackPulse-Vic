@@ -312,6 +312,7 @@ async def help_autocompletion(
     app_commands.Choice(name="Search", value="search"),
     app_commands.Choice(name="Logs", value="logs"),
     app_commands.Choice(name="Fun", value="fun"),
+    app_commands.Choice(name="Myki", value="myki"),
 ])
 @app_commands.autocomplete(command=help_autocompletion)
 
@@ -339,7 +340,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
         ],
         "logs":
-            [
+        [
             "</log train:1289843416628330506> - Log a Melbourne/Victorian train you have been on. The full set and type will be autofilled by inputting a carriage number, for locomotive serviced use the locomotive number. If you don't know any of the information you can type 'Unknown'.",
             "</log tram:1289843416628330506> - Log a Melbourne tram, works in a similar way to log train.",
             "</log sydney-train:1289843416628330506> - Log a Sydney train, works in a similar way to log train however the set and type will not be autofilled.",
@@ -349,10 +350,18 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</log bus:1289843416628330506> - Log any bus or coach.",
             'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
-            "</log view:1289843416628330506> - View your logs"
+            "</log view:1289843416628330506> - View your logs",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
-            ]
+            "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to."
+        ],
+        "myki":
+        [
+            "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
+            "Please note that the following commands are currently broken and won't work:",
+            "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
+            "</myki view:1289843416628330507> - View your Mykis and their balance."
+        ]
     }
     
     commands = {
