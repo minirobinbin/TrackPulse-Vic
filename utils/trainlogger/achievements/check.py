@@ -80,6 +80,51 @@ def checkAchievements(user):
         else:
             print('All lines achievement not added')
             print(f"Items missing: {set(mtrains) - items_found}")
+            
+    # 10 trips in a day checker
+    print('Checking for 10 trips in a day...')
+    dates = {}
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        
+        for row in csv_reader:
+            if len(row) > 3:  # Make sure row has enough columns
+                date = row[3]  # Date is in column 4
+                dates[date] = dates.get(date, 0) + 1
+        
+        # Check if any date has 10 or more trips
+        if any(count >= 10 for count in dates.values()):
+            new_achievements.append('5')
+            print('10 trips in a day achievement added')
+        else:
+            print('10 trips in a day achievement not added')
+            print(f"Maximum trips in a day: {max(dates.values()) if dates else 0}")
+        
+    # end of line checker
+    # end of line station checker
+    print('Checking for end of line stations...')
+    end_stations = {
+        'Lilydale', 'Belgrave', 'Alamein', 'Glen Waverley', 'East Pakenham', 'Cranbourne', 
+        'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Sunbury', 
+        'Craigieburn', 'Upfield', 'Mernda', 'Hurstbridge', 'Warrnambool', 'Bairnsdale', 'Swan Hill', 'Echuca', 'Albury', 'Shepparton', 'Ararat', 'Maryborough'
+    }
+
+    visited_stations = set()
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 5:  # Make sure row has enough columns
+                visited_stations.add(row[5])  # From station
+                visited_stations.add(row[6])  # To station
+
+        # Check if user has visited any end stations
+        if any(station in end_stations for station in visited_stations):
+            new_achievements.append('7')
+            print('End of line achievement added')
+        else:
+            print('End of line achievement not added')
+            print(f"End stations visited: {visited_stations & end_stations}")
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'

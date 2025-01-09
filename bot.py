@@ -189,6 +189,7 @@ search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
 myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
+achievements = CommandGroups(name='achievements')
 
 # flight = CommandGroups(name='flight')
 def download_csv(url, save_path):
@@ -218,9 +219,7 @@ async def on_ready():
     bot.tree.add_command(stats)
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
-    # bot.tree.add_command(flight)
-    activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
-    await bot.change_presence(activity=activity)
+    bot.tree.add_command(achievements)
 
     await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
@@ -232,6 +231,8 @@ async def on_ready():
         print("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
+    activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
+    await bot.change_presence(activity=activity)
     print("Bot started")
 
 # achievement awarder  check achievements
@@ -240,8 +241,8 @@ async def addAchievement(ctx):
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement get!', color=0x43ea46)
-        embed.add_field(name=info['name'], value=info['description'])
-        await ctx.channel.send(embed=embed)
+        embed.add_field(name=info['name'], value=   info['description'])
+        await ctx.channel.send(ctx.user.mention,embed=embed)
 
 # Rare train finder
 def check_rare_trains_in_thread():
@@ -2206,6 +2207,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             embed.set_thumbnail(url=image)
         
         await ctx.edit_original_response(embed=embed)
+        await addAchievement(ctx)
+
         
                         
     # Run in a separate task
@@ -3884,11 +3887,49 @@ async def profile(ctx, user: discord.User = None):
     except Exception as e:
         await ctx.edit_original_response(content = f"Error: `{e}`")
 
-@bot.tree.command(name='refresh-achievements', description='Re-Check all your achievements manually.')
+@achievements.command(name='refresh', description='Re-Check all your achievements manually.')
 async def refreshAchievements(ctx):
     log_command(ctx.user.id, 'refresh-achievements')
     await ctx.response.send_message('Checking for new Achievements...')
     await addAchievement(ctx)
+    
+@achievements.command(name='view', description='View your achievements.')
+@app_commands.describe(user="Who's achievements to show?")
+async def viewAchievements(ctx, user: discord.User = None):
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'view-achievements')
+
+    if user is None:
+        user = ctx.user
+
+    # Get user's achievements
+    filepath = f'utils/trainlogger/achievements/data/{user.name}.csv'
+    user_achievements = []
+    if os.path.exists(filepath):
+        with open(filepath, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                user_achievements.extend(row)
+
+    # Create embed
+    embed = discord.Embed(title=f"{user.name}'s Achievements", color=0x43ea46)
+    
+    # Get all achievements from master list
+    with open('utils/trainlogger/achievements/achievements.csv', 'r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row:  # Skip empty rows
+                achievement_id = row[0]
+                name = row[1]
+                description = row[2]
+                
+                # Add checkmark if user has achievement
+                if achievement_id in user_achievements:
+                    embed.add_field(name=f"✅ {name}", value=description, inline=False)
+                else:
+                    embed.add_field(name=f"❌ {name}", value=description, inline=False)
+
+    await ctx.edit_original_response(embed=embed)
 
     
     
