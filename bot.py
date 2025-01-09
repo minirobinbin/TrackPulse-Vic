@@ -293,7 +293,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['/search train','/departures','/search td-number','/log train','/log stats','/log view','/search train-photo','/submit-photo','/help']
+help_commands = ['Which /log command should I use?','/search train','/departures','/search td-number','/log train','/log stats','/log view','/search train-photo','/submit-photo','/help']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -346,7 +346,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
             "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
             "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
-            "</log bus:1289843416628330506> - Log any bus or coach."
+            "</log bus:1289843416628330506> - Log any bus or coach.",
+            'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
@@ -354,6 +355,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     }
     
     commands = {
+        "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
         "/log train": """/log train is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
 
                         **Options:**
@@ -457,6 +459,70 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         if chosen_command in commands:
             command_data = commands[chosen_command]  # Avoid shadowing 'commands'
             embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
+            if command == 'Which /log command should I use?': embed.add_field(name="", value="""Victoria:
+                        Metro Trains Melbourne: </log train:1289843416628330506>
+                        V/Line Rail: </log train:1289843416628330506>
+                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Yarra Trams: </log tram:1289843416628330506>
+                        PTV Bus: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: </log train:1289843416628330506>
+                        Heritage Railway: </log train:1289843416628330506>
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""New South Wales:
+                        Sydney Trains: </log sydney-train:1289843416628330506>
+                        Sydney Metro: </log sydney-train:1289843416628330506>
+                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        V/Line Rail: </log train:1289843416628330506>
+                        Sydney Light Rail: </log sydney-tram:1289843416628330506>
+                        Newcastle Light Rail: </log sydney-tram:1289843416628330506>
+                        Sydney Ferries: Currently Not Available
+                        Newcastle Ferries: Currently Not Available
+                        Transport for NSW Bus: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""New South Wales Cont.:
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""South Australia:
+                        Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Adelaide Metro Tram: Currently Not Available
+                        Adelaide Metro Bus: </log bus:1289843416628330506>
+                        Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
+                        V/Line Coach: </log bus:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Western Australia:
+                        Transperth Rail: </log perth-train:1289843416628330506>
+                        Transwa Rail: </log perth-train:1289843416628330506>
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Transperth Ferries: Currently Not Available
+                        Transperth Bus: </log bus:1289843416628330506>
+                        Transwa Coach: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Northern Territory
+                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+                        Darwinbus: </log bus:1289843416628330506>
+                        Other Bus/Coach: </log bus:1289843416628330506>
+                        Heritage Train On Mainline: Currently Not Available
+                        Heritage Railway: Currently Not Available
+                        Heritage Tram On Mainline: Currently Not Available
+                        Heritage Tramway: Currently Not Available
+
+                        Other regions:
+                        Any Bus/Coach: </log bus:1289843416628330506>""")
         else:
             embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
     else: 
