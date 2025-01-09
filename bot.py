@@ -346,6 +346,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
             "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
             "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
+            "</log bus:1289843416628330506> - Log any bus or coach."
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
