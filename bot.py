@@ -474,7 +474,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     }
 
     if category is None and command is None:
-        embed = discord.Embed(title="Help Categories", description="Please select a category, or select an exact command to learn more info about it.", color=discord.Color.blue())
+        embed = discord.Embed(title="Help Categories", description="Please select a category, or select an exact command to learn more info about it. If you still can't find what your looking for [join our discord](https://discord.gg/nfAqAnceQ5)", color=discord.Color.blue())
 
     elif command is None:
         chosen_category = category.value
@@ -3960,6 +3960,7 @@ async def about(ctx):
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Comeng17](https://github.com/Comeng17)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
+    embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
     await ctx.edit_original_response(embed=embed)
 
 
