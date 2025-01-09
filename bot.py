@@ -329,7 +329,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
         ],
         "general": [
-            "</about:1322339128121102357> - Shows information about the bot."
+            "</about:1322339128121102357> - Shows information about the bot.",
             "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
             "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
         ],
