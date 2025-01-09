@@ -2092,7 +2092,7 @@ async def line_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
-#log train
+#log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
@@ -2154,6 +2154,10 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             else: type = traintype
         if traintype == "Tait":
             set = '381M-208T-230D-317M'
+        
+        # make the user set traintype have priority/
+        if traintype != 'auto':
+            type = traintype
             
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
