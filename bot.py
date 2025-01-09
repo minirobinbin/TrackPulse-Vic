@@ -56,6 +56,7 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
+from utils.trainlogger.achievements.check import checkAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainset import *
 from utils.trainlogger.stats import *
@@ -73,6 +74,8 @@ from utils.stoppingpattern import *
 from utils.locationfromid import *
 from utils.stationDisruptions import *
 from utils.stats.stats import *
+from utils.trainlogger.achievements import *
+
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -230,7 +233,15 @@ async def on_ready():
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
     print("Bot started")
-# Threads
+
+# achievement awarder  check achievements
+async def addAchievement(ctx):
+    new = checkAchievements(ctx.user.name)
+    for achievement in new:
+        info = getAchievementInfo(achievement)
+        embed = discord.Embed(title='Achievement get!', color=0x43ea46)
+        embed.add_field(name=info['name'], value=info['description'])
+        await ctx.channel.send(embed=embed)
 
 # Rare train finder
 def check_rare_trains_in_thread():
@@ -3869,7 +3880,14 @@ async def profile(ctx, user: discord.User = None):
     except Exception as e:
         await ctx.edit_original_response(content = f"Error: `{e}`")
 
+@bot.tree.command(name='refresh-achievements', description='Re-Check all your achievements manually.')
+async def refreshAchievements(ctx):
+    log_command(ctx.user.id, 'refresh-achievements')
+    await ctx.response.send_message('Checking for new Achievements...')
+    await addAchievement(ctx)
 
+    
+    
 @bot.tree.command(name="line-status", description="View your line status for all lines.")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
