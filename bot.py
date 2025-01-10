@@ -79,7 +79,7 @@ from utils.trainlogger.achievements import *
 # settings
 rareCheckerOn = False
 lineStatusOn = False
-admin_users = ['780303451980038165', '1002449671224041502']
+admin_users = [1002449671224041502, 780303451980038165]
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
