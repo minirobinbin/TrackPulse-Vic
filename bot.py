@@ -3551,6 +3551,7 @@ async def sets(ctx, train:str):
     app_commands.Choice(name="Victoria", value="Victorian"),
     app_commands.Choice(name="New South Wales", value="New South Wales"),
     app_commands.Choice(name="South Australia", value="South Australian"),
+    app_commands.Choice(name="Western Australia", value="Western Australian"),
 ])
 async def sets(ctx, state:str):
     userid = ctx.user

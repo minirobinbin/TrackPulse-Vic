@@ -828,6 +828,14 @@ def stationlist(user, state):
         with open(f'utils/trainlogger/userdata/adelaide-trains/{user}.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
             csv_data = list(reader)
+            
+    if state == 'Western Australian':
+        with open("utils/datalists/perthstations.txt", "r") as file:
+            sets = [line.strip() for line in file]
+        # Read CSV file
+        with open(f'utils/trainlogger/userdata/perth-trains/{user}.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            csv_data = list(reader)
 
     # Create a dictionary to count occurrences of each item
     item_counts = {}
