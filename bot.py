@@ -305,7 +305,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/completion sets','completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/myki save-login','/myki view','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/myki save-login','/myki view','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -365,7 +365,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</log view:1289843416628330506> - View your logs",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
-            "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to."
+            "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
+            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains."
         ],
         "myki":
         [
@@ -379,6 +380,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     commands = {
         "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
         '/about': '''</about:1322339128121102357> is a command that displays a brief summary of this bot and credits''',
+        '/achievements view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/completion sets': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/completion stations': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
