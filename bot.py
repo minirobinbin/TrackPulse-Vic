@@ -3920,10 +3920,8 @@ async def viewAchievements(ctx, user: discord.User = None):
             for row in reader:
                 user_achievements.extend(row)
 
-    # Create embed
-    embed = discord.Embed(title=f"{user.name}'s Achievements", color=0x43ea46)
-    
     # Get all achievements from master list
+    all_achievements = []
     with open('utils/trainlogger/achievements/achievements.csv', 'r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
@@ -3931,14 +3929,49 @@ async def viewAchievements(ctx, user: discord.User = None):
                 achievement_id = row[0]
                 name = row[1]
                 description = row[2]
-                
-                # Add checkmark if user has achievement
-                if achievement_id in user_achievements:
-                    embed.add_field(name=f"✅ {name}", value=description, inline=False)
-                else:
-                    embed.add_field(name=f"❌ {name}", value=description, inline=False)
+                has_achievement = achievement_id in user_achievements
+                all_achievements.append((achievement_id, name, description, has_achievement))
 
-    await ctx.edit_original_response(embed=embed)
+    # Split achievements into pages of 10
+    pages = [all_achievements[i:i + 10] for i in range(0, len(all_achievements), 10)]
+    current_page = 0
+
+    def get_page_embed(page_num):
+        embed = discord.Embed(title=f"{user.name}'s Achievements", color=0x43ea46)
+        embed.set_footer(text=f"Page {page_num + 1}/{len(pages)}")
+        
+        for achievement in pages[page_num]:
+            achievement_id, name, description, has_achievement = achievement
+            emoji = "✅" if has_achievement else "❌"
+            embed.add_field(name=f"{emoji} {name}", value=description, inline=False)
+            
+        return embed
+
+    # Create buttons
+    class NavButtons(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=180)
+
+        @discord.ui.button(label="Previous", style=discord.ButtonStyle.gray)
+        async def previous_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            nonlocal current_page
+            if current_page > 0:
+                current_page -= 1
+                await interaction.response.edit_message(embed=get_page_embed(current_page), view=self)
+            else:
+                await interaction.response.defer()
+
+        @discord.ui.button(label="Next", style=discord.ButtonStyle.gray)
+        async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            nonlocal current_page
+            if current_page < len(pages) - 1:
+                current_page += 1
+                await interaction.response.edit_message(embed=get_page_embed(current_page), view=self)
+            else:
+                await interaction.response.defer()
+
+    # Send initial embed with buttons
+    await ctx.edit_original_response(embed=get_page_embed(0), view=NavButtons())
 
     
     
