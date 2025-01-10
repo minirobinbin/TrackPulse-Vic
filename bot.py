@@ -2599,7 +2599,7 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
             type = 'B-Series'
         elif 5049 <= int(number) >=5126:
             type = 'B-Series'
-        elif int(number)< 5126:
+        elif int(str(number)[-3:]) >= 126:
             type = 'C-Series'
         else:
             type = 'Unknown'
@@ -3556,6 +3556,7 @@ async def sets(ctx, train:str):
     app_commands.Choice(name="Victoria", value="Victorian"),
     app_commands.Choice(name="New South Wales", value="New South Wales"),
     app_commands.Choice(name="South Australia", value="South Australian"),
+    app_commands.Choice(name="Western Australia", value="Western Australian"),
 ])
 async def sets(ctx, state:str):
     userid = ctx.user

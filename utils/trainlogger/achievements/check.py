@@ -463,6 +463,7 @@ def checkAchievements(user):
     line_achievements = {
         'Flemington Racecourse': '29',
         'City Circle': '30',
+        'Stony Point': '31',
     }
 
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
