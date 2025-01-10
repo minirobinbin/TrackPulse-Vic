@@ -3932,12 +3932,17 @@ async def viewAchievements(ctx, user: discord.User = None):
                 has_achievement = achievement_id in user_achievements
                 all_achievements.append((achievement_id, name, description, has_achievement))
 
+    # Calculate percentage
+    total_achievements = len(all_achievements)
+    achieved = sum(1 for _, _, _, has_achievement in all_achievements if has_achievement)
+    percentage = (achieved / total_achievements) * 100 if total_achievements > 0 else 0
+
     # Split achievements into pages of 10
     pages = [all_achievements[i:i + 10] for i in range(0, len(all_achievements), 10)]
     current_page = 0
 
     def get_page_embed(page_num):
-        embed = discord.Embed(title=f"{user.name}'s Achievements", color=0x43ea46)
+        embed = discord.Embed(title=f"{user.name}'s Achievements", description=f"**Progress:** {achieved}/{total_achievements} ({percentage:.1f}%)", color=0x43ea46)
         embed.set_footer(text=f"Page {page_num + 1}/{len(pages)}")
         
         for achievement in pages[page_num]:
