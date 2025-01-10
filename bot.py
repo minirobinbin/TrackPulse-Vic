@@ -3900,7 +3900,7 @@ async def profile(ctx, user: discord.User = None):
 async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
-    await addAchievement(ctx.author.name,ctx. ctx.author.mention)
+    await addAchievement(ctx.author.name,ctx, ctx.author.mention)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
