@@ -241,7 +241,7 @@ async def addAchievement(ctx):
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement get!', color=0x43ea46)
-        embed.add_field(name=info['name'], value=   info['description'])
+        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await ctx.channel.send(ctx.user.mention,embed=embed)
 
 # Rare train finder
