@@ -245,7 +245,7 @@ async def addAchievement(username, ctx, mention):
         embed = discord.Embed(title='Achievement get!', color=0x43ea46)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await ctx.channel.send(mention,embed=embed)
-
+        time.sleep(1)
 # Rare train finder
 def check_rare_trains_in_thread():
     rare_trains = checkRareTrainsOnRoute()
