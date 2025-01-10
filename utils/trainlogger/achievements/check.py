@@ -457,6 +457,28 @@ def checkAchievements(user):
                         achievement_pairs_found.add(achievement_id)
                         print(f'Station pair achievement {achievement_id} added')
                         break
+                    
+    # Check for specific line combinations
+    print('Checking for specific line combinations...')
+    line_achievements = {
+        'Flemington Racecourse': '29',
+        'City Circle': '30',
+    }
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        lines_visited = set()
+        for row in csv_reader:
+            if len(row) > 4:
+                line = row[4]
+                if line in line_achievements and line_achievements[line] not in new_achievements:
+                    new_achievements.append(line_achievements[line])
+                    print(f'Achievement added for line: {line}')
+                    lines_visited.add(line)
+
+    missing_lines = set(line_achievements.keys()) - lines_visited
+    if missing_lines:
+        print(f"Lines not yet visited: {missing_lines}")
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
