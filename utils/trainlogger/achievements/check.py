@@ -283,6 +283,8 @@ def checkAchievements(user):
         'Craigieburn': ['Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "X'Trapolis 2.0"], 
         'Sunbury': ['HCMT', 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']
     }
+    
+    ptv_trains = ['Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "HCMT", "X'Trapolis 100", "X'Trapolis 2.0", 'VLocity', 'Sprinter', 'N Class']
 
     unusual_trains_found = False
 
@@ -294,7 +296,7 @@ def checkAchievements(user):
                 line = row[4]
                 if line in line_train_map and train_type in line_train_map[line]:
                     continue
-                elif line in line_train_map and train_type not in line_train_map[line]:
+                elif line in line_train_map and train_type not in line_train_map[line] and train_type in ptv_trains:
                     new_achievements.append('15')
                     unusual_trains_found = True
                     print(f'Unusual train {train_type} on line {line} achievement added')
@@ -329,6 +331,110 @@ def checkAchievements(user):
             print(f"Stations missing: {all_stations - stations_visited}")
     except FileNotFoundError:
         print('Stations list file not found')
+        
+    # Check for 5 days straight of logging
+    print('Checking for 5 consecutive days of logging...')
+    dates = set()
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 3:  # Make sure row has enough columns
+                try:
+                    date = datetime.strptime(row[3], '%Y-%m-%d')
+                    dates.add(date)
+                except ValueError:
+                    continue
+
+    dates = sorted(dates)
+    max_consecutive = 1
+    current_consecutive = 1
+
+    for i in range(1, len(dates)):
+        if dates[i] - dates[i-1] == timedelta(days=1):
+            current_consecutive += 1
+            max_consecutive = max(max_consecutive, current_consecutive)
+        else:
+            current_consecutive = 1
+
+    if max_consecutive >= 5:
+        new_achievements.append('20')
+        print('5 consecutive days achievement added')
+        print(f"Maximum consecutive days: {max_consecutive}")
+    else:
+        print('5 consecutive days achievement not added')
+        print(f"Maximum consecutive days: {max_consecutive}")
+        
+    
+    # Check for trips on different line groups
+    print('Checking for trips on line groups...')
+    
+    # Define line groups and their achievement IDs
+    line_groups = {
+        'Burnley': {
+            'lines': {'Lilydale', 'Belgrave', 'Glen Waverley', 'Alamein'},
+            'achievement': '21'
+        },
+        'Cross City': {
+            'lines': {'Frankston', 'Werribee', 'Williamstown'},
+            'achievement': '22'
+        },
+        'Sandringham': {
+            'lines': {'Sandringham'},
+            'achievement': '23'
+        },
+        'Northern': {
+            'lines': {'Sunbury', 'Craigieburn', 'Upfield'},
+            'achievement': '24'
+        },
+        'Clifton Hill': {
+            'lines': {'Mernda', 'Hurstbridge'},
+            'achievement': '25'
+        },
+        'Dandenong': {
+            'lines': {'Pakenham', 'Cranbourne'},
+            'achievement': '26'
+        }
+    }
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for group_name, group_data in line_groups.items():
+            print(f'Checking {group_name} group...')
+            csvfile.seek(0)  # Reset file pointer for each group
+            for row in csv_reader:
+                if len(row) > 4 and row[4] in group_data['lines']:
+                    new_achievements.append(group_data['achievement'])
+                    print(f'{group_name} group achievement added')
+                    break
+            else:
+                print(f'{group_name} group achievement not added')
+                
+    # Check for all train types in one day
+    print('Checking for all train types in one day...')
+    train_types_by_date = {}
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 3:
+                date = row[3]
+                train_type = row[2]
+                if date not in train_types_by_date:
+                    train_types_by_date[date] = set()
+                train_types_by_date[date].add(train_type)
+
+        standard_train_types = {"X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', 'HCMT', 'VLocity', 'N Class', 'Sprinter'}
+        
+        for date, types in train_types_by_date.items():
+            if types.issuperset(standard_train_types):
+                new_achievements.append('27')
+                print('All train types in one day achievement added')
+                break
+        else:
+            print('All train types in one day achievement not added')
+            max_types = max(len(types) for types in train_types_by_date.values()) if train_types_by_date else 0
+            print(f"Maximum train types in one day: {max_types}")
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'

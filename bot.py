@@ -76,6 +76,10 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 
+# settings
+rareCheckerOn = False
+lineStatusOn = False
+admin_users = ['780303451980038165', '1002449671224041502']
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -149,8 +153,6 @@ file.close()
 
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
-rareCheckerOn = False
-lineStatusOn = False
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -236,13 +238,13 @@ async def on_ready():
     print("Bot started")
 
 # achievement awarder  check achievements
-async def addAchievement(ctx):
-    new = checkAchievements(ctx.user.name)
+async def addAchievement(username, ctx, mention):
+    new = checkAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement get!', color=0x43ea46)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
-        await ctx.channel.send(ctx.user.mention,embed=embed)
+        await ctx.channel.send(mention,embed=embed)
 
 # Rare train finder
 def check_rare_trains_in_thread():
@@ -2207,7 +2209,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             embed.set_thumbnail(url=image)
         
         await ctx.edit_original_response(embed=embed)
-        await addAchievement(ctx)
+        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
 
         
                         
@@ -3887,11 +3889,11 @@ async def profile(ctx, user: discord.User = None):
     except Exception as e:
         await ctx.edit_original_response(content = f"Error: `{e}`")
 
-@achievements.command(name='refresh', description='Re-Check all your achievements manually.')
-async def refreshAchievements(ctx):
-    log_command(ctx.user.id, 'refresh-achievements')
-    await ctx.response.send_message('Checking for new Achievements...')
-    await addAchievement(ctx)
+@bot.command()
+async def refreshachievements(ctx):
+    log_command(ctx.author.id, 'refresh-achievements')
+    response = await ctx.send('Checking for new Achievements...')
+    await addAchievement(ctx.author.name,ctx. ctx.author.mention)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
@@ -4109,7 +4111,7 @@ async def yearinreview(ctx, year: int=2024):
 # Disabled to not fuck up the data by accident
 '''@bot.command()
 async def ids(ctx: commands.Context) -> None:
-    if ctx.author.id in [707866373602148363,780303451980038165,749835864468619376]:
+    if ctx.author.id in admin_users:
         checkaddids = addids()
         if checkaddids == 'no userdata folder':
             await ctx.send('Error: No userdata folder found.')
@@ -4140,7 +4142,7 @@ async def ids(ctx: commands.Context) -> None:
 @bot.command()
 @commands.guild_only()
 async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
-    if ctx.author.id in [780303451980038165,1002449671224041502,1002449671224041502]:
+    if ctx.author.id in admin_users:
 
         if not guilds:
             if spec == "~":
@@ -4174,7 +4176,7 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
 # sends a message to a specific channel
 @bot.command()
 async def send(ctx, user: discord.Member, *, message: str):
-    if ctx.author.id in [780303451980038165, 1002449671224041502]:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'send')
         try:
             await user.send(message)
