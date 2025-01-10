@@ -3155,7 +3155,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)
+                        time.sleep(0.7)
                           
             # for perth:
             if mode == 'perth-trains':
