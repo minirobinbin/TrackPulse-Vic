@@ -3897,10 +3897,38 @@ async def profile(ctx, user: discord.User = None):
         await ctx.edit_original_response(content = f"Error: `{e}`")
 
 @bot.command()
-async def refreshachievements(ctx):
+async def refreshachievements(ctx, user: discord.Member = None):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
     await addAchievement(ctx.author.name,ctx, ctx.author.mention)
+    if user and ctx.author.id not in admin_users:
+        await ctx.send("You can only refresh achievements for yourself.")
+        return
+    
+    if user and ctx.author.id in admin_users:
+        # Single user refresh
+        response = await ctx.send(f'Checking for new Achievements for {user}...')
+        await addAchievement(user.name, ctx, user.mention)
+        await response.edit(content=f'Finished checking achievements for {user}')
+        return
+
+    if not user and ctx.author.id in admin_users:
+        # Refresh all users
+        response = await ctx.send('Checking achievements for all users...')
+        user_files = os.listdir('utils/trainlogger/userdata')
+        csv_files = [f for f in user_files if f.endswith('.csv')]
+        
+        for csv_file in csv_files:
+            username = csv_file[:-4]  # Remove .csv extension
+            await response.edit(content=f'Checking achievements for {username}...')
+            await addAchievement(username, ctx, f'<@{username}>')
+            
+        await response.edit(content='Finished checking achievements for all users')
+        return
+
+    # Regular user checking their own achievements
+    response = await ctx.send('Checking for new Achievements...')
+    await addAchievement(ctx.author.name, ctx, ctx.author.mention)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
@@ -3932,12 +3960,21 @@ async def viewAchievements(ctx, user: discord.User = None):
                 has_achievement = achievement_id in user_achievements
                 all_achievements.append((achievement_id, name, description, has_achievement))
 
+    # Calculate percentage of achievements earned
+    total_achievements = len(all_achievements)
+    earned_achievements = sum(1 for _, _, _, has_achievement in all_achievements if has_achievement)
+    percentage = (earned_achievements / total_achievements) * 100 if total_achievements > 0 else 0
+
     # Split achievements into pages of 10
     pages = [all_achievements[i:i + 10] for i in range(0, len(all_achievements), 10)]
     current_page = 0
 
     def get_page_embed(page_num):
-        embed = discord.Embed(title=f"{user.name}'s Achievements", color=0x43ea46)
+        embed = discord.Embed(
+            title=f"{user.name}'s Achievements", 
+            description=f"Achieved {earned_achievements}/{total_achievements} ({percentage:.1f}%)",
+            color=0x43ea46
+        )
         embed.set_footer(text=f"Page {page_num + 1}/{len(pages)}")
         
         for achievement in pages[page_num]:

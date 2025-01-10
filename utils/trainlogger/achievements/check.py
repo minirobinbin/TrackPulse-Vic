@@ -435,6 +435,28 @@ def checkAchievements(user):
             print('All train types in one day achievement not added')
             max_types = max(len(types) for types in train_types_by_date.values()) if train_types_by_date else 0
             print(f"Maximum train types in one day: {max_types}")
+            
+    # Check for station pairs
+    print('Checking for station pairs...')
+    station_pairs = {
+        ('Southern Cross', 'Swan Hill'): '28',
+    }
+
+    achievement_pairs_found = set()
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 6:
+                from_station = row[5]
+                to_station = row[6]
+                for (station1, station2), achievement_id in station_pairs.items():
+                    if achievement_id not in achievement_pairs_found and \
+                       ((from_station == station1 and to_station == station2) or \
+                        (from_station == station2 and to_station == station1)):
+                        new_achievements.append(achievement_id)
+                        achievement_pairs_found.add(achievement_id)
+                        print(f'Station pair achievement {achievement_id} added')
+                        break
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
