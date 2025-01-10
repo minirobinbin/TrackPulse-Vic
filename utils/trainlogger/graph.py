@@ -23,7 +23,6 @@ label_colors = {
     'Flemington Racecourse': '#949797',
     'City Circle': '#313338',
     'N/A': '#949797',
-    'Unknown': '#949797',
     'Other': '#949797',
     
     'Albury': '#7f3f98',
