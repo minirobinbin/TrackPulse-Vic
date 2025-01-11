@@ -4,6 +4,9 @@ from tabnanny import check
 from datetime import datetime, timedelta
 
 def checkAchievements(user):
+    vline_trains = ['VLocity', 'Sprinter', 'N Class']
+    metro_trains = ["X'Trapolis 100", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', 'HCMT']
+    
     print('checking for first log...')
     new_achievements = []
     
@@ -21,44 +24,41 @@ def checkAchievements(user):
     items_found = set()
     
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
-        mtrains = ["X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', 'HCMT']
         
         csv_reader = csv.reader(csvfile)
         
         for row in csv_reader:
             if len(row) > 1: 
                 item = row[2]  
-                if item in mtrains:
+                if item in metro_trains:
                     items_found.add(item)
         
-        if items_found == set(mtrains):
+        if items_found == set(metro_trains):
             new_achievements.append('2')
             print('All Metro trains achievement added')
         else:
             print('All Metro trains achievement not added')
-            print(f"Items missing: {set(mtrains) - items_found}")
+            print(f"Items missing: {set(metro_trains) - items_found}")
             
     # all vline trains checker
     print('Checking for all v/line trains...')
     items_found = set()
     
-    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
-        mtrains = ["VLocity", 'N Class', 'Sprinter',]
-        
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:        
         csv_reader = csv.reader(csvfile)
         
         for row in csv_reader:
             if len(row) > 1: 
                 item = row[2]  
-                if item in mtrains:
+                if item in vline_trains:
                     items_found.add(item)
         
-        if items_found == set(mtrains):
+        if items_found == set(vline_trains):
             new_achievements.append('3')
             print('All V/Line trains achievement added')
         else:
             print('All V/Line trains achievement not added')
-            print(f"Items missing: {set(mtrains) - items_found}")
+            print(f"Items missing: {set(vline_trains) - items_found}")
             
     # all lines  checker
     print('Checking for all lines...')
@@ -188,7 +188,6 @@ def checkAchievements(user):
             
     # Check for V/Line trains at Metro stations achievement
     print('Checking for V/Line trains at Metro stations...')
-    vline_trains = {'Sprinter', 'VLocity', 'N Class'}
     metro_stations = {'Pakenham', 'Sunbury'}
 
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
@@ -480,6 +479,25 @@ def checkAchievements(user):
     missing_lines = set(line_achievements.keys()) - lines_visited
     if missing_lines:
         print(f"Lines not yet visited: {missing_lines}")
+        
+    # Check for V/Line trains at Essendon or Berwick
+    print('Checking for V/Line trains at Essendon or Berwick...')
+    special_stations = {'Essendon', 'Berwick'}
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 6:
+                train_type = row[2]
+                from_station = row[5]
+                to_station = row[6]
+                if (train_type in vline_trains and 
+                    (from_station in special_stations or to_station in special_stations)):
+                    new_achievements.append('32')
+                    print('V/Line at Essendon/Berwick achievement added')
+                    break
+        else:
+            print('V/Line at Essendon/Berwick achievement not added')
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'

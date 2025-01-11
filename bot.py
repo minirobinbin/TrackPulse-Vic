@@ -252,7 +252,7 @@ async def addAchievement(username, ctx, mention):
     new = checkAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
-        embed = discord.Embed(title='Achievement get!', color=0x43ea46)
+        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await ctx.channel.send(mention,embed=embed)
 
@@ -3968,7 +3968,7 @@ async def viewAchievements(ctx, user: discord.User = None):
         
         for achievement in pages[page_num]:
             achievement_id, name, description, has_achievement = achievement
-            emoji = "✅" if has_achievement else "❌"
+            emoji = "✅" if has_achievement else "🔒"
             embed.add_field(name=f"{emoji} {name}", value=description, inline=False)
             
         return embed
