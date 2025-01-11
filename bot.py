@@ -2538,11 +2538,12 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
         # Add train to the list
         id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
         await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
-        
+        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
+
                 
     # Run in a separate task
     asyncio.create_task(log())
-    
+
 # Perth logger
 async def Perthstation_autocompletion(
     interaction: discord.Interaction,

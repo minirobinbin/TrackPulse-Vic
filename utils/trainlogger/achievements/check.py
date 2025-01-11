@@ -6,12 +6,13 @@ from datetime import datetime, timedelta
 def checkAchievements(user):
     vline_trains = ['VLocity', 'Sprinter', 'N Class']
     metro_trains = ["X'Trapolis 100", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', 'HCMT']
-    
+    filepath = f"utils/trainlogger/userdata/{user}.csv"
+    Adelaidefilepath = f"utils/trainlogger/userdata/adelaide-trains/{user}.csv"
+
     print('checking for first log...')
     new_achievements = []
     
     # first log checker
-    filepath = f"utils/trainlogger/userdata/{user}.csv"
 
     if os.path.exists(filepath):
         new_achievements.append('1')
@@ -498,6 +499,27 @@ def checkAchievements(user):
                     break
         else:
             print('V/Line at Essendon/Berwick achievement not added')
+            
+    print('Checking for overland in Victoria')
+    required_stations = {'Southern Cross', 'North Shore', 'Ararat', 'Stawell', 'Horsham', 'Dimboola', 'Nhill'}  
+    required_train_type = 'NR Class'  
+    achievement_id = '33'
+
+    with open(Adelaidefilepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 6:
+                train_type = row[2]
+                from_station = row[5]
+                to_station = row[6]
+                if (train_type == required_train_type and 
+                    from_station in required_stations and 
+                    to_station in required_stations):
+                    new_achievements.append(achievement_id)
+                    print('Specific train and station combo achievement added')
+                    break
+        else:
+            print('Specific train and station combo achievement not added')
     
     # check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
