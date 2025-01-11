@@ -150,6 +150,16 @@ for line in file:
     interchange_stations.append(line)
 file.close()
 
+# Create required folders cause their not on github
+required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/adelaide-trains','utils/trainlogger/sydney-trains','utils/trainlogger/sydney-trams','utils/trainlogger/perth-trains','utils/trainlogger/bus','utils/trainlogger/tram'
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins']
+for folder in required_folders:
+    if os.path.exists(folder) and os.path.isdir(folder):
+        print(f"{folder} exists")
+    else:
+        os.makedirs(folder)    
+        print(f'Created {folder}')
+
 
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
