@@ -4118,6 +4118,7 @@ async def about(ctx):
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
+    embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/Track-Pulse-VIC/TrackPulse-Vic/issues)')
     await ctx.edit_original_response(embed=embed)
 
 
