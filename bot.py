@@ -392,7 +392,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     commands = {
         "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
         '/about': '''</about:1322339128121102357> is a command that displays a brief summary of this bot and credits''',
-        '/achievements view': '''</achievements view:1327085604789551134> is a command that allows you to view all of the achievements you've unlocked. You unlock achievements every time you add a log that meets the requirement for the achievement. Note that achievements are currently only for logs you log with </log train:1289843416628330506>.
+        '/achievements view': '''</achievements view:1327085604789551134> is a command that allows you to view all of the achievements you've unlocked. You unlock achievements every time you add a log that meets the requirement for the achievement. Note that achievements are currently only for logs in Victoria.
 
                         **Options:**
 
