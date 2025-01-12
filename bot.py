@@ -1854,7 +1854,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             participants.append(user_response.author.mention)
                             
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id, 780303451980038165] :
                             await ctx.channel.send(f"Round {round+1} skipped.")
                             log_command(user_response.author.id, 'game-station-guesser-skip')
                             skippedGames += 1
@@ -1864,7 +1864,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                             roundResponse = True
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id,780303451980038165] :
                             await ctx.channel.send(f"Game ended.")
                             log_command(user_response.author.id, 'game-station-guesser-stop')
                             embed = discord.Embed(title="Game Summary")
