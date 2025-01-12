@@ -2965,7 +2965,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 # send reponse message
                 await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
                 await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-                await logsthread.send(f' #<:tram:1241165701390012476> {userid.name}\'s Tram Logs')
+                await logsthread.send(f' # <:tram:1241165701390012476> {userid.name}\'s Tram Logs')
                 formatted_data = ""
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
