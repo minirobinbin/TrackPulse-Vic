@@ -939,7 +939,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
-        runid = TDNtoRunID(td)
+        runid = "9"+TDNtoRunID(td)
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
@@ -991,7 +991,10 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             
             # embed colour
             if mode == "metro":
-                colour = lines_dictionary[line][1]
+                try:
+                    colour = lines_dictionary[line][1]
+                except:
+                    colour = 0x008dd0
             elif mode == "vline":
                 colour = 0x7f3f98
             elif mode == "tram":
@@ -1319,7 +1322,10 @@ async def departures(ctx, station: str, line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                TDN = RunIDtoTDN(run_ref)
+                if run_ref.startswith('9'):
+                    TDN = RunIDtoTDN(run_ref)
+                else:
+                    TDN = run_ref
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -1435,8 +1441,8 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)'''
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
-async def game(ctx,rounds: int = 1, ultrahard: bool=False):
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", set='Select a set of photos eg a specific line', ultrahard = "Ultra hard mode.")
+async def game(ctx,rounds: int = 1, set:str='All', ultrahard: bool=False):
     
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-guesser')
