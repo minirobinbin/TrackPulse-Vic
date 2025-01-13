@@ -23,7 +23,6 @@ label_colors = {
     'Flemington Racecourse': '#949797',
     'City Circle': '#313338',
     'N/A': '#949797',
-    'Unknown': '#949797',
     'Other': '#949797',
     
     'Albury': '#7f3f98',
@@ -151,6 +150,15 @@ label_colors = {
     "Urbos 3": '#ed2438',
     "Citadis 305": '#ed2438',
     
+    # perth lines
+    "Fremantle": '#003a79',
+    'Midland': "#960048",
+    "Armadale": '#f6a800',
+    'Yanchep': '#959300',
+    'Thornlie': '#f6a800',
+    'Mandurah': '#d25f15',
+    'Airport': '#44c2b2',
+    'Ellenbrook': '#d2222c',
     }
 
 
