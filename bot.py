@@ -1832,7 +1832,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 return
 
         ignoredRounds = 0
-        
+        setLine = 'All Lines' if line == 'all' else f'{line.title()} line'
+
         # stuff for end of game stats
         incorrectAnswers = 0
         correctAnswers = 0
@@ -1851,9 +1852,9 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
             credit = random_row[3]
 
             if ultrahard:
-                embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
+                embed = discord.Embed(title=f"Guess the station! | {setLine}", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
+                embed = discord.Embed(title=f"Guess the station! | {setLine}", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -1961,7 +1962,6 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
                 
-        setLine = 'All Lines' if line == 'all' else f'{line.title()} line'
         embed = discord.Embed(title=f"Game Summary | {setLine}")
         embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
