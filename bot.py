@@ -3701,9 +3701,11 @@ async def profile(ctx, user: discord.User = None):
         async def profiles():
             if user == None:
                 username = ctx.user.name
+                userid =ctx.user.id
                 pfp = ctx.user.avatar.url
             else:
                 username = user.name
+                userid =user.id
                 pfp = user.avatar.url
 
             embed = discord.Embed(title=f"Profile")
@@ -3948,7 +3950,10 @@ async def profile(ctx, user: discord.User = None):
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
             
             # other stats
-            embed.set_footer(text=f"Favorite command: {getFavoriteCommand(ctx.user.id)[0]}")
+            try:
+                embed.set_footer(text=f"Favorite command: {getFavoriteCommand(userid)[0]}")
+            except FileNotFoundError:
+                print('user has no commands used')
             
             await ctx.edit_original_response(embed=embed)
             
