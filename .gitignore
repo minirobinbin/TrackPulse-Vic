@@ -16,7 +16,7 @@ metrotrains.csv
 utils/stats/data/
 utils/game/images/
 utils/trainlogger/achievements/data/
-utils/game/images/
+utils/game/images
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
