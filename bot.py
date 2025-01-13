@@ -191,6 +191,28 @@ try:
 except FileExistsError as e:
     print(e)    
 
+# line stations and colours
+lines_dictionary = {
+    'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
+    'Belgrave': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
+    'Craigieburn': [['North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
+    'Cranbourne': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
+    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
+    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
+    'Glen Waverley': [['Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
+    'Hurstbridge': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
+    'Lilydale': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
+    'Mernda': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
+    'Pakenham': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham'],0x00a8e4],
+    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
+    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
+    'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
+    'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
+    'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
+    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
+    'Unknown/Other':[[None], 0x000000],
+}
+
 # Group commands
 class CommandGroups(app_commands.Group):
     ...
@@ -1244,7 +1266,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
-        runid = TDNtoRunID(td)
+        runid = "9"+TDNtoRunID(td)
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
@@ -1296,7 +1318,10 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             
             # embed colour
             if mode == "metro":
-                colour = lines_dictionary[line][1]
+                try:
+                    colour = lines_dictionary[line][1]
+                except:
+                    colour = 0x008dd0
             elif mode == "vline":
                 colour = 0x7f3f98
             elif mode == "tram":
@@ -1624,7 +1649,10 @@ async def departures(ctx, station: str, line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                TDN = RunIDtoTDN(run_ref)
+                if run_ref.startswith('9'):
+                    TDN = RunIDtoTDN(run_ref)
+                else:
+                    TDN = run_ref
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -1740,9 +1768,25 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)'''
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
-async def game(ctx,rounds: int = 1, ultrahard: bool=False):
-    
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", line='Select a line to only show photos from that line', ultrahard = "Ultra hard mode.")
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        # app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="Frankston", value="Frankston"), 
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+])
+async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-guesser')
     async def run_game(): 
@@ -1773,6 +1817,19 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
         # Remove the header row if present
         header = rows[0]
         data = rows[1:]
+
+        # Filter data by line if a specific line is selected
+        if line != 'all':
+            try:
+                line_stations = lines_dictionary[line][0]
+                filtered_data = []
+                for row in data:
+                    if row[1] in line_stations:  # Check if station is in the line's station list
+                        filtered_data.append(row)
+                data = filtered_data
+            except KeyError:
+                await ctx.response.send_message(f"Invalid line selected: {line}")
+                return
 
         ignoredRounds = 0
         
@@ -1809,7 +1866,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     embed.color = 0xff6565
             
             embed.set_image(url=url)
-            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
+            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo | {len(data)} photos in set")
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
             # Send the embed message
@@ -1904,7 +1961,8 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
                 
-        embed = discord.Embed(title="Game Summary")
+        setLine = 'All Lines' if line == 'all' else f'{line.title()} line'
+        embed = discord.Embed(title=f"Game Summary | {setLine}")
         embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
         embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
@@ -1949,26 +2007,6 @@ async def lb(ctx, game: str='guesser'):
 
 # Station order game made by @domino
 
-lines_dictionary = {
-    'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
-    'Belgrave': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
-    'Craigieburn': [['North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
-    'Cranbourne': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
-    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
-    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
-    'Glen Waverley': [['Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
-    'Hurstbridge': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
-    'Lilydale': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
-    'Mernda': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
-    'Pakenham': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham'],0x00a8e4],
-    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
-    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
-    'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
-    'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
-    'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
-    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
-    'Unknown/Other':[[None], 0x000000],
-}
 linelist = [
     None,
     'Alamein', #1
@@ -2122,6 +2160,7 @@ async def line_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
+    
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
