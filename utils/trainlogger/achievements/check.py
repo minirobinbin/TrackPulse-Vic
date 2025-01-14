@@ -440,6 +440,8 @@ def checkAchievements(user):
     print('Checking for station pairs...')
     station_pairs = {
         ('Southern Cross', 'Swan Hill'): '28',
+        ('Riversdale', 'Willison'): '34',
+
     }
 
     achievement_pairs_found = set()
