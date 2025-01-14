@@ -7,7 +7,7 @@ def checkAchievements(user):
     vline_trains = ['VLocity', 'Sprinter', 'N Class']
     metro_trains = ["X'Trapolis 100", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', 'HCMT']
     filepath = f"utils/trainlogger/userdata/{user}.csv"
-    Adelaidefilepath = f"utils/trainlogger/userdata/adelaide-trains/{user}.csv"
+    # Adelaidefilepath = f"utils/trainlogger/userdata/adelaide-trains/{user}.csv"
 
     print('checking for first log...')
     new_achievements = []
