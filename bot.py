@@ -101,6 +101,13 @@ for line in file:
     lines_list.append(line)
 file.close()
 
+file = open('utils\\datalists\\types.txt','r')
+types_list = []
+for line in file:
+    line = line.strip()
+    types_list.append(line)
+file.close()
+
 file = open('utils\\datalists\\nswstations.txt','r')
 NSWstations_list = []
 for line in file:
@@ -2161,28 +2168,23 @@ async def line_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
     
+async def type_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = types_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-@app_commands.choices(traintype=[
-        app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-        app_commands.Choice(name="HCMT", value="HCMT"),
-        app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
-        app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
-        app_commands.Choice(name="X'Trapolis 2.0", value="X'Trapolis 2.0"),
-        app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-        app_commands.Choice(name="VLocity", value="VLocity"),
-        app_commands.Choice(name="N Class", value="N Class"),
-        app_commands.Choice(name="Sprinter", value="Sprinter"),
-        app_commands.Choice(name="Other", value="Other"),
-        app_commands.Choice(name="Tait", value="Tait"),
-        app_commands.Choice(name="K Class", value="K Class"),
-        app_commands.Choice(name="Y Class", value="Y Class"),
-        app_commands.Choice(name="Other", value="Other"),
-])
+@app_commands.autocomplete(traintype=type_autocompletion)
 
 # Train logger
 async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
@@ -2208,25 +2210,27 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
-        # checking if train number is valid
-        if number != 'Unknown':
-            set = setNumber(number.upper())
+        # Initialize variables
+        set = 'Unknown'
+        type = 'Unknown'
+
+        # Handle traintype first
+        if traintype != 'auto':
+            type = traintype
+            if traintype == "Tait":
+                set = '381M-208T-230D-317M'
+            else:
+                # If custom traintype and set is unknown, use the input number as the set
+                set = number.upper()
+        else:
+            # checking if train number is valid
+            if number != 'Unknown':
+                set = setNumber(number.upper())
             if set == None:
                 await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
             type = trainType(number.upper())
-        else:
-            set = 'Unknown'
-            type = 'Unknown'
-            if traintype == 'auto':
-                type = 'Unknown'
-            else: type = traintype
-        if traintype == "Tait":
-            set = '381M-208T-230D-317M'
-        
-        # make the user set traintype have priority/
-        if traintype != 'auto':
-            type = traintype
+                
             
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
