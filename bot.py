@@ -158,7 +158,7 @@ for line in file:
 file.close()
 
 # Create required folders cause their not on github
-required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/adelaide-trains','utils/trainlogger/sydney-trains','utils/trainlogger/sydney-trams','utils/trainlogger/perth-trains','utils/trainlogger/bus','utils/trainlogger/tram'
+required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
                     'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
