@@ -812,7 +812,7 @@ async def route(ctx, rtype: str, number: int):
 
 
 
-# Photo search
+# train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
 async def line_info(ctx, number: str, search_set:bool=False):
@@ -887,7 +887,30 @@ async def line_info(ctx, number: str, search_set:bool=False):
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
             await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
-
+# Station photo search
+async def station_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+@search.command(name='station-photo', description='Search for a photo of a railway station.')
+@app_commands.autocomplete(station=station_autocompletion)
+async def stationphoto(ctx, station:str):
+    async def searchstationpic():
+        await ctx.response.defer()
+        photo = getStationImage(station)
+        if photo != None:
+            embed= discord.Embed(title=f'Photo of {station.title()} Station')
+            embed.set_image(url=photo)
+            embed.set_footer(text=f'Photo by {getPhotoCredits(station)}')
+            await ctx.edit_original_response(embed=embed)
+        else:
+            await ctx.edit_original_response(content=f'No photos found for {station.title()}')
+    asyncio.create_task(searchstationpic())
  
 # myki fare calculator   
 @myki.command(name="calculate-fare", description="Calculate fare for a trip")   
