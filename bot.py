@@ -346,7 +346,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/myki save-login','/myki view','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -412,9 +412,9 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         "myki":
         [
             "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
-            "Please note that the following commands are currently broken and won't work:",
-            "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
-            "</myki view:1289843416628330507> - View your Mykis and their balance."
+            # "Please note that the following commands are currently broken and won't work:",
+            # "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
+            # "</myki view:1289843416628330507> - View your Mykis and their balance."
         ]
     }
     
@@ -496,8 +496,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
         '/metro-line': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/myki calculate-fare': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        # '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/search route': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
 
@@ -941,11 +941,11 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             await ctx.edit_original_response(content='Invalid information. Please try again.')
             print(e)
             
+    asyncio.create_task(calc())
             
 
         
-    asyncio.create_task(calc())
-
+'''
 # thing to save myki credentials to bot:
 @myki.command(name='save-login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
 @app_commands.describe(ptvusername = "PTV accpunt username", ptvpassword = "PTV account password", encryptionpassword = "A password to encrypt your PTV password")
@@ -956,6 +956,7 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
     savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
     await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour password is encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
+# disabled myki view command
 
 @myki.command(name='view', description='View your mykis and their balances')
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
@@ -970,21 +971,18 @@ async def viewmykis(ctx, encriptionpassword: str):
         try:
             login = readlogin(ctx.user.id)
         except:
-            ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
-            return
+            return "You haven't logged in yet. Run </myki login:1289553446659166300> to login."
 
         try:
             decryptedPassword = decryptPW(encriptionpassword, login[1].encode())
         except Exception as e:
-            ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
-            return
+            return "Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it."
         
         # run the myki scraper
         try:
             data = getMykiInfo(login[0], decryptedPassword)
         except Exception as e:
-            ctx.edit_original_response(content=f"There has been an error: `{e}`")
-            return
+            return f"There has been an error: `{e}`"
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
@@ -1010,7 +1008,7 @@ async def viewmykis(ctx, encriptionpassword: str):
             await ctx.edit_original_response(embed=result)
         else:
             await ctx.edit_original_response(content=result)
-
+'''
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
