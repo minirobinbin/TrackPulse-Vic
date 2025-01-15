@@ -381,6 +381,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
+            "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
         ],
         "general": [
