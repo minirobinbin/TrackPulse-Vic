@@ -1767,8 +1767,13 @@ async def departures(ctx, station: str, line:str='all'):
             embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         
-        embed.set_footer(text="V/Line departures are unavailable")
-        embed.set_thumbnail(url=getStationImage(station))
+        image = getStationImage(station)
+        if image != None: 
+            embed.set_thumbnail(url=image)  
+            embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
+        else:
+            embed.set_footer(text=f"V/Line departures are unavailable")
+
         await ctx.edit_original_response(embed=embed)          
 
     asyncio.create_task(nextdeps())
