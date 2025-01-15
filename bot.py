@@ -377,6 +377,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</departures:1288002114466877529> - Shows the next Metro trains departing a station. Includes information about which exact train is running the service.",
             "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
             "</search tram:1240101357847838814> - Shows information about a specific tram.",
+            "</line-status:1322429532757819473> - Shows disruption information for Rail Operator",
             "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
