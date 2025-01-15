@@ -104,7 +104,7 @@ def tramType(number):
     try:
         car = int(number)
     except:
-        return(f"Train type not foudnd for {number}")
+        return(f"Tram type not found for {number}")
     
     if car >= 116 and car <= 230:
         return('Z Class')
