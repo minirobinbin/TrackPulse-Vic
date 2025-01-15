@@ -475,7 +475,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         **Options:**
 
                         Required:
-                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, tyoe "Unknown".
+                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown".
                         Number: which carriage you rode. Examples include "1M", "2111", "N452", "9026". If you don't know, type "Unknown".
                         Start: the starting station of your trip. You can choose from the list or type your own.
                         End: the ending station of your trip. You can choose from the list or type your own.
