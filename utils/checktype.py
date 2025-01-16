@@ -104,7 +104,7 @@ def tramType(number):
     try:
         car = int(number)
     except:
-        return(f"Train type not foudnd for {number}")
+        return(f"Tram type not found for {number}")
     
     if car >= 116 and car <= 230:
         return('Z Class')
@@ -133,16 +133,16 @@ def tramType(number):
     
 # Convert PTV Run ID to TDN
 def RunIDtoTDN(runID):
-    aski1 = runID[1]
-    aski2 = runID[2]
-    letter = chr(int(str(aski1) + str(aski2)))
-    final = letter + runID[3:]
-    return(final)
+        aski1 = runID[1]
+        aski2 = runID[2]
+        letter = chr(int(str(aski1) + str(aski2)))
+        final = letter + runID[3:]
+        return(final)
 
 # Convert TDN to PTV Run ID
 def TDNtoRunID(tdn):
     aski = ord(tdn[0])
     aski1 = str(aski)[0]
     aski2 = str(aski)[1]
-    final = '9' + aski1 + aski2 + tdn[1:]
+    final = aski1 + aski2 + tdn[1:]
     return(final)

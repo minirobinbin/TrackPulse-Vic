@@ -101,6 +101,13 @@ for line in file:
     lines_list.append(line)
 file.close()
 
+file = open('utils\\datalists\\types.txt','r')
+types_list = []
+for line in file:
+    line = line.strip()
+    types_list.append(line)
+file.close()
+
 file = open('utils\\datalists\\nswstations.txt','r')
 NSWstations_list = []
 for line in file:
@@ -151,7 +158,7 @@ for line in file:
 file.close()
 
 # Create required folders cause their not on github
-required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/adelaide-trains','utils/trainlogger/sydney-trains','utils/trainlogger/sydney-trams','utils/trainlogger/perth-trains','utils/trainlogger/bus','utils/trainlogger/tram'
+required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
                     'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
@@ -190,6 +197,28 @@ try:
     os.mkdir('utils/game/scores')
 except FileExistsError as e:
     print(e)    
+
+# line stations and colours
+lines_dictionary = {
+    'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
+    'Belgrave': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
+    'Craigieburn': [['North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
+    'Cranbourne': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
+    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
+    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
+    'Glen Waverley': [['Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
+    'Hurstbridge': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
+    'Lilydale': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
+    'Mernda': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
+    'Pakenham': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham'],0x00a8e4],
+    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
+    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
+    'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
+    'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
+    'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
+    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
+    'Unknown/Other':[[None], 0x000000],
+}
 
 # Group commands
 class CommandGroups(app_commands.Group):
@@ -232,11 +261,15 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
-
-    await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
-    This program comes with ABSOLUTELY NO WARRANTY.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions\nBot is online!""")
+    try:
+        await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
+        This program comes with ABSOLUTELY NO WARRANTY.
+        This is free software, and you are welcome to redistribute it
+        under certain conditions\nBot is online!""")
+    except Exception as e:
+        print(f'Error: {e}\n make sure the bot has premission to send in the startup channel')
+        return
+    
     try:
         task_loop.start()
     except:
@@ -245,16 +278,38 @@ async def on_ready():
 
     activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
     await bot.change_presence(activity=activity)
+    
+    # Refresh all users
+    channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
+    response_channel = bot.get_channel(channel_id)
+    
+    if response_channel is None:
+        print(f"Error: Could not find channel with ID {channel_id}")
+        return
+        
+    response = await response_channel.send('Checking achievements for all users...')
+    
+    user_files = os.listdir('utils/trainlogger/userdata')
+    csv_files = [f for f in user_files if f.endswith('.csv')]
+    
+    for csv_file in csv_files:
+        username = csv_file[:-4]  # Remove .csv extension
+        await response.edit(content=f'Checking achievements for {username}...')
+        await addAchievement(username, channel_id, f'<@{username}>')
+            
+    await response.edit(content='Finished checking achievements for all users')
+
     print("Bot started")
 
 # achievement awarder  check achievements
-async def addAchievement(username, ctx, mention):
+async def addAchievement(username, channel, mention):
+    channel = bot.get_channel(channel)
     new = checkAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
-        await ctx.channel.send(mention,embed=embed)
+        await channel.send(mention,embed=embed)
 
 # Rare train finder
 def check_rare_trains_in_thread():
@@ -317,7 +372,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/myki save-login','/myki view','/search route','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -348,9 +403,11 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</departures:1288002114466877529> - Shows the next Metro trains departing a station. Includes information about which exact train is running the service.",
             "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
             "</search tram:1240101357847838814> - Shows information about a specific tram.",
+            "</line-status:1322429532757819473> - Shows disruption information for Rail Operator",
             "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
+            "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
         ],
         "general": [
@@ -383,9 +440,9 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         "myki":
         [
             "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
-            "Please note that the following commands are currently broken and won't work:",
-            "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
-            "</myki view:1289843416628330507> - View your Mykis and their balance."
+            # "Please note that the following commands are currently broken and won't work:",
+            # "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
+            # "</myki view:1289843416628330507> - View your Mykis and their balance."
         ]
     }
     
@@ -419,13 +476,56 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
 
                         Optional:
                         Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
-        '/games station-guesser': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/games station-order': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
+
+                        **Options:**
+
+                        Optional:
+                        Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 100.
+                        Line: if you wish to only see photos for stations going along a specific line, you may select that line. You must choose from the list.
+                        Ultrahard: True or False. False by default. If you choose true, the photos will only be photos in the "Ultrahard" category that do not appear in the normal mode.''',
+        '/games station-order': '''</games station-order:1240101357847838813> is a command that allows you to play a game where you have to guess the next stations in a certain direction from a given station. The direction is either "Up", towards the city, or "Down", away from the city. The game is divided into rounds, each round one station and the direction are named and you have to guess the other stations before the time runs out. To add a guess, type "!" followed by the station names in order, seperated by a ", ". To skip a round, type "!skip". To end the game, type "!stop".
+
+                        **Options:**
+
+                        Optional:
+                        Direction: if you wish to only play with a certain direction from the station, you may select that station. You must choose from the list. By default it is set to "Up or Down"
+                        Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 25.''',
         "/help": """</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
-        '/line-status': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log adelaide-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log bus': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log perth-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/line-status': '''</line-status:1322429532757819473> is a command that allows you to view the current distruption status of all the lines ran by a certain rail operator. This is currently only for Metro and V/Line
+
+                        **Options:**
+
+                        Required:
+                        Operator: choose the operator you want to view the line status for. You must choose from the list.''',
+        '/log adelaide-train': '''</log adelaide-train:1289843416628330506> is a command to log any Adelaide Metro and Journey Beyond train trips. This is the command to use even if your Journey Beyond train doesn't go through South Australia. Make sure to log each different leg of your trip seperately.
+
+                        **Options:**
+
+                        Required:
+                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
+                        Number: which carriage you rode. Examples include "3005", "3115", "4001", "NR18". If you don't know, type "Unknown".
+                        
+                        Optional:
+                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
+                        Start: the starting station of your trip. You can choose from the list or type your own.
+                        End: the ending station of your trip. You can choose from the list or type your own.
+                        ''',
+        '/log bus': '''</log bus:1289843416628330506> is a command to log any bus trips. This is the most versatile log of the log commands as you can log any bus from anywhere. Make sure to log each different leg of your trip seperately.
+
+                        **Options:**
+
+                        Required:
+                        Line: which bus route you rode on.
+                        
+                        Optional:
+                        Operator: the operator of the bus.
+                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
+                        Start: the starting stop of your trip.
+                        End: the ending stop of your trip.
+                        Type: if there are multiple buses with the same number, or you didn't input a number, specify which bus type you rode on. You generally don't need this if you know the bus number.
+                        Number: which bus you rode.''',
+        '/log perth-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         "/log stats": """</log stats:1289843416628330506> is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
 
                         **Options:**
@@ -439,14 +539,14 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
                         Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.
                         """,
-        '/log sydney-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log sydney-tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log sydney-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log sydney-tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         "/log train": """</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
 
                         **Options:**
 
                         Required:
-                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, tyoe "Unknown".
+                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown".
                         Number: which carriage you rode. Examples include "1M", "2111", "N452", "9026". If you don't know, type "Unknown".
                         Start: the starting station of your trip. You can choose from the list or type your own.
                         End: the ending station of your trip. You can choose from the list or type your own.
@@ -456,7 +556,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
                         Notes: add any notes you want to add to your log.
                         """,
-        '/log tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/log tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
 
                         Options:
@@ -465,11 +565,17 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
                         User: pick a user who's logs you wish to view. By default it's set to you.
                         Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
-        '/metro-line': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki calculate-fare': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/search route': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/metro-line': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/myki calculate-fare': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        # '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/search route': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/search station-photo':'''</search station-photo:1240101357847838814> is a command to view the photo in the Xm9G photo archive for a specific station.
+
+                        **Options:**
+
+                        Required:
+                        Station: the station you wish to see the photo for. You must choose from the list.''',
         '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
 
                         **Options:**
@@ -497,21 +603,21 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Number: input the number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
                         Optional:
                         Search_set: True or False. False by default. If you choose true, it will include the photos from the other carriages in the train set (if there are others).''',
-        '/search tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/submit-photo': """</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all 3 uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
+        '/search tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/submit-photo': """</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
 
                         **Options:**
 
                         Required:
                         Photo: attach the photo you would like to submit
-                        Car_number: input the ID of the train the photo is of. Examples include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. Note that Xm9G manually reads this so any info in any understandable form is acceptable.
+                        Car_number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station". Note that Xm9G manually reads this so any info in any understandable form is acceptable.
                         Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
                         Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.""",
-        '/wongm': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </help:1261177133372280957>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>'''
+        '/wongm': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
+        '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>'''
     }
 
     if category is None and command is None:
@@ -783,7 +889,7 @@ async def route(ctx, rtype: str, number: int):
 
 
 
-# Photo search
+# train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
 async def line_info(ctx, number: str, search_set:bool=False):
@@ -858,7 +964,30 @@ async def line_info(ctx, number: str, search_set:bool=False):
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
             await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
-
+# Station photo search
+async def station_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+@search.command(name='station-photo', description='Search for a photo of a railway station.')
+@app_commands.autocomplete(station=station_autocompletion)
+async def stationphoto(ctx, station:str):
+    async def searchstationpic():
+        await ctx.response.defer()
+        photo = getStationImage(station)
+        if photo != None:
+            embed= discord.Embed(title=f'Photo of {station.title()} Station')
+            embed.set_image(url=photo)
+            embed.set_footer(text=f'Photo by {getPhotoCredits(station)}')
+            await ctx.edit_original_response(embed=embed)
+        else:
+            await ctx.edit_original_response(content=f'No photos found for {station.title()}')
+    asyncio.create_task(searchstationpic())
  
 # myki fare calculator   
 @myki.command(name="calculate-fare", description="Calculate fare for a trip")   
@@ -912,11 +1041,11 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             await ctx.edit_original_response(content='Invalid information. Please try again.')
             print(e)
             
+    asyncio.create_task(calc())
             
 
         
-    asyncio.create_task(calc())
-
+'''
 # thing to save myki credentials to bot:
 @myki.command(name='save-login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
 @app_commands.describe(ptvusername = "PTV accpunt username", ptvpassword = "PTV account password", encryptionpassword = "A password to encrypt your PTV password")
@@ -927,6 +1056,7 @@ async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str
     savelogin(ptvusername, str(encryptedPassword).split("'")[1], ctx.user.id) # the split is so it dosnt include the b' part
     await ctx.edit_original_response(content=f'Saved username and password to bot.\nUsername: `{ptvusername}`\nPassword: `{ptvpassword}`\nYour password is encrypted and cannot be seen by anyone. You will need to enter your encryption password to view your mykis with the bot.\nEncryption password: `{encryptionpassword}`')
     
+# disabled myki view command
 
 @myki.command(name='view', description='View your mykis and their balances')
 @app_commands.describe(encriptionpassword = "Your encryption password from the login command")
@@ -941,21 +1071,18 @@ async def viewmykis(ctx, encriptionpassword: str):
         try:
             login = readlogin(ctx.user.id)
         except:
-            ctx.edit_original_response(content="You haven't logged in yet. Run </myki login:1289553446659166300> to login.")
-            return
+            return "You haven't logged in yet. Run </myki login:1289553446659166300> to login."
 
         try:
             decryptedPassword = decryptPW(encriptionpassword, login[1].encode())
         except Exception as e:
-            ctx.edit_original_response(content="Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it.")
-            return
+            return "Your encryption password is incorrect. Run </myki login:1289553446659166300> to reset it."
         
         # run the myki scraper
         try:
             data = getMykiInfo(login[0], decryptedPassword)
         except Exception as e:
-            ctx.edit_original_response(content=f"There has been an error: `{e}`")
-            return
+            return f"There has been an error: `{e}`"
         
         # make embed
         embed = discord.Embed(title="Your Mykis", color=0xc2d840)
@@ -981,7 +1108,7 @@ async def viewmykis(ctx, encriptionpassword: str):
             await ctx.edit_original_response(embed=result)
         else:
             await ctx.edit_original_response(content=result)
-
+'''
 # Wongm search
 @bot.tree.command(name="wongm", description="Search Wongm's Rail Gallery")
 @app_commands.describe(search="search")
@@ -1244,7 +1371,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
-        runid = TDNtoRunID(td)
+        runid = "9"+TDNtoRunID(td)
         try:
             runData = getTrainLocationFromID(str(runid))
             line = ""
@@ -1296,7 +1423,10 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             
             # embed colour
             if mode == "metro":
-                colour = lines_dictionary[line][1]
+                try:
+                    colour = lines_dictionary[line][1]
+                except:
+                    colour = 0x008dd0
             elif mode == "vline":
                 colour = 0x7f3f98
             elif mode == "tram":
@@ -1624,7 +1754,10 @@ async def departures(ctx, station: str, line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                TDN = RunIDtoTDN(run_ref)
+                if run_ref.startswith('9'):
+                    TDN = RunIDtoTDN(run_ref)
+                else:
+                    TDN = run_ref
 
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
@@ -1685,8 +1818,13 @@ async def departures(ctx, station: str, line:str='all'):
             embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         
-        embed.set_footer(text="V/Line departures are unavailable")
-        embed.set_thumbnail(url=getStationImage(station))
+        image = getStationImage(station)
+        if image != None: 
+            embed.set_thumbnail(url=image)  
+            embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
+        else:
+            embed.set_footer(text=f"V/Line departures are unavailable")
+
         await ctx.edit_original_response(embed=embed)          
 
     asyncio.create_task(nextdeps())
@@ -1740,9 +1878,25 @@ async def train_line(ctx):
     await ctx.channel.send(embed=embed)'''
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", ultrahard = "Ultra hard mode.")
-async def game(ctx,rounds: int = 1, ultrahard: bool=False):
-    
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", line='Select a line to only show photos from that line', ultrahard = "Ultra hard mode.")
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        # app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="Frankston", value="Frankston"), 
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+])
+async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-guesser')
     async def run_game(): 
@@ -1774,29 +1928,59 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
         header = rows[0]
         data = rows[1:]
 
+        # Filter data by line if a specific line is selected
+        if line != 'all':
+            try:
+                line_stations = lines_dictionary[line][0]
+                filtered_data = []
+                for row in data:
+                    if row[1] in line_stations:  # Check if station is in the line's station list
+                        filtered_data.append(row)
+                data = filtered_data
+            except KeyError:
+                await ctx.response.send_message(f"Invalid line selected: {line}")
+                return
+
         ignoredRounds = 0
-        
+        setLine = 'All Lines' if line == 'all' else f'{line.title()} line'
+
         # stuff for end of game stats
         incorrectAnswers = 0
         correctAnswers = 0
         skippedGames = 0
         participants = []
         
+        # Get the photos at start and shuffle them
+        try:
+            available_photos = data.copy()
+            random.shuffle(available_photos)
+            
+            if len(available_photos) < rounds:
+                await ctx.response.send_message(f'Not enough photos available for {rounds} rounds. Maximum available is {len(available_photos)}.')
+                channel_game_status[channel] = False
+                return
+            
+        except IndexError:
+            await ctx.response.send_message('There are currently no photos for your selected options! Try a different line.')
+            channel_game_status[channel] = False
+            return
+
         for round in range(rounds):
             roundResponse = False
-            # Get a random row
-            random_row = random.choice(data)
+            
+            # Get the next photo from the shuffled list
+            random_row = available_photos[round]
 
             # Extract data from the random row
             url = random_row[0]
-            station = random_row[1]
+            station = random_row[1] 
             difficulty = random_row[2]
             credit = random_row[3]
 
             if ultrahard:
-                embed = discord.Embed(title=f"Guess the station!", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
+                embed = discord.Embed(title=f"Guess the station! | {setLine}", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
-                embed = discord.Embed(title=f"Guess the station!", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
+                embed = discord.Embed(title=f"Guess the station! | {setLine}", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
                     embed.color = 0x89ff65
                 elif difficulty == 'Easy':
@@ -1809,7 +1993,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                     embed.color = 0xff6565
             
             embed.set_image(url=url)
-            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo")
+            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo | {len(data)} photos in set")
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
             # Send the embed message
@@ -1854,7 +2038,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             participants.append(user_response.author.mention)
                             
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id, 780303451980038165] :
                             await ctx.channel.send(f"Round {round+1} skipped.")
                             log_command(user_response.author.id, 'game-station-guesser-skip')
                             skippedGames += 1
@@ -1864,7 +2048,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                             roundResponse = True
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id,780303451980038165] :
                             await ctx.channel.send(f"Game ended.")
                             log_command(user_response.author.id, 'game-station-guesser-stop')
                             embed = discord.Embed(title="Game Summary")
@@ -1873,6 +2057,7 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                             embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
                             embed.add_field(name="Participants", value=', '.join(participants))
                             await ctx.channel.send(embed=embed)   
+                            channel_game_status[channel] = False
                             return
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
@@ -1899,12 +2084,13 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
                 print(f'Ignored rounds: {ignoredRounds}')
                 if ignoredRounds == 2 and roundResponse == False:
                     await ctx.channel.send("No responses for 2 rounds. Game ended.")
-                    break
+                    channel_game_status[channel] = False
+                    return
                         
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
                 
-        embed = discord.Embed(title="Game Summary")
+        embed = discord.Embed(title=f"Game Summary | {setLine}")
         embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
         embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
@@ -1912,8 +2098,12 @@ async def game(ctx,rounds: int = 1, ultrahard: bool=False):
         await ctx.channel.send(embed=embed)      
 
     # Run the game in a separate task
-    asyncio.create_task(run_game())
-    
+    try:
+        asyncio.create_task(run_game())
+    except Exception as e:
+        print(f'GUESSER ERROR: {e}')
+        await ctx.channel.send(f'An error has occurred\n```{e}```')
+
 
     
 @stats.command(name="leaderboard", description="Global leaderboards for the games.",)
@@ -1949,26 +2139,6 @@ async def lb(ctx, game: str='guesser'):
 
 # Station order game made by @domino
 
-lines_dictionary = {
-    'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
-    'Belgrave': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
-    'Craigieburn': [['North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
-    'Cranbourne': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
-    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
-    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
-    'Glen Waverley': [['Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
-    'Hurstbridge': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
-    'Lilydale': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
-    'Mernda': [['Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
-    'Pakenham': [['Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham'],0x00a8e4],
-    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
-    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
-    'Sunbury': [['North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
-    'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
-    'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
-    'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
-    'Unknown/Other':[[None], 0x000000],
-}
 linelist = [
     None,
     'Alamein', #1
@@ -2122,28 +2292,24 @@ async def line_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
+    
+async def type_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = types_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
 @app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-@app_commands.choices(traintype=[
-        app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-        app_commands.Choice(name="HCMT", value="HCMT"),
-        app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
-        app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
-        app_commands.Choice(name="X'Trapolis 2.0", value="X'Trapolis 2.0"),
-        app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-        app_commands.Choice(name="VLocity", value="VLocity"),
-        app_commands.Choice(name="N Class", value="N Class"),
-        app_commands.Choice(name="Sprinter", value="Sprinter"),
-        app_commands.Choice(name="Other", value="Other"),
-        app_commands.Choice(name="Tait", value="Tait"),
-        app_commands.Choice(name="K Class", value="K Class"),
-        app_commands.Choice(name="Y Class", value="Y Class"),
-        app_commands.Choice(name="Other", value="Other"),
-])
+@app_commands.autocomplete(traintype=type_autocompletion)
 
 # Train logger
 async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
@@ -2169,25 +2335,27 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
-        # checking if train number is valid
-        if number != 'Unknown':
-            set = setNumber(number.upper())
+        # Initialize variables
+        set = 'Unknown'
+        type = 'Unknown'
+
+        # Handle traintype first
+        if traintype != 'auto':
+            type = traintype
+            if traintype == "Tait":
+                set = '381M-208T-230D-317M'
+            else:
+                # If custom traintype and set is unknown, use the input number as the set
+                set = number.upper()
+        else:
+            # checking if train number is valid
+            if number != 'Unknown':
+                set = setNumber(number.upper())
             if set == None:
                 await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
             type = trainType(number.upper())
-        else:
-            set = 'Unknown'
-            type = 'Unknown'
-            if traintype == 'auto':
-                type = 'Unknown'
-            else: type = traintype
-        if traintype == "Tait":
-            set = '381M-208T-230D-317M'
-        
-        # make the user set traintype have priority/
-        if traintype != 'auto':
-            type = traintype
+                
             
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
@@ -2236,7 +2404,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             embed.set_thumbnail(url=image)
         
         await ctx.edit_original_response(embed=embed)
-        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
+        await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
         
                         
@@ -2538,7 +2706,7 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
         # Add train to the list
         id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
         await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
-        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
+        await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
                 
     # Run in a separate task
@@ -3662,9 +3830,11 @@ async def profile(ctx, user: discord.User = None):
         async def profiles():
             if user == None:
                 username = ctx.user.name
+                userid =ctx.user.id
                 pfp = ctx.user.avatar.url
             else:
                 username = user.name
+                userid =user.id
                 pfp = user.avatar.url
 
             embed = discord.Embed(title=f"Profile")
@@ -3909,7 +4079,10 @@ async def profile(ctx, user: discord.User = None):
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
             
             # other stats
-            embed.set_footer(text=f"Favorite command: {getFavoriteCommand(ctx.user.id)[0]}")
+            try:
+                embed.set_footer(text=f"Favorite command: {getFavoriteCommand(userid)[0]}")
+            except FileNotFoundError:
+                print('user has no commands used')
             
             await ctx.edit_original_response(embed=embed)
             
@@ -3922,7 +4095,7 @@ async def profile(ctx, user: discord.User = None):
 async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
-    await addAchievement(ctx.author.name,ctx, ctx.author.mention)
+    await addAchievement(ctx.author.name,ctx.channel.id, ctx.author.mention)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
