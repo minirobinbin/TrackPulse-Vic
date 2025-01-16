@@ -1950,14 +1950,30 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         skippedGames = 0
         participants = []
         
+        # Get the photos at start and shuffle them
+        try:
+            available_photos = data.copy()
+            random.shuffle(available_photos)
+            
+            if len(available_photos) < rounds:
+                await ctx.response.send_message(f'Not enough photos available for {rounds} rounds. Maximum available is {len(available_photos)}.')
+                channel_game_status[channel] = False
+                return
+            
+        except IndexError:
+            await ctx.response.send_message('There are currently no photos for your selected options! Try a different line.')
+            channel_game_status[channel] = False
+            return
+
         for round in range(rounds):
             roundResponse = False
-            # Get a random row
-            random_row = random.choice(data)
+            
+            # Get the next photo from the shuffled list
+            random_row = available_photos[round]
 
             # Extract data from the random row
             url = random_row[0]
-            station = random_row[1]
+            station = random_row[1] 
             difficulty = random_row[2]
             credit = random_row[3]
 
@@ -2041,6 +2057,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
                             embed.add_field(name="Participants", value=', '.join(participants))
                             await ctx.channel.send(embed=embed)   
+                            channel_game_status[channel] = False
                             return
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
@@ -2067,7 +2084,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 print(f'Ignored rounds: {ignoredRounds}')
                 if ignoredRounds == 2 and roundResponse == False:
                     await ctx.channel.send("No responses for 2 rounds. Game ended.")
-                    break
+                    channel_game_status[channel] = False
+                    return
                         
                 # Reset game status after the game ends
                 channel_game_status[channel] = False
@@ -2085,6 +2103,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     except Exception as e:
         print(f'GUESSER ERROR: {e}')
         await ctx.channel.send(f'An error has occurred\n```{e}```')
+
 
     
 @stats.command(name="leaderboard", description="Global leaderboards for the games.",)
