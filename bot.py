@@ -261,11 +261,15 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
-
-    await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
-    This program comes with ABSOLUTELY NO WARRANTY.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions\nBot is online!""")
+    try:
+        await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
+        This program comes with ABSOLUTELY NO WARRANTY.
+        This is free software, and you are welcome to redistribute it
+        under certain conditions\nBot is online!""")
+    except Exception as e:
+        print(f'Error: {e}\n make sure the bot has premission to send in the startup channel')
+        return
+    
     try:
         task_loop.start()
     except:
@@ -2076,8 +2080,11 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         await ctx.channel.send(embed=embed)      
 
     # Run the game in a separate task
-    asyncio.create_task(run_game())
-    
+    try:
+        asyncio.create_task(run_game())
+    except Exception as e:
+        print(f'GUESSER ERROR: {e}')
+        await ctx.channel.send(f'An error has occurred\n```{e}```')
 
     
 @stats.command(name="leaderboard", description="Global leaderboards for the games.",)
@@ -2378,7 +2385,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             embed.set_thumbnail(url=image)
         
         await ctx.edit_original_response(embed=embed)
-        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
+        await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
         
                         
@@ -2680,7 +2687,7 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
         # Add train to the list
         id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
         await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
-        await addAchievement(ctx.user.name, ctx, ctx.user.mention)
+        await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
                 
     # Run in a separate task
@@ -4069,7 +4076,7 @@ async def profile(ctx, user: discord.User = None):
 async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
-    await addAchievement(ctx.author.name,ctx, ctx.author.mention)
+    await addAchievement(ctx.author.name,ctx.channel.id, ctx.author.mention)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
