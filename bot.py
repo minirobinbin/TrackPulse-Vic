@@ -274,6 +274,20 @@ async def on_ready():
 
     activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
     await bot.change_presence(activity=activity)
+    
+    # Refresh all users
+    channel = bot.get_channel(STARTUP_CHANNEL_ID)
+    response = await channel.send('Checking achievements for all users...')
+    user_files = os.listdir('utils/trainlogger/userdata')
+    csv_files = [f for f in user_files if f.endswith('.csv')]
+        
+    for csv_file in csv_files:
+        username = csv_file[:-4]  # Remove .csv extension
+        await response.edit(content=f'Checking achievements for {username}...')
+        await addAchievement(username, channel, f'<@{username}>')
+            
+    await response.edit(content='Finished checking achievements for all users')
+
     print("Bot started")
 
 # achievement awarder  check achievements
