@@ -276,28 +276,36 @@ async def on_ready():
     await bot.change_presence(activity=activity)
     
     # Refresh all users
-    channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    response = await channel.send('Checking achievements for all users...')
+    channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
+    response_channel = bot.get_channel(channel_id)
+    
+    if response_channel is None:
+        print(f"Error: Could not find channel with ID {channel_id}")
+        return
+        
+    response = await response_channel.send('Checking achievements for all users...')
+    
     user_files = os.listdir('utils/trainlogger/userdata')
     csv_files = [f for f in user_files if f.endswith('.csv')]
-        
+    
     for csv_file in csv_files:
         username = csv_file[:-4]  # Remove .csv extension
         await response.edit(content=f'Checking achievements for {username}...')
-        await addAchievement(username, channel, f'<@{username}>')
+        await addAchievement(username, channel_id, f'<@{username}>')
             
     await response.edit(content='Finished checking achievements for all users')
 
     print("Bot started")
 
 # achievement awarder  check achievements
-async def addAchievement(username, ctx, mention):
+async def addAchievement(username, channel, mention):
+    channel = bot.get_channel(channel)
     new = checkAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
-        await ctx.channel.send(mention,embed=embed)
+        await channel.send(mention,embed=embed)
 
 # Rare train finder
 def check_rare_trains_in_thread():
