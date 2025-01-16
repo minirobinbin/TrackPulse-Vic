@@ -1882,7 +1882,9 @@ async def train_line(ctx):
 @app_commands.choices(line=[
         app_commands.Choice(name="Alamein", value="Alamein"),
         app_commands.Choice(name="Belgrave", value="Belgrave"),
-        # app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
         app_commands.Choice(name="Frankston", value="Frankston"), 
         app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
         app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
