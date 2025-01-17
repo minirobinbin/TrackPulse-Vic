@@ -2345,8 +2345,12 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if traintype == "Tait":
                 set = '381M-208T-230D-317M'
             else:
-                # If custom traintype and set is unknown, use the input number as the set
-                set = number.upper()
+                # check if its a known train type and find the set, but if its not known just use the number
+                checkTT = trainType(number.upper())
+                if checkTT == traintype:
+                    set = setNumber(number.upper())
+                else:
+                    set = number.upper()
         else:
             # checking if train number is valid
             if number != 'Unknown':
