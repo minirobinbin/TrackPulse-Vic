@@ -2018,8 +2018,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 if not roundResponse:
                     ignoredRounds += 1
                 print(f'Ignored rounds: {ignoredRounds}')
-                if ignoredRounds == 2 and roundResponse == False:
-                    await ctx.channel.send("No responses for 2 rounds. Game ended.")
+                if ignoredRounds >= 4 and roundResponse == False:
+                    await ctx.channel.send("No responses for 4 rounds. Game ended.")
                     channel_game_status[channel] = False
                     return
                         
