@@ -1123,7 +1123,7 @@ async def line_info(ctx, search: str):
 
 # Train search train
 @search.command(name="train", description="Search for a specific Train")
-async def train_search(ctx, train: str, show_run_info:bool=True):
+async def train_search(ctx, train: str, hide_run_info:bool=False):
     await ctx.response.defer()
     log_command(ctx.user.id, 'train-search')
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
@@ -1226,7 +1226,7 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
             """
         embed_update = await ctx.edit_original_response(embed=embed)
         
-        if type in metroTrains and show_run_info:
+        if type in metroTrains and not hide_run_info:
             # map thing
             mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
@@ -1264,9 +1264,6 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     return
                 file_path = f"temp/{train}-map.png"
                 if os.path.exists(file_path):
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
                     file = discord.File(file_path, filename=f"{train}-map.png")
                     
                     embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
@@ -1336,7 +1333,10 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
-                
+
+                    # Delete the old message
+                    await mapEmbedUpdate.delete()
+                    
                     # Send a new message with the file and embed
                     await channel.send(file=file, embed=embed)
                 else:
@@ -1519,7 +1519,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")
 async def tramsearch(ctx, tram: str):
-    await ctx.response.send_message(f"Searching, trip data may take longer to send...")
+    await ctx.response.defer()
     log_command(ctx.user.id, 'tram-search')
     channel = ctx.channel
     type = tramType(tram)
@@ -1528,7 +1528,7 @@ async def tramsearch(ctx, tram: str):
     print(f'Set: {set}')
     print(f"Tram Type: {type}")
     if type is None:
-        await channel.send("Tram not found")
+        await ctx.edit_original_response(content="Tram not found")
     else:
         embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
         if set.endswith('-'):
@@ -1573,74 +1573,8 @@ async def tramsearch(ctx, tram: str):
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
-        embed_update = await channel.send(embed=embed)
+        embed_update = await ctx.edit_original_response(embed=embed)
         
-        # map thing
-        '''mapEmbed = discord.Embed(title=f"{tram}'s location")
-        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
-        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
-        
-        # Generate the map location
-        async def addmap():                
-                
-                location = getTramLocation(set)
-                url = convertTrainLocationToGoogle(location)
-                try:
-                    if location is not None:
-                        for item in location:
-                            latitude = item['vehicle_position']['latitude']
-                            longitude = item['vehicle_position']['longitude']
-                            geopath=''
-                            # geopath = getGeopath(item["run_ref"])
-                            # print(f'geopath: {geopath}')
-
-                        await makeMapv2(latitude,longitude, tram, geopath)  # Adjust this line to asynchronously generate the map
-                except Exception as e:
-                    await mapEmbedUpdate.delete()
-                    await ctx.channel.send('No location data available.')
-                    print(f'ErROR: {e}')
-                    return
-                file_path = f"temp/{tram}-map.png"
-                if os.path.exists(file_path):
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
-                    file = discord.File(file_path, filename=f"{tram}-map.png")
-                    
-                    embed = discord.Embed(title=f"{tram}'s location", url=url)
-                    embed.remove_field(0)
-                    embed.set_image(url=f'attachment://{tram}-map.png')
-                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
-                
-                    # Send a new message with the file and embed
-                    await channel.send(file=file, embed=embed)
-                else:
-                    await mapEmbedUpdate.delete()
-                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
-                    print(f"Error: Map file '{file_path}' not found.")
-        '''
-
-            
-        # else:
-        #     embed.remove_field(3)
-        #     await embed_update.edit(embed=embed)
-        #     await mapEmbedUpdate.delete()
-        #     await ctx.channel.send('Location info is only available for Metro services')
-        
-        
-            
-
-    
-
-        
-
-    
-# @app_commands.command(name='test', description="Test command")
-# @app_commands.allowed_installs(guilds=False, users=True)
-# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-# async def useable_only_users(interaction: discord.Interaction):
-#     await interaction.response.send_message("I am only installed to users, but can be used anywhere.")
-    
 
 # Next departures for a station
 async def station_autocompletion(
