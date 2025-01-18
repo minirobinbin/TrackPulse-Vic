@@ -2020,6 +2020,12 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 print(f'Ignored rounds: {ignoredRounds}')
                 if ignoredRounds >= 4 and roundResponse == False:
                     await ctx.channel.send("No responses for 4 rounds. Game ended.")
+                    embed = discord.Embed(title="Game Summary")
+                    embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                    embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                    embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                    embed.add_field(name="Participants", value=', '.join(participants))
+                    await ctx.channel.send(embed=embed)
                     channel_game_status[channel] = False
                     return
                         
@@ -2099,7 +2105,7 @@ linelist = [
 ]
 
 @games.command(name="station-order", description="A game where you list the stations before or after a station.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.")
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.", line ='Which line to guess stations from, defaults to all lines.')
 @app_commands.choices(
     direction=[
         app_commands.Choice(name="Up or Down", value='updown'),
@@ -2107,17 +2113,36 @@ linelist = [
         app_commands.Choice(name="Down", value='down')
         ],
     )
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        # app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="Frankston", value="Frankston"), 
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+])
 
-async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
+async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='all'):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-order')
-    async def run_game():
+    async def run_game(line):
         # Check if a game is already running in this channel
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 25:
-            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+        if rounds > 10:
+            await ctx.response.send_message("You can only play a maximum of 10 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
@@ -2135,9 +2160,10 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 numdirection = numdirection*-1
             
             # choose random line
-            line = None
-            while line == None:
-                line = linelist[random.randint(0,len(linelist)-1)]
+            if line == 'all':
+                line = None
+                while line == None:
+                    line = linelist[random.randint(0,len(linelist)-1)]            
 
             # choose random station
             if line == 'Flemington Racecourse':
@@ -2209,7 +2235,7 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 channel_game_status[channel] = False
             
     # Run the game in a separate task
-    asyncio.create_task(run_game())
+    asyncio.create_task(run_game(line))
 
 async def station_autocompletion(
     interaction: discord.Interaction,
