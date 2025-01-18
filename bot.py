@@ -1224,6 +1224,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
         if type in metroTrains:
             embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
             """
+        # send it 
         embed_update = await ctx.edit_original_response(embed=embed)
         
         if type in metroTrains and not hide_run_info:
@@ -1259,7 +1260,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                         await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
                     await mapEmbedUpdate.delete()
-                    await ctx.channel.send('No trip data available.')
+                    await mapEmbedUpdate.edit(content='No trip data available.')
                     print(f'ErROR: {e}')
                     return
                 file_path = f"temp/{train}-map.png"
@@ -1338,7 +1339,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                     await mapEmbedUpdate.delete()
                     
                     # Send a new message with the file and embed
-                    await channel.send(file=file, embed=embed)
+                    await embed_update.reply(file=file, embed=embed)
                 else:
                     await mapEmbedUpdate.delete()
                     await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
