@@ -1841,8 +1841,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 100:
-            await ctx.response.send_message("You can only play a maximum of 100 rounds!", ephemeral=True )
+        if rounds > 500:
+            await ctx.response.send_message("You can only play a maximum of 500 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
