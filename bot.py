@@ -1259,8 +1259,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
 
                         await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
-                    await mapEmbedUpdate.delete()
-                    await mapEmbedUpdate.edit(content='No trip data available.')
+                    await mapEmbedUpdate.edit(content='No trip data available.', embed=None)
                     print(f'ErROR: {e}')
                     return
                 file_path = f"temp/{train}-map.png"
@@ -1342,7 +1341,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                     await embed_update.reply(file=file, embed=embed)
                 else:
                     await mapEmbedUpdate.delete()
-                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
+                    await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")
                     print(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
