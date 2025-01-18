@@ -193,11 +193,6 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
-try:    
-    os.mkdir('utils/game/scores')
-except FileExistsError as e:
-    print(e)    
-
 # line stations and colours
 lines_dictionary = {
     'Alamein': [['Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
@@ -884,8 +879,8 @@ async def route(ctx, rtype: str, number: int):
                 
     except Exception as e:
         await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
-        with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.datetime.now()} - ERROR with user command - user sent route search command with input {rtype}, {number}")
+        await log_channel.send(f'Error: ```{e}```\n with search route ran by {ctx.user.mention}\n<@{USER_ID}>')
+                
 
 
 
@@ -943,9 +938,10 @@ async def line_info(ctx, number: str, search_set:bool=False):
     #get full set
     try:
         fullSet = setNumber(number).split("-")
-    except:
+    except Exception as e:
         print(f'cannot get full set for {number}')
         search_set=False
+        await log_channel.send(f'Error: ```{e}```\n with search train photo ran by {ctx.user.mention}\n<@{USER_ID}>')
                 
     await sendPhoto(photo_url)
     
@@ -1418,6 +1414,8 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
+                await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
                 print(f'ErROR: {e}')
                 return
             
@@ -1508,6 +1506,8 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             await ctx.edit_original_response(content='No trip data available.')   
             print(f'ErROR: {e}') 
             print(traceback.format_exc())  
+            await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
     # Run transportVicSearch in a separate thread
         
         
@@ -2105,6 +2105,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     except Exception as e:
         print(f'GUESSER ERROR: {e}')
         await ctx.channel.send(f'An error has occurred\n```{e}```')
+        await log_channel.send(f'Error: ```{e}```\n with guesser run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
 
 
     
@@ -3580,6 +3582,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 
             except Exception as e:
                 await ctx.response.send_message(f"Error: `{e}`")
+                await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
