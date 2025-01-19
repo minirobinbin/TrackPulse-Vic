@@ -326,7 +326,18 @@ async def on_ready():
                 
         await response.edit(content='Finished checking game achievements for all users')
 
-    print("Bot started")
+    # restart or normal start
+    file = open('restart.txt','r')
+    file = file.read()
+
+    if file == '':
+        print("Bot started")
+    else:
+        print("Bot restarted")
+        channel = bot.get_channel(int(file))
+        await channel.send('Restart Complete')
+        with open('restart.txt', 'w') as file:
+                file.write('')
 
 # achievement awarder  check achievements
 async def addAchievement(username, channel, mention):
@@ -4500,8 +4511,12 @@ async def syncgame(ctx):
 @bot.command()
 async def restart(ctx):
     if ctx.author.id in admin_users:
-        await ctx.send(f"Restarting bot. When it is finished the bot's status will return to online, the bot will be unable to respond to this with a confirmation message.")
         print(f"Restarting bot")
+        await ctx.send(f"Restarting bot")
+        
+        with open('restart.txt', 'w') as file:
+            file.write(str(ctx.channel.id))
+
         os.system('python bot.py')
 
     else:
