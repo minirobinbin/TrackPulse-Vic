@@ -4479,7 +4479,7 @@ async def syncgame(ctx):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            await ctx.send(f"Sucsess!")
+            await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
             
@@ -4489,11 +4489,11 @@ async def syncgame(ctx):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            await ctx.send(f"Sucsess!")
+            await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{str(ctx.author.id)} tried to synd the database.')
+        print(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
     
 # important
