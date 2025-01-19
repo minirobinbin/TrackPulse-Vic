@@ -11,6 +11,5 @@ seaborn
 pandas
 Pillow
 staticmap
-os
 pathlib2
 GitPython
