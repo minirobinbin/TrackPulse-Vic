@@ -79,7 +79,7 @@ from utils.trainlogger.achievements import *
 # settings
 rareCheckerOn = False
 lineStatusOn = False
-admin_users = [1002449671224041502, 780303451980038165]
+admin_users = [1002449671224041502, 780303451980038165, int(config['USER_ID'])]
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -4420,7 +4420,7 @@ async def ping(ctx):
     
 @bot.command()
 async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
-    if str(ctx.author.id) == USER_ID:
+    if str(ctx.author.id) in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = url
         save_location = "utils/trainsets.csv"
@@ -4437,7 +4437,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         
 @bot.command()
 async def syncgame(ctx):
-    if str(ctx.author.id) == USER_ID:
+    if str(ctx.author.id) in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
