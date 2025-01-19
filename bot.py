@@ -187,10 +187,13 @@ USER_ID = config['USER_ID']
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
 log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
+# check if these things are on in the .env
 rareCheckerOn = False
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
-    
+startupAchievements = False
+if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
+    startupAchievements = True
 # settings
     
 lineStatusOn = False
@@ -280,46 +283,47 @@ async def on_ready():
     await bot.change_presence(activity=activity)
     
     # Refresh all users
-    channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
-    response_channel = bot.get_channel(channel_id)
-    
-    if response_channel is None:
-        print(f"Error: Could not find channel with ID {channel_id}")
-        return
+    if startupAchievements:
+        channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
+        response_channel = bot.get_channel(channel_id)
         
-    response = await response_channel.send('Checking log achievements for all users...')
-    
-    user_files = os.listdir('utils/trainlogger/userdata')
-    csv_files = [f for f in user_files if f.endswith('.csv')]
-    
-    for csv_file in csv_files:
-        username = csv_file[:-4]  # Remove .csv extension
-        await response.edit(content=f'Checking achievements for {username}...')
-        await addAchievement(username, channel_id, f'<@{username}>')
-    
-    mode = 'guesser'
-    filepath = f"utils/game/scores/{mode}.csv"
-    new_achievements = []
+        if response_channel is None:
+            print(f"Error: Could not find channel with ID {channel_id}")
+            return
+        
+        response = await response_channel.send('Checking log achievements for all users...')
+        
+        user_files = os.listdir('utils/trainlogger/userdata')
+        csv_files = [f for f in user_files if f.endswith('.csv')]
+        
+        for csv_file in csv_files:
+            username = csv_file[:-4]  # Remove .csv extension
+            await response.edit(content=f'Checking achievements for {username}...')
+            await addAchievement(username, channel_id, f'<@{username}>')
+        
+        mode = 'guesser'
+        filepath = f"utils/game/scores/{mode}.csv"
+        new_achievements = []
 
-    await response.edit(content='Finished checking log achievements for all users')
-    response = await response_channel.send('Checking game achievements for all users...')
+        await response.edit(content='Finished checking log achievements for all users')
+        response = await response_channel.send('Checking game achievements for all users...')
 
-    with open(filepath, mode='r', newline='') as csvfile:
-        csv_reader = csv.reader(csvfile)
-        for row in csv_reader:
-            if row != ['username','id','wins','losses']:
-                username = row[1]
-                await response.edit(content=f'Checking game achievements for {username}...')
+        with open(filepath, mode='r', newline='') as csvfile:
+            csv_reader = csv.reader(csvfile)
+            for row in csv_reader:
+                if row != ['username','id','wins','losses']:
+                    username = row[1]
+                    await response.edit(content=f'Checking game achievements for {username}...')
+                    
+                    #send achievement message
+                    new = checkGameAchievements(username)
+                    for achievement in new:
+                        info = getAchievementInfo(achievement)
+                        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+                        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+                        await channel.send(f'<@{username}>',embed=embed)
                 
-                #send achievement message
-                new = checkGameAchievements(username)
-                for achievement in new:
-                    info = getAchievementInfo(achievement)
-                    embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
-                    embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
-                    await channel.send(f'<@{username}>',embed=embed)
-            
-    await response.edit(content='Finished checking game achievements for all users')
+        await response.edit(content='Finished checking game achievements for all users')
 
     print("Bot started")
 
@@ -2477,7 +2481,6 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
   # tram logger goes here
 @trainlogs.command(name="tram", description="Log a Melbourne tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
-
 @app_commands.choices(route=[
         app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
         app_commands.Choice(name="3 Melbourne University - Malvern East", value="3"),
