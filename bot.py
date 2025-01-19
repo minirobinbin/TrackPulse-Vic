@@ -187,8 +187,12 @@ USER_ID = config['USER_ID']
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
 log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
-# settings
 rareCheckerOn = False
+if config['RARE_SERVICE_CHECKER'] == 'ON':
+    rareCheckerOn = True
+    
+# settings
+    
 lineStatusOn = False
 admin_users = [1002449671224041502, 780303451980038165, int(USER_ID)]
 
