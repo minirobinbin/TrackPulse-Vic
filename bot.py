@@ -4459,7 +4459,7 @@ async def syncgame(ctx):
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{USER_ID} tried to synd the database.')
+        print(f'{str(ctx.author.id)} tried to synd the database.')
         await ctx.send("You are not authorized to use this command.")
     
 # imptrant
