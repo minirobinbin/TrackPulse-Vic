@@ -45,6 +45,8 @@ import pytz
 from concurrent.futures import ThreadPoolExecutor
 import traceback
 import os
+from pathlib import Path
+import git
 
 from utils import trainset
 from utils.search import *
@@ -190,11 +192,14 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 # check if these things are on in the .env
 rareCheckerOn = False
+automatic_updates = False
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
 startupAchievements = False
 if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
     startupAchievements = True
+if config['AUTOMATIC_UPDATES'] == 'ON':
+    automatic_updates = True
 # settings
     
 lineStatusOn = False
@@ -4511,7 +4516,7 @@ async def syncgame(ctx):
 @bot.command()
 async def restart(ctx):
     if ctx.author.id in admin_users:
-        print(f"Restarting bot")
+        print("Restarting bot")
         await ctx.send(f"Restarting bot")
         
         with open('restart.txt', 'w') as file:
@@ -4522,6 +4527,26 @@ async def restart(ctx):
     else:
         print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def update(ctx):
+    if automatic_updates == True:
+        if ctx.author.id in admin_users:
+            print("Updating bot")
+            await ctx.send("Updating bot")
+        
+            directory = Path(__file__).parents[0]
+
+            directory = git.cmd.Git(directory)
+            directory.pull()
+
+            await ctx.send("Update complete")
+
+        else:
+            print(f'{str(ctx.author.id)} tried to update the bot.')
+            await ctx.send("You are not authorized to use this command.")
+    else:
+        await ctx.send("Automatic updates are not supported on this bot.")
     
 # important
 bot.run(BOT_TOKEN)

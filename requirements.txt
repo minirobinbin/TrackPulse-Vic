@@ -12,3 +12,4 @@ pandas
 Pillow
 staticmap
 os
+pathlib
