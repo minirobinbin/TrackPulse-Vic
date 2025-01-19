@@ -4432,7 +4432,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{USER_ID} tried to sync the database.')
+        print(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
         
 @bot.command()
