@@ -4421,7 +4421,7 @@ async def ping(ctx):
     
 @bot.command()
 async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
-    if str(ctx.author.id) in admin_users:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = url
         save_location = "utils/trainsets.csv"
@@ -4438,7 +4438,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         
 @bot.command()
 async def syncgame(ctx):
-    if str(ctx.author.id) in admin_users:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
