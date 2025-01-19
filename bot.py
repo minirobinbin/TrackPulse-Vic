@@ -2477,8 +2477,6 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
   # tram logger goes here
 @trainlogs.command(name="tram", description="Log a Melbourne tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=station_autocompletion)
-@app_commands.autocomplete(end=station_autocompletion)
 
 @app_commands.choices(route=[
         app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
