@@ -283,7 +283,7 @@ async def on_ready():
         print(f"Error: Could not find channel with ID {channel_id}")
         return
         
-    response = await response_channel.send('Checking achievements for all users...')
+    response = await response_channel.send('Checking log achievements for all users...')
     
     user_files = os.listdir('utils/trainlogger/userdata')
     csv_files = [f for f in user_files if f.endswith('.csv')]
@@ -292,8 +292,30 @@ async def on_ready():
         username = csv_file[:-4]  # Remove .csv extension
         await response.edit(content=f'Checking achievements for {username}...')
         await addAchievement(username, channel_id, f'<@{username}>')
+    
+    mode = 'guesser'
+    filepath = f"utils/game/scores/{mode}.csv"
+    new_achievements = []
+
+    await response.edit(content='Finished checking log achievements for all users')
+    response = await response_channel.send('Checking game achievements for all users...')
+
+    with open(filepath, mode='r', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if row != ['username','id','wins','losses']:
+                username = row[1]
+                await response.edit(content=f'Checking game achievements for {username}...')
+                
+                #send achievement message
+                new = checkGameAchievements(username)
+                for achievement in new:
+                    info = getAchievementInfo(achievement)
+                    embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+                    embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+                    await channel.send(f'<@{username}>',embed=embed)
             
-    await response.edit(content='Finished checking achievements for all users')
+    await response.edit(content='Finished checking game achievements for all users')
 
     print("Bot started")
 
@@ -4082,6 +4104,12 @@ async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
     await addAchievement(ctx.author.name,ctx.channel.id, ctx.author.mention)
+    new = checkGameAchievements(ctx.author.name)
+    for achievement in new:
+        info = getAchievementInfo(achievement)
+        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+        await ctx.send(f'<@{ctx.author.id}>',embed=embed)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
