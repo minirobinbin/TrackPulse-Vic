@@ -44,6 +44,7 @@ import io
 import pytz
 from concurrent.futures import ThreadPoolExecutor
 import traceback
+import os
 
 from utils import trainset
 from utils.search import *
@@ -4494,6 +4495,17 @@ async def syncgame(ctx):
             await ctx.send(f"Error: `{e}`")
     else:
         print(f'{str(ctx.author.id)} tried to sync the database.')
+        await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def restart(ctx):
+    if ctx.author.id in admin_users:
+        await ctx.send(f"Restarting bot. When it is finished the bot's status will return to online, the bot will be unable to respond to this with a confirmation message.")
+        print(f"Restarting bot")
+        os.system('python bot.py')
+
+    else:
+        print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
     
 # important
