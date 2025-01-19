@@ -56,7 +56,7 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
-from utils.trainlogger.achievements.check import checkAchievements, getAchievementInfo
+from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainset import *
 from utils.trainlogger.stats import *
@@ -300,6 +300,17 @@ async def on_ready():
 async def addAchievement(username, channel, mention):
     channel = bot.get_channel(channel)
     new = checkAchievements(username)
+    for achievement in new:
+        info = getAchievementInfo(achievement)
+        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+        await channel.send(mention,embed=embed)
+        
+# game achievement awarder  check game achievements
+async def addGameAchievement(username, channel, mention):
+    print(f'checking game achievements for {username}')
+    channel = bot.get_channel(channel)
+    new = checkGameAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
@@ -879,7 +890,6 @@ async def route(ctx, rtype: str, number: int):
                 
     except Exception as e:
         await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
-        await log_channel.send(f'Error: ```{e}```\n with search route ran by {ctx.user.mention}\n<@{USER_ID}>')
                 
 
 
@@ -1970,8 +1980,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLb(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author.mention not in participants:
-                            participants.append(user_response.author.mention)
+                        if user_response.author not in participants:
+                            participants.append(user_response.author)
                             
                     elif user_response.content.lower() == '!skip':
                         if user_response.author.id in [ctx.user.id, 780303451980038165] :
@@ -1987,12 +1997,14 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                         if user_response.author.id in [ctx.user.id,780303451980038165] :
                             await ctx.channel.send(f"Game ended.")
                             log_command(user_response.author.id, 'game-station-guesser-stop')
-                            embed = discord.Embed(title="Game Summary")
+                            embed = discord.Embed(title=f"Game Summary | {setLine}")
                             embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
                             embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
                             embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-                            embed.add_field(name="Participants", value=', '.join(participants))
-                            await ctx.channel.send(embed=embed)   
+                            embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                            await ctx.channel.send(embed=embed)  
+                            for user in participants:
+                                await addGameAchievement(user.name,ctx.channel.id,user.mention)  
                             channel_game_status[channel] = False
                             return
                         else:
@@ -2006,8 +2018,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLoss(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author.mention not in participants:
-                            participants.append(user_response.author.mention)
+                        if user_response.author not in participants:
+                            participants.append(user_response.author)
                         
             except asyncio.TimeoutError:
                 if ultrahard:
@@ -2020,13 +2032,14 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 print(f'Ignored rounds: {ignoredRounds}')
                 if ignoredRounds >= 4 and roundResponse == False:
                     await ctx.channel.send("No responses for 4 rounds. Game ended.")
-                    embed = discord.Embed(title="Game Summary")
+                    embed = discord.Embed(title=f"Game Summary | {setLine}")
                     embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
                     embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
                     embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-                    embed.add_field(name="Participants", value=', '.join(participants))
-                    await ctx.channel.send(embed=embed)
-                    channel_game_status[channel] = False
+                    embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                    await ctx.channel.send(embed=embed)  
+                    for user in participants:
+                        await addGameAchievement(user.name,ctx.channel.id,user.mention)
                     return
                         
                 # Reset game status after the game ends
@@ -2036,8 +2049,10 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
         embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-        embed.add_field(name="Participants", value=', '.join(participants))
-        await ctx.channel.send(embed=embed)      
+        embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+        await ctx.channel.send(embed=embed)  
+        for user in participants:
+            await addGameAchievement(user.name,ctx.channel.id,user.mention)
 
     # Run the game in a separate task
     try:
