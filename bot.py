@@ -4521,7 +4521,7 @@ async def restart(ctx):
         
         with open('restart.txt', 'w') as file:
             file.write(str(ctx.channel.id))
-
+        await bot.close()
         os.system('python bot.py')
 
     else:
