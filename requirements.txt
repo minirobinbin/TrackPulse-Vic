@@ -12,4 +12,5 @@ pandas
 Pillow
 staticmap
 os
-pathlib
+pathlib2
+GitPython
