@@ -76,10 +76,6 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 
-# settings
-rareCheckerOn = False
-lineStatusOn = False
-admin_users = [1002449671224041502, 780303451980038165, int(config['USER_ID'])]
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -190,6 +186,11 @@ USER_ID = config['USER_ID']
 
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
 log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+
+# settings
+rareCheckerOn = False
+lineStatusOn = False
+admin_users = [1002449671224041502, 780303451980038165, int(USER_ID)]
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
