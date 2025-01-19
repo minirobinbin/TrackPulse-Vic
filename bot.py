@@ -4496,5 +4496,5 @@ async def syncgame(ctx):
         print(f'{str(ctx.author.id)} tried to synd the database.')
         await ctx.send("You are not authorized to use this command.")
     
-# imptrant
+# important
 bot.run(BOT_TOKEN)
