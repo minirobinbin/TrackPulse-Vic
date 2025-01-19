@@ -2552,7 +2552,7 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
         type = tramType(number.upper())
-        if type == None:
+        if type == None or type == 'Tram type not found for UNKNOWN':
             type = 'N/A'
 
         # Add train to the list
