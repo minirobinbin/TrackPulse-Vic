@@ -45,6 +45,8 @@ import pytz
 from concurrent.futures import ThreadPoolExecutor
 import traceback
 import os
+from pathlib import Path
+import git
 
 from utils import trainset
 from utils.search import *
@@ -190,11 +192,14 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 # check if these things are on in the .env
 rareCheckerOn = False
+automatic_updates = False
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
 startupAchievements = False
 if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
     startupAchievements = True
+if config['AUTOMATIC_UPDATES'] == 'ON':
+    automatic_updates = True
 # settings
     
 lineStatusOn = False
@@ -326,7 +331,18 @@ async def on_ready():
                 
         await response.edit(content='Finished checking game achievements for all users')
 
-    print("Bot started")
+    # restart or normal start
+    file = open('restart.txt','r')
+    file = file.read()
+
+    if file == '':
+        print("Bot started")
+    else:
+        print("Bot restarted")
+        channel = bot.get_channel(int(file))
+        await channel.send('Restart Complete')
+        with open('restart.txt', 'w') as file:
+                file.write('')
 
 # achievement awarder  check achievements
 async def addAchievement(username, channel, mention):
@@ -4500,13 +4516,37 @@ async def syncgame(ctx):
 @bot.command()
 async def restart(ctx):
     if ctx.author.id in admin_users:
-        await ctx.send(f"Restarting bot. When it is finished the bot's status will return to online, the bot will be unable to respond to this with a confirmation message.")
-        print(f"Restarting bot")
+        print("Restarting bot")
+        await ctx.send(f"Restarting bot")
+        
+        with open('restart.txt', 'w') as file:
+            file.write(str(ctx.channel.id))
+
         os.system('python bot.py')
 
     else:
         print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def update(ctx):
+    if automatic_updates == True:
+        if ctx.author.id in admin_users:
+            print("Updating bot")
+            await ctx.send("Updating bot")
+        
+            directory = Path(__file__).parents[0]
+
+            directory = git.cmd.Git(directory)
+            directory.pull()
+
+            await ctx.send("Update complete")
+
+        else:
+            print(f'{str(ctx.author.id)} tried to update the bot.')
+            await ctx.send("You are not authorized to use this command.")
+    else:
+        await ctx.send("Automatic updates are not supported on this bot.")
     
 # important
 bot.run(BOT_TOKEN)
