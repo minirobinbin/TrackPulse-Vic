@@ -557,9 +557,9 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         **Options:**
 
                         Required:
-                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
                         Number: which carriage you rode. Examples include "3005", "3115", "4001", "NR18". If you don't know, type "Unknown".
-                        
+                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
+
                         Optional:
                         Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
                         Start: the starting station of your trip. You can choose from the list or type your own.
