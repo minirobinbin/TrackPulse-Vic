@@ -701,72 +701,70 @@ Required:
         if chosen_command in commands:
             command_data = commands[chosen_command]  # Avoid shadowing 'commands'
             embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
-                        Metro Trains Melbourne: </log train:1289843416628330506>
-                        V/Line Rail: </log train:1289843416628330506>
-                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
             if command == 'Which /log command should I use?': embed.add_field(name="", value="""**Victoria:**
-                        Yarra Trams: </log tram:1289843416628330506>
-                        PTV Bus: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: </log train:1289843416628330506>
-                        Heritage Railway: </log train:1289843416628330506>
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**New South Wales:**
-                        Sydney Trains: </log sydney-train:1289843416628330506>
-                        Sydney Metro: </log sydney-train:1289843416628330506>
-                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        V/Line Rail: </log train:1289843416628330506>
-                        Sydney Light Rail: </log sydney-tram:1289843416628330506>
-                        Newcastle Light Rail: </log sydney-tram:1289843416628330506>
-                        Sydney Ferries: Currently Not Available
-                        Newcastle Ferries: Currently Not Available
-                        Transport for NSW Bus: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""**New South Wales Cont.:**
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**South Australia:**
-                        Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Adelaide Metro Tram: Currently Not Available
-                        Adelaide Metro Bus: </log bus:1289843416628330506>
-                        Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Western Australia:**
-                        Transperth Rail: </log perth-train:1289843416628330506>
-                        Transwa Rail: </log perth-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Transperth Ferries: Currently Not Available
-                        Transperth Bus: </log bus:1289843416628330506>
-                        Transwa Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Northern Territory**
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Darwinbus: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available
-
-                        **Other regions:**
-                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        Any Bus/Coach: </log bus:1289843416628330506>""")
+Metro Trains Melbourne: </log train:1289843416628330506>
+V/Line Rail: </log train:1289843416628330506>
+NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+Yarra Trams: </log tram:1289843416628330506>
+PTV Bus: </log bus:1289843416628330506>
+V/Line Coach: </log bus:1289843416628330506>
+NSW TrainLink Coach: </log bus:1289843416628330506>
+Other Bus/Coach: </log bus:1289843416628330506>
+Heritage Train On Mainline: </log train:1289843416628330506>
+Heritage Railway: </log train:1289843416628330506>
+Heritage Tram On Mainline: Currently Not Available
+Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**New South Wales:**
+Sydney Trains: </log sydney-train:1289843416628330506>
+Sydney Metro: </log sydney-train:1289843416628330506>
+NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+V/Line Rail: </log train:1289843416628330506>
+Sydney Light Rail: </log sydney-tram:1289843416628330506>
+Newcastle Light Rail: </log sydney-tram:1289843416628330506>
+Sydney Ferries: Currently Not Available
+Newcastle Ferries: Currently Not Available
+Transport for NSW Bus: </log bus:1289843416628330506>
+NSW TrainLink Coach: </log bus:1289843416628330506>
+V/Line Coach: </log bus:1289843416628330506>
+Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""**New South Wales Cont.:**
+Heritage Train On Mainline: Currently Not Available
+Heritage Railway: Currently Not Available
+Heritage Tram On Mainline: Currently Not Available
+Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**South Australia:**
+Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
+Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+Adelaide Metro Tram: Currently Not Available
+Adelaide Metro Bus: </log bus:1289843416628330506>
+Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
+V/Line Coach: </log bus:1289843416628330506>
+NSW TrainLink Coach: </log bus:1289843416628330506>
+Other Bus/Coach: </log bus:1289843416628330506>
+Heritage Train On Mainline: Currently Not Available
+Heritage Railway: Currently Not Available
+Heritage Tram On Mainline: Currently Not Available
+Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Western Australia:**
+Transperth Rail: </log perth-train:1289843416628330506>
+Transwa Rail: </log perth-train:1289843416628330506>
+Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+Transperth Ferries: Currently Not Available
+Transperth Bus: </log bus:1289843416628330506>
+Transwa Coach: </log bus:1289843416628330506>
+Other Bus/Coach: </log bus:1289843416628330506>
+Heritage Train On Mainline: Currently Not Available
+Heritage Railway: Currently Not Available
+Heritage Tram On Mainline: Currently Not Available
+Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Northern Territory**
+Journey Beyond Rail: </log adelaide-train:1289843416628330506>
+Darwinbus: </log bus:1289843416628330506>
+Other Bus/Coach: </log bus:1289843416628330506>
+Heritage Train On Mainline: Currently Not Available
+Heritage Railway: Currently Not Available
+Heritage Tram On Mainline: Currently Not Available
+Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Other regions:**
+NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+NSW TrainLink Coach: </log bus:1289843416628330506>
+Any Bus/Coach: </log bus:1289843416628330506>""")
         else:
             embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
     else: 
