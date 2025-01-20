@@ -523,10 +523,10 @@ Required:
     State: input the state you want to see the stations of.''',
         '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
 
-                        **Options:**
+**Options:**
 
-                        Required:
-                        Station: the station you wish to see the departures from. You must choose from the list.
+Required:
+    Station: the station you wish to see the departures from. You must choose from the list.
 
 Optional:
     Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
