@@ -4541,6 +4541,7 @@ async def update(ctx):
             directory.pull()
 
             await ctx.send("Update complete")
+            print("Update complete")
 
         else:
             print(f'{str(ctx.author.id)} tried to update the bot.')
