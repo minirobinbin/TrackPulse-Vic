@@ -768,6 +768,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
                         Heritage Tramway: Currently Not Available
 
                         Other regions:
+                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
+                        NSW TrainLink Coach: </log bus:1289843416628330506>
                         Any Bus/Coach: </log bus:1289843416628330506>""")
         else:
             embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
