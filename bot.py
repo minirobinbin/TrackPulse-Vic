@@ -501,7 +501,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     }
     
     commands = {
-        "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
+        'Which /log command should I use?': '''Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.''',
         '/about': '''</about:1322339128121102357> is a command that displays a brief summary of this bot and credits''',
         '/achievements view': '''</achievements view:1327085604789551134> is a command that allows you to view all of the achievements you've unlocked. You unlock achievements every time you add a log that meets the requirement for the achievement. Note that achievements are currently only for logs in Victoria.
 
@@ -545,7 +545,7 @@ Optional:
 Optional:
     Direction: if you wish to only play with a certain direction from the station, you may select that station. You must choose from the list. By default it is set to "Up or Down"
     Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 25.''',
-        "/help": """</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
+        '/help': '''</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.''',
         '/line-status': '''</line-status:1322429532757819473> is a command that allows you to view the current distruption status of all the lines ran by a certain rail operator. This is currently only for Metro and V/Line
 
 **Options:**
@@ -590,7 +590,7 @@ Required:
 
 Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.''',
-        "/log stats": """</log stats:1289843416628330506> is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
+        '/log stats': '''</log stats:1289843416628330506> is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
 
 **Options:**
 
@@ -601,7 +601,7 @@ Optional:
     Format: what format you want the statistic to be displayed in.\nEach statistic has a default format, generally chosen to display the data in the most convenient way. Choose from the list to override the default format 
     Global_stats: True or False. False by default. If you choose true, it will use all the logs in the system instead of one specific person.
     User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
-    Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.""",
+    Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.''',
         '/log sydney-train': '''</log sydney-train:1289843416628330506> is a command to log any Sydney Trains, Sydney Metro and NSW Trainlink train trips. This is the command to use even if your NSW Trainlinl train doesn't go through New South Wales. Make sure to log each different leg of your trip seperately.
 
 **Options:**
@@ -616,7 +616,7 @@ Optional:
     Start: the starting station of your trip. You can choose from the list or type your own.
     End: the ending station of your trip. You can choose from the list or type your own.''',
         '/log sydney-tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        "/log train": """</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
+        '/log train': '''</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
 
 **Options:**
 
@@ -629,7 +629,7 @@ Required:
 Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
-    Notes: add any notes you want to add to your log.""",
+    Notes: add any notes you want to add to your log.''',
         '/log tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
 
@@ -659,7 +659,7 @@ Required:
 
 Optional:
     Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
-        "/search train": """</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
+        '/search train': '''</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
 
 **Options:**
 
@@ -667,7 +667,7 @@ Required:
     Train: input the Number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
 
 Optional:
-    Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. """,
+    Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. ''',
         '/search train-photo': '''</search train-photo:1240101357847838814> is a command to view the all the photos in the Xm9G photo archive for a specific train.
 
 **Options:**
@@ -681,7 +681,7 @@ Optional:
         '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/submit-photo': """</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
+        '/submit-photo': '''</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
 
 **Options:**
 
@@ -689,7 +689,7 @@ Required:
     Photo: attach the photo you would like to submit
     Car_number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station". Note that Xm9G manually reads this so any info in any understandable form is acceptable.
     Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
-    Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.""",
+    Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.''',
         '/wongm': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
         '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log perth-train:1289843416628330506>, </log stats:1289843416628330506>, </log sydney-train:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>'''
     }
