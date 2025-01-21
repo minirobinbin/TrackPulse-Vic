@@ -1303,7 +1303,10 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                 line = ""
                 print(f"Location: {location}")
                 url = convertTrainLocationToGoogle(location)
-                stoppingPattern = getStoppingPatternFromCar(location)
+                try:
+                    stoppingPattern = getStoppingPatternFromCar(location)
+                except Exception as e:
+                    await embed_update.reply(content=f'An error has occurred while searching for this trains run.')
                 print(f"STOPPING PATTERN: {stoppingPattern}")
                 try:
                     if location is not None:
@@ -1472,7 +1475,6 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
-                await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
 
                 print(f'ErROR: {e}')
                 return
@@ -1490,7 +1492,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             elif mode == "bus" or mode == 'nightbus':
                 colour = 0xf78b24
             
-            embed = discord.Embed(title=f"TD {runid}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"{td}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
