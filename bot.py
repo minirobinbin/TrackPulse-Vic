@@ -640,8 +640,8 @@ Required:
 Optional:
     Number: which carriage you rode. Examples include "856", "123", "2003", "6001". If you don't know, type "Unknown".
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Start: the starting station of your trip. You can choose from the list or type your own.
-    End: the ending station of your trip. You can choose from the list or type your own.''',
+    Start: the starting stop of your trip. You can choose from the list or type your own.
+    End: the ending stop of your trip. You can choose from the list or type your own.''',
         '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
 
 Options:
