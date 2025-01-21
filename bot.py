@@ -2054,7 +2054,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             participants.append(user_response.author)
                             
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id, 780303451980038165] :
+                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Round {round+1} skipped.")
                             log_command(user_response.author.id, 'game-station-guesser-skip')
                             skippedGames += 1
@@ -2064,7 +2064,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                             roundResponse = True
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,780303451980038165] :
+                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Game ended.")
                             log_command(user_response.author.id, 'game-station-guesser-stop')
                             embed = discord.Embed(title=f"Game Summary | {setLine}")
@@ -2298,13 +2298,13 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
                         
                         correct = True 
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id,707866373602148363] or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
                             break
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in [ctx.user.id,707866373602148363] or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Game ended.")
                             return
                         else:
