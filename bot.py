@@ -723,7 +723,12 @@ Optional:
 Required:
     Train: input the Number of the tram you're searching. Examples include "856", "123", "2003", "6001".''',
         '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries also aren't finished is: </stats leaderboard:1240101357847838815>, </stats profile:1240101357847838815>, </stats profile:1240101357847838815>, </wongm:1288004355475111939>, </year-in-review:1294634052099375155>''',
-        '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries also aren't finished is: </stats leaderboard:1240101357847838815>, </stats profile:1240101357847838815>, </stats profile:1240101357847838815>, </wongm:1288004355475111939>, </year-in-review:1294634052099375155>''',
+        '/stats profile': '''</stats profile:1240101357847838815> is a command allows you to view an overview of a user's interaction with this bot.
+
+Options:
+
+Optional:
+    User: pick a user who's profile you wish to view. By default it's set to you.''',        
         '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries also aren't finished is: </stats leaderboard:1240101357847838815>, </stats profile:1240101357847838815>, </stats profile:1240101357847838815>, </wongm:1288004355475111939>, </year-in-review:1294634052099375155>''',
         '/submit-photo': '''</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
 
