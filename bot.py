@@ -468,6 +468,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</about:1322339128121102357> - Shows information about the bot.",
             "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
             "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
+            "</year-in-review:1294634052099375155> - View your year in review with key stats from your logs.",
         ],
         "fun": [
             "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
@@ -750,7 +751,7 @@ Required:
 
 Required:
     Search: input your search.''',
-        '/year-in-review': f'''</year-in-review:1294634052099375155> is a command allows you to view an overview of your trips in a certain year.
+        '/year-in-review': '''</year-in-review:1294634052099375155> is a command allows you to view an overview of your trips in a certain year.
 
 **Options:**
 
