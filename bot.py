@@ -193,6 +193,7 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 # check if these things are on in the .env
 rareCheckerOn = False
 automatic_updates = False
+admin_users = [1002449671224041502, 780303451980038165, 707866373602148363, int(USER_ID)]
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
 startupAchievements = False
@@ -200,10 +201,11 @@ if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
     startupAchievements = True
 if config['AUTOMATIC_UPDATES'] == 'ON':
     automatic_updates = True
+if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
+    admin_users = [int(USER_ID)]
 # settings
     
 lineStatusOn = False
-admin_users = [1002449671224041502, 780303451980038165, 707866373602148363, int(USER_ID)]
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
@@ -426,7 +428,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -458,7 +460,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
             "</search tram:1240101357847838814> - Shows information about a specific tram.",
             "</line-status:1322429532757819473> - Shows disruption information for Rail Operator",
-            "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
+            "</disruptions:1331565431965745186> - Shows disruption information for a Train line.",
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
             "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
@@ -662,7 +664,7 @@ Optional:
     Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
     User: pick a user who's logs you wish to view. By default it's set to you.
     Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
-        '/metro-line': '''</metro-line:1288004355475111938> is a command that allows you to view the current distruption status of a rail line. This is currently only for Metro.
+        '/disruptions': '''</disruptions:1331565431965745186> is a command that allows you to view the current distruption status of a rail line. This is currently only for Metro.
 
 **Options:**
 
@@ -682,7 +684,7 @@ Required:
 **Options:**
 
 Required:
-    mode: choose the type of route you want to view the distruption status for. You must choose from the list
+    Mode: choose the mode of transport you want to view the distruption status for. You must choose from the list.
     Number: input the number of the route you want to view the distruption status for.''',
         '/search station-photo':'''</search station-photo:1240101357847838814> is a command to view the photo in the Xm9G photo archive for a specific station.
 
