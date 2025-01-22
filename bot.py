@@ -682,7 +682,7 @@ Required:
 **Options:**
 
 Required:
-    Rtype: choose the type of route you want to view the distruption status for. You must choose from the list
+    mode: choose the type of route you want to view the distruption status for. You must choose from the list
     Number: input the number of the route you want to view the distruption status for.''',
         '/search station-photo':'''</search station-photo:1240101357847838814> is a command to view the photo in the Xm9G photo archive for a specific station.
 
@@ -950,20 +950,20 @@ async def line_info(ctx, line: str):
 
 # Route Seach v2
 @search.command(name="route", description="Show info about a tram or bus route")
-@app_commands.describe(rtype = "What type of transport is this route?")
-@app_commands.choices(rtype=[
+@app_commands.describe(mode = "What type of transport is this route?")
+@app_commands.choices(mode=[
+        app_commands.Choice(name="Bus", value="2"),
         app_commands.Choice(name="Tram", value="1"),
         # app_commands.Choice(name="Metro Train", value="0"),
-        app_commands.Choice(name="Bus", value="2"),
         # app_commands.Choice(name="VLine Train", value="3"),
-        app_commands.Choice(name="Night Bus", value="4"),
+        # app_commands.Choice(name="Night Bus", value="4"),
 ])
 @app_commands.describe(number = "What route number to show info about?")
 
-async def route(ctx, rtype: str, number: int):  
+async def route(ctx, mode: str, number: int):  
     log_command(ctx.user.id, 'route_search')
     try:
-        json_info_str = route_api_request(number, rtype)
+        json_info_str = route_api_request(number, mode)
         json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
         json_info = json.loads(json_info_str)
         
@@ -992,6 +992,7 @@ async def route(ctx, rtype: str, number: int):
             
              # disruption info
             disruptionDescription = ""
+            url = ''
             try:
                 disruptions = disruption_api_request(route_id)
                 # print(disruptions)
@@ -1000,8 +1001,8 @@ async def route(ctx, rtype: str, number: int):
                 general_disruption = disruptions["disruptions"]["metro_bus"][0]
                 disruptionTitle = general_disruption["title"]
                 disruptionDescription = general_disruption["description"]
-
-
+                url = general_disruption['url']
+                updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
                 
             except Exception as e:
                 print(e)
@@ -1012,20 +1013,22 @@ async def route(ctx, rtype: str, number: int):
              # Check if the route number is the one you want
             if route_number == str(number):
                 # Create and send the embed only for the desired route number
-                embed = discord.Embed(title=f"Route {route_number}:", color=getColor(rtype))
+                if url:
+                    embed = discord.Embed(title=f"Route {route_number}:", color=getColor(mode), url=url)
+                else:
+                    embed = discord.Embed(title=f"Route {route_number}:", color=getColor(mode))
                 embed.add_field(name="Route Name", value=f"{route_number} - {route_name}", inline=False)
                 embed.add_field(name="Status Description", value=description, inline=False)
                 if disruptionDescription:
-                    embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+                    embed.add_field(name="Disruption Info",value=f'{disruptionDescription}\n\nUpdated {updateTime}', inline=False)
                     
                 await channel.send(embed=embed)
-                with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.datetime.now()} - user sent route search command with input {rtype}, {number}")
+
                                 
             counter = counter + 1
                 
     except Exception as e:
-        await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
+        await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
                 
 
 
@@ -1163,7 +1166,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             embed=discord.Embed(title=f"Zone {start_zone} → {end_zone}", color=0xc2d840)
             count=0
             for fair in fairs:
-                type = fairs[count]['PassengerType']
+                type = fairs[count]['Passengemode']
                 Fare2HourPeak = fairs[count]['Fare2HourPeak']
                 Fare2HourOffPeak = fairs[count]['Fare2HourOffPeak']
                 FareDailyPeak = fairs[count]['FareDailyPeak']

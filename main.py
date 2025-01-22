@@ -7,4 +7,4 @@ from utils.stoppingpattern import *
 import asyncio
 # # from ptv.client import PTVClient
 
-print(getStoppingPattern(4615, 3))
+print(route_api_request('685',2))
