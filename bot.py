@@ -724,7 +724,7 @@ Required:
     Train: input the Number of the tram you're searching. Examples include "856", "123", "2003", "6001".''',
         '/stats leaderboard': '''</stats leaderboard:1240101357847838815> is a command allows you to view a leaderboard for the games on the bot. It shows the top 7 players and their stats.
 
-Options:
+**Options:**
 
 Optional:
     Game: pick which game you want to view the leaderboard for. You have to choose from the list. By default it's set to "Station Guesser".''',
