@@ -716,7 +716,7 @@ Required:
 
 Optional:
     Search_set: True or False. False by default. If you choose true, it will include the photos from the other carriages in the train set (if there are others).''',
-        '/search tram': '''</search tram:1240101357847838814> is a command to look up any Melbourne tram. It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
+        '/search tram': '''</search tram:1240101357847838814> is a command to look up any Melbourne tram. It will give you a overview of the tram.
 
 **Options:**
 
