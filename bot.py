@@ -918,9 +918,14 @@ async def line_info(ctx, line: str):
         print(disruptions)
 
         # Extracting title and description
-        general_disruption = disruptions["disruptions"]["metro_train"][0]
-        disruption_title = general_disruption["title"]
-        disruption_description = general_disruption["description"]
+        for general_disruption in disruptions["disruptions"]["metro_train"]:
+            if general_disruption["display_on_board"]:
+                disruption_title = general_disruption["title"]
+                disruption_description = general_disruption["description"]
+                url = general_disruption['url']
+                display = general_disruption['display_on_board']
+                updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
+                break
 
     except Exception as e:
         print(e)
@@ -930,11 +935,15 @@ async def line_info(ctx, line: str):
     print(f"Status color: {color}")
 
     # Create the embed with the retrieved information
-    embed = discord.Embed(title=f"Route Information - {route_name}", color=color)
-    embed.add_field(name="Route Name", value=route_name, inline=False)
+    if disruption_description:
+        embed = discord.Embed(title=f"{description} - {route_name}", color=color, url=url if url else None)
+    else:
+        embed = discord.Embed(title=f"{description} - {route_name}", color=color)
     embed.add_field(name="Status Description", value=description, inline=False)
     if disruption_description:
-        embed.add_field(name="Disruption Info", value=disruption_description, inline=False)
+        embed.add_field(name="Disruption Info", value=f'{disruption_description}\n\nUpdated {updateTime}', inline=False)
+    else:
+        embed.add_field(name="Disruption Info", value=f'There are no disruptions on the {route_name} line!', inline=False)
 
     # Send the embed to the Discord channel
     await ctx.response.send_message(embed=embed)
