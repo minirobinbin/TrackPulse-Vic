@@ -354,3 +354,13 @@ def getEmojiForDeparture(trainType):
         return('<:sprinter:1325040386913075200>')
     else:
         return(trainType)
+
+def getModeEmoji(mode:int):
+    if mode == 0:
+        return('<:train:1241164967789727744>')
+    if mode == 1:
+        return('<:tram:1241165701390012476>')
+    if mode == 2:
+        return('<:bus:1241165769241530460>')
+    if mode == 3:
+        return('<:vline:1241165814258729092>')

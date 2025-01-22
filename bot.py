@@ -950,6 +950,7 @@ async def line_info(ctx, line: str):
     # Send the embed to the Discord channel
     await ctx.response.send_message(embed=embed)
 
+
 # Route Seach v2
 @search.command(name="route", description="Show info about a tram or bus route")
 @app_commands.describe(mode = "What type of transport is this route?")
@@ -1037,8 +1038,6 @@ async def route(ctx, mode: str, number: int):
     except Exception as e:
         await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
                 
-
-
 
 # train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
@@ -1920,6 +1919,77 @@ async def departures(ctx, station: str, line:str='all'):
         await ctx.edit_original_response(embed=embed)          
 
     asyncio.create_task(nextdeps())
+    
+    
+# ptv api search command
+@search.command(name="ptv", description="Search stops, routes and myki ticket outlets provided by PTV")
+@app_commands.describe(search="What to search for")
+@app_commands.choices(type=[
+        app_commands.Choice(name="stops", value="stops"),
+        app_commands.Choice(name="routes", value="routes"),
+        app_commands.Choice(name="myki outlets", value="myki")
+])
+async def search(ctx, search:str, type:str):
+    async def ptvsearch(search):
+        await ctx.response.defer()
+        fmtSearch = search.replace(" ", "%20")
+        data = search_api_request(fmtSearch)
+        if type == 'stops':
+            if data['stops']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                count = 0
+                for stop in data['stops']:
+                    stop_name = stop['stop_name']
+                    stop_id = stop['stop_id']
+                    stop_suburb = stop['stop_suburb']
+                    emoji = getModeEmoji(stop['route_type'])
+                    url = f'https://www.ptv.vic.gov.au/stop/{stop_id}'
+
+                    embed.add_field(name=f"{emoji} {stop_name}", value=f"{stop_suburb}\n[View on PTV website]({url})",inline=False)  
+                    count +=1
+                    if count == 9:
+                        break
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No stops found", value="Try searching for something else")
+                
+        elif type == 'routes':
+            if data['routes']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                count = 0
+                for route in data['routes']:
+                    route_name = route['route_name']
+                    route_id = route['route_id']
+                    route_number = route['route_number'] + " - " if route['route_number'] else ""
+                    route_service_status = route['route_service_status']['description']
+                    url = f'https://www.ptv.vic.gov.au/route/{route_id}'
+                    emoji = getModeEmoji(route['route_type'])
+                    embed.add_field(name=f"{emoji} {route_number}{route_name}", value=f'{route_service_status}\n[View on PTV website]({url})',inline=False)  
+                    count +=1
+                    if count == 9:
+                        break
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No routes found", value="Try searching for something else")
+                
+        elif type == 'myki':
+            if data['outlets']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                count = 0
+                for outlet in data['outlets']:
+                    buisness = outlet['outlet_business']
+                    suburb = outlet['outlet_suburb']
+                    url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
+                    embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
+                    count +=1
+                    if count == 9:
+                        break
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No routes found", value="Try searching for something else")
+                
+        await ctx.edit_original_response(embed=embed)
+    asyncio.create_task(ptvsearch(search))
 
 
 
