@@ -971,13 +971,15 @@ async def route(ctx, mode: str, number: int):
         await ctx.response.send_message(f"Results for {number}:")
         # embed = discord.Embed(title=f"Bus routes matching `{line}`:", color=0xff8200)
         counter = 0
+        found_routes = False
+        
         for route in json_info['routes']:
-
+            
             routes = json_info['routes']
             status = json_info['status']
             version = status['version']
             health = status['health']
-        
+
         
             route = routes[counter]
             route_service_status = route['route_service_status']
@@ -1012,6 +1014,7 @@ async def route(ctx, mode: str, number: int):
 
              # Check if the route number is the one you want
             if route_number == str(number):
+                found_routes = True
                 # Create and send the embed only for the desired route number
                 if url:
                     embed = discord.Embed(title=f"Route {route_number}:", color=getColor(mode), url=url)
@@ -1023,9 +1026,11 @@ async def route(ctx, mode: str, number: int):
                     embed.add_field(name="Disruption Info",value=f'{disruptionDescription}\n\nUpdated {updateTime}', inline=False)
                     
                 await channel.send(embed=embed)
-
-                                
+          
             counter = counter + 1
+
+        if not found_routes:
+            await channel.send(f"No routes found matching number {number}")
                 
     except Exception as e:
         await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
