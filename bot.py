@@ -655,7 +655,7 @@ Optional:
     End: the ending stop of your trip. You can choose from the list or type your own.''',
         '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
 
-Options:
+**Options:**
 
 Optional:
     Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
@@ -730,7 +730,7 @@ Optional:
     Game: pick which game you want to view the leaderboard for. You have to choose from the list. By default it's set to "Station Guesser".''',
         '/stats profile': '''</stats profile:1240101357847838815> is a command allows you to view an overview of a user's interaction with this bot.
 
-Options:
+**Options:**
 
 Optional:
     User: pick a user who's profile you wish to view. By default it's set to you.''',
@@ -750,7 +750,12 @@ Required:
 
 Required:
     Search: input your search.''',
-        '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. This is the only command whose entry isn't completed.'''
+        '/year-in-review': f'''</year-in-review:1294634052099375155> is a command allows you to view an overview of your trips in a certain year.
+
+**Options:**
+
+Optional:
+    Year: pick a year you wish to view. By default it's set to "2024".''',
     }
 
     if category is None and command is None:
