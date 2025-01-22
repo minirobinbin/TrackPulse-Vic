@@ -706,7 +706,7 @@ Required:
     Train: input the Number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
 
 Optional:
-    Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. ''',
+    Hide_run_info: True or False. False by default. If you choose true, it will not show the run info for the train.''',
         '/search train-photo': '''</search train-photo:1240101357847838814> is a command to view the all the photos in the Xm9G photo archive for a specific train.
 
 **Options:**
