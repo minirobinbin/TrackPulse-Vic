@@ -1932,6 +1932,7 @@ async def departures(ctx, station: str, line:str='all'):
 async def search(ctx, search:str, type:str):
     async def ptvsearch(search):
         await ctx.response.defer()
+        log_command(ctx.user.id, 'ptv-search')
         fmtSearch = search.replace(" ", "%20")
         data = search_api_request(fmtSearch)
         if type == 'stops':
