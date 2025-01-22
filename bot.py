@@ -193,6 +193,7 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 # check if these things are on in the .env
 rareCheckerOn = False
 automatic_updates = False
+admin_users = [1002449671224041502, 780303451980038165, 707866373602148363, int(USER_ID)]
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
 startupAchievements = False
@@ -200,10 +201,11 @@ if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
     startupAchievements = True
 if config['AUTOMATIC_UPDATES'] == 'ON':
     automatic_updates = True
+if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
+    admin_users = [int(USER_ID)]
 # settings
     
 lineStatusOn = False
-admin_users = [1002449671224041502, 780303451980038165, 707866373602148363, int(USER_ID)]
 
 channel_game_status = {} #thing to store what channels are running the guessing game
 
