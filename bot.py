@@ -852,8 +852,8 @@ Any Bus/Coach: </log bus:1289843416628330506>""")
 
 
     
-@bot.tree.command(name="metro-line", description="Show info about a Metro line")
-@app_commands.describe(line="What Metro line to show info about?")
+@bot.tree.command(name="disruptions", description="Show disruptions on a Metro line")
+@app_commands.describe(line="What Metro line to show disruptions for?")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(
@@ -938,12 +938,6 @@ async def line_info(ctx, line: str):
 
     # Send the embed to the Discord channel
     await ctx.response.send_message(embed=embed)
-
-    # Log the command usage
-    with open("logs.txt", "a") as file:
-        file.write(
-            f"\n{datetime.datetime.now()} - user sent line info command with input {line}"
-        )
 
 # Route Seach v2
 @search.command(name="route", description="Show info about a tram or bus route")
