@@ -1953,7 +1953,8 @@ async def departures(ctx, station: str, line:str='all'):
         app_commands.Choice(name="routes", value="routes"),
         app_commands.Choice(name="myki outlets", value="myki")
 ])
-async def search(ctx, search:str, type:str):
+@app_commands.describe(maximum_responses="How many responses for each mode of transport you want")
+async def search(ctx, search:str, type:str, maximum_responses:int=3):
     async def ptvsearch(search):
         await ctx.response.defer()
         log_command(ctx.user.id, 'ptv-search')
@@ -1977,7 +1978,6 @@ async def search(ctx, search:str, type:str):
                 tram_embed = f""
                 bus_embed = f""
                 coach_embed = f""
-                max_list = 3
                 for stop in data['stops']:
                     stop_name = stop['stop_name']
                     stop_id = stop['stop_id']
@@ -1992,19 +1992,19 @@ async def search(ctx, search:str, type:str):
 
                     print(emoji)
 
-                    if emoji == "<:train:1241164967789727744>" and train_count < max_list:
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
                         train_count +=1
                         train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")                    
-                    elif emoji == "<:vline:1241165814258729092>" and vline_count < max_list:
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
                         vline_count +=1
                         vline_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
-                    elif emoji == "<:tram:1241165701390012476>" and tram_count < max_list:
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
                         tram_count +=1
                         tram_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
-                    elif emoji == "<:bus:1241165769241530460>" and bus_count < max_list:
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
                         bus_count +=1
                         bus_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
-                    elif emoji == "<:coach:1241165858274021489>" and coach_count < max_list:
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
                         coach_count +=1
                         coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
                 
@@ -2034,8 +2034,8 @@ async def search(ctx, search:str, type:str):
                             coach_embed = f"{coach_embed}{coach}"
                         embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
                 except Exception as e:
-                    print('Too many characters because "Maximum Responses" was set to high.')
-                    ctx.edit_original_response(content='"Maximum Responses" set too high, try a lower number.')
+                    print('Too many characters because "maximum_responses" was set to high.')
+                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
                     return
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
@@ -2045,17 +2045,22 @@ async def search(ctx, search:str, type:str):
             if data['routes']:
                 embed = discord.Embed(title=f"Results for {search}:")
                 count = 0
-                for route in data['routes']:
-                    route_name = route['route_name']
-                    route_id = route['route_id']
-                    route_number = route['route_number'] + " - " if route['route_number'] else ""
-                    route_service_status = route['route_service_status']['description']
-                    url = f'https://www.ptv.vic.gov.au/route/{route_id}'
-                    emoji = getModeEmoji(route['route_type'])
-                    embed.add_field(name=f"{emoji} {route_number}{route_name}", value=f'{route_service_status}\n[View on PTV website]({url})',inline=False)  
-                    count +=1
-                    if count == 9:
-                        break
+                try:
+                    for route in data['routes']:
+                        route_name = route['route_name']
+                        route_id = route['route_id']
+                        route_number = route['route_number'] + " - " if route['route_number'] else ""
+                        route_service_status = route['route_service_status']['description']
+                        url = f'https://www.ptv.vic.gov.au/route/{route_id}'
+                        emoji = getModeEmoji(route['route_type'])
+                        embed.add_field(name=f"{emoji} {route_number}{route_name}", value=f'{route_service_status}\n[View on PTV website]({url})',inline=False)  
+                        count +=1
+                        if count == maximum_responses:
+                            break
+                except Exception as e:
+                    print('Too many characters because "maximum_responses" was set to high.')
+                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
+                    return
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
@@ -2064,14 +2069,19 @@ async def search(ctx, search:str, type:str):
             if data['outlets']:
                 embed = discord.Embed(title=f"Results for {search}:")
                 count = 0
-                for outlet in data['outlets']:
-                    buisness = outlet['outlet_business']
-                    suburb = outlet['outlet_suburb']
-                    url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
-                    embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
-                    count +=1
-                    if count == 9:
-                        break
+                try:
+                    for outlet in data['outlets']:
+                        buisness = outlet['outlet_business']
+                        suburb = outlet['outlet_suburb']
+                        url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
+                        embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
+                        count +=1
+                        if count == maximum_responses:
+                            break
+                except Exception as e:
+                    print('Too many characters because "maximum_responses" was set to high.')
+                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
+                    return
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
