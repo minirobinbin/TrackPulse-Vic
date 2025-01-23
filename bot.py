@@ -428,7 +428,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -464,7 +464,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
             "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
-            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
+            "</search ptv:1240101357847838814> - Searches PTV for stations, routes or myki outlets.",
+            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery.",
         ],
         "general": [
             "</about:1322339128121102357> - Shows information about the bot.",
@@ -475,7 +476,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         "fun": [
             "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
             "</games station-order:1240101357847838813> - Play a game where you recall which stations are up or down from a specific station.",
-            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
+            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games.",
         ],
         "logs":
         [
@@ -492,14 +493,14 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
             "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
-            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains."
+            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains.",
         ],
         "myki":
         [
             "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
             # "Please note that the following commands are currently broken and won't work:",
             # "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
-            # "</myki view:1289843416628330507> - View your Mykis and their balance."
+            # "</myki view:1289843416628330507> - View your Mykis and their balance.",
         ]
     }
     
@@ -679,6 +680,13 @@ Required:
     End_zone: the fare zone your trip ended in. This has to be an integer from 1 to 15.''',
         # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
         # '/myki view': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
+        '/search ptv': '''</search ptv:1240101357847838814> is a command that allows you to search PTV for stations, routes or myki outlets. It provides a link to the results.
+
+**Options:**
+
+Required:
+    Search: input your search.
+    Type: what type of results you want, stations/stops ("stops"), lines/routes ("routes") or myki outlets ("myki outlets"). You have to choose from the list.''',
         '/search route': '''</search route:1240101357847838814> is a command that allows you to view the current distruption status of a bus or tram route. This is currently only for Yarra Trams and PTV buses.
 
 **Options:**
