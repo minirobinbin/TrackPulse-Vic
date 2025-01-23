@@ -1379,9 +1379,9 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
-@bot.tree.command(name="departures", description="Upcoming trains departing a station")
-@app_commands.describe(station="Station")
-@app_commands.autocomplete(station=station_autocompletion)
+@bot.tree.command(name="departures", description="Upcoming departures for a stop")
+@app_commands.describe(stop="Station/Stop name")
+@app_commands.autocomplete(stop=station_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(
@@ -1403,29 +1403,49 @@ async def station_autocompletion(
         app_commands.Choice(name="Werribee", value="Werribee"),
     ]
 )
+@app_commands.choices(
+    mode=[
+        app_commands.Choice(name="Metro", value="0"),
+        app_commands.Choice(name="Tram", value="1"),
+        app_commands.Choice(name="Bus", value="2"),
+    ]
+)
+
 # test
-async def departures(ctx, station: str, line:str='all'):
+async def departures(ctx, stop: str, mode:str='0', line:str='all'):
     async def nextdeps(station):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
-        Nstation = station.replace(' ', '%20')
-        search = search_api_request(f'{Nstation.title()}%20Station')
+        if line != "all" and mode != "0":
+            await ctx.edit_original_response(content="You can only specify a line for trains")
+            return
+        # search for the station
+        Nstation = station.replace(' ', '%20').replace('#', '%23')
+        if mode == "0":
+            search = search_api_request(f'{Nstation.title()}%20Station')
+        else:
+            search = search_api_request(Nstation.title())
         # FIND STOP ID from search name
         try:
-            stop_id = find_stop_id(search, f"{station.title()} Station")
+            if mode == "0":
+                stop_id = find_stop_id(search, f"{station.title()} Station")
+            else:
+                print(f'searching for {station.title()}')
+                stop_id = find_stop_id(search, f"{station.title()}")
         except:
-            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
         print(f'STOP ID for {station} Station: {stop_id}')
-        if stop_id == 'None':
+        
+        '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")
             search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
             stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-            print(f'STOP ID for {station} Station: {stop_id}')
+            print(f'STOP ID for {station} Station: {stop_id}')'''
 
             
         # get departures for the stop:
-        depsData = departures_api_request(stop_id, 0)
+        depsData = departures_api_request(stop_id, mode)
         # vlineDepsData = departures_api_request(stop_id, 3)
         try:
             departures = depsData['departures']
@@ -1439,10 +1459,15 @@ async def departures(ctx, station: str, line:str='all'):
          
         
         # make embed with data
-        if line == "all":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow())
-        else:
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow())
+        if line == "all" and mode == "0":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
+        elif line != 'all' and mode == "0":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+        elif mode == '1':
+            embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=0x78be20)
+        elif mode == '2':
+            embed= discord.Embed(title=f"Next busses departing {station.title()}", timestamp=discord.utils.utcnow(), color=0xff8200)
+
 
         fields = 0
         
@@ -1471,11 +1496,11 @@ async def departures(ctx, station: str, line:str='all'):
                     trainNumber = ''
                     
                 # get live departure time
-                stoppingPattern=getStoppingPattern(run_ref, 0)
-                for stop in stoppingPattern:
-                    if stop[0] == station.title():
-                        scheduled_departure_utc = stop[1]
-                          # Return the time string
+                if mode == "0":
+                    stoppingPattern=getStoppingPattern(run_ref, mode)
+                    for stop in stoppingPattern:
+                        if stop[0].strip() == station.title():
+                            scheduled_departure_utc = stop[1]
             
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
@@ -1505,56 +1530,27 @@ async def departures(ctx, station: str, line:str='all'):
                 fields = fields + 1
                 if fields == 9:
                     break
-        # the V/Line part
-        '''fields = 0
-        
-        Vdepartures = [Vdeparture for Vdeparture in Vdepartures if get_route_name(Vdeparture['route_id']) == line or line == "all"]
-
-        
-        for Vdeparture in Vdepartures:
-            route_id= Vdeparture['route_id'] 
-            scheduled_departure_utc = Vdeparture['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
-                print(f"time in past")
-                # pass
-            else:
-                estimated_departure_utc = Vdeparture['estimated_departure_utc']
-                run_ref = Vdeparture['run_ref']
-                at_platform = Vdeparture['at_platform']
-                platform_number = Vdeparture['platform_number']
-                note = Vdeparture['departure_note']
-                
-                #convert to timestamp
-                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                #get route name:
-                route_name = get_route_name(route_id)                
-                
-                #VLINE PLATFORMS DONT WORK PLS HELP
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\ndesto here {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\nRun ID: `{run_ref}`")
-                fields = fields + 1
-                if fields == 9:
-                    break
-                                        
+        # add message for no depatures
         if fields == 0:
-            embed.add_field(name="No upcoming departures", value="⠀")'''
-            
+            embed.add_field(name="No departures found", value="There are currently no departures for this stop.")
+        
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
         for disruption in disruptions:
             embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
-        
-        image = getStationImage(station)
-        if image != None: 
-            embed.set_thumbnail(url=image)  
-            embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
-        else:
-            embed.set_footer(text=f"V/Line departures are unavailable")
+        # get station image
+        if mode == '0':
+            image = getStationImage(station)
+            if image != None: 
+                embed.set_thumbnail(url=image)  
+                embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
+            else:
+                embed.set_footer(text=f"V/Line departures are unavailable")
 
         await ctx.edit_original_response(embed=embed)          
 
-    asyncio.create_task(nextdeps(station))
+    asyncio.create_task(nextdeps(stop))
     
     
 # ptv api search command
@@ -1566,7 +1562,7 @@ async def departures(ctx, station: str, line:str='all'):
         app_commands.Choice(name="myki outlets", value="myki")
 ])
 @app_commands.describe(maximum_responses="How many responses for each mode of transport you want")
-async def search(ctx, search:str, type:str, maximum_responses:int=3):
+async def search(ctx, search:str, type:str, maximum_responses:int=5):
     async def ptvsearch(search):
         await ctx.response.defer()
         log_command(ctx.user.id, 'ptv-search')
