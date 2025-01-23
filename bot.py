@@ -428,7 +428,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','search ptv','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -464,7 +464,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
             "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
-            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
+            "</search ptv:1240101357847838814> - Searches PTV  for stations, routes or myki outlets."
+            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery."
         ],
         "general": [
             "</about:1322339128121102357> - Shows information about the bot.",
@@ -679,6 +680,13 @@ Required:
     End_zone: the fare zone your trip ended in. This has to be an integer from 1 to 15.''',
         # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
         # '/myki view': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
+        '/search ptv': '''</search ptv:1240101357847838814> is a command that allows you to search PTV for stations, routes or myki outlets. It provides a link to the results.
+
+**Options:**
+
+Required:
+    Search: input your search.
+    Type: what type of results you want, stations/stops ("stops"), lines/routes ("routes") or myki outlets ("myki outlets"). You have to choose from the list.''',
         '/search route': '''</search route:1240101357847838814> is a command that allows you to view the current distruption status of a bus or tram route. This is currently only for Yarra Trams and PTV buses.
 
 **Options:**
