@@ -2006,35 +2006,30 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                         coach_count +=1
                         coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
                 
-                try:
-                    if train_count != 0:
-                        for train in train_list:
-                            train_embed = f"{train_embed}{train}"
-                        embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
 
-                    if vline_count != 0:
-                        for vline in vline_list:
-                            vline_embed = f"{vline_embed}{vline}"
-                        embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
 
-                    if tram_count != 0:
-                        for tram in tram_list:
-                            tram_embed = f"{tram_embed}{tram}"
-                        embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
 
-                    if bus_count != 0:
-                        for bus in bus_list:
-                            bus_embed = f"{bus_embed}{bus}"
-                        embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
 
-                    if coach_count != 0:
-                        for coach in coach_list:
-                            coach_embed = f"{coach_embed}{coach}"
-                        embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
-                except Exception as e:
-                    print('Too many characters because "maximum_responses" was set to high.')
-                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
-                    return
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No stops found", value="Try searching for something else")
@@ -2081,35 +2076,30 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                         coach_count +=1
                         coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
 
-                try:
-                    if train_count != 0:
-                        for train in train_list:
-                            train_embed = f"{train_embed}{train}"
-                        embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
 
-                    if vline_count != 0:
-                        for vline in vline_list:
-                            vline_embed = f"{vline_embed}{vline}"
-                        embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
 
-                    if tram_count != 0:
-                        for tram in tram_list:
-                            tram_embed = f"{tram_embed}{tram}"
-                        embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
 
-                    if bus_count != 0:
-                        for bus in bus_list:
-                            bus_embed = f"{bus_embed}{bus}"
-                        embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
 
-                    if coach_count != 0:
-                        for coach in coach_list:
-                            coach_embed = f"{coach_embed}{coach}"
-                        embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
-                except Exception as e:
-                    print('Too many characters because "maximum_responses" was set to high.')
-                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
-                    return
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
@@ -2118,24 +2108,24 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
             if data['outlets']:
                 embed = discord.Embed(title=f"Results for {search}:")
                 count = 0
-                try:
-                    for outlet in data['outlets']:
-                        buisness = outlet['outlet_business']
-                        suburb = outlet['outlet_suburb']
-                        url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
-                        embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
-                        count +=1
-                        if count == maximum_responses:
-                            break
-                except Exception as e:
-                    print('Too many characters because "maximum_responses" was set to high.')
-                    ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
-                    return
+                for outlet in data['outlets']:
+                    buisness = outlet['outlet_business']
+                    suburb = outlet['outlet_suburb']
+                    url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
+                    embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
+                    count +=1
+                    if count == maximum_responses:
+                        break
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
                 
-        await ctx.edit_original_response(embed=embed)
+        try:
+            await ctx.edit_original_response(embed=embed)
+        except Exception as e:
+            print('Too many characters because "maximum_responses" was set to high.')
+            await ctx.edit_original_response(content='''"maximum_responses" set too high, try a lower number. If you're using the myki outlet mode, the maximum is 25.''')
+            return
     asyncio.create_task(ptvsearch(search))
         
 
