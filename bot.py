@@ -1990,8 +1990,6 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                         emoji = getModeEmoji(route_type)
                     url = f'https://www.ptv.vic.gov.au/stop/{stop_id}'
 
-                    print(emoji)
-
                     if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
                         train_count +=1
                         train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")                    
@@ -2044,19 +2042,70 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
         elif type == 'routes':
             if data['routes']:
                 embed = discord.Embed(title=f"Results for {search}:")
-                count = 0
+                train_count = 0
+                vline_count = 0
+                tram_count = 0
+                bus_count = 0
+                coach_count = 0
+                train_list = []
+                vline_list = []
+                tram_list = []
+                bus_list = []
+                coach_list = []
+                train_embed = f""
+                vline_embed = f""
+                tram_embed = f""
+                bus_embed = f""
+                coach_embed = f""
+                for route in data['routes']:
+                    route_name = route['route_name']
+                    route_id = route['route_id']
+                    route_number = route['route_number'] + " - " if route['route_number'] else ""
+                    route_service_status = route['route_service_status']['description']
+                    url = f'https://www.ptv.vic.gov.au/route/{route_id}'
+                    emoji = getModeEmoji(route['route_type'])
+
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
+                        train_count +=1
+                        train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})")                    
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
+                        vline_count +=1
+                        vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})")
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
+                        tram_count +=1
+                        tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})")
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
+                        bus_count +=1
+                        bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})")
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
+                        coach_count +=1
+                        coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})")
+
                 try:
-                    for route in data['routes']:
-                        route_name = route['route_name']
-                        route_id = route['route_id']
-                        route_number = route['route_number'] + " - " if route['route_number'] else ""
-                        route_service_status = route['route_service_status']['description']
-                        url = f'https://www.ptv.vic.gov.au/route/{route_id}'
-                        emoji = getModeEmoji(route['route_type'])
-                        embed.add_field(name=f"{emoji} {route_number}{route_name}", value=f'{route_service_status}\n[View on PTV website]({url})',inline=False)  
-                        count +=1
-                        if count == maximum_responses:
-                            break
+                    if train_count != 0:
+                        for train in train_list:
+                            train_embed = f"{train_embed}{train}"
+                        embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+
+                    if vline_count != 0:
+                        for vline in vline_list:
+                            vline_embed = f"{vline_embed}{vline}"
+                        embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+
+                    if tram_count != 0:
+                        for tram in tram_list:
+                            tram_embed = f"{tram_embed}{tram}"
+                        embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+
+                    if bus_count != 0:
+                        for bus in bus_list:
+                            bus_embed = f"{bus_embed}{bus}"
+                        embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+
+                    if coach_count != 0:
+                        for coach in coach_list:
+                            coach_embed = f"{coach_embed}{coach}"
+                        embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
                 except Exception as e:
                     print('Too many characters because "maximum_responses" was set to high.')
                     ctx.edit_original_response(content='"maximum_responses" set too high, try a lower number.')
