@@ -235,6 +235,23 @@ def stoppingPatternAPIRequest(run_ref, route_type):
     else:
         # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
+        
+def stationInfoAPIRequest(stop_id,route_type):
+    # API endpoint URL
+    url = getUrl(f'/v3/stops/{stop_id}/route_type/{route_type}?stop_location=true&stop_amenities=true&stop_accessibility=true&stop_contact=true&stop_ticket=true&gtfs=true&stop_staffing=true&stop_disruptions=true')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
 
 def fareEstimate(minZone:int, maxZone:int, touchOnUTC=None, touchOffUTC=None):
     # API endpoint URL

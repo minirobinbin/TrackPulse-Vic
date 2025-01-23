@@ -53,6 +53,7 @@ from utils.search import *
 from utils.colors import *
 from utils.stats.stats import *
 from utils.pageScraper import *
+from utils.stopid import find_stop_id
 from utils.trainImage import *
 from utils.checktype import *
 from utils.rareTrain import *
@@ -1037,7 +1038,35 @@ async def route(ctx, mode: str, number: int):
                 
     except Exception as e:
         await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
-                
+
+# search station search
+# disabled cause ptv api is broken
+"""
+async def station_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
+@search.command(name='station', description='View info about a railway station')
+@app_commands.autocomplete(station=station_autocompletion)
+async def searchStation(ctx, station:str):
+    async def stationSearch():
+        await ctx.response.defer()
+        # FIND STOP ID from search name
+        search = search_api_request(f'{station.title()}%20Station')
+        try:
+            stop_id = find_stop_id(search, f"{station.title()} Station")
+        except:
+            await ctx.edit_original_response(content=f"Cannot find info for {station.title()} Station!")
+            
+        print(f'Stop id for {station}: {stop_id}')
+        data = stationInfoAPIRequest(stop_id, 0)
+    asyncio.create_task(stationSearch())       """    
 
 # train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
@@ -1775,13 +1804,7 @@ async def departures(ctx, station: str, line:str='all'):
         log_command(ctx.user.id, 'departures-search')
         Nstation = station.replace(' ', '%20')
         search = search_api_request(f'{Nstation.title()}%20Station')
-        # find the stop id!
-        def find_stop_id(data, location):
-            for stop in data['stops']:
-                if stop['stop_name'] == location:
-                    return stop['stop_id']
-            return 'None'
-        
+        # FIND STOP ID from search name
         try:
             stop_id = find_stop_id(search, f"{station.title()} Station")
         except:
@@ -1991,6 +2014,7 @@ async def search(ctx, search:str, type:str):
                 
         await ctx.edit_original_response(embed=embed)
     asyncio.create_task(ptvsearch(search))
+        
 
 
 
@@ -2039,6 +2063,8 @@ async def train_line(ctx):
     
     embed.set_author(name='howmanydayssincemontaguestreetbridgehasbeenhit.com', url="https://howmanydayssincemontaguestreetbridgehasbeenhit.com")
     await ctx.channel.send(embed=embed)'''
+    
+
     
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", line='Select a line to only show photos from that line', ultrahard = "Ultra hard mode.")
