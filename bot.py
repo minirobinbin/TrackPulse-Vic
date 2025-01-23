@@ -494,6 +494,8 @@ async def line_info(ctx, line: str):
     Returns:
         None
     """
+    
+    await ctx.response.defer()
     log_command(ctx.user.id, 'line_info')
 
     # Retrieve line information from API
@@ -554,7 +556,7 @@ async def line_info(ctx, line: str):
         embed.add_field(name="Disruption Info", value=f'There are no disruptions on the {route_name} line!', inline=False)
 
     # Send the embed to the Discord channel
-    await ctx.response.send_message(embed=embed)
+    await ctx.edit_original_response(embed=embed)
 
 
 # Route Seach v2
@@ -1403,7 +1405,7 @@ async def station_autocompletion(
 )
 # test
 async def departures(ctx, station: str, line:str='all'):
-    async def nextdeps():
+    async def nextdeps(station):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
@@ -1424,13 +1426,13 @@ async def departures(ctx, station: str, line:str='all'):
             
         # get departures for the stop:
         depsData = departures_api_request(stop_id, 0)
-        vlineDepsData = departures_api_request(stop_id, 3)
+        # vlineDepsData = departures_api_request(stop_id, 3)
         try:
             departures = depsData['departures']
             runs = depsData['runs']
             # V/Line
-            Vdepartures = vlineDepsData['departures']
-            Vruns = vlineDepsData['runs']
+            # Vdepartures = vlineDepsData['departures']
+            # Vruns = vlineDepsData['runs']
         except:
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
             return
@@ -1454,7 +1456,6 @@ async def departures(ctx, station: str, line:str='all'):
                 # print(f"time in past")
                 pass
             else:
-                estimated_departure_utc = departure['estimated_departure_utc']
                 run_ref = departure['run_ref']
                 at_platform = departure['at_platform']
                 platform_number = departure['platform_number']
@@ -1468,7 +1469,14 @@ async def departures(ctx, station: str, line:str='all'):
                 except:
                     trainType = ''
                     trainNumber = ''
-
+                    
+                # get live departure time
+                stoppingPattern=getStoppingPattern(run_ref, 0)
+                for stop in stoppingPattern:
+                    if stop[0] == station.title():
+                        scheduled_departure_utc = stop[1]
+                          # Return the time string
+            
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
                 
@@ -1493,7 +1501,7 @@ async def departures(ctx, station: str, line:str='all'):
                     else:
                         platform_number = "1"
                 
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -1546,7 +1554,7 @@ async def departures(ctx, station: str, line:str='all'):
 
         await ctx.edit_original_response(embed=embed)          
 
-    asyncio.create_task(nextdeps())
+    asyncio.create_task(nextdeps(station))
     
     
 # ptv api search command
