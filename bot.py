@@ -430,7 +430,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -466,7 +466,8 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
             "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
-            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
+            "</search ptv:1240101357847838814> - Searches PTV for stations, routes or myki outlets.",
+            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery",
         ],
         "general": [
             "</about:1322339128121102357> - Shows information about the bot.",
@@ -477,7 +478,7 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
         "fun": [
             "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
             "</games station-order:1240101357847838813> - Play a game where you recall which stations are up or down from a specific station.",
-            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
+            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games.",
         ],
         "logs":
         [
@@ -494,14 +495,14 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
             "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
-            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains."
+            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains.",
         ],
         "myki":
         [
             "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
             # "Please note that the following commands are currently broken and won't work:",
             # "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
-            # "</myki view:1289843416628330507> - View your Mykis and their balance."
+            # "</myki view:1289843416628330507> - View your Mykis and their balance.".
         ]
     }
     
@@ -681,6 +682,16 @@ Required:
     End_zone: the fare zone your trip ended in. This has to be an integer from 1 to 15.''',
         # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
         # '/myki view': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
+        '/search ptv': '''</search ptv:1240101357847838814> is a command that allows you to search PTV for stations, routes or myki outlets.
+
+**Options:**
+
+Required:
+    Search: input your search.
+    Type: what type of results you want, stations/stops ("stops"), lines/routes ("routes") or myki outlets ("myki outlets"). You have to choose from the list.
+
+Optional:        
+    Maxmimum_responses: How many responses for each mode of transport you want. Note that if you set it too high it might not be able to return your results, and if you're using the myki outlet mode, the maximum is 25.''',
         '/search route': '''</search route:1240101357847838814> is a command that allows you to view the current distruption status of a bus or tram route. This is currently only for Yarra Trams and PTV buses.
 
 **Options:**
@@ -1953,7 +1964,8 @@ async def departures(ctx, station: str, line:str='all'):
         app_commands.Choice(name="routes", value="routes"),
         app_commands.Choice(name="myki outlets", value="myki")
 ])
-async def search(ctx, search:str, type:str):
+@app_commands.describe(maximum_responses="How many responses for each mode of transport you want")
+async def search(ctx, search:str, type:str, maximum_responses:int=3):
     async def ptvsearch(search):
         await ctx.response.defer()
         log_command(ctx.user.id, 'ptv-search')
@@ -1962,7 +1974,21 @@ async def search(ctx, search:str, type:str):
         if type == 'stops':
             if data['stops']:
                 embed = discord.Embed(title=f"Results for {search}:")
-                count = 0
+                train_count = 0
+                vline_count = 0
+                tram_count = 0
+                bus_count = 0
+                coach_count = 0
+                train_list = []
+                vline_list = []
+                tram_list = []
+                bus_list = []
+                coach_list = []
+                train_embed = f""
+                vline_embed = f""
+                tram_embed = f""
+                bus_embed = f""
+                coach_embed = f""
                 for stop in data['stops']:
                     stop_name = stop['stop_name']
                     stop_id = stop['stop_id']
@@ -1975,10 +2001,46 @@ async def search(ctx, search:str, type:str):
                         emoji = getModeEmoji(route_type)
                     url = f'https://www.ptv.vic.gov.au/stop/{stop_id}'
 
-                    embed.add_field(name=f"{emoji} {stop_name}", value=f"{stop_suburb}\n[View on PTV website]({url})",inline=False)  
-                    count +=1
-                    if count == 9:
-                        break
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
+                        train_count +=1
+                        train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")                    
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
+                        vline_count +=1
+                        vline_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
+                        tram_count +=1
+                        tram_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
+                        bus_count +=1
+                        bus_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
+                        coach_count +=1
+                        coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No stops found", value="Try searching for something else")
@@ -1986,7 +2048,21 @@ async def search(ctx, search:str, type:str):
         elif type == 'routes':
             if data['routes']:
                 embed = discord.Embed(title=f"Results for {search}:")
-                count = 0
+                train_count = 0
+                vline_count = 0
+                tram_count = 0
+                bus_count = 0
+                coach_count = 0
+                train_list = []
+                vline_list = []
+                tram_list = []
+                bus_list = []
+                coach_list = []
+                train_embed = f""
+                vline_embed = f""
+                tram_embed = f""
+                bus_embed = f""
+                coach_embed = f""
                 for route in data['routes']:
                     route_name = route['route_name']
                     route_id = route['route_id']
@@ -1994,10 +2070,47 @@ async def search(ctx, search:str, type:str):
                     route_service_status = route['route_service_status']['description']
                     url = f'https://www.ptv.vic.gov.au/route/{route_id}'
                     emoji = getModeEmoji(route['route_type'])
-                    embed.add_field(name=f"{emoji} {route_number}{route_name}", value=f'{route_service_status}\n[View on PTV website]({url})',inline=False)  
-                    count +=1
-                    if count == 9:
-                        break
+
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
+                        train_count +=1
+                        train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")                    
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
+                        vline_count +=1
+                        vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
+                        tram_count +=1
+                        tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
+                        bus_count +=1
+                        bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
+                        coach_count +=1
+                        coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
@@ -2012,13 +2125,18 @@ async def search(ctx, search:str, type:str):
                     url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
                     embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
                     count +=1
-                    if count == 9:
+                    if count == maximum_responses:
                         break
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
                 
-        await ctx.edit_original_response(embed=embed)
+        try:
+            await ctx.edit_original_response(embed=embed)
+        except Exception as e:
+            print('Too many characters because "maximum_responses" was set to high.')
+            await ctx.edit_original_response(content='''"maximum_responses" set too high, try a lower number. If you're using the myki outlet mode, the maximum is 25.''')
+            return
     asyncio.create_task(ptvsearch(search))
         
 
