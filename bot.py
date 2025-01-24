@@ -1659,27 +1659,27 @@ async def search(ctx, search:str, type:str, maximum_responses:int=5):
                 if train_count != 0:
                     for train in train_list:
                         train_embed = f"{train_embed}{train}"
-                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+                    embed.add_field(name="<:train:1241164967789727744> Train", value=f"{train_embed}\n\n", inline=False)
 
                 if vline_count != 0:
                     for vline in vline_list:
                         vline_embed = f"{vline_embed}{vline}"
-                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+                    embed.add_field(name="<:vline:1241165814258729092> V/Line", value=f"{vline_embed}\n\n", inline=False)
 
                 if tram_count != 0:
                     for tram in tram_list:
                         tram_embed = f"{tram_embed}{tram}"
-                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+                    embed.add_field(name="<:tram:1241165701390012476> Tram", value=f"{tram_embed}\n\n", inline=False)
 
                 if bus_count != 0:
                     for bus in bus_list:
                         bus_embed = f"{bus_embed}{bus}"
-                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+                    embed.add_field(name="<:bus:1241165769241530460> Bus", value=f"{bus_embed}\n\n", inline=False)
 
                 if coach_count != 0:
                     for coach in coach_list:
                         coach_embed = f"{coach_embed}{coach}"
-                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
+                    embed.add_field(name="<:coach:1241165858274021489> Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No stops found", value="Try searching for something else")
@@ -1729,27 +1729,27 @@ async def search(ctx, search:str, type:str, maximum_responses:int=5):
                 if train_count != 0:
                     for train in train_list:
                         train_embed = f"{train_embed}{train}"
-                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+                    embed.add_field(name="<:train:1241164967789727744> Train", value=f"{train_embed}\n\n", inline=False)
 
                 if vline_count != 0:
                     for vline in vline_list:
                         vline_embed = f"{vline_embed}{vline}"
-                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+                    embed.add_field(name="<:vline:1241165814258729092> V/Line", value=f"{vline_embed}\n\n", inline=False)
 
                 if tram_count != 0:
                     for tram in tram_list:
                         tram_embed = f"{tram_embed}{tram}"
-                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+                    embed.add_field(name="<:tram:1241165701390012476> Tram", value=f"{tram_embed}\n\n", inline=False)
 
                 if bus_count != 0:
                     for bus in bus_list:
                         bus_embed = f"{bus_embed}{bus}"
-                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+                    embed.add_field(name="<:bus:1241165769241530460> Bus", value=f"{bus_embed}\n\n", inline=False)
 
                 if coach_count != 0:
                     for coach in coach_list:
                         coach_embed = f"{coach_embed}{coach}"
-                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
+                    embed.add_field(name="<:coach:1241165858274021489> Coach", value=f"{coach_embed}\n\n", inline=False)
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No routes found", value="Try searching for something else")
