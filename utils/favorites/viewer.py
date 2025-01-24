@@ -18,6 +18,25 @@ def save_favorites(name, stop):
         writer.writerow([stop])
     
     return f"Added {stop} to your favorite stops"
+
+def remove_favorite(name, stop):
+    filename = f"utils/favorites/data/{name}.csv"
+    
+    # Get current favorites
+    favorites = get_favorites(name)
+    if stop not in favorites:
+        return f"{stop} is not in your favorites"
+    
+    # Remove the stop and write back to file
+    favorites.remove(stop)
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for fav in favorites:
+            writer.writerow([fav])
+    
+    return f"Removed {stop} from your favorites"
+
+
         
 def get_favorites(name):
     filename = f"utils/favorites/data/{name}.csv"

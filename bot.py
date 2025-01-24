@@ -1386,6 +1386,19 @@ async def favorite(ctx, stop: str):
     message = save_favorites(ctx.user.id, stop)
     
     await ctx.edit_original_response(content=message)
+    
+@favorites.command(name="remove", description="Remove a favorite stop")
+@app_commands.describe(stop="Stop name")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def remove(ctx, stop: str):
+    await ctx.response.defer(ephemeral=True)
+    log_command(ctx.user.id, 'remove-favorite-stop')
+    
+    # remove the stop from favorites
+    message = remove_favorite(ctx.user.id, stop)
+    
+    await ctx.edit_original_response(content=message)
 
 # Next departures for a station
 async def station_autocompletion(
