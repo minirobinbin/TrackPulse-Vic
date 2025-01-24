@@ -52,7 +52,7 @@ import git
 from commands.help import helpCommand
 from utils import trainset
 from utils.directions import getDirectionName
-from utils.favorites.viewer import *
+from utils.favourites.viewer import *
 from utils.search import *
 from utils.colors import *
 from utils.stats.stats import *
@@ -164,7 +164,7 @@ file.close()
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
-                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favorites/data']
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
         print(f"{folder} exists")
@@ -249,7 +249,7 @@ stats = CommandGroups(name='stats')
 myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
-favorites = CommandGroups(name='favorite')
+favourites = CommandGroups(name='favourite')
 
 # flight = CommandGroups(name='flight')
 def download_csv(url, save_path):
@@ -280,7 +280,7 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
-    bot.tree.add_command(favorites)
+    bot.tree.add_command(favourites)
 
     try:
         await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
@@ -1375,30 +1375,30 @@ async def tramsearch(ctx, tram: str):
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
     
-# add a favorite stop
-@favorites.command(name="add", description="Add a favorite stop")
+# add a favourite stop
+@favourites.command(name="add", description="Add a favourite stop")
 @app_commands.describe(stop="Stop name")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-async def favorite(ctx, stop: str):
+async def favourite(ctx, stop: str):
     await ctx.response.defer(ephemeral=True)
-    log_command(ctx.user.id, 'favorite-stop')
+    log_command(ctx.user.id, 'favourite-stop')
     
-    # add the stop to the favorites
-    message = save_favorites(ctx.user.id, stop)
+    # add the stop to the favourites
+    message = save_favourites(ctx.user.id, stop)
     
     await ctx.edit_original_response(content=message)
     
-@favorites.command(name="remove", description="Remove a favorite stop")
+@favourites.command(name="remove", description="Remove a favourite stop")
 @app_commands.describe(stop="Stop name")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def remove(ctx, stop: str):
     await ctx.response.defer(ephemeral=True)
-    log_command(ctx.user.id, 'remove-favorite-stop')
+    log_command(ctx.user.id, 'remove-favourite-stop')
     
-    # remove the stop from favorites
-    message = remove_favorite(ctx.user.id, stop)
+    # remove the stop from favourites
+    message = remove_favourite(ctx.user.id, stop)
     
     await ctx.edit_original_response(content=message)
 
@@ -1407,13 +1407,13 @@ async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
 ) -> typing.List[app_commands.Choice[str]]:
-    # Get favorites list
-    favorites = get_favorites(interaction.user.id)
+    # Get favourites list
+    favourites = get_favourites(interaction.user.id)
     stations = stations_list.copy()
     suggestions = []
     
-    # Add matching favorites first
-    for fav in favorites:
+    # Add matching favourites first
+    for fav in favourites:
         if current.lower() in fav.lower():
             suggestions.append(app_commands.Choice(name=f"⭐ {fav}", value=fav))
     
@@ -1691,7 +1691,7 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                         coach_embed = f"{coach_embed}{coach}"
 
                     embed.add_field(name="<:coach:1241165858274021489> Coach", value=f"{coach_embed}\n\n", inline=False)
-                embed.set_footer(text="Tip: You can save a stop to your favorites with /favorites add <stop>")
+                embed.set_footer(text="Tip: You can save a stop to your favourites with /favourites add <stop>")
                 
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
@@ -4084,7 +4084,7 @@ async def profile(ctx, user: discord.User = None):
             
             # other stats
             try:
-                embed.set_footer(text=f"Favorite command: {getFavoriteCommand(userid)[0]}")
+                embed.set_footer(text=f"favourite command: {getfavouriteCommand(userid)[0]}")
             except FileNotFoundError:
                 print('user has no commands used')
             
@@ -4326,7 +4326,7 @@ async def yearinreview(ctx, year: int=2024):
             data = year_in_review(f'utils/trainlogger/userdata/{ctx.user.name}.csv', year)
             
             (lilydale_value, ringwood_value), count = data.get("top_pair")
-            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n\n:star: **Favorite Trip:** {lilydale_value} to {ringwood_value} - {count} times\n:metro: {vline_metroprecent(ctx.user.name, year)}", inline=False)
+            embed.add_field(name=f"In {year} {ctx.user.name} went on {str(data['total_trips'])} train trips :chart_with_upwards_trend:", value=f"\n**First Trip:** {data['first_trip'][5]} to {data['first_trip'][6]} on {data['first_trip'][3]} :calendar_spiral: \n**Last Trip:** {data['last_trip'][5]} to {data['last_trip'][6]} on {data['last_trip'][3]} :calendar_spiral: \n\n:star: **favourite Trip:** {lilydale_value} to {ringwood_value} - {count} times\n:metro: {vline_metroprecent(ctx.user.name, year)}", inline=False)
             
             top_lines = data['top_5_lines']
             formatted_lines = "\n".join([f"{i + 1}. {line[0]}: {line[1]} trips" for i, line in enumerate(top_lines)])
