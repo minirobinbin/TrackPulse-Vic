@@ -51,6 +51,7 @@ import git
 
 from commands.help import helpCommand
 from utils import trainset
+from utils.directions import getDirectionName
 from utils.favorites.viewer import *
 from utils.search import *
 from utils.colors import *
@@ -1492,6 +1493,7 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         try:
             departures = depsData['departures']
             runs = depsData['runs']
+            routes = depsData['routes']
             # V/Line
             # Vdepartures = vlineDepsData['departures']
             # Vruns = vlineDepsData['runs']
@@ -1543,6 +1545,11 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                     for stop in stoppingPattern:
                         if stop[0].strip() == station.title():
                             scheduled_departure_utc = stop[1]
+                
+                # get the direction for busses and trams and also the route number
+                if mode in ['1', '2']:
+                    route_number = routes[str(route_id)]['route_number']
+                    direction = getDirectionName(runs[run_ref]['direction_id'])                    
             
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
@@ -1567,8 +1574,10 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                         platform_number = "3"
                     else:
                         platform_number = "1"
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                if mode == 0:
+                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                else: 
+                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\n{trainType}")
                 fields = fields + 1
                 if fields == 9:
                     break
