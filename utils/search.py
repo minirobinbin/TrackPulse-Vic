@@ -13,7 +13,6 @@ def search_api_request(search_term):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         formatted = format(data)
         print(formatted)
@@ -37,7 +36,6 @@ def route_api_request(route_id, route_type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         formatted = format(data)
         print(formatted)
@@ -57,7 +55,6 @@ def route_api_request_id(route_id):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         formatted = format(data)
         print(formatted)
@@ -76,7 +73,6 @@ def routes_list(type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         formatted = format(data)
         print(formatted)
@@ -125,7 +121,6 @@ def departures_api_request(stop_id, route_type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -143,7 +138,6 @@ def route_type_api_request():
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -160,7 +154,6 @@ def disruption_api_request(routeId):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -177,7 +170,6 @@ def stationDisruption(stop_id):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -194,7 +186,6 @@ def allDisruption():
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -212,7 +203,6 @@ def specificRunAPIRequest(run_ref, route_type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -229,7 +219,6 @@ def stoppingPatternAPIRequest(run_ref, route_type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:
@@ -246,7 +235,21 @@ def stationInfoAPIRequest(stop_id,route_type):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
+        data = response.json()
+        return(data)
+    else:
+        # Print an error message if the request was not successful
+        print(f"Error: {response.status_code} - {response.text}")
+        
+def directionAPIrequest(direction_id):
+    # API endpoint URL
+    url = getUrl(f'/v3/directions/{direction_id}')
+    print(f"search url: {url}")
+    
+    # Make the GET request
+    response = requests.get(url)
+    
+    if response.status_code == 200:
         data = response.json()
         return(data)
     else:
@@ -282,7 +285,6 @@ def fareEstimate(minZone:int, maxZone:int, touchOnUTC=None, touchOffUTC=None):
     
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Parse and work with the response data (assuming it's JSON)
         data = response.json()
         return(data)
     else:

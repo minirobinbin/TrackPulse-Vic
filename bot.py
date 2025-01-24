@@ -51,6 +51,7 @@ import git
 
 from commands.help import helpCommand
 from utils import trainset
+from utils.directions import getDirectionName
 from utils.favorites.viewer import *
 from utils.search import *
 from utils.colors import *
@@ -1493,11 +1494,12 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         try:
             departures = depsData['departures']
             runs = depsData['runs']
+            routes = depsData['routes']
             # V/Line
             # Vdepartures = vlineDepsData['departures']
             # Vruns = vlineDepsData['runs']
         except:
-            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
             return
          
         
@@ -1544,6 +1546,11 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                     for stop in stoppingPattern:
                         if stop[0].strip() == station.title():
                             scheduled_departure_utc = stop[1]
+                
+                # get the direction for busses and trams and also the route number
+                if mode in ['1', '2']:
+                    route_number = routes[str(route_id)]['route_number']
+                    direction = getDirectionName(runs[run_ref]['direction_id'])                    
             
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
@@ -1568,8 +1575,10 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                         platform_number = "3"
                     else:
                         platform_number = "1"
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                if mode == '0':
+                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                elif mode in ['1', '2']: 
+                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})")
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -1680,7 +1689,10 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                 if coach_count != 0:
                     for coach in coach_list:
                         coach_embed = f"{coach_embed}{coach}"
-                    embed.add_field(name="<:coach:1241165858274021489> Coach", value=f"{coach_embed}\n\n", inline=False)
+
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
+                embed.set_footer(text="Tip: You can save a stop to your favorites with /favorites add <stop>")
+                
             else:
                 embed = discord.Embed(title=f"Results for {search}:")
                 embed.add_field(name="No stops found", value="Try searching for something else")

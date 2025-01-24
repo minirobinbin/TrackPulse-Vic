@@ -37,5 +37,15 @@
 104,Good Guess,Have 10 correct guesses in the station guesser game
 103,Best Guessed,Have 100 correct guesses in the station guesser game
 105,Egg Man,Have 1000 correct guesses in the station guesser game
-106,Station Master,Have a 90% accuracy in the station guesser game with more than 25 rounds played
-107,Great Guesser,Have a 75% accuracy in the station guesser game with more than 25 rounds played
+106,Station Master,Have a 90% accuracy in the station guesser game with more than 50 rounds played
+107,Great Guesser,Have a 75% accuracy in the station guesser game with more than 50 rounds played
+109,Guesser Jesus,Have a 99% accuracy in the station guesser game with more than 50 rounds played
+108,Ultra Guesser,Play an Ultrahard round in the station guesser game
+110,Ultra Guesser Beginner,Have 10 guesses in the Ultrahard station guesser game
+111,Ultra Passionate Guesser,Have 100 guesses in the Ultrahard station guesser game
+112,Ultra Good Guess,Have 10 correct guesses in the Ultrahard station guesser game
+113,Ultra Best Guessed,Have 100 correct guesses in the Ultrahard station guesser game
+114,Ultra Egg Man,Have 1000 correct guesses in the Ultrahard station guesser game
+115,Ultra Station Master,Have a 90% accuracy in the Ultrahard station guesser game with more than 50 rounds played
+116,Ultra Great Guesser,Have a 75% accuracy in the Ultrahard station guesser game with more than 50 rounds played
+117,Guesser God,Have a 99% accuracy in the Ultrahard station guesser game with more than 50 rounds played
