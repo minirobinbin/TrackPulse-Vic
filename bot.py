@@ -1577,7 +1577,7 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                 if mode == 0:
                     embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 else: 
-                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\n{trainType}")
+                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})")
                 fields = fields + 1
                 if fields == 9:
                     break
