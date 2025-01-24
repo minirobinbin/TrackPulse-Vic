@@ -31,3 +31,11 @@
 14,Mile-high Logger,Log 1000 trains
 15,Rogue Rail Rebel,Ride a train on a line it doesn't normally run on in 2025
 10,Station Stalker Supreme,Visit all stations in Victoria
+100,First guess,Make a guess in the station guesser game
+101,Guesser Beginner,Have 10 guesses in the station guesser game
+102,Passionate Guesser,Have 100 guesses in the station guesser game
+104,Good Guess,Have 10 correct guesses in the station guesser game
+103,Best Guessed,Have 100 correct guesses in the station guesser game
+105,Egg Man,Have 1000 correct guesses in the station guesser game
+106,Station Master,Have a 90% accuracy in the station guesser game with more than 25 rounds played
+107,Great Guesser,Have a 75% accuracy in the station guesser game with more than 25 rounds played

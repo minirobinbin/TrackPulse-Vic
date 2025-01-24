@@ -44,19 +44,24 @@ import io
 import pytz
 from concurrent.futures import ThreadPoolExecutor
 import traceback
+import os
+from pathlib import Path
+import git
 
+from commands.help import helpCommand
 from utils import trainset
 from utils.search import *
 from utils.colors import *
 from utils.stats.stats import *
 from utils.pageScraper import *
+from utils.stopid import find_stop_id
 from utils.trainImage import *
 from utils.checktype import *
 from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
-from utils.trainlogger.achievements.check import checkAchievements, getAchievementInfo
+from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainset import *
 from utils.trainlogger.stats import *
@@ -75,11 +80,8 @@ from utils.locationfromid import *
 from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
+from utils.vlineTrickery import getVlineStopType
 
-# settings
-rareCheckerOn = False
-lineStatusOn = False
-admin_users = [1002449671224041502, 780303451980038165]
 
 
 print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
@@ -191,12 +193,24 @@ USER_ID = config['USER_ID']
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
 log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
-channel_game_status = {} #thing to store what channels are running the guessing game
+# check if these things are on in the .env
+rareCheckerOn = False
+automatic_updates = False
+admin_users = [1002449671224041502, 780303451980038165, 707866373602148363, int(USER_ID)]
+if config['RARE_SERVICE_CHECKER'] == 'ON':
+    rareCheckerOn = True
+startupAchievements = False
+if config['STARTUP_REFRESH_ACHIEVEMENTS'] == 'ON':
+    startupAchievements = True
+if config['AUTOMATIC_UPDATES'] == 'ON':
+    automatic_updates = True
+if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
+    admin_users = [int(USER_ID)]
+# settings
+    
+lineStatusOn = False
 
-try:    
-    os.mkdir('utils/game/scores')
-except FileExistsError as e:
-    print(e)    
+channel_game_status = {} #thing to store what channels are running the guessing game
 
 # line stations and colours
 lines_dictionary = {
@@ -281,31 +295,76 @@ async def on_ready():
     await bot.change_presence(activity=activity)
     
     # Refresh all users
-    channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
-    response_channel = bot.get_channel(channel_id)
-    
-    if response_channel is None:
-        print(f"Error: Could not find channel with ID {channel_id}")
-        return
+    if startupAchievements:
+        channel_id = int(config['STARTUP_CHANNEL_ID'])  # Convert string to integer
+        response_channel = bot.get_channel(channel_id)
         
-    response = await response_channel.send('Checking achievements for all users...')
-    
-    user_files = os.listdir('utils/trainlogger/userdata')
-    csv_files = [f for f in user_files if f.endswith('.csv')]
-    
-    for csv_file in csv_files:
-        username = csv_file[:-4]  # Remove .csv extension
-        await response.edit(content=f'Checking achievements for {username}...')
-        await addAchievement(username, channel_id, f'<@{username}>')
-            
-    await response.edit(content='Finished checking achievements for all users')
+        if response_channel is None:
+            print(f"Error: Could not find channel with ID {channel_id}")
+            return
+        
+        response = await response_channel.send('Checking log achievements for all users...')
+        
+        user_files = os.listdir('utils/trainlogger/userdata')
+        csv_files = [f for f in user_files if f.endswith('.csv')]
+        
+        for csv_file in csv_files:
+            username = csv_file[:-4]  # Remove .csv extension
+            await response.edit(content=f'Checking achievements for {username}...')
+            await addAchievement(username, channel_id, f'<@{username}>')
+        
+        mode = 'guesser'
+        filepath = f"utils/game/scores/{mode}.csv"
+        new_achievements = []
 
-    print("Bot started")
+        await response.edit(content='Finished checking log achievements for all users')
+        response = await response_channel.send('Checking game achievements for all users...')
+
+        with open(filepath, mode='r', newline='') as csvfile:
+            csv_reader = csv.reader(csvfile)
+            for row in csv_reader:
+                if row != ['username','id','wins','losses']:
+                    username = row[1]
+                    await response.edit(content=f'Checking game achievements for {username}...')
+                    
+                    #send achievement message
+                    new = checkGameAchievements(username)
+                    for achievement in new:
+                        info = getAchievementInfo(achievement)
+                        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+                        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+                        await channel.send(f'<@{username}>',embed=embed)
+                
+        await response.edit(content='Finished checking game achievements for all users')
+
+    # restart or normal start
+    file = open('restart.txt','r')
+    file = file.read()
+
+    if file == '':
+        print("Bot started")
+    else:
+        print("Bot restarted")
+        channel = bot.get_channel(int(file))
+        await channel.send('Restart Complete')
+        with open('restart.txt', 'w') as file:
+                file.write('')
 
 # achievement awarder  check achievements
 async def addAchievement(username, channel, mention):
     channel = bot.get_channel(channel)
     new = checkAchievements(username)
+    for achievement in new:
+        info = getAchievementInfo(achievement)
+        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+        await channel.send(mention,embed=embed)
+        
+# game achievement awarder  check game achievements
+async def addGameAchievement(username, channel, mention):
+    print(f'checking game achievements for {username}')
+    channel = bot.get_channel(channel)
+    new = checkGameAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
@@ -373,7 +432,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/metro-line','/myki calculate-fare','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -398,324 +457,12 @@ async def help_autocompletion(
 
 async def help(ctx, category: app_commands.Choice[str] = None, command:str=None):
     log_command(ctx.user.id, 'help')
-    categories = {
-        "search": [
-            "</search train:1240101357847838814> - Shows information about a specific train. For multiple units use the carriage number otherwise use the locomotive number. Will show live tracking info if avaliable",
-            "</departures:1288002114466877529> - Shows the next Metro trains departing a station. Includes information about which exact train is running the service.",
-            "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
-            "</search tram:1240101357847838814> - Shows information about a specific tram.",
-            "</line-status:1322429532757819473> - Shows disruption information for Rail Operator",
-            "</metro-line:1288004355475111938> - Shows disruption information for a Train line.",
-            "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
-            "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
-            "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
-            "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery"
-        ],
-        "general": [
-            "</about:1322339128121102357> - Shows information about the bot.",
-            "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
-            "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
-        ],
-        "fun": [
-            "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
-            "</games station-order:1240101357847838813> - Play a game where you recall which stations are up or down from a specific station.",
-            "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games."
-        ],
-        "logs":
-        [
-            "</log train:1289843416628330506> - Log a Melbourne/Victorian train you have been on. The full set and type will be autofilled by inputting a carriage number, for locomotive serviced use the locomotive number. If you don't know any of the information you can type 'Unknown'.",
-            "</log tram:1289843416628330506> - Log a Melbourne tram, works in a similar way to log train.",
-            "</log sydney-train:1289843416628330506> - Log a Sydney train, works in a similar way to log train however the set and type will not be autofilled.",
-            "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
-            "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
-            "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
-            "</log bus:1289843416628330506> - Log any bus or coach.",
-            'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
-            "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
-            "</log view:1289843416628330506> - View your logs",
-            "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
-            "</completion stations:1304404972229623829> - View which stations you have been to.",
-            "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
-            "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains."
-        ],
-        "myki":
-        [
-            "</myki calculate-fare:1289843416628330507> - Calculate the cost of a trip on the Myki network.",
-            # "Please note that the following commands are currently broken and won't work:",
-            # "</myki save-login:1289843416628330507> - Save your username and password for PTV so you can view your Mykis on this bot.",
-            # "</myki view:1289843416628330507> - View your Mykis and their balance."
-        ]
-    }
-    
-    commands = {
-        "Which /log command should I use?": """Depending on which region you're in and which type of public transport you are using, you will use a different command to log your trips.""",
-        '/about': '''</about:1322339128121102357> is a command that displays a brief summary of this bot and credits''',
-        '/achievements view': '''</achievements view:1327085604789551134> is a command that allows you to view all of the achievements you've unlocked. You unlock achievements every time you add a log that meets the requirement for the achievement. Note that achievements are currently only for logs in Victoria.
-
-                        **Options:**
-
-                        Optional:
-                        User: pick a the user who's logs you're looking at the achievements for. By default it's set to you.''',
-        '/completion sets': '''</completion sets:1304404972229623829> is a command that allows you to view which trains of a certain train type you've ridden on. Note that this command is are currently only for Metro and V/Line trains.
-
-                        **Options:**
-
-                        Required:
-                        Train: input the type of train you want to see your completion of.''',
-        '/completion stations': '''</completion stations:1304404972229623829> is a command that allows you to view which stations you've been to in a certain state. Note that this command is currently only for trains.
-
-                        **Options:**
-
-                        Required:
-                        State: input the state you want to see the stations of.''',
-        '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
-
-                        **Options:**
-
-                        Required:
-                        Station: the station you wish to see the departures from. You must choose from the list.
-
-                        Optional:
-                        Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
-        '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
-
-                        **Options:**
-
-                        Optional:
-                        Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 100.
-                        Line: if you wish to only see photos for stations going along a specific line, you may select that line. You must choose from the list.
-                        Ultrahard: True or False. False by default. If you choose true, the photos will only be photos in the "Ultrahard" category that do not appear in the normal mode.''',
-        '/games station-order': '''</games station-order:1240101357847838813> is a command that allows you to play a game where you have to guess the next stations in a certain direction from a given station. The direction is either "Up", towards the city, or "Down", away from the city. The game is divided into rounds, each round one station and the direction are named and you have to guess the other stations before the time runs out. To add a guess, type "!" followed by the station names in order, seperated by a ", ". To skip a round, type "!skip". To end the game, type "!stop".
-
-                        **Options:**
-
-                        Optional:
-                        Direction: if you wish to only play with a certain direction from the station, you may select that station. You must choose from the list. By default it is set to "Up or Down"
-                        Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 25.''',
-        "/help": """</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.""",
-        '/line-status': '''</line-status:1322429532757819473> is a command that allows you to view the current distruption status of all the lines ran by a certain rail operator. This is currently only for Metro and V/Line
-
-                        **Options:**
-
-                        Required:
-                        Operator: choose the operator you want to view the line status for. You must choose from the list.''',
-        '/log adelaide-train': '''</log adelaide-train:1289843416628330506> is a command to log any Adelaide Metro and Journey Beyond train trips. This is the command to use even if your Journey Beyond train doesn't go through South Australia. Make sure to log each different leg of your trip seperately.
-
-                        **Options:**
-
-                        Required:
-                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
-                        Number: which carriage you rode. Examples include "3005", "3115", "4001", "NR18". If you don't know, type "Unknown".
-                        
-                        Optional:
-                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-                        Start: the starting station of your trip. You can choose from the list or type your own.
-                        End: the ending station of your trip. You can choose from the list or type your own.
-                        ''',
-        '/log bus': '''</log bus:1289843416628330506> is a command to log any bus trips. This is the most versatile log of the log commands as you can log any bus from anywhere. Make sure to log each different leg of your trip seperately.
-
-                        **Options:**
-
-                        Required:
-                        Line: which bus route you rode on.
-                        
-                        Optional:
-                        Operator: the operator of the bus.
-                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-                        Start: the starting stop of your trip.
-                        End: the ending stop of your trip.
-                        Type: if there are multiple buses with the same number, or you didn't input a number, specify which bus type you rode on. You generally don't need this if you know the bus number.
-                        Number: which bus you rode.''',
-        '/log perth-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        "/log stats": """</log stats:1289843416628330506> is a command to view statistics drawn from a person's logs. There are many statistics you can view, many ways of displaying the graphs, and you can view the statistics of any person who has used the bot.
-
-                        **Options:**
-
-                        Required:
-                        Stat: choose a statistic to view from the list. The choices are:\n"Lines": which lines you've riden and how many times you've riden them,\n"Stations": which stations you've gotten on/off at and how many times you've gotten on/off at them,\n"Trips": which trips you've taken and how many times you've taken them,\n"Trip Length (VIC Train Only)": every VIC Train trip you've taken, with the first log it appears in, sorted by length,\n"Sets": which train sets you've riden and how many times you've riden them,\n"Dates": which dates you've logged and how many logs you logged that day,\n"Types": which types of train you've riden and how many times you've riden them and\n"Operators": which Public Transport Operators you've used and how many times you've used them
-
-                        Optional:
-                        Format: what format you want the statistic to be displayed in.\nEach statistic has a default format, generally chosen to display the data in the most convenient way. Choose from the list to override the default format 
-                        Global_stats: True or False. False by default. If you choose true, it will use all the logs in the system instead of one specific person.
-                        User: pick a the user who's logs you're looking at the statistic for. By default it's set to you.
-                        Mode: what set of logs are you accessing. By default it's set to "All": all of the logs for that user.
-                        """,
-        '/log sydney-train': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log sydney-tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        "/log train": """</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
-
-                        **Options:**
-
-                        Required:
-                        Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown".
-                        Number: which carriage you rode. Examples include "1M", "2111", "N452", "9026". If you don't know, type "Unknown".
-                        Start: the starting station of your trip. You can choose from the list or type your own.
-                        End: the ending station of your trip. You can choose from the list or type your own.
-
-                        Optional:
-                        Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-                        Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
-                        Notes: add any notes you want to add to your log.
-                        """,
-        '/log tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
-
-                        Options:
-
-                        Optional:
-                        Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
-                        User: pick a user who's logs you wish to view. By default it's set to you.
-                        Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
-        '/metro-line': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/myki calculate-fare': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        # '/myki view': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/search route': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/search station-photo':'''</search station-photo:1240101357847838814> is a command to view the photo in the Xm9G photo archive for a specific station.
-
-                        **Options:**
-
-                        Required:
-                        Station: the station you wish to see the photo for. You must choose from the list.''',
-        '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
-
-                        **Options:**
-
-                        Required:
-                        Td: input the TDN for the run.
-
-                        Optional:
-                        Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
-        "/search train": """</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
-
-                        **Options:**
-
-                        Required:
-                        Train: input the Number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
-
-                        Optional:
-                        Show_run_info: True or False. True by default. If you choose false, it will not show the run info for the train. 
-                        """,
-        '/search train-photo': '''</search train-photo:1240101357847838814> is a command to view the all the photos in the Xm9G photo archive for a specific train.
-
-                        **Options:**
-
-                        Required:
-                        Number: input the number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
-                        Optional:
-                        Search_set: True or False. False by default. If you choose true, it will include the photos from the other carriages in the train set (if there are others).''',
-        '/search tram': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats leaderboard': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats profile': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/stats termini': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/submit-photo': """</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
-
-                        **Options:**
-
-                        Required:
-                        Photo: attach the photo you would like to submit
-                        Car_number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station". Note that Xm9G manually reads this so any info in any understandable form is acceptable.
-                        Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
-                        Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.""",
-        '/wongm': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>''',
-        '/year-in-review': '''Unfortunately the entry for this command hasn't been completed. We're working on it right now. The list of commands who's entries are finished is:</about:1322339128121102357>, </achievements view:1327085604789551134>, </completion sets:1304404972229623829>, </completion stations:1304404972229623829>, </departures:1288002114466877529>, </games station-guesser:1240101357847838813>, </games station-order:1240101357847838813>, </help:1261177133372280957>, </line-status:1322429532757819473>, </log adelaide-train:1289843416628330506>, </log bus:1289843416628330506>, </log stats:1289843416628330506>, </log train:1289843416628330506>, </log view:1289843416628330506>, </search station-photo:1240101357847838814>, </search td-number:1240101357847838814>, </search train:1240101357847838814>, </search train-photo:1240101357847838814>, </submit-photo:1240999419470413875>'''
-    }
-
-    if category is None and command is None:
-        embed = discord.Embed(title="Help Categories", description="Please select a category, or select an exact command to learn more info about it. If you still can't find what your looking for [join our discord](https://discord.gg/nfAqAnceQ5)", color=discord.Color.blue())
-
-    elif command is None:
-        chosen_category = category.value
-        if chosen_category in categories:
-            commands_in_category = categories[chosen_category]  # Renamed to avoid shadowing 'commands'
-            embed = discord.Embed(title=f"{chosen_category.capitalize()} Commands", description="Here are the available commands:", color=discord.Color.blue())
-            
-            # Reset joinedcommands for each field to avoid duplication
-            for cmd in commands_in_category:
-                embed.add_field(name="\u200b", value=cmd, inline=False)  # Use zero-width space for invisible field name
-        else:
-            embed = discord.Embed(title="Invalid Category", description="Please choose a valid category.", color=discord.Color.red())
-    elif category is None:
-        chosen_command = command
-        if chosen_command in commands:
-            command_data = commands[chosen_command]  # Avoid shadowing 'commands'
-            embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
-            if command == 'Which /log command should I use?': embed.add_field(name="", value="""Victoria:
-                        Metro Trains Melbourne: </log train:1289843416628330506>
-                        V/Line Rail: </log train:1289843416628330506>
-                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Yarra Trams: </log tram:1289843416628330506>
-                        PTV Bus: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: </log train:1289843416628330506>
-                        Heritage Railway: </log train:1289843416628330506>
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""New South Wales:
-                        Sydney Trains: </log sydney-train:1289843416628330506>
-                        Sydney Metro: </log sydney-train:1289843416628330506>
-                        NSW TrainLink Rail: </log sydney-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        V/Line Rail: </log train:1289843416628330506>
-                        Sydney Light Rail: </log sydney-tram:1289843416628330506>
-                        Newcastle Light Rail: </log sydney-tram:1289843416628330506>
-                        Sydney Ferries: Currently Not Available
-                        Newcastle Ferries: Currently Not Available
-                        Transport for NSW Bus: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""New South Wales Cont.:
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""South Australia:
-                        Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Adelaide Metro Tram: Currently Not Available
-                        Adelaide Metro Bus: </log bus:1289843416628330506>
-                        Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
-                        V/Line Coach: </log bus:1289843416628330506>
-                        NSW TrainLink Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Western Australia:
-                        Transperth Rail: </log perth-train:1289843416628330506>
-                        Transwa Rail: </log perth-train:1289843416628330506>
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Transperth Ferries: Currently Not Available
-                        Transperth Bus: </log bus:1289843416628330506>
-                        Transwa Coach: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""Northern Territory
-                        Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-                        Darwinbus: </log bus:1289843416628330506>
-                        Other Bus/Coach: </log bus:1289843416628330506>
-                        Heritage Train On Mainline: Currently Not Available
-                        Heritage Railway: Currently Not Available
-                        Heritage Tram On Mainline: Currently Not Available
-                        Heritage Tramway: Currently Not Available
-
-                        Other regions:
-                        Any Bus/Coach: </log bus:1289843416628330506>""")
-        else:
-            embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
-    else: 
-        ctx.response.send_message('You cant choose both a category and a command!')
-        return
-    
-    await ctx.response.send_message(embed=embed)
+    await helpCommand(ctx, category, command)
 
 
     
-@bot.tree.command(name="metro-line", description="Show info about a Metro line")
-@app_commands.describe(line="What Metro line to show info about?")
+@bot.tree.command(name="disruptions", description="Show disruptions on a Metro line")
+@app_commands.describe(line="What Metro line to show disruptions for?")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(
@@ -748,6 +495,8 @@ async def line_info(ctx, line: str):
     Returns:
         None
     """
+    
+    await ctx.response.defer()
     log_command(ctx.user.id, 'line_info')
 
     # Retrieve line information from API
@@ -780,9 +529,14 @@ async def line_info(ctx, line: str):
         print(disruptions)
 
         # Extracting title and description
-        general_disruption = disruptions["disruptions"]["metro_train"][0]
-        disruption_title = general_disruption["title"]
-        disruption_description = general_disruption["description"]
+        for general_disruption in disruptions["disruptions"]["metro_train"]:
+            if general_disruption["display_on_board"]:
+                disruption_title = general_disruption["title"]
+                disruption_description = general_disruption["description"]
+                url = general_disruption['url']
+                display = general_disruption['display_on_board']
+                updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
+                break
 
     except Exception as e:
         print(e)
@@ -792,37 +546,36 @@ async def line_info(ctx, line: str):
     print(f"Status color: {color}")
 
     # Create the embed with the retrieved information
-    embed = discord.Embed(title=f"Route Information - {route_name}", color=color)
-    embed.add_field(name="Route Name", value=route_name, inline=False)
+    if disruption_description:
+        embed = discord.Embed(title=f"{description} - {route_name}", color=color, url=url if url else None)
+    else:
+        embed = discord.Embed(title=f"{description} - {route_name}", color=color)
     embed.add_field(name="Status Description", value=description, inline=False)
     if disruption_description:
-        embed.add_field(name="Disruption Info", value=disruption_description, inline=False)
+        embed.add_field(name="Disruption Info", value=f'{disruption_description}\n\nUpdated {updateTime}', inline=False)
+    else:
+        embed.add_field(name="Disruption Info", value=f'There are no disruptions on the {route_name} line!', inline=False)
 
     # Send the embed to the Discord channel
-    await ctx.response.send_message(embed=embed)
+    await ctx.edit_original_response(embed=embed)
 
-    # Log the command usage
-    with open("logs.txt", "a") as file:
-        file.write(
-            f"\n{datetime.datetime.now()} - user sent line info command with input {line}"
-        )
 
 # Route Seach v2
 @search.command(name="route", description="Show info about a tram or bus route")
-@app_commands.describe(rtype = "What type of transport is this route?")
-@app_commands.choices(rtype=[
+@app_commands.describe(mode = "What type of transport is this route?")
+@app_commands.choices(mode=[
+        app_commands.Choice(name="Bus", value="2"),
         app_commands.Choice(name="Tram", value="1"),
         # app_commands.Choice(name="Metro Train", value="0"),
-        app_commands.Choice(name="Bus", value="2"),
         # app_commands.Choice(name="VLine Train", value="3"),
-        app_commands.Choice(name="Night Bus", value="4"),
+        # app_commands.Choice(name="Night Bus", value="4"),
 ])
 @app_commands.describe(number = "What route number to show info about?")
 
-async def route(ctx, rtype: str, number: int):  
+async def route(ctx, mode: str, number: int):  
     log_command(ctx.user.id, 'route_search')
     try:
-        json_info_str = route_api_request(number, rtype)
+        json_info_str = route_api_request(number, mode)
         json_info_str = json_info_str.replace("'", "\"")  # Replace single quotes with double quotes
         json_info = json.loads(json_info_str)
         
@@ -830,13 +583,15 @@ async def route(ctx, rtype: str, number: int):
         await ctx.response.send_message(f"Results for {number}:")
         # embed = discord.Embed(title=f"Bus routes matching `{line}`:", color=0xff8200)
         counter = 0
+        found_routes = False
+        
         for route in json_info['routes']:
-
+            
             routes = json_info['routes']
             status = json_info['status']
             version = status['version']
             health = status['health']
-        
+
         
             route = routes[counter]
             route_service_status = route['route_service_status']
@@ -851,6 +606,7 @@ async def route(ctx, rtype: str, number: int):
             
              # disruption info
             disruptionDescription = ""
+            url = ''
             try:
                 disruptions = disruption_api_request(route_id)
                 # print(disruptions)
@@ -859,8 +615,8 @@ async def route(ctx, rtype: str, number: int):
                 general_disruption = disruptions["disruptions"]["metro_bus"][0]
                 disruptionTitle = general_disruption["title"]
                 disruptionDescription = general_disruption["description"]
-
-
+                url = general_disruption['url']
+                updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
                 
             except Exception as e:
                 print(e)
@@ -870,25 +626,55 @@ async def route(ctx, rtype: str, number: int):
 
              # Check if the route number is the one you want
             if route_number == str(number):
+                found_routes = True
                 # Create and send the embed only for the desired route number
-                embed = discord.Embed(title=f"Route {route_number}:", color=getColor(rtype))
+                if url:
+                    embed = discord.Embed(title=f"Route {route_number}:", color=getColor(mode), url=url)
+                else:
+                    embed = discord.Embed(title=f"Route {route_number}:", color=getColor(mode))
                 embed.add_field(name="Route Name", value=f"{route_number} - {route_name}", inline=False)
                 embed.add_field(name="Status Description", value=description, inline=False)
                 if disruptionDescription:
-                    embed.add_field(name="Disruption Info",value=disruptionDescription, inline=False)
+                    embed.add_field(name="Disruption Info",value=f'{disruptionDescription}\n\nUpdated {updateTime}', inline=False)
                     
                 await channel.send(embed=embed)
-                with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.datetime.now()} - user sent route search command with input {rtype}, {number}")
-                                
+          
             counter = counter + 1
+
+        if not found_routes:
+            await channel.send(f"No routes found matching number {number}")
                 
     except Exception as e:
-        await ctx.response.send_message(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
-        with open('logs.txt', 'a') as file:
-                    file.write(f"\n{datetime.datetime.now()} - ERROR with user command - user sent route search command with input {rtype}, {number}")
+        await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
 
-
+# search station search
+# disabled cause ptv api is broken
+"""
+async def station_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = stations_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+    
+@search.command(name='station', description='View info about a railway station')
+@app_commands.autocomplete(station=station_autocompletion)
+async def searchStation(ctx, station:str):
+    async def stationSearch():
+        await ctx.response.defer()
+        # FIND STOP ID from search name
+        search = search_api_request(f'{station.title()}%20Station')
+        try:
+            stop_id = find_stop_id(search, f"{station.title()} Station")
+        except:
+            await ctx.edit_original_response(content=f"Cannot find info for {station.title()} Station!")
+            
+        print(f'Stop id for {station}: {stop_id}')
+        data = stationInfoAPIRequest(stop_id, 0)
+    asyncio.create_task(stationSearch())       """    
 
 # train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
@@ -944,9 +730,10 @@ async def line_info(ctx, number: str, search_set:bool=False):
     #get full set
     try:
         fullSet = setNumber(number).split("-")
-    except:
+    except Exception as e:
         print(f'cannot get full set for {number}')
         search_set=False
+        await log_channel.send(f'Error: ```{e}```\n with search train photo ran by {ctx.user.mention}\n<@{USER_ID}>')
                 
     await sendPhoto(photo_url)
     
@@ -1022,7 +809,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             embed=discord.Embed(title=f"Zone {start_zone} → {end_zone}", color=0xc2d840)
             count=0
             for fair in fairs:
-                type = fairs[count]['PassengerType']
+                type = fairs[count]['Passengemode']
                 Fare2HourPeak = fairs[count]['Fare2HourPeak']
                 Fare2HourOffPeak = fairs[count]['Fare2HourOffPeak']
                 FareDailyPeak = fairs[count]['FareDailyPeak']
@@ -1128,7 +915,7 @@ async def line_info(ctx, search: str):
 
 # Train search train
 @search.command(name="train", description="Search for a specific Train")
-async def train_search(ctx, train: str, show_run_info:bool=True):
+async def train_search(ctx, train: str, hide_run_info:bool=False):
     await ctx.response.defer()
     log_command(ctx.user.id, 'train-search')
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
@@ -1229,9 +1016,10 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
         if type in metroTrains:
             embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
             """
+        # send it 
         embed_update = await ctx.edit_original_response(embed=embed)
         
-        if type in metroTrains and show_run_info:
+        if type in metroTrains and not hide_run_info:
             # map thing
             mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
@@ -1249,7 +1037,10 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                 line = ""
                 print(f"Location: {location}")
                 url = convertTrainLocationToGoogle(location)
-                stoppingPattern = getStoppingPatternFromCar(location)
+                try:
+                    stoppingPattern = getStoppingPatternFromCar(location)
+                except Exception as e:
+                    await embed_update.reply(content=f'An error has occurred while searching for this trains run.')
                 print(f"STOPPING PATTERN: {stoppingPattern}")
                 try:
                     if location is not None:
@@ -1263,15 +1054,11 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
 
                         await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
-                    await mapEmbedUpdate.delete()
-                    await ctx.channel.send('No trip data available.')
+                    await mapEmbedUpdate.edit(content='No trip data available.', embed=None)
                     print(f'ErROR: {e}')
                     return
                 file_path = f"temp/{train}-map.png"
                 if os.path.exists(file_path):
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
                     file = discord.File(file_path, filename=f"{train}-map.png")
                     
                     embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary[line][1], timestamp=discord.utils.utcnow())
@@ -1341,12 +1128,15 @@ async def train_search(ctx, train: str, show_run_info:bool=True):
                     
                     embed.set_image(url=f'attachment://{train}-map.png')
                     embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
-                
+
+                    # Delete the old message
+                    await mapEmbedUpdate.delete()
+                    
                     # Send a new message with the file and embed
-                    await channel.send(file=file, embed=embed)
+                    await embed_update.reply(file=file, embed=embed)
                 else:
                     await mapEmbedUpdate.delete()
-                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
+                    await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")
                     print(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
@@ -1419,6 +1209,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
+
                 print(f'ErROR: {e}')
                 return
             
@@ -1435,7 +1226,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             elif mode == "bus" or mode == 'nightbus':
                 colour = 0xf78b24
             
-            embed = discord.Embed(title=f"TD {runid}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"{td}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -1509,6 +1300,8 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             await ctx.edit_original_response(content='No trip data available.')   
             print(f'ErROR: {e}') 
             print(traceback.format_exc())  
+            await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
     # Run transportVicSearch in a separate thread
         
         
@@ -1520,7 +1313,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")
 async def tramsearch(ctx, tram: str):
-    await ctx.response.send_message(f"Searching, trip data may take longer to send...")
+    await ctx.response.defer()
     log_command(ctx.user.id, 'tram-search')
     channel = ctx.channel
     type = tramType(tram)
@@ -1529,7 +1322,7 @@ async def tramsearch(ctx, tram: str):
     print(f'Set: {set}')
     print(f"Tram Type: {type}")
     if type is None:
-        await channel.send("Tram not found")
+        await ctx.edit_original_response(content="Tram not found")
     else:
         embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
         if set.endswith('-'):
@@ -1574,74 +1367,8 @@ async def tramsearch(ctx, tram: str):
         embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
-        embed_update = await channel.send(embed=embed)
-        
-        # map thing
-        '''mapEmbed = discord.Embed(title=f"{tram}'s location")
-        mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Map', value='⠀')
-        mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
-        
-        # Generate the map location
-        async def addmap():                
-                
-                location = getTramLocation(set)
-                url = convertTrainLocationToGoogle(location)
-                try:
-                    if location is not None:
-                        for item in location:
-                            latitude = item['vehicle_position']['latitude']
-                            longitude = item['vehicle_position']['longitude']
-                            geopath=''
-                            # geopath = getGeopath(item["run_ref"])
-                            # print(f'geopath: {geopath}')
-
-                        await makeMapv2(latitude,longitude, tram, geopath)  # Adjust this line to asynchronously generate the map
-                except Exception as e:
-                    await mapEmbedUpdate.delete()
-                    await ctx.channel.send('No location data available.')
-                    print(f'ErROR: {e}')
-                    return
-                file_path = f"temp/{tram}-map.png"
-                if os.path.exists(file_path):
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
-                    file = discord.File(file_path, filename=f"{tram}-map.png")
-                    
-                    embed = discord.Embed(title=f"{tram}'s location", url=url)
-                    embed.remove_field(0)
-                    embed.set_image(url=f'attachment://{tram}-map.png')
-                    embed.set_footer(text='Mapdata © OpenStreetMap contributors')
-                
-                    # Send a new message with the file and embed
-                    await channel.send(file=file, embed=embed)
-                else:
-                    await mapEmbedUpdate.delete()
-                    await ctx.channel.send(f"Error: Map file '{file_path}' not found.")
-                    print(f"Error: Map file '{file_path}' not found.")
-        '''
-
-            
-        # else:
-        #     embed.remove_field(3)
-        #     await embed_update.edit(embed=embed)
-        #     await mapEmbedUpdate.delete()
-        #     await ctx.channel.send('Location info is only available for Metro services')
-        
-        
-            
-
+        embed_update = await ctx.edit_original_response(embed=embed)
     
-
-        
-
-    
-# @app_commands.command(name='test', description="Test command")
-# @app_commands.allowed_installs(guilds=False, users=True)
-# @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-# async def useable_only_users(interaction: discord.Interaction):
-#     await interaction.response.send_message("I am only installed to users, but can be used anywhere.")
-
 # add a favorite stop
 @bot.tree.command(name="favorite", description="Add a favorite stop")
 @app_commands.describe(stop="Stop name")
@@ -1672,9 +1399,9 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
-@bot.tree.command(name="departures", description="Upcoming trains departing a station")
-@app_commands.describe(station="Station")
-@app_commands.autocomplete(station=station_autocompletion)
+@bot.tree.command(name="departures", description="Upcoming departures for a stop")
+@app_commands.describe(stop="Station/Stop name")
+@app_commands.autocomplete(stop=station_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 @app_commands.choices(
@@ -1696,52 +1423,71 @@ async def station_autocompletion(
         app_commands.Choice(name="Werribee", value="Werribee"),
     ]
 )
+@app_commands.choices(
+    mode=[
+        app_commands.Choice(name="Metro", value="0"),
+        app_commands.Choice(name="Tram", value="1"),
+        app_commands.Choice(name="Bus", value="2"),
+    ]
+)
+
 # test
-async def departures(ctx, station: str, line:str='all'):
-    async def nextdeps():
+async def departures(ctx, stop: str, mode:str='0', line:str='all'):
+    async def nextdeps(station):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
-        Nstation = station.replace(' ', '%20')
-        search = search_api_request(f'{Nstation.title()}%20Station')
-        # find the stop id!
-        def find_stop_id(data, location):
-            for stop in data['stops']:
-                if stop['stop_name'] == location:
-                    return stop['stop_id']
-            return 'None'
-        
+        if line != "all" and mode != "0":
+            await ctx.edit_original_response(content="You can only specify a line for trains")
+            return
+        # search for the station
+        Nstation = station.replace(' ', '%20').replace('#', '%23')
+        if mode == "0":
+            search = search_api_request(f'{Nstation.title()}%20Station')
+        else:
+            search = search_api_request(Nstation.title())
+        # FIND STOP ID from search name
         try:
-            stop_id = find_stop_id(search, f"{station.title()} Station")
+            if mode == "0":
+                stop_id = find_stop_id(search, f"{station.title()} Station")
+            else:
+                print(f'searching for {station.title()}')
+                stop_id = find_stop_id(search, f"{station.title()}")
         except:
-            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
         print(f'STOP ID for {station} Station: {stop_id}')
-        if stop_id == 'None':
+        
+        '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")
             search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
             stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-            print(f'STOP ID for {station} Station: {stop_id}')
+            print(f'STOP ID for {station} Station: {stop_id}')'''
 
             
         # get departures for the stop:
-        depsData = departures_api_request(stop_id, 0)
-        vlineDepsData = departures_api_request(stop_id, 3)
+        depsData = departures_api_request(stop_id, mode)
+        # vlineDepsData = departures_api_request(stop_id, 3)
         try:
             departures = depsData['departures']
             runs = depsData['runs']
             # V/Line
-            Vdepartures = vlineDepsData['departures']
-            Vruns = vlineDepsData['runs']
+            # Vdepartures = vlineDepsData['departures']
+            # Vruns = vlineDepsData['runs']
         except:
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
             return
          
         
         # make embed with data
-        if line == "all":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow())
-        else:
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow())
+        if line == "all" and mode == "0":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
+        elif line != 'all' and mode == "0":
+            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+        elif mode == '1':
+            embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=0x78be20)
+        elif mode == '2':
+            embed= discord.Embed(title=f"Next busses departing {station.title()}", timestamp=discord.utils.utcnow(), color=0xff8200)
+
 
         fields = 0
         
@@ -1755,7 +1501,6 @@ async def departures(ctx, station: str, line:str='all'):
                 # print(f"time in past")
                 pass
             else:
-                estimated_departure_utc = departure['estimated_departure_utc']
                 run_ref = departure['run_ref']
                 at_platform = departure['at_platform']
                 platform_number = departure['platform_number']
@@ -1769,7 +1514,14 @@ async def departures(ctx, station: str, line:str='all'):
                 except:
                     trainType = ''
                     trainNumber = ''
-
+                    
+                # get live departure time
+                if mode == "0":
+                    stoppingPattern=getStoppingPattern(run_ref, mode)
+                    for stop in stoppingPattern:
+                        if stop[0].strip() == station.title():
+                            scheduled_departure_utc = stop[1]
+            
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
                 
@@ -1794,60 +1546,216 @@ async def departures(ctx, station: str, line:str='all'):
                     else:
                         platform_number = "1"
                 
-                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 fields = fields + 1
                 if fields == 9:
                     break
-        # the V/Line part
-        '''fields = 0
-        
-        Vdepartures = [Vdeparture for Vdeparture in Vdepartures if get_route_name(Vdeparture['route_id']) == line or line == "all"]
-
-        
-        for Vdeparture in Vdepartures:
-            route_id= Vdeparture['route_id'] 
-            scheduled_departure_utc = Vdeparture['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
-                print(f"time in past")
-                # pass
-            else:
-                estimated_departure_utc = Vdeparture['estimated_departure_utc']
-                run_ref = Vdeparture['run_ref']
-                at_platform = Vdeparture['at_platform']
-                platform_number = Vdeparture['platform_number']
-                note = Vdeparture['departure_note']
-                
-                #convert to timestamp
-                depTime=convert_iso_to_unix_time(scheduled_departure_utc)
-                #get route name:
-                route_name = get_route_name(route_id)                
-                
-                #VLINE PLATFORMS DONT WORK PLS HELP
-                
-                embed.add_field(name=f"{getlineEmoji(route_name)}\ndesto here {note if note else ''}", value=f"\nScheduled to depart {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\nRun ID: `{run_ref}`")
-                fields = fields + 1
-                if fields == 9:
-                    break
-                                        
+        # add message for no depatures
         if fields == 0:
-            embed.add_field(name="No upcoming departures", value="⠀")'''
-            
+            embed.add_field(name="No departures found", value="There are currently no departures for this stop.")
+        
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
         for disruption in disruptions:
             embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
-        
-        image = getStationImage(station)
-        if image != None: 
-            embed.set_thumbnail(url=image)  
-            embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
-        else:
-            embed.set_footer(text=f"V/Line departures are unavailable")
+        # get station image
+        if mode == '0':
+            image = getStationImage(station)
+            if image != None: 
+                embed.set_thumbnail(url=image)  
+                embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
+            else:
+                embed.set_footer(text=f"V/Line departures are unavailable")
 
         await ctx.edit_original_response(embed=embed)          
 
-    asyncio.create_task(nextdeps())
+    asyncio.create_task(nextdeps(stop))
+    
+    
+# ptv api search command
+@search.command(name="ptv", description="Search stops, routes and myki ticket outlets provided by PTV")
+@app_commands.describe(search="What to search for")
+@app_commands.choices(type=[
+        app_commands.Choice(name="stops", value="stops"),
+        app_commands.Choice(name="routes", value="routes"),
+        app_commands.Choice(name="myki outlets", value="myki")
+])
+@app_commands.describe(maximum_responses="How many responses for each mode of transport you want")
+async def search(ctx, search:str, type:str, maximum_responses:int=5):
+    async def ptvsearch(search):
+        await ctx.response.defer()
+        log_command(ctx.user.id, 'ptv-search')
+        fmtSearch = search.replace(" ", "%20")
+        data = search_api_request(fmtSearch)
+        if type == 'stops':
+            if data['stops']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                train_count = 0
+                vline_count = 0
+                tram_count = 0
+                bus_count = 0
+                coach_count = 0
+                train_list = []
+                vline_list = []
+                tram_list = []
+                bus_list = []
+                coach_list = []
+                train_embed = f""
+                vline_embed = f""
+                tram_embed = f""
+                bus_embed = f""
+                coach_embed = f""
+                for stop in data['stops']:
+                    stop_name = stop['stop_name']
+                    stop_id = stop['stop_id']
+                    stop_suburb = stop['stop_suburb']
+                    route_type = stop['route_type']
+                    # find emojis for the route type
+                    if route_type == 3:
+                        emoji = getVlineStopType(stop_name, True)
+                    else:
+                        emoji = getModeEmoji(route_type)
+                    url = f'https://www.ptv.vic.gov.au/stop/{stop_id}'
+
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
+                        train_count +=1
+                        train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")                    
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
+                        vline_count +=1
+                        vline_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
+                        tram_count +=1
+                        tram_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
+                        bus_count +=1
+                        bus_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
+                        coach_count +=1
+                        coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No stops found", value="Try searching for something else")
+                
+        elif type == 'routes':
+            if data['routes']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                train_count = 0
+                vline_count = 0
+                tram_count = 0
+                bus_count = 0
+                coach_count = 0
+                train_list = []
+                vline_list = []
+                tram_list = []
+                bus_list = []
+                coach_list = []
+                train_embed = f""
+                vline_embed = f""
+                tram_embed = f""
+                bus_embed = f""
+                coach_embed = f""
+                for route in data['routes']:
+                    route_name = route['route_name']
+                    route_id = route['route_id']
+                    route_number = route['route_number'] + " - " if route['route_number'] else ""
+                    route_service_status = route['route_service_status']['description']
+                    url = f'https://www.ptv.vic.gov.au/route/{route_id}'
+                    emoji = getModeEmoji(route['route_type'])
+
+                    if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
+                        train_count +=1
+                        train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")                    
+                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
+                        vline_count +=1
+                        vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
+                        tram_count +=1
+                        tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
+                        bus_count +=1
+                        bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
+                        coach_count +=1
+                        coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+
+                if train_count != 0:
+                    for train in train_list:
+                        train_embed = f"{train_embed}{train}"
+                    embed.add_field(name="<:train:1241164967789727744>Train", value=f"{train_embed}\n\n", inline=False)
+
+                if vline_count != 0:
+                    for vline in vline_list:
+                        vline_embed = f"{vline_embed}{vline}"
+                    embed.add_field(name="<:vline:1241165814258729092>V/Line", value=f"{vline_embed}\n\n", inline=False)
+
+                if tram_count != 0:
+                    for tram in tram_list:
+                        tram_embed = f"{tram_embed}{tram}"
+                    embed.add_field(name="<:tram:1241165701390012476>Tram", value=f"{tram_embed}\n\n", inline=False)
+
+                if bus_count != 0:
+                    for bus in bus_list:
+                        bus_embed = f"{bus_embed}{bus}"
+                    embed.add_field(name="<:bus:1241165769241530460>Bus", value=f"{bus_embed}\n\n", inline=False)
+
+                if coach_count != 0:
+                    for coach in coach_list:
+                        coach_embed = f"{coach_embed}{coach}"
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No routes found", value="Try searching for something else")
+                
+        elif type == 'myki':
+            if data['outlets']:
+                embed = discord.Embed(title=f"Results for {search}:")
+                count = 0
+                for outlet in data['outlets']:
+                    buisness = outlet['outlet_business']
+                    suburb = outlet['outlet_suburb']
+                    url = generate_google_maps_link(outlet['outlet_latitude'], outlet['outlet_longitude']) 
+                    embed.add_field(name=f"{buisness} - {suburb}", value=f'[View on Google Maps]({url})',inline=False)
+                    count +=1
+                    if count == maximum_responses:
+                        break
+            else:
+                embed = discord.Embed(title=f"Results for {search}:")
+                embed.add_field(name="No routes found", value="Try searching for something else")
+                
+        try:
+            await ctx.edit_original_response(embed=embed)
+        except Exception as e:
+            print('Too many characters because "maximum_responses" was set to high.')
+            await ctx.edit_original_response(content='''"maximum_responses" set too high, try a lower number. If you're using the myki outlet mode, the maximum is 25.''')
+            return
+    asyncio.create_task(ptvsearch(search))
+        
 
 
 
@@ -1897,6 +1805,8 @@ async def train_line(ctx):
     embed.set_author(name='howmanydayssincemontaguestreetbridgehasbeenhit.com', url="https://howmanydayssincemontaguestreetbridgehasbeenhit.com")
     await ctx.channel.send(embed=embed)'''
     
+
+    
 @games.command(name="station-guesser", description="Play a game where you guess what train station is in the photo.")
 @app_commands.describe(rounds = "The number of rounds. Defaults to 1, max 100.", line='Select a line to only show photos from that line', ultrahard = "Ultra hard mode.")
 @app_commands.choices(line=[
@@ -1927,8 +1837,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 100:
-            await ctx.response.send_message("You can only play a maximum of 100 rounds!", ephemeral=True )
+        if rounds > 500:
+            await ctx.response.send_message("You can only play a maximum of 500 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
@@ -2056,11 +1966,11 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLb(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author.mention not in participants:
-                            participants.append(user_response.author.mention)
+                        if user_response.author not in participants:
+                            participants.append(user_response.author)
                             
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id, 780303451980038165] :
+                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Round {round+1} skipped.")
                             log_command(user_response.author.id, 'game-station-guesser-skip')
                             skippedGames += 1
@@ -2070,15 +1980,17 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                             roundResponse = True
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,780303451980038165] :
+                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Game ended.")
                             log_command(user_response.author.id, 'game-station-guesser-stop')
-                            embed = discord.Embed(title="Game Summary")
+                            embed = discord.Embed(title=f"Game Summary | {setLine}")
                             embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
                             embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
                             embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-                            embed.add_field(name="Participants", value=', '.join(participants))
-                            await ctx.channel.send(embed=embed)   
+                            embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                            await ctx.channel.send(embed=embed)  
+                            for user in participants:
+                                await addGameAchievement(user.name,ctx.channel.id,user.mention)  
                             channel_game_status[channel] = False
                             return
                         else:
@@ -2092,8 +2004,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
                             addLoss(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author.mention not in participants:
-                            participants.append(user_response.author.mention)
+                        if user_response.author not in participants:
+                            participants.append(user_response.author)
                         
             except asyncio.TimeoutError:
                 if ultrahard:
@@ -2104,9 +2016,16 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 if not roundResponse:
                     ignoredRounds += 1
                 print(f'Ignored rounds: {ignoredRounds}')
-                if ignoredRounds == 2 and roundResponse == False:
-                    await ctx.channel.send("No responses for 2 rounds. Game ended.")
-                    channel_game_status[channel] = False
+                if ignoredRounds >= 4 and roundResponse == False:
+                    await ctx.channel.send("No responses for 4 rounds. Game ended.")
+                    embed = discord.Embed(title=f"Game Summary | {setLine}")
+                    embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                    embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                    embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                    embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                    await ctx.channel.send(embed=embed)  
+                    for user in participants:
+                        await addGameAchievement(user.name,ctx.channel.id,user.mention)
                     return
                         
                 # Reset game status after the game ends
@@ -2116,8 +2035,10 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
         embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
         embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-        embed.add_field(name="Participants", value=', '.join(participants))
-        await ctx.channel.send(embed=embed)      
+        embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+        await ctx.channel.send(embed=embed)  
+        for user in participants:
+            await addGameAchievement(user.name,ctx.channel.id,user.mention)
 
     # Run the game in a separate task
     try:
@@ -2125,6 +2046,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     except Exception as e:
         print(f'GUESSER ERROR: {e}')
         await ctx.channel.send(f'An error has occurred\n```{e}```')
+        await log_channel.send(f'Error: ```{e}```\n with guesser run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
 
 
     
@@ -2183,7 +2106,7 @@ linelist = [
 ]
 
 @games.command(name="station-order", description="A game where you list the stations before or after a station.")
-@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.")
+@app_commands.describe(rounds = "The number of rounds. Defaults to 1.", direction = "The directions you are listing the stations in. Defaults to Up or Down.", line ='Which line to guess stations from, defaults to all lines.')
 @app_commands.choices(
     direction=[
         app_commands.Choice(name="Up or Down", value='updown'),
@@ -2191,17 +2114,36 @@ linelist = [
         app_commands.Choice(name="Down", value='down')
         ],
     )
+@app_commands.choices(line=[
+        app_commands.Choice(name="Alamein", value="Alamein"),
+        app_commands.Choice(name="Belgrave", value="Belgrave"),
+        app_commands.Choice(name="Craigieburn", value="Craigieburn"),
+        app_commands.Choice(name="Cranbourne", value="Cranbourne"),
+        # app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="Frankston", value="Frankston"), 
+        app_commands.Choice(name="Glen Waverley", value="Glen Waverley"),
+        app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+        app_commands.Choice(name="Lilydale", value="Lilydale"),
+        app_commands.Choice(name="Mernda", value="Mernda"),
+        app_commands.Choice(name="Pakenham", value="Pakenham"),
+        app_commands.Choice(name="Sandringham", value="Sandringham"),
+        app_commands.Choice(name="Stony Point", value="Stony Point"),
+        app_commands.Choice(name="Sunbury", value="Sunbury"),
+        app_commands.Choice(name="Upfield", value="Upfield"),
+        app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+])
 
-async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
+async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='all'):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-order')
-    async def run_game():
+    async def run_game(line):
         # Check if a game is already running in this channel
         if channel in channel_game_status and channel_game_status[channel]:
             await ctx.response.send_message("A game is already running in this channel.", ephemeral=True )
             return
-        if rounds > 25:
-            await ctx.response.send_message("You can only play a maximum of 25 rounds!", ephemeral=True )
+        if rounds > 10:
+            await ctx.response.send_message("You can only play a maximum of 10 rounds!", ephemeral=True )
             return
 
         channel_game_status[channel] = True
@@ -2219,9 +2161,10 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 numdirection = numdirection*-1
             
             # choose random line
-            line = None
-            while line == None:
-                line = linelist[random.randint(0,len(linelist)-1)]
+            if line == 'all':
+                line = None
+                while line == None:
+                    line = linelist[random.randint(0,len(linelist)-1)]            
 
             # choose random station
             if line == 'Flemington Racecourse':
@@ -2271,13 +2214,13 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                         
                         correct = True 
                     elif user_response.content.lower() == '!skip':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
                             break
                         else:
                             await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
                     elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in [ctx.user.id,707866373602148363,780303451980038165] :
+                        if user_response.author.id in ctx.user.id or user_response.author.id in admin_users :
                             await ctx.channel.send(f"Game ended.")
                             return
                         else:
@@ -2293,7 +2236,7 @@ async def testthing(ctx, direction: str = 'updown', rounds: int = 1):
                 channel_game_status[channel] = False
             
     # Run the game in a separate task
-    asyncio.create_task(run_game())
+    asyncio.create_task(run_game(line))
 
 async def station_autocompletion(
     interaction: discord.Interaction,
@@ -2367,8 +2310,12 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if traintype == "Tait":
                 set = '381M-208T-230D-317M'
             else:
-                # If custom traintype and set is unknown, use the input number as the set
-                set = number.upper()
+                # check if its a known train type and find the set, but if its not known just use the number
+                checkTT = trainType(number.upper())
+                if checkTT == traintype:
+                    set = setNumber(number.upper())
+                else:
+                    set = number.upper()
         else:
             # checking if train number is valid
             if number != 'Unknown':
@@ -2489,9 +2436,6 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
   # tram logger goes here
 @trainlogs.command(name="tram", description="Log a Melbourne tram you have been on")
 @app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=station_autocompletion)
-@app_commands.autocomplete(end=station_autocompletion)
-
 @app_commands.choices(route=[
         app_commands.Choice(name="1 East Coburg - South Melbourne Beach", value="1"),
         app_commands.Choice(name="3 Melbourne University - Malvern East", value="3"),
@@ -2546,7 +2490,7 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
         type = tramType(number.upper())
-        if type == None:
+        if type == None or type == 'Tram type not found for UNKNOWN':
             type = 'N/A'
 
         # Add train to the list
@@ -3596,6 +3540,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 
             except Exception as e:
                 await ctx.response.send_message(f"Error: `{e}`")
+                await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
+
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
@@ -4118,6 +4064,12 @@ async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
     response = await ctx.send('Checking for new Achievements...')
     await addAchievement(ctx.author.name,ctx.channel.id, ctx.author.mention)
+    new = checkGameAchievements(ctx.author.name)
+    for achievement in new:
+        info = getAchievementInfo(achievement)
+        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+        await ctx.send(f'<@{ctx.author.id}>',embed=embed)
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
@@ -4457,7 +4409,7 @@ async def ping(ctx):
     
 @bot.command()
 async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
-    if str(ctx.author.id) == USER_ID:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = url
         save_location = "utils/trainsets.csv"
@@ -4465,16 +4417,16 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            await ctx.send(f"Sucsess!")
+            await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{USER_ID} tried to synd the database.')
+        print(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
         
 @bot.command()
 async def syncgame(ctx):
-    if str(ctx.author.id) == USER_ID:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
@@ -4482,7 +4434,7 @@ async def syncgame(ctx):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            await ctx.send(f"Sucsess!")
+            await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
             
@@ -4492,12 +4444,48 @@ async def syncgame(ctx):
         print(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
-            await ctx.send(f"Sucsess!")
+            await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{USER_ID} tried to synd the database.')
+        print(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def restart(ctx):
+    if ctx.author.id in admin_users:
+        print("Restarting bot")
+        await ctx.send(f"Restarting bot")
+        
+        with open('restart.txt', 'w') as file:
+            file.write(str(ctx.channel.id))
+        await bot.close()
+        os.system('python bot.py')
+
+    else:
+        print(f'{str(ctx.author.id)} tried to restart the bot.')
+        await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def update(ctx):
+    if automatic_updates == True:
+        if ctx.author.id in admin_users:
+            print("Updating bot")
+            await ctx.send("Updating bot")
+        
+            directory = Path(__file__).parents[0]
+
+            directory = git.cmd.Git(directory)
+            directory.pull()
+
+            await ctx.send("Update complete")
+            print("Update complete")
+
+        else:
+            print(f'{str(ctx.author.id)} tried to update the bot.')
+            await ctx.send("You are not authorized to use this command.")
+    else:
+        await ctx.send("Automatic updates are not supported on this bot.")
     
-# imptrant
+# important
 bot.run(BOT_TOKEN)

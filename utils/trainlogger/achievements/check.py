@@ -558,6 +558,80 @@ def checkAchievements(user):
     
     return truly_new
 
+def checkGameAchievements(user):
+    mode = 'guesser'
+    print(f'Checking for guesser achievements for {user}')
+    filepath = f"utils/game/scores/{mode}.csv"
+    new_achievements = []
+
+    if not os.path.exists(filepath):
+        print('Data file does not exist!')
+        return []
+
+    # Track stats from game file
+    wins = 0
+    losses = 0
+
+    with open(filepath, mode='r', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 1 and row[1] == user:
+                wins = int(row[2])
+                losses = int(row[3])
+                break
+
+    total_games = wins + losses
+    print(f'{user} guesser stats: {wins} wins, {losses} losses, {total_games} total')
+
+    # Check for first game achievement
+    if total_games > 0:
+        new_achievements.append('100')
+
+    # Check for accuracy achievements
+    if total_games >= 25:
+        accuracy = (wins / total_games) * 100
+        if accuracy >= 90:
+            new_achievements.append('106')
+        if accuracy >= 75:
+            new_achievements.append('107')
+
+    # Check for streak-related achievements (if applicable)
+    if wins >= 1000:
+        new_achievements.append('105')
+    if wins >= 100:
+        new_achievements.append('103')
+    if wins >= 10:
+        new_achievements.append('104')
+
+    # Check for games played achievements
+    if total_games >= 100:
+        new_achievements.append('102')
+    if total_games >= 10:
+        new_achievements.append('101')
+
+    # Check which achievements are actually new
+    userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
+    existing_achievements = []
+    
+    if os.path.exists(userCSV):
+        with open(userCSV, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                existing_achievements.extend(row)
+    
+    truly_new = [ach for ach in new_achievements if ach not in existing_achievements]
+    
+    # Update the user's achievements file
+    if truly_new:
+        all_achievements = existing_achievements + truly_new
+        with open(userCSV, 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            csv_writer.writerow(all_achievements)
+        print(f"Added the following game achievements: {truly_new}")
+    else:
+        print("No new game achievements to add.")
+    
+    return truly_new
 
 def returnAchievements(user):
     filepath = f'utils/trainlogger/achievements/data/{user}.csv'

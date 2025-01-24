@@ -29,8 +29,11 @@ def getStoppingPattern(runRef, routeType):
         return None
     data = stoppingPatternAPIRequest(runRef, routeType)
 
-    departures = data.get('departures', [])
-    stops = data.get('stops', {})
+    try:
+        departures = data.get('departures', [])
+        stops = data.get('stops', {})
+    except Exception as e:
+        print(e)
 
     departures_info = []
     for departure in departures:

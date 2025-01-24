@@ -132,13 +132,14 @@ def getGeopath(runId):
     else:
         print("No 'geopath' found in JSON data.")
         return None
-
-
-def convertTrainLocationToGoogle(data):
-    def generate_google_maps_link(latitude, longitude):
+    
+def generate_google_maps_link(latitude, longitude):
         base_url = "https://www.google.com/maps/search/?api=1&query="
         coordinates = f"{latitude},{longitude}"
         return base_url + coordinates
+
+def convertTrainLocationToGoogle(data):
+    
     
     for item in data:
         latitude = item['vehicle_position']['latitude']
