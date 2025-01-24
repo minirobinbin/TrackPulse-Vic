@@ -83,6 +83,8 @@ Required:
 Optional:
     Mode: which mode of transport you wish to see departures for.
     Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
+        '/favorite add': '''Unfortunately this command's entry hasn't been completed yet. We're working on it now.''',
+        '/favorite remove': '''Unfortunately this command's entry hasn't been completed yet. We're working on it now.''',
         '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
 
 **Options:**
