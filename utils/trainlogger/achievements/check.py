@@ -562,6 +562,9 @@ def checkGameAchievements(user):
     mode = 'guesser'
     print(f'Checking for guesser achievements for {user}')
     filepath = f"utils/game/scores/{mode}.csv"
+    mode = 'ultrahard'
+    UltrahardFilepath = f"utils/game/scores/{mode}.csv"
+
     new_achievements = []
 
     if not os.path.exists(filepath):
@@ -571,6 +574,8 @@ def checkGameAchievements(user):
     # Track stats from game file
     wins = 0
     losses = 0
+    uhwins = 0
+    uhlosses = 0
 
     with open(filepath, mode='r', newline='') as csvfile:
         csv_reader = csv.reader(csvfile)
@@ -579,21 +584,43 @@ def checkGameAchievements(user):
                 wins = int(row[2])
                 losses = int(row[3])
                 break
-
+            
+    with open(UltrahardFilepath, mode='r', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 1 and row[1] == user:
+                uhwins = int(row[2])
+                uhlosses = int(row[3])
+                break
+            
     total_games = wins + losses
+    total_uhgames = uhwins + uhlosses
+    
     print(f'{user} guesser stats: {wins} wins, {losses} losses, {total_games} total')
 
     # Check for first game achievement
     if total_games > 0:
         new_achievements.append('100')
+    if total_uhgames > 0:
+        new_achievements.append('108')
 
     # Check for accuracy achievements
-    if total_games >= 25:
+    if total_games >= 50:
         accuracy = (wins / total_games) * 100
         if accuracy >= 90:
             new_achievements.append('106')
         if accuracy >= 75:
             new_achievements.append('107')
+        if accuracy >= 99:
+            new_achievements.append('109')
+    if total_uhgames >= 50:
+        accuracy = (uhwins / total_uhgames) * 100
+        if accuracy >= 90:
+            new_achievements.append('115')
+        if accuracy >= 75:
+            new_achievements.append('116')
+        if accuracy >= 99:
+            new_achievements.append('117')
 
     # Check for streak-related achievements (if applicable)
     if wins >= 1000:
@@ -602,12 +629,24 @@ def checkGameAchievements(user):
         new_achievements.append('103')
     if wins >= 10:
         new_achievements.append('104')
+    
+    if uhwins >= 1000:
+        new_achievements.append('114')
+    if uhwins >= 100:
+        new_achievements.append('113')
+    if uhwins >= 10:
+        new_achievements.append('112')
 
     # Check for games played achievements
     if total_games >= 100:
         new_achievements.append('102')
     if total_games >= 10:
         new_achievements.append('101')
+    
+    if total_uhgames >= 100:
+        new_achievements.append('111')
+    if total_uhgames >= 10:
+        new_achievements.append('110')
 
     # Check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
