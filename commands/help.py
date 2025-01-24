@@ -73,14 +73,15 @@ Required:
 
 Required:
     State: input the state you want to see the stations of.''',
-        '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 Metro services departing from any station in Melbourne.
+        '/departures': '''</departures:1288002114466877529> is a command that allows you to view the next 9 services departing from a station/stop. This is currently only for Metro Trains, Yarra Trams and PTV Buses
 
 **Options:**
 
 Required:
-    Station: the station you wish to see the departures from. You must choose from the list.
+    Stop: the station/stop you wish to see the departures from. You must choose from the list.
 
 Optional:
+    Mode: which mode of transport you wish to see departures for.
     Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
         '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
 
