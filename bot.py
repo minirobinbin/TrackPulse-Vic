@@ -173,6 +173,7 @@ for folder in required_folders:
 
 
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
+vline_rail_lines = [1706, 1837, 1823, 1728, 1740, 1849, 1745, 4871, 1710, 1908, 1783, 1824, 1767]
 
 
 # Global variable to keep track of the last sent message
@@ -1713,19 +1714,20 @@ async def search(ctx, search:str, type:str, maximum_responses:int=5):
                     if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
                         train_count +=1
                         train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")                    
-                    elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
-                        vline_count +=1
-                        vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                    elif emoji == "<:vline:1241165814258729092>":
+                        if route_id in vline_rail_lines and vline_count < maximum_responses:
+                            vline_count +=1
+                            vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                        if coach_count < maximum_responses:
+                            coach_count +=1
+                            coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
                     elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
                         tram_count +=1
                         tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
                     elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
                         bus_count +=1
                         bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
-                    elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
-                        coach_count +=1
-                        coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
-
+                
                 if train_count != 0:
                     for train in train_list:
                         train_embed = f"{train_embed}{train}"
