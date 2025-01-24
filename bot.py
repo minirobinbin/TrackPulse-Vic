@@ -1498,7 +1498,7 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
             # Vdepartures = vlineDepsData['departures']
             # Vruns = vlineDepsData['runs']
         except:
-            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()} Station")
+            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
             return
          
         
@@ -1574,9 +1574,9 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
                         platform_number = "3"
                     else:
                         platform_number = "1"
-                if mode == 0:
+                if mode == '0':
                     embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
-                else: 
+                elif mode in ['1', '2']: 
                     embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})")
                 fields = fields + 1
                 if fields == 9:
