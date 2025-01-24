@@ -1605,7 +1605,7 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         app_commands.Choice(name="myki outlets", value="myki")
 ])
 @app_commands.describe(maximum_responses="How many responses for each mode of transport you want")
-async def search(ctx, search:str, type:str, maximum_responses:int=5):
+async def search(ctx, search:str, type:str, maximum_responses:int=3):
     async def ptvsearch(search):
         await ctx.response.defer()
         log_command(ctx.user.id, 'ptv-search')
