@@ -16,6 +16,7 @@
 
 
 from calendar import c
+from math import e
 import operator
 from shutil import ExecError
 from tracemalloc import stop
@@ -50,6 +51,7 @@ import git
 
 from commands.help import helpCommand
 from utils import trainset
+from utils.favorites.viewer import *
 from utils.search import *
 from utils.colors import *
 from utils.stats.stats import *
@@ -276,6 +278,8 @@ async def on_ready():
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
+    bot.tree.add_command(favorites)
+
     try:
         await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
         This program comes with ABSOLUTELY NO WARRANTY.
@@ -1370,35 +1374,40 @@ async def tramsearch(ctx, tram: str):
         embed_update = await ctx.edit_original_response(embed=embed)
     
 # add a favorite stop
-@bot.tree.command(name="favorite", description="Add a favorite stop")
+@favorites.command(name="add", description="Add a favorite stop")
 @app_commands.describe(stop="Stop name")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def favorite(ctx, stop: str):
-    await ctx.response.defer()
+    await ctx.response.defer(ephemeral=True)
     log_command(ctx.user.id, 'favorite-stop')
-    # get the user's favorite stops
-    try:
-        favorite_stops = get_favorites(ctx.user.id)
-    except:
-        favorite_stops = []
     
     # add the stop to the favorites
-    favorite_stops.append(stop)
-    save_favorites(ctx.user.id, favorite_stops)
+    message = save_favorites(ctx.user.id, stop)
     
-    await ctx.edit_original_response(content=f"Added {stop} to your favorite stops")
+    await ctx.edit_original_response(content=message)
 
 # Next departures for a station
 async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
 ) -> typing.List[app_commands.Choice[str]]:
-    fruits = stations_list.copy()
-    return [
-        app_commands.Choice(name=fruit, value=fruit)
-        for fruit in fruits if current.lower() in fruit.lower()
-    ][:25]
+    # Get favorites list
+    favorites = get_favorites(interaction.user.id)
+    stations = stations_list.copy()
+    suggestions = []
+    
+    # Add matching favorites first
+    for fav in favorites:
+        if current.lower() in fav.lower():
+            suggestions.append(app_commands.Choice(name=f"⭐ {fav}", value=fav))
+    
+    # Add matching stations 
+    for station in stations:
+        if current.lower() in station.lower():
+            suggestions.append(app_commands.Choice(name=station, value=station))
+    return suggestions[:25]
+
 @bot.tree.command(name="departures", description="Upcoming departures for a stop")
 @app_commands.describe(stop="Station/Stop name")
 @app_commands.autocomplete(stop=station_autocompletion)
