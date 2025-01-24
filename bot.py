@@ -231,6 +231,7 @@ stats = CommandGroups(name='stats')
 myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
+favorites = CommandGroups(name='favorite')
 
 # flight = CommandGroups(name='flight')
 def download_csv(url, save_path):
@@ -1640,7 +1641,26 @@ async def tramsearch(ctx, tram: str):
 # @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 # async def useable_only_users(interaction: discord.Interaction):
 #     await interaction.response.send_message("I am only installed to users, but can be used anywhere.")
+
+# add a favorite stop
+@bot.tree.command(name="favorite", description="Add a favorite stop")
+@app_commands.describe(stop="Stop name")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
+async def favorite(ctx, stop: str):
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'favorite-stop')
+    # get the user's favorite stops
+    try:
+        favorite_stops = get_favorites(ctx.user.id)
+    except:
+        favorite_stops = []
     
+    # add the stop to the favorites
+    favorite_stops.append(stop)
+    save_favorites(ctx.user.id, favorite_stops)
+    
+    await ctx.edit_original_response(content=f"Added {stop} to your favorite stops")
 
 # Next departures for a station
 async def station_autocompletion(
