@@ -88,7 +88,11 @@ Optional:
 
 Required:
     Stop: input the station/stop you wish to favourite.''',
-        '/favourite remove': '''Unfortunately this command's entry hasn't been completed yet. We're working on it now.''',
+        '/favourite remove': '''</favourite remove:1332262464867536906> is a command that allows you to remove your "favourite" a stations or stops.
+**Options:**
+
+Required:
+    Stop: input the station/stop you wish to remove the favourite for.''',
         '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
 
 **Options:**
