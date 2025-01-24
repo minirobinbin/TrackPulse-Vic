@@ -1690,7 +1690,7 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
                     for coach in coach_list:
                         coach_embed = f"{coach_embed}{coach}"
 
-                    embed.add_field(name="<:coach:1241165858274021489> Coach", value=f"{coach_embed}\n\n", inline=False)
+                    embed.add_field(name="<:coach:1241165858274021489>Coach", value=f"{coach_embed}\n\n", inline=False)
                 embed.set_footer(text="Tip: You can save a stop to your favourites with /favourites add <stop>")
                 
             else:
