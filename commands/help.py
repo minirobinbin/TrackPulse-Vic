@@ -88,7 +88,7 @@ Optional:
 
 Required:
     Stop: input the station/stop you wish to favourite.''',
-        '/favourite remove': '''</favourite remove:1332262464867536906> is a command that allows you to remove your "favourite" a stations or stops.
+        '/favourite remove': '''</favourite remove:1332262464867536906> is a command that allows you to remove your "favourite" a station or stop.
 **Options:**
 
 Required:
