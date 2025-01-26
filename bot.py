@@ -4084,7 +4084,7 @@ async def profile(ctx, user: discord.User = None):
             
             # other stats
             try:
-                embed.set_footer(text=f"favourite command: {getfavouriteCommand(userid)[0]}")
+                embed.set_footer(text=f"favourite command: {getFavoriteCommand(userid)[0]}")
             except FileNotFoundError:
                 print('user has no commands used')
             
