@@ -55,6 +55,7 @@ from utils.directions import getDirectionName
 from utils.favourites.viewer import *
 from utils.search import *
 from utils.colors import *
+from utils.stationID import nameToStopID
 from utils.stats.stats import *
 from utils.pageScraper import *
 from utils.stopid import find_stop_id
@@ -653,34 +654,6 @@ async def route(ctx, mode: str, number: int):
     except Exception as e:
         await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
 
-# search station search
-# disabled cause ptv api is broken
-"""
-async def station_autocompletion(
-    interaction: discord.Interaction,
-    current: str
-) -> typing.List[app_commands.Choice[str]]:
-    fruits = stations_list.copy()
-    return [
-        app_commands.Choice(name=fruit, value=fruit)
-        for fruit in fruits if current.lower() in fruit.lower()
-    ][:25]
-    
-@search.command(name='station', description='View info about a railway station')
-@app_commands.autocomplete(station=station_autocompletion)
-async def searchStation(ctx, station:str):
-    async def stationSearch():
-        await ctx.response.defer()
-        # FIND STOP ID from search name
-        search = search_api_request(f'{station.title()}%20Station')
-        try:
-            stop_id = find_stop_id(search, f"{station.title()} Station")
-        except:
-            await ctx.edit_original_response(content=f"Cannot find info for {station.title()} Station!")
-            
-        print(f'Stop id for {station}: {stop_id}')
-        data = stationInfoAPIRequest(stop_id, 0)
-    asyncio.create_task(stationSearch())       """    
 
 # train Photo search
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
@@ -758,7 +731,8 @@ async def line_info(ctx, number: str, search_set:bool=False):
             await ctx.channel.send(f'Photos for `{fullSet[2]}`')
             await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
 
-# Station photo search
+# Station search station
+
 async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
@@ -768,11 +742,14 @@ async def station_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
-@search.command(name='station-photo', description='Search for a photo of a railway station.')
+@search.command(name='station', description='View info about and a photo of a railway station')
 @app_commands.autocomplete(station=station_autocompletion)
 async def stationphoto(ctx, station:str):
     async def searchstationpic():
         await ctx.response.defer()
+        log_command(ctx.user.id, 'search-station')
+        data = stationInfoAPIRequest(station, 0)
+
         photo = getStationImage(station)
         if photo != None:
             embed= discord.Embed(title=f'Photo of {station.title()} Station')
@@ -1464,22 +1441,11 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
-        # search for the station
-        Nstation = station.replace(' ', '%20').replace('#', '%23')
-        if mode == "0":
-            search = search_api_request(f'{Nstation.title()}%20Station')
-        else:
-            search = search_api_request(Nstation.title())
-        # FIND STOP ID from search name
-        try:
-            if mode == "0":
-                stop_id = find_stop_id(search, f"{station.title()} Station")
-            else:
-                print(f'searching for {station.title()}')
-                stop_id = find_stop_id(search, f"{station.title()}")
-        except:
-            await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
-        print(f'STOP ID for {station} Station: {stop_id}')
+        
+        stop_id = nameToStopID(station, mode)
+        
+        if stop_id == None:
+            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}")
         
         '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")
