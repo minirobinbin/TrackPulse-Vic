@@ -23,6 +23,8 @@ def statusEmoji(status):
         return('<:suspended:1267414594272362537>')
     if status == "Planned Works":
         return('<:Plannedworks:1267414592187924532>')
+    else:
+        return('')
 
 def getColor(type):
     if type == "metro" or type == "0":
