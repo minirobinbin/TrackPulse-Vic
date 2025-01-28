@@ -25,6 +25,7 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
+from matplotlib.pyplot import step
 import requests
 import re
 import asyncio
@@ -748,16 +749,52 @@ async def stationphoto(ctx, station:str):
     async def searchstationpic():
         await ctx.response.defer()
         log_command(ctx.user.id, 'search-station')
-        data = stationInfoAPIRequest(station, 0)
-
+        
+        data = stationInfoAPIRequest(nameToStopID(station, '0'), 0)
+        mode = 0
+        if data == None: # check if its a v/line stop
+            print('there is no data so im trying vline')
+            data = stationInfoAPIRequest(nameToStopID(station, '3'), 3)
+            mode = 3
+            
+        suburb = data['stop']['stop_location']['suburb']
+        
+        amenities = data['stop']['stop_amenities']
+        phone = amenities['pay_phone']
+        waitingRoom = amenities['sheltered_waiting_area']
+        kiosk = amenities['kiosk']
+        toilet = amenities['toilet']
+        car_park = amenities['car_parking']
+        bike_locker = amenities['bicycle_locker']
+        bike_rack = amenities['bicycle_rack']
+        zone = data['stop']['stop_ticket']['zone']
+        ticket_machine = data['stop']['stop_ticket']['ticket_machine']
+        
+        stepfree = True
+        if station.title() == 'Heyington':
+            stepfree = False
+        
+        # routes:
+        routelines = ''
+        for route in data['stop']['routes']:    
+            routelines += f'{route['route_name']}\n'
+        
+        embed= discord.Embed(title=f'{getModeEmoji(mode)} {station.title()} Station', description=suburb)
+        embed.add_field(name='Services', value=f'''🚻 Toilet: {yesOrNo(toilet)}\n⌚ Waiting Room: {yesOrNo(waitingRoom)}\n☕ Kiosk: {yesOrNo(kiosk)}\n📞 Payphone: {yesOrNo(phone)}''', inline=False)
+        embed.add_field(name='Parking', value=f'''🚗 Parking Spaces: {car_park} spaces\n🚲 Bike Cage: {bike_locker} spaces, Bike Racks: {bike_rack} spaces''', inline=False)
+        embed.add_field(name='Ticketing', value=f'{zone}\nTicket Machine {yesOrNo(ticket_machine)}', inline=False)
+        if not stepfree:
+            embed.add_field(name='⚠️ Accessibility', value='This station is not step free', inline=False)
+        
         photo = getStationImage(station)
         if photo != None:
-            embed= discord.Embed(title=f'Photo of {station.title()} Station')
             embed.set_image(url=photo)
             embed.set_footer(text=f'Photo by {getPhotoCredits(station)}')
-            await ctx.edit_original_response(embed=embed)
         else:
-            await ctx.edit_original_response(content=f'No photos found for {station.title()}')
+            print('no photo')
+            # await ctx.edit_original_response(content=f'No photos found for {station.title()}')
+            
+        await ctx.edit_original_response(embed=embed)
     asyncio.create_task(searchstationpic())
  
 # myki fare calculator   
@@ -1444,8 +1481,9 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         
         stop_id = nameToStopID(station, mode)
         
-        if stop_id == None:
+        if stop_id == 'None':
             await ctx.edit_original_response(content=f"Cannot find stop {station.title()}")
+            return
         
         '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")

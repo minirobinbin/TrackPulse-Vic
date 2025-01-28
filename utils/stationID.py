@@ -7,17 +7,22 @@ def nameToStopID(station, mode):
     Nstation = station.replace(' ', '%20').replace('#', '%23')
     if mode == "0":
         search = search_api_request(f'{Nstation.title()}%20Station')
+    if mode == "3":
+        search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
+
     else:
         search = search_api_request(Nstation.title())
     # FIND STOP ID from search name
     try:
         if mode == "0":
             stop_id = find_stop_id(search, f"{station.title()} Station")
+        elif mode == "3":
+            stop_id = find_stop_id(search, f"{station.title()} Railway Station")
         else:
             print(f'searching for {station.title()}')
             stop_id = find_stop_id(search, f"{station.title()}")
     except:
-        print(f"Cannot find departures for {station.title()}")
-        return None
+        print(f"Cannot find id for {station.title()}")
+        return 'None'
     print(f'STOP ID for {station} Station: {stop_id}')
-    return int(stop_id)
+    return stop_id

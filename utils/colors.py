@@ -90,7 +90,7 @@ def getlineEmoji(type):
     if type == "City Loop":
         return('<:CityCircle1:1299990618897911878><:CityCircle2:1299990620940669020><:CityCircle3:1299990622832164925><:CityCircle4:1299990625004949556>')
     else:
-        return ''
+        return type
     
 def getMapEmoji(line, type):
     if line == "Lilydale" or line =="Belgrave" or line =="Alamein" or line =='Glen Waverley':
@@ -364,3 +364,9 @@ def getModeEmoji(mode:int):
         return('<:bus:1241165769241530460>')
     if mode == 3:
         return('<:vline:1241165814258729092>')
+    
+def yesOrNo(input:bool):
+    if input:
+        return('✅')
+    else:
+        return('❌')

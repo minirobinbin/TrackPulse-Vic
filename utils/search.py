@@ -227,7 +227,7 @@ def stoppingPatternAPIRequest(run_ref, route_type):
         
 def stationInfoAPIRequest(stop_id,route_type):
     # API endpoint URL
-    url = getUrl(f'/v3/stops/{stop_id}/route_type/{route_type}?stop_location=true&stop_amenities=true&stop_accessibility=true&stop_contact=true&stop_ticket=true&gtfs=true&stop_staffing=true&stop_disruptions=true')
+    url = getUrl(f'/v3/stops/{stop_id}/route_type/{route_type}?stop_location=true&stop_amenities=true&stop_accessibility=true&stop_contact=true&stop_ticket=true&stop_staffing=true&stop_disruptions=true')
     print(f"search url: {url}")
     
     # Make the GET request
