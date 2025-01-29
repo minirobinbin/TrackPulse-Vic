@@ -164,6 +164,34 @@ for line in file:
     interchange_stations.append(line)
 file.close()
 
+file = open('utils\\datalists\\trainstops.txt','r')
+train_stops = []
+for line in file:
+    line = line.strip()
+    train_stops.append(line)
+file.close()
+
+file = open('utils\\datalists\\tramstops.txt','r')
+tram_stops = []
+for line in file:
+    line = line.strip()
+    tram_stops.append(line)
+file.close()
+
+file = open('utils\\datalists\\busstops.txt','r')
+bus_stops = []
+for line in file:
+    line = line.strip()
+    bus_stops.append(line)
+file.close()
+
+file = open('utils\\datalists\\vlinestops.txt','r')
+vline_stops = []
+for line in file:
+    line = line.strip()
+    vline_stops.append(line)
+file.close()
+
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
                     'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data']
