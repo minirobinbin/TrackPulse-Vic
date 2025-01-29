@@ -53,6 +53,7 @@ import git
 from commands.help import helpCommand
 from utils import trainset
 from utils.directions import getDirectionName
+from utils.downloader import downloader_function
 from utils.favourites.viewer import *
 from utils.search import *
 from utils.colors import *
@@ -86,7 +87,6 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
-from utils.downloader import downloader_function
 
 
 
@@ -1536,20 +1536,28 @@ async def station_autocompletion(
         app_commands.Choice(name="Werribee", value="Werribee"),
     ]
 )
-@app_commands.choices(
-    mode=[
-        app_commands.Choice(name="Metro", value="0"),
-        app_commands.Choice(name="Tram", value="1"),
-        app_commands.Choice(name="Bus", value="2"),
-    ]
-)
 
 # test
-async def departures(ctx, stop: str, mode:str='0', line:str='all'):
+async def departures(ctx, stop: str, line:str='all'):
     async def nextdeps(station):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
+
+        if station in metro_stops:
+            mode = '0'
+        elif station in tram_stops:
+            mode = '1'
+        elif station in bus_stops:
+            mode ='2'
+        elif station in vline_stops:
+            mode = '3'
+        else:
+            mode = '0'
+
+        if mode == '3':
+            await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
+            return
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
