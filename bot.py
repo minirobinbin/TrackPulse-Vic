@@ -86,6 +86,7 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
+from utils.downloader import downloader_function
 
 
 
@@ -4517,6 +4518,28 @@ async def syncgame(ctx):
             await ctx.send(f"Error: `{e}`")
     else:
         print(f'{str(ctx.author.id)} tried to sync the database.')
+        await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def synclists(ctx):
+    if ctx.author.id in admin_users:
+        print("Downloading stop name data from PTV")
+        await ctx.send("Downloading stop name data from PTV")
+        try:
+            downloader_function(0)
+            await ctx.send("Metro stop data downloaded")
+            downloader_function(1)
+            await ctx.send("Tram stop data downloaded")
+            downloader_function(2)
+            await ctx.send("Bus stop data downloaded")
+            downloader_function(3)
+            await ctx.send("V/Line stop data downloaded")
+            await ctx.send("Success!")
+        except Exception as e:
+            await ctx.send(f"Error: `{e}`")
+
+    else:
+        print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
