@@ -1434,9 +1434,22 @@ async def tramsearch(ctx, tram: str):
         embed_update = await ctx.edit_original_response(embed=embed)
     
 # add a favourite stop
+async def stop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    stations = ptv_list.copy()
+    suggestions = []
+    
+    # Add matching stations 
+    for station in stations:
+        if current.lower() in station.lower():
+            suggestions.append(app_commands.Choice(name=station, value=station))
+    return suggestions[:25]
+
 @favourites.command(name="add", description="Add a favourite stop")
 @app_commands.describe(stop="Stop name")
-
+@app_commands.autocomplete(stop=stop_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def favourite(ctx, stop: str):
@@ -1448,8 +1461,23 @@ async def favourite(ctx, stop: str):
     
     await ctx.edit_original_response(content=message)
     
+async def stop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    # Get favourites list
+    favourites = get_favourites(interaction.user.id)
+    suggestions = []
+    
+    # Add matching favourites
+    for fav in favourites:
+        if current.lower() in fav.lower():
+            suggestions.append(app_commands.Choice(name=f"⭐ {fav}", value=fav))
+    return suggestions[:25]
+
 @favourites.command(name="remove", description="Remove a favourite stop")
 @app_commands.describe(stop="Stop name")
+@app_commands.autocomplete(stop=stop_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def remove(ctx, stop: str):
