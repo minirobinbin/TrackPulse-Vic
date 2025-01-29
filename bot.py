@@ -195,9 +195,18 @@ for stop in vline_stops:
         vline_stations.append(stop.replace(' Railway Station',''))
 
 metro_tunnel_stations = ['Town Hall','Arden','Anzac','Parkville','State Library']
-
 stations_list = metro_stations + vline_stations + metro_tunnel_stations
 stations_list = sorted(set(stations_list))
+
+vline_coach_stops = []
+for stop in vline_stops:
+    if not stop.endswith(" Railway Station"):
+        vline_stations.append(stop)
+ptv_list = metro_stops + vline_stops + tram_stops + bus_stops
+ptv_list = sorted(set(ptv_list))
+
+ptv_list_short = metro_stops + tram_stops + bus_stops
+ptv_list_short = sorted(set(ptv_list_short))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
@@ -1427,6 +1436,7 @@ async def tramsearch(ctx, tram: str):
 # add a favourite stop
 @favourites.command(name="add", description="Add a favourite stop")
 @app_commands.describe(stop="Stop name")
+
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def favourite(ctx, stop: str):
@@ -1458,7 +1468,7 @@ async def station_autocompletion(
 ) -> typing.List[app_commands.Choice[str]]:
     # Get favourites list
     favourites = get_favourites(interaction.user.id)
-    stations = stations_list.copy()
+    stations = ptv_list_short.copy()
     suggestions = []
     
     # Add matching favourites first
@@ -1523,8 +1533,12 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")
             search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
-            stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-            print(f'STOP ID for {station} Station: {stop_id}')'''
+            if station.title().endswith('Station'):
+                stop_id = find_stop_id(search, f"{station.title()}")
+                print(f'STOP ID for {station}: {stop_id}')
+            else:
+                stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
+                print(f'STOP ID for {station} Station: {stop_id}')'''
 
             
         # get departures for the stop:
@@ -1544,9 +1558,15 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         
         # make embed with data
         if line == "all" and mode == "0":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            if station.title().endswith('Station'):
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()}", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            else:
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
         elif line != 'all' and mode == "0":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            if station.title().endswith('Station'):
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            else:
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
         elif mode == '1':
             embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=0x78be20)
         elif mode == '2':
