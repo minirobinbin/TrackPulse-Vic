@@ -201,7 +201,7 @@ stations_list = sorted(set(stations_list))
 vline_coach_stops = []
 for stop in vline_stops:
     if not stop.endswith(" Railway Station"):
-        vline_stations.append(stop)
+        vline_coach_stops.append(stop)
 ptv_list = metro_stops + vline_stops + tram_stops + bus_stops
 ptv_list = sorted(set(ptv_list))
 
@@ -209,6 +209,7 @@ ptv_list_short = metro_stops + tram_stops + bus_stops
 ptv_list_short = sorted(set(ptv_list_short))
 
 bus_coach_stops = bus_stops + vline_coach_stops
+bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
@@ -1565,7 +1566,7 @@ async def departures(ctx, stop: str, line:str='all'):
         stop_id = nameToStopID(station, mode)
         
         if stop_id == 'None':
-            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}")
+            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.\n\nIs it a V/Line Coach stop? This command currently doesn't recognise those")
             return
         
         '''if stop_id == 'None':
