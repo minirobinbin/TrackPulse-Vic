@@ -208,6 +208,8 @@ ptv_list = sorted(set(ptv_list))
 ptv_list_short = metro_stops + tram_stops + bus_stops
 ptv_list_short = sorted(set(ptv_list_short))
 
+bus_coach_stops = bus_stops + vline_coach_stops
+
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
                     'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data']
@@ -2959,7 +2961,7 @@ async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
 ) -> typing.List[app_commands.Choice[str]]:
-    fruits = bus_stops.copy()
+    fruits = bus_coach_stops.copy()
     return [
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()

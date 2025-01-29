@@ -137,8 +137,8 @@ Required:
 Optional:
     Operator: the operator of the bus.
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Start: the starting stop of your trip.
-    End: the ending stop of your trip.
+    Start: the starting stop of your trip. You can choose from the list or type your own.
+    End: the ending stop of your trip. You can choose from the list or type your own.
     Type: if there are multiple buses with the same number, or you didn't input a number, specify which bus type you rode on. You generally don't need this if you know the bus number.
     Number: which bus you rode.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
