@@ -1566,7 +1566,7 @@ async def departures(ctx, stop: str, line:str='all'):
         stop_id = nameToStopID(station, mode)
         
         if stop_id == 'None':
-            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.\n\nIs it a V/Line Coach stop? This command currently doesn't recognise those")
+            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
             return
         
         '''if stop_id == 'None':
