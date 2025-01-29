@@ -81,18 +81,17 @@ Required:
     Stop: the station/stop you wish to see the departures from. You must choose from the list.
 
 Optional:
-    Mode: which mode of transport you wish to see departures for.
     Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
         '/favourite add': '''</favourite add:1332262464867536906> is a command that allows you to "favourite" a station or stop so that you can easily find it in the /log commands and the </departures:1288002114466877529> command.
 **Options:**
 
 Required:
-    Stop: input the station/stop you wish to favourite.''',
+    Stop: input the station/stop you wish to favourite. You can choose from the list or type your own.''',
         '/favourite remove': '''</favourite remove:1332262464867536906> is a command that allows you to remove your "favourite" a station or stop.
 **Options:**
 
 Required:
-    Stop: input the station/stop you wish to remove the favourite for.''',
+    Stop: input the station/stop you wish to remove the favourite for. You can choose from the list or type your own.''',
         '/games station-guesser': '''</games station-guesser:1240101357847838813> is a command that allows you to play a game where you have to guess the station where a photo was taken at. The photos are divided into difficulty levels, although all difficulty levels except "Ultrahard" are mixed into one set. The game is divided into rounds, each round one photo is shown and you have to guess the station before the time runs out. To add a guess, type "!" followed by the station name. To skip a round, type "!skip". To end the game, type "!stop".
 
 **Options:**
@@ -137,8 +136,8 @@ Required:
 Optional:
     Operator: the operator of the bus.
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Start: the starting stop of your trip.
-    End: the ending stop of your trip.
+    Start: the starting stop of your trip. You can choose from the list or type your own.
+    End: the ending stop of your trip. You can choose from the list or type your own.
     Type: if there are multiple buses with the same number, or you didn't input a number, specify which bus type you rode on. You generally don't need this if you know the bus number.
     Number: which bus you rode.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.

@@ -53,6 +53,7 @@ import git
 from commands.help import helpCommand
 from utils import trainset
 from utils.directions import getDirectionName
+from utils.downloader import downloader_function
 from utils.favourites.viewer import *
 from utils.search import *
 from utils.colors import *
@@ -86,7 +87,6 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
-from utils.downloader import downloader_function
 
 
 
@@ -195,9 +195,21 @@ for stop in vline_stops:
         vline_stations.append(stop.replace(' Railway Station',''))
 
 metro_tunnel_stations = ['Town Hall','Arden','Anzac','Parkville','State Library']
-
 stations_list = metro_stations + vline_stations + metro_tunnel_stations
 stations_list = sorted(set(stations_list))
+
+vline_coach_stops = []
+for stop in vline_stops:
+    if not stop.endswith(" Railway Station"):
+        vline_coach_stops.append(stop)
+ptv_list = metro_stops + vline_stops + tram_stops + bus_stops
+ptv_list = sorted(set(ptv_list))
+
+ptv_list_short = metro_stops + tram_stops + bus_stops
+ptv_list_short = sorted(set(ptv_list_short))
+
+bus_coach_stops = bus_stops + vline_coach_stops
+bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
@@ -1425,8 +1437,22 @@ async def tramsearch(ctx, tram: str):
         embed_update = await ctx.edit_original_response(embed=embed)
     
 # add a favourite stop
+async def stop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    stations = ptv_list.copy()
+    suggestions = []
+    
+    # Add matching stations 
+    for station in stations:
+        if current.lower() in station.lower():
+            suggestions.append(app_commands.Choice(name=station, value=station))
+    return suggestions[:25]
+
 @favourites.command(name="add", description="Add a favourite stop")
 @app_commands.describe(stop="Stop name")
+@app_commands.autocomplete(stop=stop_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def favourite(ctx, stop: str):
@@ -1438,8 +1464,23 @@ async def favourite(ctx, stop: str):
     
     await ctx.edit_original_response(content=message)
     
+async def stop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    # Get favourites list
+    favourites = get_favourites(interaction.user.id)
+    suggestions = []
+    
+    # Add matching favourites
+    for fav in favourites:
+        if current.lower() in fav.lower():
+            suggestions.append(app_commands.Choice(name=f"⭐ {fav}", value=fav))
+    return suggestions[:25]
+
 @favourites.command(name="remove", description="Remove a favourite stop")
 @app_commands.describe(stop="Stop name")
+@app_commands.autocomplete(stop=stop_autocompletion)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def remove(ctx, stop: str):
@@ -1458,7 +1499,7 @@ async def station_autocompletion(
 ) -> typing.List[app_commands.Choice[str]]:
     # Get favourites list
     favourites = get_favourites(interaction.user.id)
-    stations = stations_list.copy()
+    stations = ptv_list_short.copy()
     suggestions = []
     
     # Add matching favourites first
@@ -1496,20 +1537,28 @@ async def station_autocompletion(
         app_commands.Choice(name="Werribee", value="Werribee"),
     ]
 )
-@app_commands.choices(
-    mode=[
-        app_commands.Choice(name="Metro", value="0"),
-        app_commands.Choice(name="Tram", value="1"),
-        app_commands.Choice(name="Bus", value="2"),
-    ]
-)
 
 # test
-async def departures(ctx, stop: str, mode:str='0', line:str='all'):
+async def departures(ctx, stop: str, line:str='all'):
     async def nextdeps(station):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
+
+        if station in metro_stops:
+            mode = '0'
+        elif station in tram_stops:
+            mode = '1'
+        elif station in bus_stops:
+            mode ='2'
+        elif station in vline_stops:
+            mode = '3'
+        else:
+            mode = '0'
+
+        if mode == '3':
+            await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
+            return
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
@@ -1517,14 +1566,18 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         stop_id = nameToStopID(station, mode)
         
         if stop_id == 'None':
-            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}")
+            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.\n\nIs it a V/Line Coach stop? This command currently doesn't recognise those")
             return
         
         '''if stop_id == 'None':
             # await ctx.channel.send("Station not found, trying for V/LINE")
             search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
-            stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-            print(f'STOP ID for {station} Station: {stop_id}')'''
+            if station.title().endswith('Station'):
+                stop_id = find_stop_id(search, f"{station.title()}")
+                print(f'STOP ID for {station}: {stop_id}')
+            else:
+                stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
+                print(f'STOP ID for {station} Station: {stop_id}')'''
 
             
         # get departures for the stop:
@@ -1544,9 +1597,15 @@ async def departures(ctx, stop: str, mode:str='0', line:str='all'):
         
         # make embed with data
         if line == "all" and mode == "0":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            if station.title().endswith('Station'):
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()}", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            else:
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
         elif line != 'all' and mode == "0":
-            embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            if station.title().endswith('Station'):
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+            else:
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
         elif mode == '1':
             embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=0x78be20)
         elif mode == '2':
@@ -2911,7 +2970,7 @@ async def station_autocompletion(
     interaction: discord.Interaction,
     current: str
 ) -> typing.List[app_commands.Choice[str]]:
-    fruits = bus_stops.copy()
+    fruits = bus_coach_stops.copy()
     return [
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
