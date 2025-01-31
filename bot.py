@@ -2531,6 +2531,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                             print(f'the loco number is: {set}')
         if image != None:
             embed.set_thumbnail(url=image)
+        embed.set_footer(text=f"Log ID #{id}")
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
