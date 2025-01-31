@@ -2929,7 +2929,16 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
         
         # Add train to the list
         id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Train Logged",colour=transperth_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
