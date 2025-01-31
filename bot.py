@@ -242,7 +242,10 @@ myki_colour = 0xc2d840
 sydney_train_colour = 0xf47913
 sydney_tram_colour = 0xed2438
 
-perth_adelaide_colour = 0xf68a24
+transperth_colour = 0x008635
+transwa_colour = 0xcf4520
+
+adelaide_metro_colour = 0xf68a24 #this may or may not need fixing
 
 #guesser colours
 very_easy_colour = 0x89ff65
@@ -3497,7 +3500,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=adelaide_metro_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
@@ -3555,7 +3558,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=transperth_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
