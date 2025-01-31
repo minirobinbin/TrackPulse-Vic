@@ -3038,9 +3038,19 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 
         set = number
 
-        # Add train to the list
+        # Add bus to the list
         id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title())
-        await ctx.response.send_message(f"Added bus on route {line} on {savedate} from {start.title()} to {end.title()} with bus number {set} ({type}) Operator: {operator} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Bus Logged",colour=bus_colour)
+        
+        embed.add_field(name="Operator", value=operator)
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
