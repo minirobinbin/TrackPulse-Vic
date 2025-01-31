@@ -222,9 +222,35 @@ for folder in required_folders:
         print(f'Created {folder}')
 
 
+#V/Line Rail Lines
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 vline_rail_lines = [1706, 1837, 1823, 1728, 1740, 1849, 1745, 4871, 1710, 1908, 1848, 1824, 1853]
 
+
+# Colours
+achievement_colour = 0x43ea46
+rare_trains_colour = 0xf23f42
+ptv_grey = 0x333434
+
+metro_colour = 0x0072ce
+vline_colour = 0x8f1a95
+tram_colour = 0x78be20
+bus_colour = 0xff8200
+coach_colour = 0xa57fb2
+myki_colour = 0xc2d840
+
+sydney_train_colour = 0xf47913
+sydney_tram_colour = 0xed2438
+
+perth_adelaide_colour = 0xf68a24
+
+#guesser colours
+very_easy_colour = 0x89ff65
+easy_colour = 0xcaff65
+medium_colour = 0xffe665
+hard_colour = 0xffa665
+very_hard_colour = 0xff6565
+ultrahard_colour = 0xe52727
 
 # Global variable to keep track of the last sent message
 last_message = None
@@ -284,7 +310,7 @@ lines_dictionary = {
     'Upfield': [['North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
     'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
     'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
-    'Unknown/Other':[[None], 0x000000],
+    'Unknown/Other':[[None], ptv_grey],
 }
 
 # Group commands
@@ -386,7 +412,7 @@ async def on_ready():
                     new = checkGameAchievements(username)
                     for achievement in new:
                         info = getAchievementInfo(achievement)
-                        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+                        embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
                         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
                         await channel.send(f'<@{username}>',embed=embed)
                 
@@ -411,7 +437,7 @@ async def addAchievement(username, channel, mention):
     new = checkAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
-        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await channel.send(mention,embed=embed)
         
@@ -422,7 +448,7 @@ async def addGameAchievement(username, channel, mention):
     new = checkGameAchievements(username)
     for achievement in new:
         info = getAchievementInfo(achievement)
-        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await channel.send(mention,embed=embed)
 
@@ -436,7 +462,7 @@ async def log_rare_trains(rare_trains):
     channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
 
     if rare_trains:
-        embed = discord.Embed(title="Trains found on lines they are not normally on!", color=0xf23f42)
+        embed = discord.Embed(title="Trains found on lines they are not normally on!", color=rare_trains_colour)
 
         for route in rare_trains:
             parts = route.split(' - Train ')
@@ -487,7 +513,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station-photo','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station','/search td-number','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -636,7 +662,7 @@ async def route(ctx, mode: str, number: int):
         
         channel = ctx.channel
         await ctx.response.send_message(f"Results for {number}:")
-        # embed = discord.Embed(title=f"Bus routes matching `{line}`:", color=0xff8200)
+        # embed = discord.Embed(title=f"Bus routes matching `{line}`:", color=bus_colour)
         counter = 0
         found_routes = False
         
@@ -873,7 +899,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             
             fairs = result['PassengerFares']
             
-            embed=discord.Embed(title=f"Zone {start_zone} → {end_zone}", color=0xc2d840)
+            embed=discord.Embed(title=f"Zone {start_zone} → {end_zone}", color=myki_colour)
             count=0
             for fair in fairs:
                 type = fairs[count]['Passengemode']
@@ -940,7 +966,7 @@ async def viewmykis(ctx, encriptionpassword: str):
             return f"There has been an error: `{e}`"
         
         # make embed
-        embed = discord.Embed(title="Your Mykis", color=0xc2d840)
+        embed = discord.Embed(title="Your Mykis", color=myki_colour)
         for myki, info in data.items():
             # find mobile mykis:
             prefix = "mobile myki, "
@@ -998,11 +1024,11 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
     
     # get colour for the embed
     if type in metroTrains:
-        colour = 0x008dd0
+        colour = metro_colour
     elif type in vlineTrains:
-        colour = 0x7f3f98
+        colour = vline_colour
     else:
-        colour = 0x444345
+        colour = ptv_grey
     
     if type is None:
        await ctx.edit_original_response(content="Train not found")
@@ -1088,7 +1114,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
         
         if type in metroTrains and not hide_run_info:
             # map thing
-            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=0x0070c0)
+            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=metro_colour)
             mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
@@ -1285,13 +1311,13 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
                 try:
                     colour = lines_dictionary[line][1]
                 except:
-                    colour = 0x008dd0
+                    colour = metro_colour
             elif mode == "vline":
-                colour = 0x7f3f98
+                colour = vline_colour
             elif mode == "tram":
-                colour = 0x71bd46
+                colour = tram_colour
             elif mode == "bus" or mode == 'nightbus':
-                colour = 0xf78b24
+                colour = bus_colour
             
             embed = discord.Embed(title=f"{td}", colour=colour, timestamp=discord.utils.utcnow())
 
@@ -1391,7 +1417,7 @@ async def tramsearch(ctx, tram: str):
     if type is None:
         await ctx.edit_original_response(content="Tram not found")
     else:
-        embed = discord.Embed(title=f"Info for {tram.upper()}:", color=0x0070c0)
+        embed = discord.Embed(title=f"Info for {tram.upper()}:", color=metro_colour)
         if set.endswith('-'):
             embed.add_field(name=type, value=set[:-1])
         else:
@@ -1598,18 +1624,18 @@ async def departures(ctx, stop: str, line:str='all'):
         # make embed with data
         if line == "all" and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()}", timestamp=discord.utils.utcnow(),color=0x008dd0)
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()}", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=0x008dd0)
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif line != 'all' and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} on the {line} line", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=0x008dd0)
+                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif mode == '1':
-            embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=0x78be20)
+            embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=tram_colour)
         elif mode == '2':
-            embed= discord.Embed(title=f"Next busses departing {station.title()}", timestamp=discord.utils.utcnow(), color=0xff8200)
+            embed= discord.Embed(title=f"Next busses departing {station.title()}", timestamp=discord.utils.utcnow(), color=bus_colour)
 
 
         fields = 0
@@ -1899,7 +1925,7 @@ async def train_line(ctx):
     await ctx.response.send_message(f"Checking...")
     channel = ctx.channel
     
-    embed = discord.Embed(title=f"How many days since the Montague Street bridge has been hit?", color=0xd8d800)
+    embed = discord.Embed(title=f"How many days since the Montague Street bridge has been hit?", color=tram_colour)
     # embed.set_image(url=getImage(train.upper()))
     
     # Create a new thread to call the function
@@ -2044,19 +2070,19 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
             credit = random_row[3]
 
             if ultrahard:
-                embed = discord.Embed(title=f"Guess the station! | {setLine}", color=0xe52727, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
+                embed = discord.Embed(title=f"Guess the station! | {setLine}", color=ultrahard_colour, description=f"Type ! before your answer. You have 30 seconds to answer.\n\n**Difficulty:** `{difficulty.upper()}`")
             else:
                 embed = discord.Embed(title=f"Guess the station! | {setLine}", description=f"Type ! before your answer. You have 30 seconds!\n\n**Difficulty:** `{difficulty}`")
                 if difficulty == 'Very Easy':
-                    embed.color = 0x89ff65
+                    embed.color = very_easy_colour
                 elif difficulty == 'Easy':
-                    embed.color = 0xcaff65
+                    embed.color = easy_colour
                 elif difficulty == 'Medium':
-                    embed.color = 0xffe665
+                    embed.color = medium_colour
                 elif difficulty == 'Hard':
-                    embed.color = 0xffa665
+                    embed.color = hard_colour
                 elif difficulty == 'Very Hard':
-                    embed.color = 0xff6565
+                    embed.color = very_hard_colour
             
             embed.set_image(url=url)
             embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo | {len(data)} photos in set")
@@ -2465,7 +2491,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
         if line in vLineLines:
-            embed = discord.Embed(title="Train Logged",colour=0x7e3e98)
+            embed = discord.Embed(title="Train Logged",colour=vline_colour)
         elif line == 'Unknown':
                 embed = discord.Embed(title="Train Logged")
         else:
@@ -2879,19 +2905,22 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
         
-        if 201 <= int(number) <=248:
-            type = 'A-Series'
-        elif 301 <= int(number) <=348:
-            type = 'A-Series'
-        elif 4049 <= int(number) <=4126:
-            type = 'B-Series'
-        elif 6049 <= int(number) <=6126:
-            type = 'B-Series'
-        elif 5049 <= int(number) <=5126:
-            type = 'B-Series'
-        elif int(str(number)[-3:]) >= 126:
-            type = 'C-Series'
-        else:
+        try:
+            if 201 <= int(number) <=248:
+                type = 'A-Series'
+            elif 301 <= int(number) <=348:
+                type = 'A-Series'
+            elif 4049 <= int(number) <=4126:
+                type = 'B-Series'
+            elif 6049 <= int(number) <=6126:
+                type = 'B-Series'
+            elif 5049 <= int(number) <=5126:
+                type = 'B-Series'
+            elif int(str(number)[-3:]) >= 126:
+                type = 'C-Series'
+            else:
+                type = 'Unknown'
+        except:
             type = 'Unknown'
         
         # Add train to the list
@@ -3100,7 +3129,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                                         
                             # Make the embed
                         if row[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log {row[0]}",colour=0x7e3e98)
+                            embed = discord.Embed(title=f"Log {row[0]}",colour=vline_colour)
                         elif row[4] == 'Unknown':
                                 embed = discord.Embed(title=f"Log {row[0]}")
                         else:
@@ -3163,7 +3192,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     
                 # send reponse message
                 pfp = userid.avatar.url
-                embed=discord.Embed(title='Train Logs', colour=0x7e3e98)
+                embed=discord.Embed(title='Train Logs', colour=vline_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
                 await ctx.response.send_message(embed=embed)
@@ -3196,7 +3225,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         #send in thread to reduce spam!
                             # Make the embed
                         if sublist[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log `{sublist[0]}`",colour=0x7e3e98)
+                            embed = discord.Embed(title=f"Log `{sublist[0]}`",colour=vline_colour)
                         elif sublist[4] == 'Unknown':
                                 embed = discord.Embed(title=f"Log `{sublist[0]}`")
                         else:
@@ -3282,11 +3311,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                             # Make the embed
                         if sublist[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=vline_colour)
                         elif sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x71bf44)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=tram_colour)
                         embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
@@ -3344,7 +3373,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xed2438)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=sydney_tram_colour)
                         embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
@@ -3398,11 +3427,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                             # Make the embed
                         if sublist[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0x7e3e98)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=vline_colour)
                         elif sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf47913)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=sydney_train_colour)
                         embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
@@ -3457,7 +3486,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf68a24)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
@@ -3515,7 +3544,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf68a24)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
@@ -3571,7 +3600,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=0xf68a24)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=bus_colour)
                         embed.add_field(name=f'Route', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
@@ -3667,7 +3696,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     
                 # send reponse message
                 pfp = userid.avatar.url
-                embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=0x0070c0)
+                embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
                 await ctx.response.send_message(embed=embed)
@@ -3727,7 +3756,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 
             # send reponse message
             pfp = userid.avatar.url
-            embed=discord.Embed(title=stat.title(), colour=0x0070c0)
+            embed=discord.Embed(title=stat.title(), colour=metro_colour)
             embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
             embed.add_field(name='Click here to view your stats:', value=f'<#{logsthread.id}>')
             await ctx.response.send_message(embed=embed)
@@ -3827,7 +3856,7 @@ async def sets(ctx, train:str):
         
     # send reponse message
     pfp = userid.avatar.url
-    embed=discord.Embed(title=f'{train} sets {userid.name} has been on', colour=0x0070c0)
+    embed=discord.Embed(title=f'{train} sets {userid.name} has been on', colour=metro_colour)
     embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
     embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
     await ctx.edit_original_response(embed=embed)
@@ -3884,7 +3913,7 @@ async def sets(ctx, state:str):
         
     # send reponse message
     pfp = userid.avatar.url
-    embed=discord.Embed(title=f'{state} stations {userid.name} has been to', colour=0x0070c0)
+    embed=discord.Embed(title=f'{state} stations {userid.name} has been to', colour=metro_colour)
     embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
     embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
     await ctx.edit_original_response(embed=embed)
@@ -4224,7 +4253,7 @@ async def refreshachievements(ctx):
     new = checkGameAchievements(ctx.author.name)
     for achievement in new:
         info = getAchievementInfo(achievement)
-        embed = discord.Embed(title='Achievement unlocked!', color=0x43ea46)
+        embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await ctx.send(f'<@{ctx.author.id}>',embed=embed)
     
@@ -4268,7 +4297,7 @@ async def viewAchievements(ctx, user: discord.User = None):
     current_page = 0
 
     def get_page_embed(page_num):
-        embed = discord.Embed(title=f"{user.name}'s Achievements", description=f"**Progress:** {achieved}/{total_achievements} ({percentage:.1f}%)", color=0x43ea46)
+        embed = discord.Embed(title=f"{user.name}'s Achievements", description=f"**Progress:** {achieved}/{total_achievements} ({percentage:.1f}%)", color=achievement_colour)
         embed.set_footer(text=f"Page {page_num + 1}/{len(pages)}")
         
         for achievement in pages[page_num]:
@@ -4327,7 +4356,7 @@ async def run_in_thread(ctx, operator):
 
     # Process metro lines
     if operator == 'metro':
-        embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Line Status', color=0x008dd0, timestamp=discord.utils.utcnow())
+        embed_metro = discord.Embed(title=f'<:train:1241164967789727744> Metro Line Status', color=metro_colour, timestamp=discord.utils.utcnow())
         lines = ['Alamein', 'Belgrave', 'Craigieburn', 'Cranbourne', 'Mernda', 'Frankston', 'Glen%20Waverley', 'Hurstbridge', 'Lilydale', 'Pakenham', 'Sandringham', 'Stony%20Point', 'Sunbury', 'Upfield', 'Werribee', 'Williamstown']
         
         # Process each line in a separate background thread to avoid blocking
@@ -4363,7 +4392,7 @@ async def run_in_thread(ctx, operator):
     # Process V/Line lines
     # Made by Comeng17
     elif operator == 'vline':
-        embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line Line Status', color=0x7f3e98, timestamp=discord.utils.utcnow())
+        embed_vline = discord.Embed(title=f'<:vline:1241165814258729092> V/Line Line Status', color=vline_colour, timestamp=discord.utils.utcnow())
         lines = ['Geelong - Melbourne', 'Warrnambool - Melbourne via Apollo Bay & Geelong', 'Ballarat-Wendouree - Melbourne via Melton', 'Ararat - Melbourne via Ballarat', 'Maryborough - Melbourne via  Ballarat', 'Bendigo - Melbourne via Gisborne', 'Echuca-Moama - Melbourne via Bendigo or Heathcote', 'Swan Hill - Melbourne via Bendigo', 'Seymour - Melbourne via Broadmeadows', 'Shepparton - Melbourne via Seymour', 'Albury - Melbourne via Seymour', 'Traralgon - Melbourne via Morwell & Moe & Pakenham', 'Bairnsdale - Melbourne via Sale & Traralgon']
         
         for line in lines:

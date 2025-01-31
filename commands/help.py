@@ -11,7 +11,7 @@ async def helpCommand(ctx,category,command):
             "</disruptions:1331565431965745186> - Shows disruption information for a Train line.",
             "</search route:1240101357847838814> - Shows disruption information for a Tram or Bus route.",
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
-            "</search station-photo:1240101357847838814> - Shows a photo of a specific railway station from https://railway-photos.xm9g.net.",
+            "</search station:1240101357847838814> - Shows information about a specific railway station.",
             "</search ptv:1240101357847838814> - Searches PTV for stations, routes or myki outlets.",
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery",
         ],
@@ -255,12 +255,12 @@ Optional:
 Required:
     Mode: choose the mode of transport you want to view the distruption status for. You must choose from the list.
     Number: input the number of the route you want to view the distruption status for.''',
-        '/search station-photo':'''</search station-photo:1240101357847838814> is a command to view the photo in the Xm9G photo archive for a specific station.
+        '/search station':'''</search station:1240101357847838814> is a command to look up any railway station in Victoria.
 
 **Options:**
 
 Required:
-    Station: the station you wish to see the photo for. You must choose from the list.''',
+    Station: input the Number of the train you're searching. You can choose from the list or type your own.''',
         '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
 
 **Options:**
