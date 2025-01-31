@@ -2670,7 +2670,16 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
 
         # Add train to the list
         id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title())
-        await ctx.response.send_message(f"Added {number} ({type}) on route {route} on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Tram Logged",colour=tram_colour)
+        
+        embed.add_field(name="Number", value=f'{number} ({type})')
+        embed.add_field(name="Line", value=route)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
