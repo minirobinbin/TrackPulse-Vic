@@ -2506,7 +2506,10 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         embed.add_field(name="Set", value=f'{set} ({type})')
         embed.add_field(name="Line", value=line)
         embed.add_field(name="Date", value=savedate)
-        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end) != 'N/A':
+            embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        else:
+            embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         if notes:
             embed.add_field(name="Notes", value=notes)
         # thing to find image:
@@ -3201,7 +3204,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Date', value="{}".format(row[3]))
                         embed.add_field(name=f'Trip', value=f"{row[5]} to {row[6]}")
                         if row[5] != 'N/A' and row[6] != 'N/A':
-                            embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
+                            if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]) != 'N/A':
+                                embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
                         try:
                             if row[7]:
                                 embed.add_field(name='Notes:', value=row[7])
@@ -3298,7 +3302,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         if sublist[5] != 'N/A' and sublist[6] != 'N/A':
-                            embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
+                            if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]) != 'N/A':
+                                embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
                         if sublist[7]:
                             embed.add_field(name='Notes:', value=sublist[7])
                         try:

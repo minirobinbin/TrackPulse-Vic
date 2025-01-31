@@ -23,4 +23,4 @@ def getStationDistance(df, station1, station2):
         km2 = df.loc[df['Station'] == station2, 'KM'].values[0]
         return abs(km1 - km2)
     except:
-        return 0
+        return 'N/A'
