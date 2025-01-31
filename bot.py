@@ -2879,19 +2879,22 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
         
-        if 201 <= int(number) <=248:
-            type = 'A-Series'
-        elif 301 <= int(number) <=348:
-            type = 'A-Series'
-        elif 4049 <= int(number) <=4126:
-            type = 'B-Series'
-        elif 6049 <= int(number) <=6126:
-            type = 'B-Series'
-        elif 5049 <= int(number) <=5126:
-            type = 'B-Series'
-        elif int(str(number)[-3:]) >= 126:
-            type = 'C-Series'
-        else:
+        try:
+            if 201 <= int(number) <=248:
+                type = 'A-Series'
+            elif 301 <= int(number) <=348:
+                type = 'A-Series'
+            elif 4049 <= int(number) <=4126:
+                type = 'B-Series'
+            elif 6049 <= int(number) <=6126:
+                type = 'B-Series'
+            elif 5049 <= int(number) <=5126:
+                type = 'B-Series'
+            elif int(str(number)[-3:]) >= 126:
+                type = 'C-Series'
+            else:
+                type = 'Unknown'
+        except:
             type = 'Unknown'
         
         # Add train to the list
