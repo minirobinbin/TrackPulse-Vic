@@ -2804,7 +2804,7 @@ async def Adelaideline_autocompletion(
 @app_commands.autocomplete(line=Adelaideline_autocompletion)
 
 # Adelaide train logger journey beyond too
-async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     print(date)
@@ -2846,7 +2846,16 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
         
         # Add train to the list
         id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Train Logged",colour=adelaide_metro_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
                 
