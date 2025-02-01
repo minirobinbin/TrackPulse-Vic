@@ -17,34 +17,22 @@
 
 from calendar import c
 from math import e
-import operator
-from shutil import ExecError
 from tracemalloc import stop
 from cycler import V
 from discord.ext import commands, tasks
 from discord import app_commands
 import discord
 import json
-from matplotlib.pyplot import step
 import requests
-import re
 import asyncio
 import threading
-import queue
 from datetime import datetime
 import time
 import csv
 import random
-import pandas as pd
 from typing import Literal, Optional
 import typing
-import enum
 from re import A
-from io import StringIO
-import numpy as np
-import io
-import pytz
-from concurrent.futures import ThreadPoolExecutor
 import traceback
 import os
 from pathlib import Path
