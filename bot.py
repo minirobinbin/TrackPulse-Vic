@@ -3600,7 +3600,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 # send reponse message
                 await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
                 await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-                await logsthread.send(f'# <:transperthtrain:1326470161385128019> {userid.name}\'s Perth Train Logs')
+                await logsthread.send(f'# <:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> {userid.name}\'s Perth Train Logs')
                 formatted_data = ""
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
@@ -4239,7 +4239,7 @@ async def profile(ctx, user: discord.User = None):
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed.add_field(
-        name='<:transperthtrain:1326470161385128019> Perth Train Log Stats:',
+        name='<:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> Perth Train Log Stats:',
         value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
             f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
@@ -4269,7 +4269,7 @@ async def profile(ctx, user: discord.User = None):
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed.add_field(
-        name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
+        name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:transperthbus:1335396307510235217><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
         value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
             f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
