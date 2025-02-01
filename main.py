@@ -5,6 +5,8 @@
 # from utils.locationFromNumber import *
 from utils.stoppingpattern import *
 import asyncio
+
+from utils.trainlogger.stats import getLongestTrips
 # # from ptv.client import PTVClient
 
-print(route_api_request('Lilydale',0))
+print(getLongestTrips('xm9g'))

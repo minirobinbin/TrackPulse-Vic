@@ -3746,6 +3746,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('User has no logs!')  
+                
+        # length
         if stat == 'length':
             try:
                 # create thread
@@ -3787,10 +3789,13 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     
                 for i, chunk in enumerate(chunks):
                     await logsthread.send(chunk)
+                    time.sleep(0.7)
                 
             except Exception as e:
                 await ctx.response.send_message(f"Error: `{e}`")
                 await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
+            finally:
+                return
 
                 
         # make temp csv
