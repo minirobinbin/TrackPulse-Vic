@@ -4235,7 +4235,7 @@ async def run_in_thread(ctx, operator):
                 disruptions = await asyncio.to_thread(disruption_api_request, route_id)
                 general_disruption = disruptions["disruptions"]["metro_train"][0]
                 disruptionDescription = general_disruption["description"]
-            except Exception as e:
+            except Exception as e: 
                 print(e)
 
             color = genColor(description)

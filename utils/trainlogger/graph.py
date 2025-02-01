@@ -180,6 +180,7 @@ def barChart(file_path, dataType, heading, uname):
     colors = [label_colors.get(label, 'white') for label in labels]
 
     # Create the bar graph
+    # plt.xkcd()
     plt.style.use('dark_background')
     plt.rcParams['text.color'] = 'white'
     plt.rcParams['axes.labelcolor'] = 'white'
