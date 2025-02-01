@@ -6,7 +6,6 @@
 
     to get PTV api info email [APIKeyRequest@ptv.vic.gov.au](mailto:APIKeyRequest@ptv.vic.gov.au)
     make discord bot at [the discord developer portal](https://discord.com/developers/applications)
-    to make a telegram bot message @BotFather
 - install requiements with `pip install -r requirements.txt`
 - run `bot.py`
 - done!
