@@ -2670,6 +2670,12 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
+        # thing to find image:
+        print(f"Finding image for {number}")
+        image = getTramImage(f'{type.replace('-Class','')}.{number}')
+        if image != None:
+            embed.set_thumbnail(url=image)
+
         await ctx.response.send_message(embed=embed)
         
                 
