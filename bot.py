@@ -95,6 +95,8 @@ print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
 
+# Load data from text files to lists
+
 file = open('utils\\datalists\\lines.txt','r')
 lines_list = []
 for line in file:
@@ -186,6 +188,9 @@ for line in file:
     vline_stops.append(line)
 file.close()
 
+
+# Create lists of stops
+
 metro_stations = metro_stops
 metro_stations = [station.replace(' Station','') for station in metro_stations]
 
@@ -255,7 +260,7 @@ hard_colour = 0xffa665
 very_hard_colour = 0xff6565
 ultrahard_colour = 0xe52727
 
-# Global variable to keep track of the last sent message
+# UNUSED: things to store the message ids for line status boards.
 last_message = None
 comeng_last_message = None
 last_message_metro = None
@@ -329,7 +334,6 @@ completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
 favourites = CommandGroups(name='favourite')
 
-# flight = CommandGroups(name='flight')
 def download_csv(url, save_path):
         response = requests.get(url)
         
