@@ -3182,8 +3182,12 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                                         if image == None:
                                             image = getImage(row[2])
                                             print(f'the loco number is: {row[1]}')
+                        if image == None:
+                            # thing to find image:
+                            print(f"Finding image for {number}")
+                            image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
                                         
-                            # Make the embed
+                        # Make the embed
                         if row[4] in vLineLines:
                             embed = discord.Embed(title=f"Log {row[0]}",colour=vline_colour)
                         elif row[4] == 'Unknown':
@@ -3349,21 +3353,9 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
                         image = None
                         
-                        # # thing to find image:
-                        # hyphen_index = sublist[1].find("-")
-                        # if hyphen_index != -1:
-                        #     first_car = sublist[1][:hyphen_index]
-                        #     print(f'First car: {first_car}')
-                        #     image = getImage(first_car)
-                        #     if image == None:
-                        #         last_hyphen = sublist[1].rfind("-")
-                        #         if last_hyphen != -1:
-                        #             last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                        #             print(f'Last car: {last_car}')
-                        #             image = getImage(last_car)
-                        #             if image == None:
-                        #                 image = getImage(sublist[2])
-                        #                 print(f'the loco number is: {sublist[1]}')
+                        # thing to find image:
+                        print(f"Finding image for {number}")
+                        image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
                                         
                         #send in thread to reduce spam!
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
@@ -3380,6 +3372,11 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         # embed.set_thumbnail(url=image)
+
+                        try:
+                            embed.set_thumbnail(url=image)
+                        except:
+                            print('no image')
 
                         await logsthread.send(embed=embed)
                         time.sleep(0.5)
