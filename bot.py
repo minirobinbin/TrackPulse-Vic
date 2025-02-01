@@ -242,7 +242,10 @@ myki_colour = 0xc2d840
 sydney_train_colour = 0xf47913
 sydney_tram_colour = 0xed2438
 
-perth_adelaide_colour = 0xf68a24
+transperth_colour = 0x008635
+transwa_colour = 0xcf4520
+
+adelaide_metro_colour = 0xf68a24 #this may or may not need fixing
 
 #guesser colours
 very_easy_colour = 0x89ff65
@@ -2503,7 +2506,10 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         embed.add_field(name="Set", value=f'{set} ({type})')
         embed.add_field(name="Line", value=line)
         embed.add_field(name="Date", value=savedate)
-        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end) != 'N/A':
+            embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}, {round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end), 1)}km')
+        else:
+            embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         if notes:
             embed.add_field(name="Notes", value=notes)
         # thing to find image:
@@ -2531,6 +2537,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                             print(f'the loco number is: {set}')
         if image != None:
             embed.set_thumbnail(url=image)
+        embed.set_footer(text=f"Log ID #{id}")
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
@@ -2666,7 +2673,16 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
 
         # Add train to the list
         id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title())
-        await ctx.response.send_message(f"Added {number} ({type}) on route {route} on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Tram Logged",colour=tram_colour)
+        
+        embed.add_field(name="Number", value=f'{number} ({type})')
+        embed.add_field(name="Line", value=route)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
@@ -2765,7 +2781,16 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
 
         # Add train to the list
         id = addSydneyTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Train Logged",colour=sydney_train_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
@@ -2800,7 +2825,7 @@ async def Adelaideline_autocompletion(
 @app_commands.autocomplete(line=Adelaideline_autocompletion)
 
 # Adelaide train logger journey beyond too
-async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     print(date)
@@ -2842,7 +2867,16 @@ async def logNSWTrain(ctx, number: str, line:str, date:str='today', start:str='N
         
         # Add train to the list
         id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Train Logged",colour=adelaide_metro_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
 
                 
@@ -2925,7 +2959,16 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
         
         # Add train to the list
         id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Train Logged",colour=transperth_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
@@ -2977,7 +3020,16 @@ async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='t
 
         # Add train to the list
         id = addSydneyTram(ctx.user.name, set, type, savedate, line, start.title(), end.title())
-        await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Tram Logged",colour=sydney_tram_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
@@ -3037,9 +3089,19 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 
         set = number
 
-        # Add train to the list
+        # Add bus to the list
         id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title())
-        await ctx.response.send_message(f"Added bus on route {line} on {savedate} from {start.title()} to {end.title()} with bus number {set} ({type}) Operator: {operator} to your file. (Log ID `#{id}`)")
+
+        embed = discord.Embed(title="Bus Logged",colour=bus_colour)
+        
+        embed.add_field(name="Operator", value=operator)
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed)
         
                 
     # Run in a separate task
@@ -3142,7 +3204,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Date', value="{}".format(row[3]))
                         embed.add_field(name=f'Trip', value=f"{row[5]} to {row[6]}")
                         if row[5] != 'N/A' and row[6] != 'N/A':
-                            embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
+                            if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]) != 'N/A':
+                                embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
                         try:
                             if row[7]:
                                 embed.add_field(name='Notes:', value=row[7])
@@ -3239,7 +3302,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         if sublist[5] != 'N/A' and sublist[6] != 'N/A':
-                            embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
+                            if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]) != 'N/A':
+                                embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
                         if sublist[7]:
                             embed.add_field(name='Notes:', value=sublist[7])
                         try:
@@ -3486,7 +3550,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=adelaide_metro_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
@@ -3544,7 +3608,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if sublist[4] == 'Unknown':
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
-                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=perth_adelaide_colour)
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=transperth_colour)
                         embed.add_field(name=f'Line', value="{}".format(sublist[4]))
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
