@@ -83,6 +83,8 @@ print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
 
+# Load data from text files to lists
+
 file = open('utils\\datalists\\lines.txt','r')
 lines_list = []
 for line in file:
@@ -174,6 +176,9 @@ for line in file:
     vline_stops.append(line)
 file.close()
 
+
+# Create lists of stops
+
 metro_stations = metro_stops
 metro_stations = [station.replace(' Station','') for station in metro_stations]
 
@@ -243,7 +248,7 @@ hard_colour = 0xffa665
 very_hard_colour = 0xff6565
 ultrahard_colour = 0xe52727
 
-# Global variable to keep track of the last sent message
+# UNUSED: things to store the message ids for line status boards.
 last_message = None
 comeng_last_message = None
 last_message_metro = None
@@ -317,7 +322,6 @@ completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
 favourites = CommandGroups(name='favourite')
 
-# flight = CommandGroups(name='flight')
 def download_csv(url, save_path):
         response = requests.get(url)
         
@@ -3587,7 +3591,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 # send reponse message
                 await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
                 await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
-                await logsthread.send(f'# <:transperthtrain:1326470161385128019> {userid.name}\'s Perth Train Logs')
+                await logsthread.send(f'# <:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> {userid.name}\'s Perth Train Logs')
                 formatted_data = ""
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
@@ -3737,6 +3741,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
                 await ctx.response.send_message('User has no logs!')  
+                
+        # length
         if stat == 'length':
             try:
                 # create thread
@@ -3778,10 +3784,13 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     
                 for i, chunk in enumerate(chunks):
                     await logsthread.send(chunk)
+                    time.sleep(0.7)
                 
             except Exception as e:
                 await ctx.response.send_message(f"Error: `{e}`")
                 await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
+            finally:
+                return
 
                 
         # make temp csv
@@ -4221,7 +4230,7 @@ async def profile(ctx, user: discord.User = None):
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed.add_field(
-        name='<:transperthtrain:1326470161385128019> Perth Train Log Stats:',
+        name='<:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> Perth Train Log Stats:',
         value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
             f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
@@ -4251,7 +4260,7 @@ async def profile(ctx, user: discord.User = None):
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed.add_field(
-        name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
+        name='<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:transperthbus:1335396307510235217><:Canberra_Bus:1264885650826465311> Bus Log Stats:',
         value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
             f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
@@ -4436,7 +4445,7 @@ async def run_in_thread(ctx, operator):
                 disruptions = await asyncio.to_thread(disruption_api_request, route_id)
                 general_disruption = disruptions["disruptions"]["metro_train"][0]
                 disruptionDescription = general_disruption["description"]
-            except Exception as e:
+            except Exception as e: 
                 print(e)
 
             color = genColor(description)

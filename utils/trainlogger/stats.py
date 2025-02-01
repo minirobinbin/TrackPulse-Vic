@@ -374,8 +374,9 @@ def getLongestTrips(user):
                 print(f'{col6} to {col7} could not be calculated!')
     
     # Sort the list by distance in descending order (longest to shortest)
+    # Ensure all distances are floats
+    distance_list = [(row, float(distance)) for row, distance in distance_list if isinstance(distance, (int, float, str)) and str(distance).replace('.', '', 1).isdigit()]
     distance_list.sort(key=lambda x: x[1], reverse=True)
-    print(distance_list)
     # Convert the list
     formatted_trips = ''
     for distance_list in distance_list:
