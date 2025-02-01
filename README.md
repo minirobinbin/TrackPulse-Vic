@@ -2,7 +2,7 @@
 
 ## How to use:
 - make sure the latest discord.py is installed `$ pip install git+https://github.com/Rapptz/discord.py@master`
-- rename `rename.env` to `env`
+- rename `rename.env` to `.env`
 - fill discord bot token and ptv api info in the `.env` file
 - fill in telegram bot token
 
@@ -10,7 +10,6 @@
     make discord bot at [the discord developer portal](https://discord.com/developers/applications)
     to make a telegram bot message @BotFather
 - install requiements with `pip install -r requirements.txt`
-- install chrome (required for run searching, other stuff will work without)
 - for the plane stuff install [the OpenSky API](https://github.com/openskynetwork/opensky-api)
 - run `bot.py`
 - done!
