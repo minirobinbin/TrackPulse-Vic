@@ -1,6 +1,7 @@
 import pandas as pd
 
 loop_stations = ['Flagstaff','Melbourne Central','Parliament']
+scs_bypass = 1.5
 
 def load_station_data(csv_file):
     """
@@ -28,7 +29,7 @@ def getStationDistance(df, station1, station2):
         elif station1 in loop_stations and station2 in loop_stations:
             return abs(km1 - km2)
         elif km1 <= 0 or km2 <= 0:
-            return abs(km1 - km2)
+            return abs(km1 - km2) - scs_bypass
         else:
             return abs(km1 + km2)
     except:
