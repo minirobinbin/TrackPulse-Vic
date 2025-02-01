@@ -1,5 +1,7 @@
 import pandas as pd
 
+loop_stations = ['Flagstaff','Melbourne Central','Parliament']
+
 def load_station_data(csv_file):
     """
     Load station data from a CSV file into a pandas DataFrame.
@@ -21,9 +23,9 @@ def getStationDistance(df, station1, station2):
     try:
         km1 = df.loc[df['Station'] == station1, 'KM'].values[0]
         km2 = df.loc[df['Station'] == station2, 'KM'].values[0]
-        if station1 not in ['Flagstaff','Melbourne Central','Parliament'] and station2 not in ['Flagstaff','Melbourne Central','Parliament']:
+        if station1 not in loop_stations and station2 not in loop_stations:
             return abs(km1 - km2)
-        elif station1 in ['Flagstaff','Melbourne Central','Parliament'] and station2 in ['Flagstaff','Melbourne Central','Parliament']:
+        elif station1 in loop_stations and station2 in loop_stations:
             return abs(km1 - km2)
         elif km1 <= 0 or km2 <= 0:
             return abs(km1 - km2)
