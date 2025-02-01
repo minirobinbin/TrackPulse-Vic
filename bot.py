@@ -4252,7 +4252,7 @@ async def profile(ctx, user: discord.User = None):
     )
                                     
             except FileNotFoundError:
-                embed.add_field(name="<:transperthtrain:1326470161385128019> Perth Train Log Stats", value=f'{username} has no logged trips in Perth!')
+                embed.add_field(name="<:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> Perth Train Log Stats", value=f'{username} has no logged trips in Perth!')
             
     # bus Logger
             try:
@@ -4283,7 +4283,7 @@ async def profile(ctx, user: discord.User = None):
 
                                     
             except FileNotFoundError:
-                embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips!')
+                embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:transperthbus:1335396307510235217><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips!')
 
             
             #games
