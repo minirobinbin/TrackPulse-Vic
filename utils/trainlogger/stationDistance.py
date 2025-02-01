@@ -21,6 +21,11 @@ def getStationDistance(df, station1, station2):
     try:
         km1 = df.loc[df['Station'] == station1, 'KM'].values[0]
         km2 = df.loc[df['Station'] == station2, 'KM'].values[0]
-        return abs(km1 - km2)
+        if station1 != 'Flagstaff' and station1 != 'Melbourne Central' and station1 != 'Parliament' and station2 != 'Flagstaff' and station2 != 'Melbourne Central' and station2 != 'Parliament':
+            return abs(km1 - km2)
+        elif km1 <= 0 or km2 <= 0:
+            return abs(km1 - km2)
+        else:
+            return abs(km1 + km2)
     except:
         return 'N/A'
