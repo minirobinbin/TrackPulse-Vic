@@ -1,7 +1,6 @@
 # TrackPulse 𝕍𝕀ℂ
 
 ## How to use:
-- make sure the latest discord.py is installed `$ pip install git+https://github.com/Rapptz/discord.py@master`
 - rename `rename.env` to `.env`
 - fill discord bot token and ptv api info in the `.env` file
 
