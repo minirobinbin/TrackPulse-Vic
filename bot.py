@@ -268,6 +268,11 @@ USER_ID = config['USER_ID']
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
 log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
+async def printlog(text):
+    print(text)
+    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+    await log_channel.send(text)
+
 # check if these things are on in the .env
 rareCheckerOn = False
 automatic_updates = False
@@ -322,14 +327,14 @@ completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
 favourites = CommandGroups(name='favourite')
 
-def download_csv(url, save_path):
+async def download_csv(url, save_path):
         response = requests.get(url)
         
         # Check if the request was successful
         if response.status_code == 200:
             with open(save_path, 'wb') as file:
                 file.write(response.content)
-            print(f"CSV downloaded successfully and saved as {save_path}")
+            await printlog(f"CSV downloaded successfully and saved as {save_path}")
         else:
             raise Exception(f"Failed to download CSV. Status code: {response.status_code}")
 
@@ -338,7 +343,7 @@ async def on_ready():
     # download the trainset data     
     csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
     save_location = "utils/trainsets.csv"
-    print(f"Downloading trainset data from {csv_url} to {save_location}")
+    await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
     download_csv(csv_url, save_location)
     
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
@@ -356,15 +361,15 @@ async def on_ready():
         await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
         This program comes with ABSOLUTELY NO WARRANTY.
         This is free software, and you are welcome to redistribute it
-        under certain conditions\nBot is online!""")
+        under certain conditions""")
     except Exception as e:
-        print(f'Error: {e}\n make sure the bot has premission to send in the startup channel')
+        await printlog(f'Error: {e}\n make sure the bot has premission to send in the startup channel')
         return
     
     try:
         task_loop.start()
     except:
-        print("WARNING: Rare train checker is not enabled!")
+        await printlog("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
 
     activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
@@ -376,7 +381,7 @@ async def on_ready():
         response_channel = bot.get_channel(channel_id)
         
         if response_channel is None:
-            print(f"Error: Could not find channel with ID {channel_id}")
+            await printlog(f"Error: Could not find channel with ID {channel_id}")
             return
         
         response = await response_channel.send('Checking log achievements for all users...')
@@ -418,11 +423,10 @@ async def on_ready():
     file = file.read()
 
     if file == '':
-        print("Bot started")
+        await printlog("Bot started")
     else:
-        print("Bot restarted")
+        await printlog("Bot restarted")
         channel = bot.get_channel(int(file))
-        await channel.send('Restart Complete')
         with open('restart.txt', 'w') as file:
                 file.write('')
 
@@ -438,7 +442,7 @@ async def addAchievement(username, channel, mention):
         
 # game achievement awarder  check game achievements
 async def addGameAchievement(username, channel, mention):
-    print(f'checking game achievements for {username}')
+    await printlog(f'checking game achievements for {username}')
     channel = bot.get_channel(channel)
     new = checkGameAchievements(username)
     for achievement in new:
@@ -448,7 +452,7 @@ async def addGameAchievement(username, channel, mention):
         await channel.send(mention,embed=embed)
 
 # Rare train finder
-def check_rare_trains_in_thread():
+async def check_rare_trains_in_thread():
     rare_trains = checkRareTrainsOnRoute()
     asyncio.run_coroutine_threadsafe(log_rare_trains(rare_trains), bot.loop)
 
@@ -481,7 +485,7 @@ async def log_rare_trains(rare_trains):
     else:
         await log_channel.send("None found")
 
-# def check_lines_in_thread():
+# async def check_lines_in_thread():
 #     asyncio.run_coroutine_threadsafe(checklines(), bot.loop)
 
                  
@@ -498,7 +502,7 @@ async def task_loop():
         thread = threading.Thread(target=check_rare_trains_in_thread)
         thread.start()
     else:
-        print("Rare checker not enabled!")
+        await printlog("Rare checker not enabled!")
 
 # @tasks.loop(minutes=15)
 # async def task_loop():
@@ -596,13 +600,13 @@ async def line_info(ctx, line: str):
     route_gtfs_id = route["route_gtfs_id"]
     geopath = route["geopath"]
 
-    print(f"route id: {route_id}")
+    await printlog(f"route id: {route_id}")
 
     # Retrieve disruption information
     disruption_description = ""
     try:
         disruptions = disruption_api_request(route_id)
-        print(disruptions)
+        await printlog(disruptions)
 
         # Extracting title and description
         for general_disruption in disruptions["disruptions"]["metro_train"]:
@@ -615,11 +619,11 @@ async def line_info(ctx, line: str):
                 break
 
     except Exception as e:
-        print(e)
+        await printlog(e)
 
     # Determine the color of the embed based on the status description
     color = genColor(description)
-    print(f"Status color: {color}")
+    await printlog(f"Status color: {color}")
 
     # Create the embed with the retrieved information
     if disruption_description:
@@ -685,7 +689,7 @@ async def route(ctx, mode: str, number: int):
             url = ''
             try:
                 disruptions = disruption_api_request(route_id)
-                # print(disruptions)
+                # await printlog(disruptions)
                 
                 # Extracting title and description
                 general_disruption = disruptions["disruptions"]["metro_bus"][0]
@@ -695,7 +699,7 @@ async def route(ctx, mode: str, number: int):
                 updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
                 
             except Exception as e:
-                print(e)
+                await printlog(e)
 
             
             # disruption status:
@@ -732,7 +736,7 @@ async def line_info(ctx, number: str, search_set:bool=False):
         log_command(ctx.user.id, 'photo_search')
         # Make a HEAD request to check if the photo exists
         URLresponse = requests.head(photo_url)
-        print(URLresponse.status_code)
+        await printlog(URLresponse.status_code)
         if URLresponse.status_code == 200:
             await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
         else:
@@ -744,13 +748,13 @@ async def line_info(ctx, number: str, search_set:bool=False):
                 await channel.send(photo_url)
                 for i in range(2,5):
                     photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.webp"
-                    print(f"searching for other images for {mAdded}")
-                    print(f"url: {photo_url}")
+                    await printlog(f"searching for other images for {mAdded}")
+                    await printlog(f"url: {photo_url}")
                     URLresponse = requests.head(photo_url)
                     if URLresponse.status_code == 200:
                         await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
                     else:
-                        print("no other images found")
+                        await printlog("no other images found")
                         await channel.send(f"Photo not in xm9g database!")
                         break
             else:
@@ -760,13 +764,13 @@ async def line_info(ctx, number: str, search_set:bool=False):
             
         for i in range(2,5):
             photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.webp"
-            print(f"searching for other images for {search_query}")
-            print(f"url: {photo_url}")
+            await printlog(f"searching for other images for {search_query}")
+            await printlog(f"url: {photo_url}")
             URLresponse = requests.head(photo_url)
             if URLresponse.status_code == 200:
                 await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
             else:
-                print("no other images found")
+                await printlog("no other images found")
                 break
     
     # start of the thing
@@ -779,14 +783,14 @@ async def line_info(ctx, number: str, search_set:bool=False):
     try:
         fullSet = setNumber(number).split("-")
     except Exception as e:
-        print(f'cannot get full set for {number}')
+        await printlog(f'cannot get full set for {number}')
         search_set=False
         await log_channel.send(f'Error: ```{e}```\n with search train photo ran by {ctx.user.mention}\n<@{USER_ID}>')
                 
     await sendPhoto(photo_url)
     
     if search_set:
-        print(f'Searching full set: {fullSet}')
+        await printlog(f'Searching full set: {fullSet}')
         if fullSet[0] != number:
             search_query=fullSet[0].upper()
             await ctx.channel.send(f'Photos for `{fullSet[0]}`')
@@ -821,7 +825,7 @@ async def stationphoto(ctx, station:str):
         data = stationInfoAPIRequest(nameToStopID(station, '0'), 0)
         mode = 0
         if data == None: # check if its a v/line stop
-            print('there is no data so im trying vline')
+            await printlog('there is no data so im trying vline')
             data = stationInfoAPIRequest(nameToStopID(station, '3'), 3)
             mode = 3
             
@@ -859,7 +863,7 @@ async def stationphoto(ctx, station:str):
             embed.set_image(url=photo)
             embed.set_footer(text=f'Photo by {getPhotoCredits(station)}')
         else:
-            print('no photo')
+            await printlog('no photo')
             # await ctx.edit_original_response(content=f'No photos found for {station.title()}')
             
         await ctx.edit_original_response(embed=embed)
@@ -915,7 +919,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
 
         except Exception as e:
             await ctx.edit_original_response(content='Invalid information. Please try again.')
-            print(e)
+            await printlog(e)
             
     asyncio.create_task(calc())
             
@@ -940,7 +944,7 @@ async def viewmykis(ctx, encriptionpassword: str):
     loop = asyncio.get_event_loop()
     await ctx.response.defer(ephemeral=True)
     log_command(ctx.user.id, 'view-myki')
-    def viewcards():
+    async def viewcards():
         # decrypt the password
         
         # get saved username and password:
@@ -993,9 +997,9 @@ async def viewmykis(ctx, encriptionpassword: str):
 async def line_info(ctx, search: str):
     log_command(ctx.user.id, 'wongm-search')
     channel = ctx.channel
-    print(f"removing spaces in search {search}")
+    await printlog(f"removing spaces in search {search}")
     spaces_removed = search.replace(' ', '%20')
-    print(spaces_removed)
+    await printlog(spaces_removed)
     url = f"https://railgallery.wongm.com/page/search/?s={spaces_removed}"
     await ctx.response.send_message(url)
 
@@ -1014,8 +1018,8 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
     metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'Sprinter', 'N Class']
    
-    print(f'set: {set}')
-    print(f"TRAINTYPE {type}")
+    await printlog(f'set: {set}')
+    await printlog(f"TRAINTYPE {type}")
     
     # get colour for the embed
     if type in metroTrains:
@@ -1046,7 +1050,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
         
         if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
             information = trainData(set)
-            print(information)
+            await printlog(information)
             infoData=''
             if information[5]:
                 infoData+=f'\n- **Name:** {information[5]}\n'
@@ -1073,9 +1077,9 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                 
                 
             # thing if the user has been on
-            def checkTrainRidden(variable, file_path):
+            async def checkTrainRidden(variable, file_path):
                 if not os.path.exists(file_path):
-                    print(f"The file {file_path} does not exist.")
+                    await printlog(f"The file {file_path} does not exist.")
                     return False
 
                 with open(file_path, mode='r') as file:
@@ -1123,13 +1127,13 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                 else:
                     location = getTrainLocation(set)
                 line = ""
-                print(f"Location: {location}")
+                await printlog(f"Location: {location}")
                 url = convertTrainLocationToGoogle(location)
                 try:
                     stoppingPattern = getStoppingPatternFromCar(location)
                 except Exception as e:
                     await embed_update.reply(content=f'An error has occurred while searching for this trains run.')
-                print(f"STOPPING PATTERN: {stoppingPattern}")
+                await printlog(f"STOPPING PATTERN: {stoppingPattern}")
                 try:
                     if location is not None:
                         for item in location:
@@ -1138,12 +1142,12 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                             line = get_route_name(item['route_id'])
                             geopath=''
                             # geopath = getGeopath(item["run_ref"])
-                            # print(f'geopath: {geopath}')
+                            # await printlog(f'geopath: {geopath}')
 
                         await makeMapv2(latitude,longitude, train, geopath) 
                 except Exception as e:
                     await mapEmbedUpdate.edit(content='No trip data available.', embed=None)
-                    print(f'ErROR: {e}')
+                    await printlog(f'ErROR: {e}')
                     return
                 file_path = f"temp/{train}-map.png"
                 if os.path.exists(file_path):
@@ -1225,7 +1229,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                 else:
                     await mapEmbedUpdate.delete()
                     await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")
-                    print(f"Error: Map file '{file_path}' not found.")
+                    await printlog(f"Error: Map file '{file_path}' not found.")
                     
         # Run transportVicSearch in a separate thread
         
@@ -1256,22 +1260,22 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             line = ""
             if mode == "metro":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 0)
-                print('Mode is metro')
+                await printlog('Mode is metro')
             elif mode == "tram":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 1)
-                print('Mode is tram')
+                await printlog('Mode is tram')
             elif mode == "bus":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 2)
-                print('Mode is bus')
+                await printlog('Mode is bus')
             elif mode == "vline":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 3)
-                print('Mode is vline')
-                def strip_station_name(name):
+                await printlog('Mode is vline')
+                async def strip_station_name(name):
                     return name.replace('Railway Station', '').strip()
                     
             elif mode == "nightbus":
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 4)
-                print('Mode is nightbus')
+                await printlog('Mode is nightbus')
 
                 # Filter out entries where the station name has a slash and status is 'Skipped', then strip 'Railway Station'
                 stoppingPattern = [
@@ -1279,7 +1283,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
                     for station in stoppingPattern 
                     if not ('/' in station[0] and station[1] == 'Skipped')
 ]
-            print(f"STOPPING PATTERN: {stoppingPattern}")
+            await printlog(f"STOPPING PATTERN: {stoppingPattern}")
             try:
                 if mode == "metro":
                     if runData is not None:
@@ -1287,18 +1291,18 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
                             # latitude = item['vehicle_position']['latitude']
                             # longitude = item['vehicle_position']['longitude']
                             line = get_route_name(item['route_id'])
-                            print(f'Line: {line}')
+                            await printlog(f'Line: {line}')
                 elif mode == "vline":
                     line = 'V/Line'
-                    print(f'Line: {line}')
+                    await printlog(f'Line: {line}')
                 else: # just make the mode the type name
                     line = mode
-                    print(f'Line: {line}')
+                    await printlog(f'Line: {line}')
 
             except Exception as e:
                 await ctx.edit_original_response(content='No trip data available.')
 
-                print(f'ErROR: {e}')
+                await printlog(f'ErROR: {e}')
                 return
             
             # embed colour
@@ -1386,8 +1390,8 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 
         except Exception as e:
             await ctx.edit_original_response(content='No trip data available.')   
-            print(f'ErROR: {e}') 
-            print(traceback.format_exc())  
+            await printlog(f'ErROR: {e}') 
+            await printlog(traceback.format_exc())  
             await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
 
     # Run transportVicSearch in a separate thread
@@ -1407,8 +1411,8 @@ async def tramsearch(ctx, tram: str):
     type = tramType(tram)
     set = tram.upper()
    
-    print(f'Set: {set}')
-    print(f"Tram Type: {type}")
+    await printlog(f'Set: {set}')
+    await printlog(f"Tram Type: {type}")
     if type is None:
         await ctx.edit_original_response(content="Tram not found")
     else:
@@ -1422,15 +1426,15 @@ async def tramsearch(ctx, tram: str):
         
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class']:
             information = trainData(set)
-            print(information)
+            await printlog(information)
             infoData = f'**Livery:** {information[1]}\n**Status:** {information[3]}\n**Entered Service:** {information[2]}\n**Vicsig notes:** {information[4]}'
             if information[5]:
                 infoData+=f'\n**Name:** {information[5]}'
                 
             # thing if the user has been on
-            def check_variable_in_csv(variable, file_path):
+            async def check_variable_in_csv(variable, file_path):
                 if not os.path.exists(file_path):
-                    print(f"The file {file_path} does not exist.")
+                    await printlog(f"The file {file_path} does not exist.")
                     return False
 
                 with open(file_path, mode='r') as file:
@@ -1595,10 +1599,10 @@ async def departures(ctx, stop: str, line:str='all'):
             search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
             if station.title().endswith('Station'):
                 stop_id = find_stop_id(search, f"{station.title()}")
-                print(f'STOP ID for {station}: {stop_id}')
+                await printlog(f'STOP ID for {station}: {stop_id}')
             else:
                 stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-                print(f'STOP ID for {station} Station: {stop_id}')'''
+                await printlog(f'STOP ID for {station} Station: {stop_id}')'''
 
             
         # get departures for the stop:
@@ -1642,7 +1646,7 @@ async def departures(ctx, stop: str, line:str='all'):
             route_id= departure['route_id'] 
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc):
-                # print(f"time in past")
+                # await printlog(f"time in past")
                 pass
             else:
                 run_ref = departure['run_ref']
@@ -1906,7 +1910,7 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
         try:
             await ctx.edit_original_response(embed=embed)
         except Exception as e:
-            print('Too many characters because "maximum_responses" was set to high.')
+            await printlog('Too many characters because "maximum_responses" was set to high.')
             await ctx.edit_original_response(content='''"maximum_responses" set too high, try a lower number. If you're using the myki outlet mode, the maximum is 25.''')
             return
     asyncio.create_task(ptvsearch(search))
@@ -2090,7 +2094,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 await ctx.channel.send(embed=embed)
 
             # Define a check function to validate user input
-            def check(m):
+            async def check(m):
                 return m.channel == channel and m.author != bot.user and m.content.startswith('!')
 
             try:
@@ -2116,7 +2120,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                         roundResponse = True
                         correctAnswers += 1
                         ignoredRounds = 0
-                        print(f'Ignored rounds: {ignoredRounds}')
+                        await printlog(f'Ignored rounds: {ignoredRounds}')
                         if ultrahard:
                             addLb(user_response.author.id, user_response.author.name, 'ultrahard')
                         else:
@@ -2170,7 +2174,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
             finally:
                 if not roundResponse:
                     ignoredRounds += 1
-                print(f'Ignored rounds: {ignoredRounds}')
+                await printlog(f'Ignored rounds: {ignoredRounds}')
                 if ignoredRounds >= 4 and roundResponse == False:
                     await ctx.channel.send("No responses for 4 rounds. Game ended.")
                     embed = discord.Embed(title=f"Game Summary | {setLine}")
@@ -2199,7 +2203,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     try:
         asyncio.create_task(run_game())
     except Exception as e:
-        print(f'GUESSER ERROR: {e}')
+        await printlog(f'GUESSER ERROR: {e}')
         await ctx.channel.send(f'An error has occurred\n```{e}```')
         await log_channel.send(f'Error: ```{e}```\n with guesser run ran by {ctx.user.mention}\n<@{USER_ID}>')
 
@@ -2222,7 +2226,7 @@ async def lb(ctx, game: str='guesser'):
     if leaders == 'no stats':
         await ctx.response.send_message('There is no data for this game yet!',ephemeral=True)
         return
-    print(leaders)
+    await printlog(leaders)
     # Create the embed
     embed = discord.Embed(title=f"Top 7 players for {game}", color=discord.Color.gold())
     
@@ -2342,7 +2346,7 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
                 await ctx.channel.send(embed=embed)
 
             # Define a check function to validate user input
-            def check(m): return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+            async def check(m): return m.channel == channel and m.author != bot.user and m.content.startswith('!')
 
             # get list of correct stations
             if numdirection > 0:
@@ -2436,9 +2440,9 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     channel = ctx.channel
     await ctx.response.defer()
     log_command(ctx.user.id, 'log-train')
-    print(date)
+    await printlog(date)
     async def log():
-        print("logging the thing")
+        await printlog("logging the thing")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -2505,7 +2509,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         if notes:
             embed.add_field(name="Notes", value=notes)
         # thing to find image:
-        print(f"Finding image for {number}")
+        await printlog(f"Finding image for {number}")
         if type == 'Tait':
             image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
         
@@ -2516,17 +2520,17 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             hyphen_index = set.find("-")
             if hyphen_index != -1:
                 first_car = set[:hyphen_index]
-                print(f'First car: {first_car}')
+                await printlog(f'First car: {first_car}')
                 image = getImage(first_car)
                 if image == None:
                     last_hyphen = set.rfind("-")
                     if last_hyphen != -1:
                         last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                        print(f'Last car: {last_car}')
+                        await printlog(f'Last car: {last_car}')
                         image = getImage(last_car)
                         if image == None:
                             image = getImage(type)
-                            print(f'the loco number is: {set}')
+                            await printlog(f'the loco number is: {set}')
         if image != None:
             embed.set_thumbnail(url=image)
         embed.set_footer(text=f"Log ID #{id}")
@@ -2635,10 +2639,10 @@ async def station_autocompletion(
 
 async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
-    print(date)
+    await printlog(date)
     async def log():
         log_command(ctx.user.id, 'log-tram')
-        print("logging the thing")
+        await printlog("logging the thing")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -2675,7 +2679,7 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
         embed.set_footer(text=f"Log ID #{id}")
 
         # thing to find image:
-        print(f"Finding image for {number}")
+        await printlog(f"Finding image for {number}")
         image = getTramImage(f'{type.replace('-Class','')}.{number}')
         if image != None:
             embed.set_thumbnail(url=image)
@@ -2751,10 +2755,10 @@ async def NSWstation_autocompletion(
 # SYdney train logger nsw train
 async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
-    print(date)
+    await printlog(date)
     async def log():
         log_command(ctx.user.id, 'log-nsw-train')
-        print("logging the nsw sydney train")
+        await printlog("logging the nsw sydney train")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -2826,9 +2830,9 @@ async def Adelaideline_autocompletion(
 async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
-    print(date)
+    await printlog(date)
     async def log():
-        print("logging the adelaide train")
+        await printlog("logging the adelaide train")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -2912,9 +2916,9 @@ async def Perthline_autocompletion(
 async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today'):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-perth-train')
-    print(date)
+    await printlog(date)
     async def log():
-        print("logging the perth train")
+        await printlog("logging the perth train")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -2990,10 +2994,10 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
 # SYdney tram logger nsw tram
 async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
     channel = ctx.channel
-    print(date)
+    await printlog(date)
     async def log():
         log_command(ctx.user.id, 'log-nsw-tram')
-        print("logging the sydney tram")
+        await printlog("logging the sydney tram")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -3065,10 +3069,10 @@ async def station_autocompletion(
 
 async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
     channel = ctx.channel
-    print(date)
+    await printlog(date)
     async def log():
         log_command(ctx.user.id, 'log-bus')
-        print("logging the bus")
+        await printlog("logging the bus")
 
         savedate = date.split('/')
         if date.lower() == 'today':
@@ -3175,20 +3179,20 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                             hyphen_index = row[1].find("-")
                             if hyphen_index != -1:
                                 first_car = row[1][:hyphen_index]
-                                print(f'First car: {first_car}')
+                                await printlog(f'First car: {first_car}')
                                 image = getImage(first_car)
                                 if image == None:
                                     last_hyphen = row[1].rfind("-")
                                     if last_hyphen != -1:
                                         last_car = row[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                        print(f'Last car: {last_car}')
+                                        await printlog(f'Last car: {last_car}')
                                         image = getImage(last_car)
                                         if image == None:
                                             image = getImage(row[2])
-                                            print(f'the loco number is: {row[1]}')
+                                            await printlog(f'the loco number is: {row[1]}')
                         if image == None:
                             # thing to find image:
-                            print(f"Finding image for {number}")
+                            await printlog(f"Finding image for {row[2].replace('-Class','')}.{row[1]}")
                             image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
                                         
                         # Make the embed
@@ -3216,7 +3220,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         try:
                             embed.set_thumbnail(url=image)
                         except:
-                            print('no image')
+                            await printlog('no image')
                         await ctx.response.send_message(embed=embed)
                 await ctx.response.send_message(f'Cannot find log `{id}`')
                 
@@ -3236,7 +3240,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3275,17 +3279,17 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                             hyphen_index = sublist[1].find("-")
                             if hyphen_index != -1:
                                 first_car = sublist[1][:hyphen_index]
-                                print(f'First car: {first_car}')
+                                await printlog(f'First car: {first_car}')
                                 image = getImage(first_car)
                                 if image == None:
                                     last_hyphen = sublist[1].rfind("-")
                                     if last_hyphen != -1:
                                         last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                                        print(f'Last car: {last_car}')
+                                        await printlog(f'Last car: {last_car}')
                                         image = getImage(last_car)
                                         if image == None:
                                             image = getImage(sublist[2])
-                                            print(f'the loco number is: {sublist[1]}')
+                                            await printlog(f'the loco number is: {sublist[1]}')
                                         
                         #send in thread to reduce spam!
                             # Make the embed
@@ -3311,7 +3315,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         try:
                             embed.set_thumbnail(url=image)
                         except:
-                            print('no image')
+                            await printlog('no image')
                         
                         await logsthread.send(embed=embed)
                         # if count == 6:
@@ -3332,7 +3336,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readTramLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3358,7 +3362,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         image = None
                         
                         # thing to find image:
-                        print(f"Finding image for {number}")
+                        await printlog(f"Finding image for {number}")
                         image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
                                         
                         #send in thread to reduce spam!
@@ -3380,7 +3384,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         try:
                             embed.set_thumbnail(url=image)
                         except:
-                            print('no image')
+                            await printlog('no image')
 
                         await logsthread.send(embed=embed)
                         time.sleep(0.5)
@@ -3400,7 +3404,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readSydneyLightRailLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3457,7 +3461,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readSydneyTrainLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3514,7 +3518,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no Adelaide trains logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readPerthLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3572,7 +3576,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no Perth trains logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readAdelaideLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3628,7 +3632,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     else:
                         await ctx.response.send_message("This user has no busses logged!",ephemeral=True)
                     return
-                print(userid.name)
+                await printlog(userid.name)
                 data = readBusLogs(userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
@@ -3963,7 +3967,7 @@ async def sets(ctx, state:str):
         data =stationlist(ctx.user.name, state)
     except Exception as e:
         await ctx.edit_original_response(content='No logs found')
-        print(f'ERROR: {e}')
+        await printlog(f'ERROR: {e}')
         
     # create thread
     try:
@@ -4300,7 +4304,7 @@ async def profile(ctx, user: discord.User = None):
             try:
                 embed.set_footer(text=f"favourite command: {getFavoriteCommand(userid)[0]}")
             except FileNotFoundError:
-                print('user has no commands used')
+                await printlog('user has no commands used')
             
             await ctx.edit_original_response(embed=embed)
             
@@ -4360,7 +4364,7 @@ async def viewAchievements(ctx, user: discord.User = None):
     pages = [all_achievements[i:i + 10] for i in range(0, len(all_achievements), 10)]
     current_page = 0
 
-    def get_page_embed(page_num):
+    async def get_page_embed(page_num):
         embed = discord.Embed(title=f"{user.name}'s Achievements", description=f"**Progress:** {achieved}/{total_achievements} ({percentage:.1f}%)", color=achievement_colour)
         embed.set_footer(text=f"Page {page_num + 1}/{len(pages)}")
         
@@ -4373,7 +4377,7 @@ async def viewAchievements(ctx, user: discord.User = None):
 
     # Create buttons
     class NavButtons(discord.ui.View):
-        def __init__(self):
+        async def __init__(self):
             super().__init__(timeout=180)
 
         @discord.ui.button(label="Previous", style=discord.ButtonStyle.gray)
@@ -4446,7 +4450,7 @@ async def run_in_thread(ctx, operator):
                 general_disruption = disruptions["disruptions"]["metro_train"][0]
                 disruptionDescription = general_disruption["description"]
             except Exception as e: 
-                print(e)
+                await printlog(e)
 
             color = genColor(description)
             info = f'{description}'
@@ -4484,7 +4488,7 @@ async def run_in_thread(ctx, operator):
                 if currentness == "Planned" or disruption_vline == "Service Information":
                     disruption_vline = "Good Service"
             except Exception as e:
-                print(e)
+                await printlog(e)
 
             color = genColor(disruption_vline)
             info = f'{disruption_vline}'
@@ -4495,7 +4499,7 @@ async def run_in_thread(ctx, operator):
         # Send the response after data is processed
         await ctx.edit_original_response(embed=embed_metro if operator == 'metro' else embed_vline)
     except Exception as e:
-        print(f'ERROR: {e}')
+        await printlog(f'ERROR: {e}')
 
     with open('logs.txt', 'a') as file:
         file.write(f"LINE STATUS CHECKED MANUALLY\n")
@@ -4632,7 +4636,7 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
             try:
                 await ctx.bot.tree.sync(guild=guild)
             except discord.HTTPException as e:
-                print(f'Error: {e}')
+                await printlog(f'Error: {e}')
             else:
                 ret += 1
 
@@ -4664,14 +4668,14 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         csv_url = url
         save_location = "utils/trainsets.csv"
         await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
-        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{str(ctx.author.id)} tried to sync the database.')
+        await printlog(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
         
 @bot.command()
@@ -4681,7 +4685,7 @@ async def syncgame(ctx):
         csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
         await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
-        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
@@ -4691,20 +4695,20 @@ async def syncgame(ctx):
         csv_url = 'https://railway-photos.xm9g.net/botgames/ultrahard.csv'
         save_location = "utils/game/images/ultrahard.csv"
         await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
-        print(f"Downloading trainset data from {csv_url} to `{save_location}`")
+        await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
             download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
     else:
-        print(f'{str(ctx.author.id)} tried to sync the database.')
+        await printlog(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
 async def synclists(ctx):
     if ctx.author.id in admin_users:
-        print("Downloading stop name data from PTV")
+        await printlog("Downloading stop name data from PTV")
         await ctx.send("Downloading stop name data from PTV")
         try:
             downloader_function(0)
@@ -4720,14 +4724,14 @@ async def synclists(ctx):
             await ctx.send(f"Error: `{e}`")
 
     else:
-        print(f'{str(ctx.author.id)} tried to restart the bot.')
+        await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
 async def restart(ctx):
     if ctx.author.id in admin_users:
-        print("Restarting bot")
         await ctx.send(f"Restarting bot")
+        await printlog("Restarting bot")
         
         with open('restart.txt', 'w') as file:
             file.write(str(ctx.channel.id))
@@ -4735,15 +4739,15 @@ async def restart(ctx):
         os.system('python bot.py')
 
     else:
-        print(f'{str(ctx.author.id)} tried to restart the bot.')
+        await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
 async def update(ctx):
     if automatic_updates == True:
         if ctx.author.id in admin_users:
-            print("Updating bot")
             await ctx.send("Updating bot")
+            await printlog("Updating bot")
         
             directory = Path(__file__).parents[0]
 
@@ -4751,10 +4755,10 @@ async def update(ctx):
             directory.pull()
 
             await ctx.send("Update complete")
-            print("Update complete")
+            await printlog("Update complete")
 
         else:
-            print(f'{str(ctx.author.id)} tried to update the bot.')
+            await printlog(f'{str(ctx.author.id)} tried to update the bot.')
             await ctx.send("You are not authorized to use this command.")
     else:
         await ctx.send("Automatic updates are not supported on this bot.")
