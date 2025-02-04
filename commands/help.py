@@ -1,6 +1,7 @@
 import discord
 
 async def helpCommand(ctx,category,command):
+    file = None # image file
     categories = {
         "search": [
             "</search train:1240101357847838814> - Shows information about a specific train. For multiple units use the carriage number otherwise use the locomotive number. Will show live tracking info if avaliable",
@@ -349,7 +350,9 @@ Optional:
         if chosen_command in commands:
             command_data = commands[chosen_command]  # Avoid shadowing 'commands'
             embed = discord.Embed(title=chosen_command, description=str(command_data), color=discord.Color.blue())  # Convert list to string
-            if command == 'Which /log command should I use?': embed.add_field(name="", value="""**Victoria:**
+            if command == 'Which /log command should I use?': 
+                file = discord.File("assets/comparison.png", filename="comparison.png")
+                embed.add_field(name="", value="""**Victoria:**
 Metro Trains Melbourne: </log train:1289843416628330506>
 V/Line Rail: </log train:1289843416628330506>
 NSW TrainLink Rail: </log sydney-train:1289843416628330506>
@@ -412,11 +415,15 @@ Heritage Tram On Mainline: Currently Not Available
 Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Other regions:**
 NSW TrainLink Rail: </log sydney-train:1289843416628330506>
 NSW TrainLink Coach: </log bus:1289843416628330506>
-Any Bus/Coach: </log bus:1289843416628330506>""")
+Any Bus/Coach: </log bus:1289843416628330506>"""); 
+                embed.set_image(url="attachment://comparison.png")
         else:
             embed = discord.Embed(title="Invalid Command", description="Please choose a valid command.", color=discord.Color.red())  # Corrected title for clarity
     else: 
         ctx.response.send_message('You cant choose both a category and a command!')
         return
     
-    await ctx.response.send_message(embed=embed)
+    if file is not None:
+        await ctx.response.send_message(embed=embed, file=file)
+    else:
+        await ctx.response.send_message(embed=embed)
