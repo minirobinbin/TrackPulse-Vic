@@ -1577,6 +1577,7 @@ async def departures(ctx, stop: str, line:str='all'):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
+        station = station.strip('⭐ ')
 
         if station in metro_stops:
             mode = '0'
