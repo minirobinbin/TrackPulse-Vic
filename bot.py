@@ -852,7 +852,7 @@ async def stationphoto(ctx, station:str):
         # routes:
         routelines = ''
         for route in data['stop']['routes']:    
-            routelines += f'{route['route_name']}\n'
+            routelines += f'{route["route_name"]}\n'
         
         embed= discord.Embed(title=f'{getModeEmoji(mode)} {station.title()} Station', description=suburb)
         embed.add_field(name='Services', value=f'''🚻 Toilet: {yesOrNo(toilet)}\n⌚ Waiting Room: {yesOrNo(waitingRoom)}\n☕ Kiosk: {yesOrNo(kiosk)}\n📞 Payphone: {yesOrNo(phone)}''', inline=False)
@@ -1567,6 +1567,9 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="City Circle", value="City Circle"),
     ]
 )
 @app_commands.describe(time="DO NOT USE, IN ACTIVE DEVELOPMENT!!! The time you want to search the departures from (use 24hr time format)")
@@ -1704,7 +1707,7 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                if run_ref.startswith('9') and mode == 0:
+                if run_ref.startswith('9') and mode == '0':
                     TDN = RunIDtoTDN(run_ref)
                 else:
                     TDN = run_ref
@@ -2705,7 +2708,7 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        image = getTramImage(f'{type.replace('-Class','')}.{number}')
+        image = getTramImage(f'{type.replace("-Class","")}.{number}')
         if image != None:
             embed.set_thumbnail(url=image)
 
@@ -3218,7 +3221,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         if image == None:
                             # thing to find image:
                             await printlog(f"Finding image for {row[2].replace('-Class','')}.{row[1]}")
-                            image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
+                            image = getTramImage(f'{row[2].replace("-Class","")}.{row[1]}')
                                         
                         # Make the embed
                         if row[4] in vLineLines:
@@ -3388,7 +3391,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         
                         # thing to find image:
                         await printlog(f"Finding image for {number}")
-                        image = getTramImage(f'{row[2].replace('-Class','')}.{row[1]}')
+                        image = getTramImage(f'{row[2].replace("-Class","")}.{row[1]}')
                                         
                         #send in thread to reduce spam!
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
@@ -4695,7 +4698,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
-            download_csv(csv_url, save_location)
+            await download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
