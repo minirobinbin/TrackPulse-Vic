@@ -1243,8 +1243,8 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
             # await task
             
 # search run id   
-@search.command(name="td-number", description="Shows the run for a specific TDN, found in the departures command")
-@app_commands.describe(td="TD Number", mode="Mode of transport to search TDN for")
+@search.command(name="run", description="Shows the run for a specific TDN, found in the departures command")
+@app_commands.describe(number="Run ID/TD Number", mode="Mode of transport to search run for")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Metro", value="metro"),
         # app_commands.Choice(name="V/Line", value="vline"),
@@ -1253,30 +1253,34 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
         # app_commands.Choice(name="Night Bus", value="nightbus"),
         
 ])
-async def runidsearch(ctx, td:str, mode:str="metro"):
+async def runidsearch(ctx, number:str, mode:str='metro'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
-        runid = "9"+TDNtoRunID(td)
         try:
-            runData = getTrainLocationFromID(str(runid))
             line = ""
             if mode == "metro":
+                runid = "9"+TDNtoRunID(number)
+                runData = getTrainLocationFromID(str(runid))
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 0)
                 await printlog('Mode is metro')
             elif mode == "tram":
+                runData = getTrainLocationFromID(str(number))
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 1)
                 await printlog('Mode is tram')
             elif mode == "bus":
+                runData = getTrainLocationFromID(str(number))
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 2)
                 await printlog('Mode is bus')
             elif mode == "vline":
+                runData = getTrainLocationFromID(str(number))
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 3)
                 await printlog('Mode is vline')
                 async def strip_station_name(name):
                     return name.replace('Railway Station', '').strip()
                     
             elif mode == "nightbus":
+                runData = getTrainLocationFromID(str(number))
                 stoppingPattern = getStoppingPatternFromRunRef(runData, 4)
                 await printlog('Mode is nightbus')
 
@@ -1321,7 +1325,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             elif mode == "bus" or mode == 'nightbus':
                 colour = bus_colour
             
-            embed = discord.Embed(title=f"{td}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"{number}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -1395,7 +1399,7 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
             await ctx.edit_original_response(content='No trip data available.')   
             print(f'ErROR: {e}') 
             print(traceback.format_exc())  
-            await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
+            # await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
 
     # Run transportVicSearch in a separate thread
         
@@ -1572,6 +1576,7 @@ async def departures(ctx, stop: str, line:str='all'):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
+        station = station.strip('⭐ ')
 
         if station in metro_stops:
             mode = '0'
@@ -1682,7 +1687,7 @@ async def departures(ctx, stop: str, line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                if run_ref.startswith('9'):
+                if run_ref.startswith('9') and mode == 0:
                     TDN = RunIDtoTDN(run_ref)
                 else:
                     TDN = run_ref
@@ -1704,7 +1709,7 @@ async def departures(ctx, stop: str, line:str='all'):
                 if mode == '0':
                     embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 elif mode in ['1', '2']: 
-                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})")
+                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -4727,7 +4732,7 @@ async def synclists(ctx):
             await ctx.send(f"Error: `{e}`")
 
     else:
-        print(f'{str(ctx.author.id)} tried to restart the bot.')
+        print(f'{str(ctx.author.id)} tried to update stop data.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
@@ -4764,7 +4769,7 @@ async def update(ctx):
             await printlog(f'{str(ctx.author.id)} tried to update the bot.')
             await ctx.send("You are not authorized to use this command.")
     else:
-        await ctx.send("Automatic updates are not supported on this bot.")
+        await ctx.send("Remote updates are not enabled")
     
 # important
 bot.run(BOT_TOKEN)
