@@ -4681,7 +4681,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
         await ctx.send(f"Downloading trainset data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
-            download_csv(csv_url, save_location)
+            await download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
