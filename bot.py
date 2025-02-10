@@ -17,6 +17,9 @@
 
 from calendar import c
 from math import e
+from numbers import Number
+import operator
+from shutil import ExecError
 from tracemalloc import stop
 from cycler import V
 from discord.ext import commands, tasks
@@ -1390,8 +1393,8 @@ async def runidsearch(ctx, td:str, mode:str="metro"):
 
         except Exception as e:
             await ctx.edit_original_response(content='No trip data available.')   
-            await printlog(f'ErROR: {e}') 
-            await printlog(traceback.format_exc())  
+            print(f'ErROR: {e}') 
+            print(traceback.format_exc())  
             await log_channel.send(f'Error: ```{e}```\n with finding train run ran by {ctx.user.mention}\n<@{USER_ID}>')
 
     # Run transportVicSearch in a separate thread
@@ -4739,7 +4742,7 @@ async def restart(ctx):
         os.system('python bot.py')
 
     else:
-        await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
+        print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
