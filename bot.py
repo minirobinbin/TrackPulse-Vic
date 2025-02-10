@@ -1253,13 +1253,13 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
 @app_commands.describe(number="Run ID/TD Number", mode="Mode of transport to search run for")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Metro", value="metro"),
-        app_commands.Choice(name="V/Line", value="vline"),
-        app_commands.Choice(name="Tram", value="tram"),
-        app_commands.Choice(name="Bus", value="bus"),
+        # app_commands.Choice(name="V/Line", value="vline"),
+        # app_commands.Choice(name="Tram", value="tram"),
+        # app_commands.Choice(name="Bus", value="bus"),
         # app_commands.Choice(name="Night Bus", value="nightbus"),
         
 ])
-async def runidsearch(ctx, number:str, mode:str):
+async def runidsearch(ctx, number:str, mode:str='metro'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'runid-search')
     async def addmap():
