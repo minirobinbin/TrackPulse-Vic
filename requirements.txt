@@ -1,14 +1,13 @@
+discord.py
 requests
 beautifulsoup4
 selenium
-webdriver-manager
 discord.py
 python-dotenv
 matplotlib
 numpy
 pandas
 seaborn
-pandas
 Pillow
 staticmap
 pathlib2
