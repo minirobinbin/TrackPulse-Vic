@@ -1567,6 +1567,9 @@ async def station_autocompletion(
         app_commands.Choice(name="Sunbury", value="Sunbury"),
         app_commands.Choice(name="Upfield", value="Upfield"),
         app_commands.Choice(name="Werribee", value="Werribee"),
+        app_commands.Choice(name="Williamstown", value="Williamstown"),
+        app_commands.Choice(name="Flemington Racecourse", value="Flemington Racecourse"),
+        app_commands.Choice(name="City Circle", value="City Circle"),
     ]
 )
 
