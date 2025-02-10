@@ -1687,7 +1687,7 @@ async def departures(ctx, stop: str, line:str='all'):
                 trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
-                if run_ref.startswith('9') and mode == 0:
+                if run_ref.startswith('9') and mode == '0':
                     TDN = RunIDtoTDN(run_ref)
                 else:
                     TDN = run_ref
