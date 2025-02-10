@@ -1572,10 +1572,11 @@ async def station_autocompletion(
         app_commands.Choice(name="City Circle", value="City Circle"),
     ]
 )
+@app_commands.describe(time="DO NOT USE, IN ACTIVE DEVELOPMENT!!! The time you want to search the departures from (use 24hr time format)")
 
 # test
-async def departures(ctx, stop: str, line:str='all'):
-    async def nextdeps(station):
+async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
+    async def nextdeps(station, time):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
@@ -1615,7 +1616,23 @@ async def departures(ctx, stop: str, line:str='all'):
                 stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
                 await printlog(f'STOP ID for {station} Station: {stop_id}')'''
 
-            
+        timecopy = time
+        try:
+            int(timecopy.replace(':', ''))
+        except Exception as e:
+            await printlog(e)
+            time = "N/A"
+
+        if time == 'N/A':
+            final_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+        else:
+            date = datetime.today().strftime('%Y-%m-%d')
+            date = date + ' '
+            time = time + ':00.000000+00:00'
+            time = date + time
+            final_time = datetime.fromisoformat(time).replace(tzinfo=timezone.utc)
+        await printlog(final_time)
+
         # get departures for the stop:
         depsData = departures_api_request(stop_id, mode)
         # vlineDepsData = departures_api_request(stop_id, 3)
@@ -1656,7 +1673,7 @@ async def departures(ctx, stop: str, line:str='all'):
         for departure in departures:
             route_id= departure['route_id'] 
             scheduled_departure_utc = departure['scheduled_departure_utc']
-            if isPast(scheduled_departure_utc):
+            if isPast(scheduled_departure_utc, final_time):
                 # await printlog(f"time in past")
                 pass
             else:
@@ -1736,7 +1753,7 @@ async def departures(ctx, stop: str, line:str='all'):
 
         await ctx.edit_original_response(embed=embed)          
 
-    asyncio.create_task(nextdeps(stop))
+    asyncio.create_task(nextdeps(stop, time))
     
     
 # ptv api search command
