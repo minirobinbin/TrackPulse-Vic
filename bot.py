@@ -4724,7 +4724,7 @@ async def synclists(ctx):
             await ctx.send(f"Error: `{e}`")
 
     else:
-        await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
+        print(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
