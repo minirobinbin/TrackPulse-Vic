@@ -1597,7 +1597,7 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
         station = station.strip('⭐ ')
-        await printlog(f'{ctx.user.mention} ran departures for {station} at time {time} in channel {ctx.channel.mention}')
+        await printlog(f'{ctx.user.name} ran departures for {station} at time {time} in channel {ctx.channel.mention}')
         
         # add leading 0 to time
         if len(time) == 4:
@@ -1648,7 +1648,7 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
         except Exception as e:
             await printlog(e)
         try: # this will see if its a valid time
-            await print(final_time)
+            print(final_time)
         except UnboundLocalError:
             await ctx.edit_original_response(content=f'Invalid time: {timecopy}')
             dt = datetime.fromisoformat(str(datetime.today()))
