@@ -1591,7 +1591,7 @@ async def time_autocompletion(
 @app_commands.autocomplete(time=time_autocompletion)
 
 # test
-async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-%M')), line:str='all'):
+async def departures(ctx, stop: str, time:str=str(datetime.now().strftime('%H:%M')), line:str='all'):
     async def nextdeps(station, time):
         channel = ctx.channel
         await ctx.response.defer()
@@ -1626,16 +1626,6 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
         if stop_id == 'None':
             await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
             return
-        
-        '''if stop_id == 'None':
-            # await ctx.channel.send("Station not found, trying for V/LINE")
-            search = search_api_request(f'{Nstation.title()}%20Railway%20Station')
-            if station.title().endswith('Station'):
-                stop_id = find_stop_id(search, f"{station.title()}")
-                await printlog(f'STOP ID for {station}: {stop_id}')
-            else:
-                stop_id = find_stop_id(search, f"{station.title()} Railway Station ")
-                await printlog(f'STOP ID for {station} Station: {stop_id}')'''
 
         timecopy = time
         try:
@@ -1659,14 +1649,10 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
 
         # get departures for the stop:
         depsData = departures_api_request(stop_id, mode)
-        # vlineDepsData = departures_api_request(stop_id, 3)
         try:
             departures = depsData['departures']
             runs = depsData['runs']
             routes = depsData['routes']
-            # V/Line
-            # Vdepartures = vlineDepsData['departures']
-            # Vruns = vlineDepsData['runs']
         except:
             await ctx.edit_original_response(content=f"Cannot find departures for {station.title()}")
             return
@@ -1740,8 +1726,6 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
                 route_name = get_route_name(route_id)                
-                
-                #VLINE PLATFORMS DONT WORK PLS HELP
                 
                 # thing for stony point
                 if route_name == "Stony Point":
@@ -4739,7 +4723,7 @@ async def syncgame(ctx):
         await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
-            download_csv(csv_url, save_location)
+            await download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
@@ -4749,7 +4733,7 @@ async def syncgame(ctx):
         await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
         try:
-            download_csv(csv_url, save_location)
+            await download_csv(csv_url, save_location)
             await ctx.send(f"Success!")
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
