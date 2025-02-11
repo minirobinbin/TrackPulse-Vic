@@ -40,6 +40,7 @@ import traceback
 import os
 from pathlib import Path
 import git
+import pandas as pd
 
 from commands.help import helpCommand
 from utils import trainset
@@ -1545,6 +1546,20 @@ async def station_autocompletion(
             suggestions.append(app_commands.Choice(name=station, value=station))
     return suggestions[:25]
 
+async def time_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    # Get favourites list
+    times = list(pd.date_range("00:00", "23:59", freq="1min").strftime('%H:%M'))
+    suggestions = []
+    
+    # Add matching time
+    for time in times:
+        if current.lower() in time.lower():
+            suggestions.append(app_commands.Choice(name=time, value=time))
+    return suggestions[:25]
+
 @bot.tree.command(name="departures", description="Upcoming departures for a stop")
 @app_commands.describe(stop="Station/Stop name")
 @app_commands.autocomplete(stop=station_autocompletion)
@@ -1573,6 +1588,7 @@ async def station_autocompletion(
     ]
 )
 @app_commands.describe(time="The time you want to search the departures from (use 24hr time format)")
+@app_commands.autocomplete(time=time_autocompletion)
 
 # test
 async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
