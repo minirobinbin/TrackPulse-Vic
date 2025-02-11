@@ -431,6 +431,7 @@ async def on_ready():
     else:
         await printlog("Bot restarted")
         channel = bot.get_channel(int(file))
+        await channel.send("Bot restarted")
         with open('restart.txt', 'w') as file:
                 file.write('')
 
