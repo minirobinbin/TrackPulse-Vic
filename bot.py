@@ -1623,17 +1623,20 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
             await printlog(e)
             time = "N/A"
 
-        if time == 'N/A':
-            dt = datetime.fromisoformat(str(datetime.today()))
-            dt = dt.astimezone()
+        try:
+            if time == 'N/A':
+                dt = datetime.fromisoformat(str(datetime.today()))
+                dt = dt.astimezone()
+                final_time = dt.astimezone(timezone.utc)
+            else:
+                date = datetime.today().strftime('%Y-%m-%d')
+                date = date + ' '
+                time = date + time
+                dt = datetime.fromisoformat(time)
+                dt = dt.astimezone()
             final_time = dt.astimezone(timezone.utc)
-        else:
-            date = datetime.today().strftime('%Y-%m-%d')
-            date = date + ' '
-            time = date + time
-            dt = datetime.fromisoformat(time)
-            dt = dt.astimezone()
-            final_time = dt.astimezone(timezone.utc)
+        except Exception as e:
+            await printlog(e)
         await printlog(final_time)
 
         # get departures for the stop:
