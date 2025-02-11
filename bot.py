@@ -1572,7 +1572,7 @@ async def station_autocompletion(
         app_commands.Choice(name="City Circle", value="City Circle"),
     ]
 )
-@app_commands.describe(time="DO NOT USE, IN ACTIVE DEVELOPMENT!!! The time you want to search the departures from (use 24hr time format)")
+@app_commands.describe(time="The time you want to search the departures from (use 24hr time format)")
 
 # test
 async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
@@ -1623,15 +1623,23 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
             await printlog(e)
             time = "N/A"
 
-        if time == 'N/A':
-            final_time = datetime.utcnow().replace(tzinfo=timezone.utc)
-        else:
-            date = datetime.today().strftime('%Y-%m-%d')
-            date = date + ' '
-            time = time + ':00.000000+00:00'
-            time = date + time
-            final_time = datetime.fromisoformat(time).replace(tzinfo=timezone.utc)
+        try:
+            if time == 'N/A':
+                dt = datetime.fromisoformat(str(datetime.today()))
+                dt = dt.astimezone()
+                final_time = dt.astimezone(timezone.utc)
+            else:
+                date = datetime.today().strftime('%Y-%m-%d')
+                date = date + ' '
+                time = date + time
+                dt = datetime.fromisoformat(time)
+                dt = dt.astimezone()
+                final_time = dt.astimezone(timezone.utc)
+        except Exception as e:
+            await printlog(e)
         await printlog(final_time)
+
+        start_time = convert_iso_to_unix_time(final_time)
 
         # get departures for the stop:
         depsData = departures_api_request(stop_id, mode)
@@ -1651,18 +1659,18 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
         # make embed with data
         if line == "all" and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()}", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif line != 'all' and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} on the {line} line", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} on the {line} line after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Next Metro trains departing {station.title()} Station on the {line} line", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station on the {line} line after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif mode == '1':
-            embed= discord.Embed(title=f"Next trams departing {station.title()}", timestamp=discord.utils.utcnow(), color=tram_colour)
+            embed= discord.Embed(title=f"Trams departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(), color=tram_colour)
         elif mode == '2':
-            embed= discord.Embed(title=f"Next busses departing {station.title()}", timestamp=discord.utils.utcnow(), color=bus_colour)
+            embed= discord.Embed(title=f"Busses departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(), color=bus_colour)
 
 
         fields = 0
