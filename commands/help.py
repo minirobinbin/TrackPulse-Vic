@@ -82,6 +82,7 @@ Required:
     Stop: the station/stop you wish to see the departures from. You must choose from the list.
 
 Optional:
+    Time: if you want to see departures starting at a certain time, you can select that time.
     Line: if you wish to only see departures for services going along a specific line, you may select that line. You must choose from the list.''',
         '/favourite add': '''</favourite add:1332262464867536906> is a command that allows you to "favourite" a station or stop so that you can easily find it in the /log commands and the </departures:1288002114466877529> command.
 **Options:**
