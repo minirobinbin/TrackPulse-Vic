@@ -17,8 +17,13 @@ def convert_iso_to_unix_time(iso_time: str, format=None) -> str:
     if iso_time == "Skipped":
         return "Skipped"
     # Parse the ISO 8601 formatted time string
-    date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
-
+    try:
+        date = datetime.datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
+    except:
+        try:
+            date = iso_time
+        except Exception as e:
+            print(e)
     # Convert to the computer's current timezone
     date_local = date.astimezone()
 

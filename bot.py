@@ -1597,6 +1597,10 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
         station = station.strip('⭐ ')
+        
+        # add leading 0 to time
+        if len(time) == 4:
+            time = '0' + time
 
         if station in metro_stops:
             mode = '0'
@@ -1653,9 +1657,12 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
                 final_time = dt.astimezone(timezone.utc)
         except Exception as e:
             await printlog(e)
-        await printlog(final_time)
+        try: # this will see if its a valid time
+            await printlog(final_time)
+        except UnboundLocalError:
+            await ctx.edit_original_response(content=f'Invalid time: {time}')
 
-        start_time = convert_iso_to_unix_time(final_time)
+        start_time = convert_iso_to_unix_time(final_time, 'short-time')
 
         # get departures for the stop:
         depsData = departures_api_request(stop_id, mode)
@@ -1675,18 +1682,18 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
         # make embed with data
         if line == "all" and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif line != 'all' and mode == "0":
             if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} on the {line} line after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
             else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station on the {line} line after <t:{start_time}R>", timestamp=discord.utils.utcnow(),color=metro_colour)
+                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
         elif mode == '1':
-            embed= discord.Embed(title=f"Trams departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(), color=tram_colour)
+            embed= discord.Embed(title=f"Trams departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=tram_colour)
         elif mode == '2':
-            embed= discord.Embed(title=f"Busses departing {station.title()} after <t:{start_time}R>", timestamp=discord.utils.utcnow(), color=bus_colour)
+            embed= discord.Embed(title=f"Busses departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=bus_colour)
 
 
         fields = 0
