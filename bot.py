@@ -1640,7 +1640,7 @@ async def departures(ctx, stop: str, time:str=str(datetime.now().strftime('%H:%M
         try: # this will see if its a valid time
             await printlog(final_time)
         except UnboundLocalError:
-            await ctx.edit_original_response(content=f'Invalid time: {timecopy}')
+            await ctx.edit_original_response(content=f'Invalid time: `{timecopy}`, loading current departures <a:botloading2:1261102206468362381>')
             dt = datetime.fromisoformat(str(datetime.today()))
             dt = dt.astimezone()
             final_time = dt.astimezone(timezone.utc)
@@ -1759,7 +1759,7 @@ async def departures(ctx, stop: str, time:str=str(datetime.now().strftime('%H:%M
             else:
                 embed.set_footer(text=f"V/Line departures are unavailable")
 
-        await ctx.edit_original_response(embed=embed)          
+        await ctx.edit_original_response(embed=embed, content='')          
 
     asyncio.create_task(nextdeps(stop, time))
     
