@@ -431,6 +431,7 @@ async def on_ready():
     else:
         await printlog("Bot restarted")
         channel = bot.get_channel(int(file))
+        await channel.send("Bot restarted")
         with open('restart.txt', 'w') as file:
                 file.write('')
 
@@ -1591,17 +1592,13 @@ async def time_autocompletion(
 @app_commands.autocomplete(time=time_autocompletion)
 
 # test
-async def departures(ctx, stop: str, time:str=str(datetime.now().strftime('%H:%M')), line:str='all'):
+async def departures(ctx, stop: str, time:str="none", line:str='all'):
     async def nextdeps(station, time):
         channel = ctx.channel
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
         station = station.strip('⭐ ')
-        await printlog(f'{ctx.user.name} ran departures for {station} at time {time} in channel {ctx.channel.mention}')
-        
-        # add leading 0 to time
-        if len(time) == 4:
-            time = '0' + time
+        await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()} in channel {ctx.channel.mention}')
 
         if station in metro_stops:
             mode = '0'
@@ -1628,22 +1625,30 @@ async def departures(ctx, stop: str, time:str=str(datetime.now().strftime('%H:%M
             return
 
         timecopy = time
-        try:
-            date = datetime.today().strftime('%Y-%m-%d')
-            date = date + ' '
-            time = date + time
-            dt = datetime.fromisoformat(time)
-            dt = dt.astimezone()
-            final_time = dt.astimezone(timezone.utc)
-        except Exception as e:
-            await printlog(e)
-        try: # this will see if its a valid time
-            await printlog(final_time)
-        except UnboundLocalError:
-            await ctx.edit_original_response(content=f'Invalid time: `{timecopy}`, loading current departures <a:botloading2:1261102206468362381>')
+        if time == "none":
             dt = datetime.fromisoformat(str(datetime.today()))
             dt = dt.astimezone()
             final_time = dt.astimezone(timezone.utc)
+        else:
+            try:
+                # add leading 0 to time
+                if len(time) == 4:
+                    time = '0' + time
+                date = datetime.today().strftime('%Y-%m-%d')
+                date = date + ' '
+                time = date + time
+                dt = datetime.fromisoformat(time)
+                dt = dt.astimezone()
+                final_time = dt.astimezone(timezone.utc)
+            except Exception as e:
+                await printlog(e)
+            try: # this will see if its a valid time
+                await printlog(final_time)
+            except UnboundLocalError:
+                await ctx.edit_original_response(content=f'Invalid time: `{timecopy}`, loading current departures <a:botloading2:1261102206468362381>')
+                dt = datetime.fromisoformat(str(datetime.today()))
+                dt = dt.astimezone()
+                final_time = dt.astimezone(timezone.utc)
 
         start_time = convert_iso_to_unix_time(final_time, 'short-time')
 
