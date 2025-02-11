@@ -1572,7 +1572,7 @@ async def station_autocompletion(
         app_commands.Choice(name="City Circle", value="City Circle"),
     ]
 )
-@app_commands.describe(time="DO NOT USE, IN ACTIVE DEVELOPMENT!!! The time you want to search the departures from (use 24hr time format)")
+@app_commands.describe(time="The time you want to search the departures from (use 24hr time format)")
 
 # test
 async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
@@ -1624,13 +1624,16 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
             time = "N/A"
 
         if time == 'N/A':
-            final_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+            dt = datetime.fromisoformat(str(datetime.today()))
+            dt = dt.astimezone()
+            final_time = dt.astimezone(timezone.utc)
         else:
             date = datetime.today().strftime('%Y-%m-%d')
             date = date + ' '
-            time = time + ':00.000000+00:00'
             time = date + time
-            final_time = datetime.fromisoformat(time).replace(tzinfo=timezone.utc)
+            dt = datetime.fromisoformat(time)
+            dt = dt.astimezone()
+            final_time = dt.astimezone(timezone.utc)
         await printlog(final_time)
 
         # get departures for the stop:
