@@ -1648,7 +1648,7 @@ async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-
         except Exception as e:
             await printlog(e)
         try: # this will see if its a valid time
-            print(final_time)
+            await printlog(final_time)
         except UnboundLocalError:
             await ctx.edit_original_response(content=f'Invalid time: {timecopy}')
             dt = datetime.fromisoformat(str(datetime.today()))
