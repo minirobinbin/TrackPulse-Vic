@@ -1634,7 +1634,7 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
                 time = date + time
                 dt = datetime.fromisoformat(time)
                 dt = dt.astimezone()
-            final_time = dt.astimezone(timezone.utc)
+                final_time = dt.astimezone(timezone.utc)
         except Exception as e:
             await printlog(e)
         await printlog(final_time)
