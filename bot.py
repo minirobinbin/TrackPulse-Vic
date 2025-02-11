@@ -1591,7 +1591,7 @@ async def time_autocompletion(
 @app_commands.autocomplete(time=time_autocompletion)
 
 # test
-async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
+async def departures(ctx, stop: str, time:str=str(datetime.today().strftime('%h-%M')), line:str='all'):
     async def nextdeps(station, time):
         channel = ctx.channel
         await ctx.response.defer()
@@ -1639,29 +1639,21 @@ async def departures(ctx, stop: str, time:str='N/A', line:str='all'):
 
         timecopy = time
         try:
-            int(timecopy.replace(':', ''))
-        except Exception as e:
-            await printlog(e)
-            time = "N/A"
-
-        try:
-            if time == 'N/A':
-                dt = datetime.fromisoformat(str(datetime.today()))
-                dt = dt.astimezone()
-                final_time = dt.astimezone(timezone.utc)
-            else:
-                date = datetime.today().strftime('%Y-%m-%d')
-                date = date + ' '
-                time = date + time
-                dt = datetime.fromisoformat(time)
-                dt = dt.astimezone()
-                final_time = dt.astimezone(timezone.utc)
+            date = datetime.today().strftime('%Y-%m-%d')
+            date = date + ' '
+            time = date + time
+            dt = datetime.fromisoformat(time)
+            dt = dt.astimezone()
+            final_time = dt.astimezone(timezone.utc)
         except Exception as e:
             await printlog(e)
         try: # this will see if its a valid time
             await print(final_time)
         except UnboundLocalError:
-            await ctx.edit_original_response(content=f'Invalid time: {time}')
+            await ctx.edit_original_response(content=f'Invalid time: {timecopy}')
+            dt = datetime.fromisoformat(str(datetime.today()))
+            dt = dt.astimezone()
+            final_time = dt.astimezone(timezone.utc)
 
         start_time = convert_iso_to_unix_time(final_time, 'short-time')
 
