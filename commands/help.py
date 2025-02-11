@@ -6,7 +6,7 @@ async def helpCommand(ctx,category,command):
         "search": [
             "</search train:1240101357847838814> - Shows information about a specific train. For multiple units use the carriage number otherwise use the locomotive number. Will show live tracking info if avaliable",
             "</departures:1288002114466877529> - Shows the next Metro trains departing a station. Includes information about which exact train is running the service.",
-            "</search td-number:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
+            "</search run:1240101357847838814> - Shows the run for a TD number. You can find a TDN from the departures command. Currently only Metro is supported.",
             "</search tram:1240101357847838814> - Shows information about a specific tram.",
             "</line-status:1322429532757819473> - Shows disruption information for Rail Operator",
             "</disruptions:1331565431965745186> - Shows disruption information for a Train line.",
@@ -263,7 +263,7 @@ Required:
 
 Required:
     Station: input the Number of the train you're searching. You can choose from the list or type your own.''',
-        '/search td-number': '''</search td-number:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
+        '/search run': '''</search run:1240101357847838814> is a command that allows you to search the details of a specific Metro service that ran/is running/will run today. You can get the TDN for the service from </departures:1288002114466877529>.
 
 **Options:**
 
