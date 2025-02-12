@@ -1085,19 +1085,24 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
             async def checkTrainRidden(variable, file_path):
                 if not os.path.exists(file_path):
                     await printlog(f"The file {file_path} does not exist.")
-                    return False
+                    return False, []
 
+                log_ids = []
                 with open(file_path, mode='r') as file:
                     csv_reader = csv.reader(file)
                     for row in csv_reader:
                         if row[1] == variable:
-                            return True
-                return False 
+                            log_ids.append(row[0])
+                
+                return bool(log_ids), log_ids
         
             fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
             trainridden = checkTrainRidden(set, fPath)
             if trainridden:
-                infoData +='\n\n✅ You have been on this train before'
+                result, log_ids = await trainridden
+                if result:
+                    log_ids_str = ', '.join([f'`{id}`' for id in log_ids])
+                    infoData += f'\n\n✅ You have been on this train before (Log IDs: {log_ids_str})'
                 
             embed.add_field(name='Information', value=infoData)
         else:
