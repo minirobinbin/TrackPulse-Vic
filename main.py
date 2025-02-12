@@ -6,7 +6,9 @@
 from utils.stoppingpattern import *
 import asyncio
 
+from utils.trainlogger.stationDistance import getStationDistance, load_station_data
 from utils.trainlogger.stats import getLongestTrips
 # # from ptv.client import PTVClient
 
-print(getLongestTrips('xm9g'))
+
+print(getStationDistance(load_station_data('utils/trainlogger/stationDistances.csv'), 'Ringwood','Flinders Street'))
