@@ -2477,7 +2477,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     await ctx.response.defer()
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
-    async def log():
+    async def log(notes):
         await printlog("logging the thing")
 
         savedate = date.split('/')
@@ -2519,6 +2519,13 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
             type = trainType(number.upper())
+            
+        # Strip emojis and newlines from notes if provided
+        if notes:
+            # Remove emojis using regex
+            notes = re.sub(r'[^\x00-\x7F]+', '', notes)
+            # Remove newlines
+            notes = notes.replace('\n', ' ')
                 
             
         # Add train to the list
@@ -2577,7 +2584,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         
                         
     # Run in a separate task
-    asyncio.create_task(log())
+    asyncio.create_task(log(notes))
 
     
 #thing to delete the stuff
