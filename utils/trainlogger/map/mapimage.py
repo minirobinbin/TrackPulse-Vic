@@ -17,7 +17,7 @@ class MapImageHandler:
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (3304, 1160, 3699, 1070),
+                ("Flagstaff", "Parliament"): (3300, 1081, 3692, 1162),
             }
         }
         self.station_order = station_order_dictionary
