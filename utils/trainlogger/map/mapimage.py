@@ -2,22 +2,25 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
+x_offset = 0
+y_offset = 0
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            "Parliament": (3630, 1303, 4398, 1457),
-            "Jolimont": (4537, 1714, 5142, 1930),
-            "Richmond": (4225, 2789, 4921, 2924),
-            "Flinders Street": (2439, 2784, 3519, 2943),
-            "Southern Cross": (67, 1291, 1161, 1454),
-            "Melbourne Central": (2611, 312, 3365, 662),
-            "Flagstaff": (2328, 14, 2535, 672),
-            "North Melbourne": (14, 379, 1171, 576),
+            "Parliament": (3630 + x_offset, 1303 + y_offset, 4398 + x_offset, 1457 + y_offset),
+            "Jolimont": (4537 + x_offset, 1714 + y_offset, 5142 + x_offset, 1930 + y_offset),
+            "Richmond": (4225 + x_offset, 2789 + y_offset, 4921 + x_offset, 2924 + y_offset),
+            "Flinders Street": (2439 + x_offset, 2784 + y_offset, 3519 + x_offset, 2943 + y_offset),
+            "Southern Cross": (67 + x_offset, 1291 + y_offset, 1161 + x_offset, 1454 + y_offset),
+            "Melbourne Central": (2611 + x_offset, 312 + y_offset, 3365 + x_offset, 662 + y_offset),
+            "Flagstaff": (2328 + x_offset, 14 + y_offset, 2535 + x_offset, 672 + y_offset),
+            "North Melbourne": (14 + x_offset, 379 + y_offset, 1171 + x_offset, 576 + y_offset),
         }
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (3300, 1081, 3692, 1162),
+                ("Flagstaff", "Parliament"): (3300 + x_offset, 1081 + y_offset, 3692 + x_offset, 1162 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
@@ -133,7 +136,7 @@ class CoordinateFinder:
         original_y1 = int(self.start_y / self.scale)
         original_x2 = int(event.x / self.scale)
         original_y2 = int(event.y / self.scale)
-        print(f"Coordinates: ({original_x1}, {original_y1}, {original_x2}, {original_y2})")
+        print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset}, {original_y2 - y_offset})")
         
     def run(self):
         self.root.mainloop()
