@@ -7,7 +7,7 @@ class MapImageHandler:
         self.station_coordinates = {
             # Add station coordinates (x1, y1, x2, y2) for rectangular areas
             # Example format:
-            "Parliament": (1933, 582, 2612, 766),
+            "Parliament": (3630, 1303, 4398, 1457),
             # Add more stations and their coordinates
         }
         self.map_image = Image.open(map_image_path)
