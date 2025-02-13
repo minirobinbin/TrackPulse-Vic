@@ -3,10 +3,8 @@ import tkinter as tk
 from PIL import ImageTk
 
 class MapImageHandler:
-    def __init__(self, map_image_path):
+    def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            # Add station coordinates (x1, y1, x2, y2) for rectangular areas
-            # Example format:
             "Parliament": (3630, 1303, 4398, 1457),
             "Jolimont": (4537, 1714, 5142, 1930),
             "Richmond": (4225, 2789, 4921, 2924),
@@ -15,8 +13,14 @@ class MapImageHandler:
             "Melbourne Central": (2611, 312, 3365, 662),
             "Flagstaff": (2328, 14, 2535, 672),
             "North Melbourne": (14, 379, 1171, 576),
-            # Add more stations and their coordinates
         }
+        
+        self.line_coordinates = {
+            "burnley_group": {
+                ("Flagstaff", "Parliament"): (3304, 1160, 3699, 1070),
+            }
+        }
+        self.station_order = station_order_dictionary
         self.map_image = Image.open(map_image_path)
         
     def highlight_stations(self, affected_stations):
@@ -41,6 +45,26 @@ class MapImageHandler:
         
         return modified_map
     
+    def highlight_lines(self, station1, station2, line):
+        # Create a copy of the original image
+        modified_map = self.map_image.copy()
+        draw = ImageDraw.Draw(modified_map)
+        
+        # Check if line exists in line_coordinates
+        if line in self.line_coordinates:
+            # Check if station pair exists in the line
+            station_pair = (station1, station2)
+            if station_pair in self.line_coordinates[line]:
+                coords = self.line_coordinates[line][station_pair]
+                draw.rectangle(coords, fill='white')
+            # Check reverse pair
+            station_pair = (station2, station1)
+            if station_pair in self.line_coordinates[line]:
+                coords = self.line_coordinates[line][station_pair]
+                draw.rectangle(coords, fill='white')
+                
+        return modified_map
+    
     def save_modified_map(self, affected_stations, output_path):
         """
         Saves the modified map with highlighted stations
@@ -50,6 +74,12 @@ class MapImageHandler:
             output_path (str): Path where the modified image will be saved
         """
         modified_map = self.highlight_stations(affected_stations)
+        # Highlight lines between consecutive stations
+        for i in range(len(affected_stations) - 1):
+            station1 = affected_stations[i]
+            station2 = affected_stations[i + 1]
+            for line in self.line_coordinates:
+                modified_map = self.highlight_lines(station1, station2, line)
         modified_map.save(output_path)
         
 
@@ -108,11 +138,7 @@ class CoordinateFinder:
     def run(self):
         self.root.mainloop()
 
-# Usage
-# finder = CoordinateFinder("utils/trainlogger/map/base.png")
-# finder.run()
-        
-# Example usage
-map_handler = MapImageHandler("utils/trainlogger/map/base.png")
-affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont']
-map_handler.save_modified_map(affected_stations, "temp/themap.png")
+# Run coord finder
+# if __name__ == "__main__":
+finder = CoordinateFinder("utils/trainlogger/map/base.png")
+finder.run()
