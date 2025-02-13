@@ -7,7 +7,14 @@ class MapImageHandler:
         self.station_coordinates = {
             # Add station coordinates (x1, y1, x2, y2) for rectangular areas
             # Example format:
-            "Parliament": (1933, 582, 2612, 766),
+            "Parliament": (3630, 1303, 4398, 1457),
+            "Jolimont": (4537, 1714, 5142, 1930),
+            "Richmond": (4225, 2789, 4921, 2924),
+            "Flinders Street": (2439, 2784, 3519, 2943),
+            "Southern Cross": (67, 1291, 1161, 1454),
+            "Melbourne Central": (2611, 312, 3365, 662),
+            "Flagstaff": (2328, 14, 2535, 672),
+            "North Melbourne": (14, 379, 1171, 576),
             # Add more stations and their coordinates
         }
         self.map_image = Image.open(map_image_path)
@@ -107,5 +114,5 @@ class CoordinateFinder:
         
 # Example usage
 map_handler = MapImageHandler("utils/trainlogger/map/base.png")
-affected_stations = ['Parliament']
+affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont']
 map_handler.save_modified_map(affected_stations, "temp/themap.png")
