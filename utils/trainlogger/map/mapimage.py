@@ -20,7 +20,7 @@ class MapImageHandler:
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (3300 + x_offset, 1081 + y_offset, 3692 + x_offset, 1162 + y_offset),
+                ("Flagstaff", "Parliament"): (2500 + x_offset, 750 + y_offset, 2900 + x_offset, 900 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
@@ -143,5 +143,5 @@ class CoordinateFinder:
 
 # Run coord finder
 # if __name__ == "__main__":
-finder = CoordinateFinder("utils/trainlogger/map/base.png")
-finder.run()
+#finder = CoordinateFinder("utils/trainlogger/map/base.png")
+#finder.run()
