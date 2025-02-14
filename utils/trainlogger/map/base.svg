@@ -1,0 +1,1852 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="10000"
+   height="10000"
+   viewBox="0 0 2645.8333 2645.8333"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="log train map.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   inkscape:export-filename=" log train map.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.32153204"
+     inkscape:cx="2483.4228"
+     inkscape:cy="752.64661"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     shape-rendering="auto" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(740.83325,1098.0208)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke-width:2285.67;stroke-linecap:square"
+       id="rect2539"
+       width="1494.8959"
+       height="1164.1666"
+       x="-740.83325"
+       y="-595.3125"
+       inkscape:label="Offset" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke-width:2657.95;stroke-linecap:square"
+       id="rect593"
+       width="1494.8959"
+       height="1574.2709"
+       x="-740.83325"
+       y="-1098.0208"
+       inkscape:label="Background" />
+    <g
+       id="g9073"
+       inkscape:label="Lines"
+       transform="translate(0,-66.14584)">
+      <g
+         id="g1287"
+         inkscape:label="Sandringham">
+        <g
+           id="g8716"
+           inkscape:label="Richmond Junction - Sandringham"
+           transform="matrix(0.1501,0,0,1,237.83395,132.29164)">
+          <rect
+             style="fill:#f17fb1;fill-opacity:1;stroke:none;stroke-width:19.893;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3"
+             width="2645.8333"
+             height="13.229166"
+             x="264.58334"
+             y="343.95834" />
+        </g>
+      </g>
+      <g
+         id="g1283"
+         inkscape:label="Cross City Group">
+        <g
+           id="g8687"
+           inkscape:label="Flinders Street Viaduct - Cross City"
+           transform="translate(-119.06242)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:58.0316;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0"
+             width="608.54169"
+             height="489.47916"
+             x="-79.375"
+             y="-26.458332" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:56.6162;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1-0-2-1"
+             width="595.3125"
+             height="476.25"
+             x="-66.145828"
+             y="-26.458332" />
+        </g>
+        <g
+           id="g8716-1-4-5"
+           inkscape:label="Richmond Junction - Cross City"
+           transform="matrix(0.15,0,0,1,552.998,-29.879491)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:16.2507;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-4"
+             width="1765.6527"
+             height="13.229166"
+             x="-954.38892"
+             y="479.67114" />
+        </g>
+        <g
+           id="g8716-1-4-2-0"
+           inkscape:label="North Melbourne Junction - Cross City"
+           transform="matrix(0.0075,0,0,1.0348769,22.072412,-466.97414)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:47.9528;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-8"
+             width="1763.8889"
+             height="115.30558"
+             x="-29401.311"
+             y="310.61984" />
+        </g>
+        <g
+           id="g1295"
+           inkscape:label="Footscray Line - Cross City"
+           transform="matrix(0.0075,0,0,1.0348769,22.072412,-466.97414)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:93.1552;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1293"
+             width="60042.777"
+             height="12.783324"
+             x="-89408.805"
+             y="310.61984" />
+        </g>
+      </g>
+      <g
+         id="g1274"
+         inkscape:label="Special Event Services">
+        <g
+           id="g8716-1-4-2-4"
+           inkscape:label="North Melbourne Junction - Flemington Racecourse"
+           transform="matrix(0.0075,0,0,1.04,-131.49059,-466.61391)">
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:55.1734;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-2"
+             width="1763.8889"
+             height="152.64423"
+             x="5184.8667"
+             y="257.86191" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:34.9528;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-2-3"
+             width="705.55554"
+             height="153.15305"
+             x="5714.0332"
+             y="257.60751" />
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1666"
+             width="1763.8889"
+             height="6.3601761"
+             x="5184.8672"
+             y="414.32227" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1668"
+             width="705.55554"
+             height="6.8689904"
+             x="5714.0337"
+             y="414.06787" />
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1138"
+             width="1763.8889"
+             height="6.3601761"
+             x="5184.8672"
+             y="248.70325" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1140"
+             width="705.55554"
+             height="6.8689904"
+             x="5714.0337"
+             y="248.44885" />
+        </g>
+        <g
+           id="g8649-6-3"
+           inkscape:label="Flinders Street Viaduct - Flemington Racecourse"
+           transform="translate(-39.68742)">
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:38.5379;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-5-0"
+             width="330.99374"
+             height="396.875"
+             x="-52.916664"
+             y="39.687489" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:37.1251;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1-0-2-3-8"
+             width="317.76459"
+             height="383.64584"
+             x="-39.6875"
+             y="39.687489" />
+          <rect
+             style="fill:#fffffc;fill-opacity:1;stroke-width:109.752;stroke-linecap:square"
+             id="rect2295"
+             width="5.2916665"
+             height="393.17084"
+             x="-49.212498"
+             y="39.687489" />
+          <rect
+             style="fill:#fffffc;fill-opacity:1;stroke-width:99.3235;stroke-linecap:square"
+             id="rect2295-4"
+             width="321.99792"
+             height="5.2916665"
+             x="-43.920834"
+             y="427.30206" />
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-8-5"
+             width="13.229167"
+             height="6.6145835"
+             x="-52.916664"
+             y="29.104156" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.653752;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-8-8-6"
+             width="5.2916665"
+             height="7.1437497"
+             x="-48.947914"
+             y="28.839573" />
+        </g>
+        <g
+           id="g2808"
+           inkscape:label="Flemington Racecourse Line"
+           transform="matrix(0.0075,0,0,1.04,-131.49059,-704.7389)">
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:63.7088;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2796"
+             width="1763.8889"
+             height="203.52563"
+             x="5184.8667"
+             y="245.14157" />
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:59.6792;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2813"
+             width="24765"
+             height="12.720352"
+             x="-19544.855"
+             y="245.14157" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:39.9388;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2798"
+             width="705.55554"
+             height="199.96394"
+             x="5714.0332"
+             y="248.95767" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:38.1189;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2810"
+             width="25258.889"
+             height="5.088141"
+             x="-19509.578"
+             y="248.95767" />
+          <rect
+             style="fill:#8a8c8f;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2800"
+             width="1763.8889"
+             height="6.3601761"
+             x="5184.8672"
+             y="452.48331"
+             inkscape:label="rect2800" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2802"
+             width="705.55554"
+             height="6.8689904"
+             x="5714.0337"
+             y="452.22891" />
+        </g>
+      </g>
+      <g
+         id="g2334"
+         inkscape:label="V/Line SG">
+        <g
+           id="g8649-6-9"
+           inkscape:label="North Melbourne Junction - V/Line SG"
+           transform="matrix(1,0,0,1.0664894,13.229253,34.392298)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:3.34197;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-5-3"
+             width="13.229166"
+             height="74.674515"
+             x="-132.29167"
+             y="4.9650679" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke-width:47.8314;stroke-linecap:square"
+             id="rect2295-1-9"
+             width="5.2916665"
+             height="74.674515"
+             x="-128.29646"
+             y="4.9650679" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:4.71841;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1485"
+             width="13.229166"
+             height="148.85286"
+             x="-132.29167"
+             y="-218.31421" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke-width:67.5314;stroke-linecap:square"
+             id="rect1487"
+             width="5.2916665"
+             height="148.85284"
+             x="-128.29646"
+             y="-218.31421"
+             inkscape:label="rect1487" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect439"
+             width="13.229167"
+             height="6.2022023"
+             x="-132.29167"
+             y="-228.23775" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect441"
+             width="5.2916665"
+             height="6.2022023"
+             x="-128.32292"
+             y="-228.23775"
+             inkscape:label="rect441" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect443"
+             width="13.229167"
+             height="6.2022023"
+             x="-132.29167"
+             y="-65.740044" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect445"
+             width="5.2916665"
+             height="6.2022023"
+             x="-128.32292"
+             y="-65.740028"
+             inkscape:label="rect441" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect447"
+             width="13.229167"
+             height="6.2022023"
+             x="-132.29167"
+             y="-4.9584565" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect449"
+             width="5.2916665"
+             height="6.2022023"
+             x="-128.32292"
+             y="-4.9584413"
+             inkscape:label="rect441" />
+        </g>
+      </g>
+      <g
+         id="g1258"
+         inkscape:label="V/Line Paper">
+        <g
+           id="g8649-6"
+           inkscape:label="Flinders Street Viaduct - V/Line Paper"
+           transform="translate(-13.229088,39.687489)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:47.4938;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-5"
+             width="502.70831"
+             height="396.875"
+             x="-52.916664"
+             y="-26.458332" />
+          <rect
+             style="fill:#fffffc;fill-opacity:1;stroke-width:109.716;stroke-linecap:square"
+             id="rect2295-1"
+             width="5.2916665"
+             height="392.90625"
+             x="-48.947914"
+             y="-26.458332" />
+          <rect
+             style="fill:#fffffc;fill-opacity:1;stroke-width:122.989;stroke-linecap:square"
+             id="rect2295-4-4"
+             width="493.71249"
+             height="5.2916665"
+             x="-43.920834"
+             y="361.15625" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:46.0767;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1-0-2-3"
+             width="489.47916"
+             height="383.64584"
+             x="-39.6875"
+             y="-26.458332" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-59"
+             width="13.229167"
+             height="13.49375"
+             x="-52.916664"
+             y="-39.687576" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.907264;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-59-9"
+             width="5.2916665"
+             height="13.758333"
+             x="-48.947914"
+             y="-39.952084" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-8"
+             width="13.229167"
+             height="6.6145835"
+             x="-52.916664"
+             y="-50.270832" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.653752;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-8-8"
+             width="5.2916665"
+             height="7.1437497"
+             x="-48.947914"
+             y="-50.535416" />
+        </g>
+        <g
+           id="g8716-1-4-0"
+           inkscape:label="Richmond Junction - V/Line Paper"
+           transform="matrix(0.1503,0,0,1,469.67975,-11.100234)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-5"
+             width="1762.1285"
+             height="13.229166"
+             x="-398.13766"
+             y="407.97522" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:10.2727;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-5-2"
+             width="1763.8889"
+             height="5.2916665"
+             x="-398.13766"
+             y="411.94397" />
+        </g>
+        <g
+           id="g8716-1-4-2-09"
+           inkscape:label="North Melbourne Junction - V/Line Paper"
+           transform="matrix(0.0075,0,0,1.04,-89.604842,-463.98174)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-5-9"
+             width="1763.8889"
+             height="6.3601761"
+             x="3127.8787"
+             y="411.79132" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-5-9-9"
+             width="705.55554"
+             height="6.8689904"
+             x="3657.0452"
+             y="411.53693" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:55.1732;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-5"
+             width="1763.8889"
+             height="152.64423"
+             x="3127.8813"
+             y="255.33099" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:34.9527;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-5-5"
+             width="705.55554"
+             height="153.15305"
+             x="3657.0452"
+             y="255.07658" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1132"
+             width="1763.8889"
+             height="6.3601761"
+             x="3127.877"
+             y="245.15469" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1134"
+             width="705.55554"
+             height="6.8689904"
+             x="3657.0435"
+             y="244.9003" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:45.1052;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-7-9"
+             width="14146.389"
+             height="12.720352"
+             x="-10983.232"
+             y="458.85663" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:28.527;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-7-9-4"
+             width="14146.389"
+             height="5.088141"
+             x="-10454.065"
+             y="462.67273" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:59.6364;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-4-9"
+             width="1763.8889"
+             height="178.33934"
+             x="-10983.232"
+             y="280.7717" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:37.6904;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-4-9-4"
+             width="705.55554"
+             height="178.08493"
+             x="-10454.065"
+             y="284.5878" />
+        </g>
+        <g
+           id="g2366"
+           inkscape:label="Footscray Line - V/Line Paper"
+           transform="matrix(0.0075,0,0,1.04,-565.85484,-649.19006)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:95.5897;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2358"
+             width="63535.277"
+             height="12.720352"
+             x="-10983.232"
+             y="458.85663" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:60.724;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2360"
+             width="64099.723"
+             height="5.088141"
+             x="-11018.511"
+             y="462.67273" />
+        </g>
+        <g
+           id="g3061"
+           inkscape:label="Seymour Line - V/Line Paper"
+           transform="matrix(0.0075,0,0,1.04,-89.604842,-834.3984)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3041"
+             width="1763.8889"
+             height="6.3601761"
+             x="3127.8787"
+             y="577.15588" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3043"
+             width="705.55554"
+             height="6.8689904"
+             x="3657.0452"
+             y="576.90149" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:79.6357;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3045"
+             width="1763.8889"
+             height="318.00882"
+             x="3127.8813"
+             y="255.33099" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:50.4063;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3047"
+             width="705.55554"
+             height="318.51764"
+             x="3657.0452"
+             y="255.07658" />
+        </g>
+      </g>
+      <g
+         id="g1233"
+         inkscape:label="V/Line">
+        <g
+           id="g8649"
+           inkscape:label="Flinders Street Viaduct - V/Line"
+           transform="translate(13.229245)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:46.9912;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5"
+             width="476.25"
+             height="410.10416"
+             x="-52.916664"
+             y="-26.458332" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:45.5803;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1-0-2"
+             width="463.02081"
+             height="396.875"
+             x="-39.6875"
+             y="-26.458332" />
+        </g>
+        <g
+           id="g8716-1-4"
+           inkscape:label="Richmond Junction - V/Line"
+           transform="matrix(0.1503,0,0,1,469.67975,-11.100234)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4"
+             width="1762.1285"
+             height="13.229166"
+             x="-398.13766"
+             y="381.51688" />
+        </g>
+        <g
+           id="g8716-1-4-2"
+           inkscape:label="North Melbourne Junction - V/Line"
+           transform="matrix(0.0075,0,0,1.04,-89.604842,-463.98174)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1128"
+             width="1763.8889"
+             height="6.3601761"
+             x="6655.6592"
+             y="245.15471" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:57.4705;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42"
+             width="1763.8889"
+             height="165.61899"
+             x="6655.6562"
+             y="255.33099" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:45.1051;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-7"
+             width="14146.389"
+             height="12.720352"
+             x="-7455.4546"
+             y="420.69559" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:57.4704;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5-4-42-4"
+             width="1763.8889"
+             height="165.61899"
+             x="-7455.4546"
+             y="255.33099" />
+        </g>
+        <g
+           id="g2344"
+           inkscape:label="Footscray Line - V/Line"
+           transform="matrix(0.0075,0,0,1.04,-89.604842,-463.98174)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:98.2333;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2340"
+             width="67098.336"
+             height="12.720352"
+             x="-74518.508"
+             y="255.33099" />
+        </g>
+        <g
+           id="g3078"
+           inkscape:label="Seymour Line - V/Line Paper"
+           transform="matrix(0.0075,0,0,1.04,-63.146515,-834.3984)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3070"
+             width="1763.8889"
+             height="6.3601761"
+             x="3127.8787"
+             y="577.15588" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:79.6357;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3074"
+             width="1763.8889"
+             height="318.00882"
+             x="3127.8813"
+             y="255.33099" />
+        </g>
+      </g>
+      <g
+         id="g1221"
+         inkscape:label="Dandenong Group">
+        <g
+           id="g8645"
+           inkscape:label="Caulfield Tunnel"
+           transform="translate(13.22917)">
+          <rect
+             style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:42.8509;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1"
+             width="423.33331"
+             height="383.64584"
+             x="-26.458332"
+             y="-26.458332" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:40.0339;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1-0"
+             width="396.875"
+             height="357.1875"
+             x="-13.229166"
+             y="-13.229166" />
+        </g>
+        <g
+           id="g8716-1"
+           inkscape:label="Caulfield Line"
+           transform="matrix(0.15015,0,0,1,386.8924,-18.779282)">
+          <rect
+             style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:16.2426;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3-1-5-0-3-5"
+             width="1763.8889"
+             height="13.229166"
+             x="152.82843"
+             y="362.73761" />
+        </g>
+      </g>
+      <g
+         id="g1202"
+         inkscape:label="Burnley Group">
+        <g
+           id="g10516"
+           inkscape:label="Burnley Line"
+           transform="matrix(-1,0,0,1,680.50276,55.65234)">
+          <rect
+             style="fill:#01518a;fill-opacity:1;stroke:none;stroke-width:6.44912;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-0-7-1"
+             width="278.07709"
+             height="13.229167"
+             x="-20.90764"
+             y="261.84766" />
+          <rect
+             style="fill:#01518a;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-0-1-1"
+             width="6.6145835"
+             height="13.229167"
+             x="247.90901"
+             y="261.84766"
+             transform="translate(13.229171)" />
+        </g>
+        <g
+           id="g8641"
+           inkscape:label="Burnley Tunnel"
+           transform="translate(13.22917)">
+          <rect
+             style="fill:#01518a;fill-opacity:1;stroke:none;stroke-width:36.5458;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-3"
+             width="357.1875"
+             height="330.72916"
+             x="0"
+             y="0" />
+          <rect
+             style="fill:#01518a;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-0-7"
+             width="13.49375"
+             height="13.229167"
+             x="356.92291"
+             y="317.5" />
+          <rect
+             style="fill:#01518a;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-0-1"
+             width="6.6145835"
+             height="13.229167"
+             x="374.38541"
+             y="317.5" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:33.7302;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-1"
+             width="330.72916"
+             height="304.27084"
+             x="13.229167"
+             y="13.229167" />
+        </g>
+      </g>
+      <g
+         id="g1192"
+         inkscape:label="Clifton Hill Group">
+        <g
+           id="g9543"
+           transform="translate(-72.908338,29.194006)"
+           inkscape:label="Clifton Hill Line"
+           style="display:inline">
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:2.81331;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-0-1-2"
+             width="13.229166"
+             height="52.916664"
+             x="-654.99176"
+             y="222.16014"
+             transform="scale(-1,1)" />
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:4.6738;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-0-1"
+             width="146.05"
+             height="13.229167"
+             x="-642.29175"
+             y="261.84766"
+             transform="scale(-1,1)" />
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-0-0"
+             width="6.6145835"
+             height="13.229167"
+             x="-492.27292"
+             y="261.84766"
+             transform="scale(-1,1)" />
+        </g>
+        <g
+           id="g8635"
+           inkscape:label="Clifton Hill/City Circle Tunnel"
+           transform="translate(13.22917)">
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:30.2348;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7"
+             width="291.04166"
+             height="277.8125"
+             x="26.458334"
+             y="26.458334" />
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-0"
+             width="13.49375"
+             height="13.229167"
+             x="317.23541"
+             y="291.04166" />
+          <rect
+             style="fill:#d0202e;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-0"
+             width="6.6145835"
+             height="13.229167"
+             x="334.69791"
+             y="291.04166" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:27.4206;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0"
+             width="264.58334"
+             height="251.35416"
+             x="39.6875"
+             y="39.6875" />
+        </g>
+      </g>
+      <g
+         id="g1176"
+         inkscape:label="Northern Group">
+        <g
+           id="g8629"
+           inkscape:label="Northern Tunnel"
+           transform="translate(13.229161)">
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:23.8716;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9"
+             width="238.125"
+             height="211.66666"
+             x="52.916664"
+             y="66.145836" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0"
+             width="13.229167"
+             height="13.49375"
+             x="52.916664"
+             y="52.916584" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5"
+             width="13.229167"
+             height="6.6145835"
+             x="52.916664"
+             y="42.333328" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:21.0528;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-0"
+             width="211.66667"
+             height="185.20833"
+             x="66.14579"
+             y="79.374962" />
+        </g>
+        <g
+           id="g1763"
+           inkscape:label="Northern Line"
+           transform="matrix(1,0,0,-1,-85.21893,-124.90699)">
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:4.87685;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-4-1"
+             width="13.229167"
+             height="159.01459"
+             x="71.989861"
+             y="-59.025726" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:3.72165;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-4-0"
+             width="92.604164"
+             height="13.229166"
+             x="71.989861"
+             y="58.761143"
+             transform="scale(1,-1)" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-4"
+             width="13.229167"
+             height="13.49375"
+             x="151.36476"
+             y="-85.457611" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-02"
+             width="13.229167"
+             height="6.6145835"
+             x="151.36476"
+             y="-96.040863" />
+        </g>
+        <g
+           id="g680"
+           inkscape:label="Sunbury Line">
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:9.74962;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect676"
+             width="13.229166"
+             height="635.52917"
+             x="-224.89584"
+             y="-648.49365"
+             transform="matrix(0,1,1,0,0,0)" />
+        </g>
+        <g
+           id="g686"
+           inkscape:label="Craigieburn Line"
+           transform="matrix(1,0,0,1.5490671,-5.6240846e-6,123.33763)">
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:5.87486;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect682"
+             width="230.75313"
+             height="13.229166"
+             x="-455.3844"
+             y="-13.229087"
+             transform="matrix(0,1,1,0,0,0)" />
+        </g>
+        <g
+           id="g2570"
+           inkscape:label="Upfield Line"
+           transform="matrix(20.000001,0,0,0.19920319,269.60891,-259.52357)">
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:3.15168;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2568"
+             width="66.410416"
+             height="13.229166"
+             x="-291.04166"
+             y="-13.49367"
+             transform="matrix(0,1,1,0,0,0)" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:4.98523;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2572"
+             width="3323.1772"
+             height="0.66145831"
+             x="-3546.4802"
+             y="-0.91273355"
+             transform="matrix(0,1,1,0,0,0)" />
+        </g>
+      </g>
+      <g
+         id="g9282"
+         inkscape:label="Metro Tunnel"
+         transform="translate(66.145838)"
+         style="display:none">
+        <g
+           id="g9278"
+           inkscape:label="Metro Tunnel Inner">
+          <rect
+             style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:147.332;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect9025"
+             width="13.229166"
+             height="158.75"
+             x="145.52083"
+             y="92.604164" />
+          <rect
+             style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-7"
+             width="13.229167"
+             height="6.6145835"
+             x="145.52083"
+             y="-262.202"
+             transform="scale(1,-1)" />
+          <rect
+             style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234-7-0-9-0-5-6"
+             width="13.229167"
+             height="6.6145835"
+             x="145.52083"
+             y="82.020836" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g9042"
+       inkscape:label="Stations"
+       transform="translate(0,-66.14584)">
+      <g
+         id="g347"
+         inkscape:label="Eastern Line">
+        <g
+           id="g8850-73"
+           inkscape:label="Richmond"
+           transform="translate(436.5625,132.29166)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:193.562;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-09"
+             width="39.6875"
+             height="198.4375"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:104.037;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-2"
+             width="13.229166"
+             height="171.97917"
+             x="238.125"
+             y="185.20833" />
+        </g>
+      </g>
+      <g
+         id="g342"
+         inkscape:label="Northern Line">
+        <g
+           id="g8850-7-6-9"
+           inkscape:label="North Melbourne"
+           transform="matrix(1.1030303,0,0,1,-459.7335,-291.04167)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:139.551;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-2-2"
+             width="103.14388"
+             height="39.6875"
+             x="325.64102"
+             y="171.97917" />
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:76.7312;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-2-2-8"
+             width="31.183035"
+             height="39.6875"
+             x="224.89583"
+             y="171.97916" />
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:66.3944;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-2-2-8-0"
+             width="70.041893"
+             height="13.229166"
+             x="255.839"
+             y="185.20833" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:27.4742;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-0-3"
+             width="11.993475"
+             height="13.229166"
+             x="236.88931"
+             y="185.20833" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:46.1043;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-0-3-4"
+             width="84.434067"
+             height="5.2916665"
+             x="248.64291"
+             y="189.17708" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:72.6898;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-0-3-3"
+             width="83.954323"
+             height="13.229166"
+             x="332.8371"
+             y="185.20833" />
+        </g>
+        <g
+           id="g1301"
+           inkscape:label="South Kensington">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1297"
+             width="13.229166"
+             height="13.49375"
+             x="-515.93738"
+             y="-132.55626" />
+        </g>
+        <g
+           id="g2318"
+           inkscape:label="Footscray"
+           transform="translate(-912.81239,-410.10419)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:149.933;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2314"
+             width="39.6875"
+             height="119.0625"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:76.3423;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2316"
+             width="13.229166"
+             height="92.604164"
+             x="238.125"
+             y="185.20833" />
+        </g>
+      </g>
+      <g
+         id="g1579"
+         inkscape:label="Clifton Hill Line"
+         transform="translate(-5.3749991e-6,-13.229168)">
+        <rect
+           style="fill:#d0202e;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect1093"
+           width="13.49375"
+           height="13.229166"
+           x="581.81885"
+           y="264.58334"
+           inkscape:label="Jolimont" />
+      </g>
+      <g
+         id="g2591"
+         inkscape:label="Upfield Line"
+         transform="translate(-5.3749991e-6,-13.229168)">
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect2589"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-330.72916"
+           inkscape:label="Macaulay" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect527"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-383.64584"
+           inkscape:label="Flemington Bridge" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect529"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-436.5625"
+           inkscape:label="Royal Park" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect531"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-489.47916"
+           inkscape:label="Jewell" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect533"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-542.39581"
+           inkscape:label="Brunswick" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect535"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-595.31244"
+           inkscape:label="Anstey" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect537"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-648.22913"
+           inkscape:label="Moreland" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect596"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-701.14581"
+           inkscape:label="Coburg" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect598"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-754.06244"
+           inkscape:label="Batman" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect600"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-806.97913"
+           inkscape:label="Merlynston" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect602"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-859.89581"
+           inkscape:label="Fawkner" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect604"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-912.81244"
+           inkscape:label="Gowrie" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+           id="rect606"
+           width="39.6875"
+           height="13.229166"
+           x="238.12508"
+           y="-965.72913"
+           inkscape:label="Upfield" />
+      </g>
+      <g
+         id="g2777"
+         inkscape:label="Craigieburn Line"
+         transform="translate(-5.3708536e-6,-39.687525)">
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect2775"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-330.72916"
+           inkscape:label="Kensington" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect2781"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-383.64581"
+           inkscape:label="Newmarket" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect2518"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-436.5625"
+           inkscape:label="Ascot Vale" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect2520"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-489.47916"
+           inkscape:label="Moonee Ponds" />
+        <g
+           id="g2534"
+           inkscape:label="Essendon"
+           transform="matrix(1.1030303,0,0,1,-433.27516,-727.60416)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:125.902;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2522"
+             width="83.954323"
+             height="39.6875"
+             x="320.84363"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.4341;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2532"
+             width="59.967377"
+             height="13.229166"
+             x="332.8371"
+             y="185.20833" />
+        </g>
+      </g>
+      <g
+         id="g3041"
+         inkscape:label="Flemington Racecourse Line"
+         transform="translate(-79.374999,-39.687503)">
+        <rect
+           style="fill:#8a8c8f;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect866"
+           width="13.229166"
+           height="13.49375"
+           x="-105.83326"
+           y="-423.33334"
+           inkscape:label="Showgrounds" />
+        <rect
+           style="fill:#8a8c8f;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+           id="rect3039"
+           width="13.229166"
+           height="39.6875"
+           x="-211.6666"
+           y="-423.33334"
+           inkscape:label="Flemington Racecourse" />
+      </g>
+      <g
+         id="g9275"
+         inkscape:label="Metro Tunnel"
+         style="display:none"
+         transform="translate(-5.8333321e-6)">
+        <g
+           id="g8850-7-68"
+           inkscape:label="Town Hall"
+           transform="matrix(0.93333331,0,0,1,-77.611101,13.22916)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:126.718;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-22"
+             width="85.044647"
+             height="39.6875"
+             x="295.76636"
+             y="171.97917" />
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:89.6026;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-22-5"
+             width="42.522324"
+             height="39.6875"
+             x="338.2887"
+             y="211.66667" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:59.735;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-4"
+             width="56.69643"
+             height="13.229166"
+             x="309.94046"
+             y="185.20833" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:60.033;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-4-7"
+             width="14.174108"
+             height="53.445831"
+             x="352.4628"
+             y="198.17293" />
+        </g>
+      </g>
+      <g
+         id="g10571"
+         inkscape:label="City Loop"
+         transform="translate(-1.5000001e-6)">
+        <g
+           id="g8850-7-6"
+           inkscape:label="Southern Cross"
+           transform="matrix(1.1030303,0,0,1,-459.7335,-52.916673)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:228.217;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2-2"
+             width="275.84991"
+             height="39.6875"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:125.903;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1-0"
+             width="251.86298"
+             height="13.229166"
+             x="236.8893"
+             y="185.20833" />
+        </g>
+        <g
+           id="g8850-7"
+           inkscape:label="Parliament"
+           transform="matrix(0.93333331,0,0,1,67.909732,-52.916672)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:171.576;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-2"
+             width="155.91518"
+             height="39.6875"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:89.6025;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-1"
+             width="127.56696"
+             height="13.229166"
+             x="239.06993"
+             y="185.20833" />
+        </g>
+        <g
+           id="g8850-9"
+           inkscape:label="Melbourne Central"
+           transform="translate(13.229174,-211.66667)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:158.044;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-0"
+             width="39.6875"
+             height="132.29167"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:81.6133;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-7"
+             width="13.229166"
+             height="105.83333"
+             x="238.125"
+             y="185.20833" />
+        </g>
+        <g
+           id="g8850"
+           inkscape:label="Flinders Street"
+           transform="translate(13.229171,79.374992)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:217.848;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3"
+             width="39.6875"
+             height="251.35416"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:118.971;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823"
+             width="13.229166"
+             height="224.89583"
+             x="238.125"
+             y="185.20833" />
+        </g>
+        <g
+           id="g8850-9-8"
+           inkscape:label="Flagstaff"
+           transform="translate(-132.29166,-211.66667)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:158.044;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-3-0-6"
+             width="39.6875"
+             height="132.29167"
+             x="224.89583"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:81.6133;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8823-7-7"
+             width="13.229166"
+             height="105.83333"
+             x="238.125"
+             y="185.20833" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g10415"
+       inkscape:label="Text"
+       transform="translate(0,-66.14582)">
+      <g
+         id="g360"
+         inkscape:label="Eastern Line">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="681.10364"
+           y="535.14624"
+           id="text9631-7-9"
+           inkscape:label="Richmond"><tspan
+             sodipodi:role="line"
+             id="tspan9629-8-8"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="681.10364"
+             y="535.14624">Richmond</tspan></text>
+      </g>
+      <g
+         id="g356"
+         inkscape:label="Northern Line"
+         transform="translate(-79.375015)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-242.78171"
+           y="-89.852539"
+           id="text9631-7-8-8"
+           inkscape:label="North Melbourne"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-242.78171"
+             y="-89.852539"
+             id="tspan952-4">North Melbourne</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-430.08014"
+           y="-86.465874"
+           id="text1291"
+           inkscape:label="South Kensington"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-430.08014"
+             y="-86.465874"
+             id="tspan1289">South</tspan><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-430.08014"
+             y="-51.454052"
+             id="tspan2304">Kensington</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-589.0946"
+           y="-257.17505"
+           id="text2310"
+           inkscape:label="Footscray"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-589.0946"
+             y="-257.17505"
+             id="tspan2308">Footscray</tspan></text>
+      </g>
+      <g
+         id="g1630"
+         inkscape:label="Clifton Hill Line"
+         transform="translate(0,-13.229179)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="659.03741"
+           y="280.64352"
+           id="text9631-4"
+           inkscape:label="Jolimont"><tspan
+             sodipodi:role="line"
+             id="tspan9629-6"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="659.03741"
+             y="280.64352">Jolimont</tspan></text>
+      </g>
+      <g
+         id="g2668"
+         inkscape:label="Upfield Line"
+         transform="translate(-5.3749991e-6,-13.229168)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="344.65952"
+           y="-317.50003"
+           id="text2666"
+           inkscape:label="Macaulay"><tspan
+             sodipodi:role="line"
+             id="tspan2664"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="344.65952"
+             y="-317.50003">Macaulay</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="396.67651"
+           y="-370.33731"
+           id="text610"
+           inkscape:label="Flemington Bridge"><tspan
+             sodipodi:role="line"
+             id="tspan608"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="396.67651"
+             y="-370.33731">Flemington Bridge</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="352.45148"
+           y="-423.33334"
+           id="text718"
+           inkscape:label="Royal Park"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="352.45148"
+             y="-423.33334"
+             id="tspan720">Royal Park</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="329.30045"
+           y="-473.49832"
+           id="text726"
+           inkscape:label="Jewell"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="329.30045"
+             y="-473.49832"
+             id="tspan724">Jewell</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="351.22119"
+           y="-526.33563"
+           id="text730"
+           inkscape:label="Brunswick"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="351.22119"
+             y="-526.33563"
+             id="tspan732">Brunswick</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="332.55481"
+           y="-582.08325"
+           id="text1010"
+           inkscape:label="Anstey"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="332.55481"
+             y="-582.08325"
+             id="tspan1008">Anstey</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="343.98477"
+           y="-632.24829"
+           id="text1014"
+           inkscape:label="Moreland"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="343.98477"
+             y="-632.24829"
+             id="tspan1012">Moreland</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="332.38281"
+           y="-687.75793"
+           id="text1018"
+           inkscape:label="Coburg"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="332.38281"
+             y="-687.75793"
+             id="tspan1016">Coburg</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="334.68472"
+           y="-738.0816"
+           id="text1022"
+           inkscape:label="Batman"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="334.68472"
+             y="-738.0816"
+             id="tspan1020">Batman</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="356.01007"
+           y="-793.74994"
+           id="text1026"
+           inkscape:label="Merylnston"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="356.01007"
+             y="-793.74994"
+             id="tspan1024">Merylnston</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="341.3125"
+           y="-843.91498"
+           id="text1030"
+           inkscape:label="Fawkner"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="341.3125"
+             y="-843.91498"
+             id="tspan1028">Fawkner</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="331.82721"
+           y="-896.67285"
+           id="text1034"
+           inkscape:label="Gowrie"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="331.82721"
+             y="-896.67285"
+             id="tspan1032">Gowrie</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="257.87622"
+           y="-984.46167"
+           id="text1038"
+           inkscape:label="Upfield"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="257.87622"
+             y="-984.46167"
+             id="tspan1036">Upfield</tspan></text>
+      </g>
+      <g
+         id="g2787"
+         inkscape:label="Craigieburn Line"
+         transform="translate(-5.3749989e-6,-39.68752)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="91.294502"
+           y="-317.57941"
+           id="text2785"
+           inkscape:label="Kensington"><tspan
+             sodipodi:role="line"
+             id="tspan2783"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="91.294502"
+             y="-317.57941">Kensington</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="94.337173"
+           y="-367.66501"
+           id="text2794"
+           inkscape:label="Newmarket"><tspan
+             sodipodi:role="line"
+             id="tspan2792"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="94.337173"
+             y="-367.66501">Newmarket</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="90.355232"
+           y="-420.5817"
+           id="text2545"
+           inkscape:label="Ascot Vale"><tspan
+             sodipodi:role="line"
+             id="tspan2543"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="90.355232"
+             y="-420.5817">Ascot Vale</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="111.31016"
+           y="-473.49835"
+           id="text2549"
+           inkscape:label="Moonee Ponds"><tspan
+             sodipodi:role="line"
+             id="tspan2547"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="111.31016"
+             y="-473.49835">Moonee Ponds</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="82.523521"
+           y="-526.41504"
+           id="text2553"
+           inkscape:label="Essendon"><tspan
+             sodipodi:role="line"
+             id="tspan2551"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="82.523521"
+             y="-526.41504">Essendon</tspan></text>
+      </g>
+      <g
+         id="g516"
+         inkscape:label="Flemington Racecourse Line"
+         transform="translate(-238.125,-66.14585)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="59.399059"
+           y="-415.92502"
+           id="text510"
+           inkscape:label="Showgrounds"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="59.399059"
+             y="-415.92502"
+             id="tspan862">Showgrounds</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-135.02983"
+           y="-385.09152"
+           id="text514"
+           inkscape:label="Flemington Racecourse"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-135.02983"
+             y="-385.09152"
+             id="tspan575">Flemington</tspan><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-135.02983"
+             y="-350.07971"
+             id="tspan629">Racecourse</tspan></text>
+      </g>
+      <g
+         id="g869"
+         inkscape:label="City Loop">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="498.75281"
+           y="148.35184"
+           id="text9631"
+           inkscape:label="Parliament"><tspan
+             sodipodi:role="line"
+             id="tspan9629"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="498.75281"
+             y="148.35184">Parliament</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-316.13718"
+           y="148.43121"
+           id="text9631-7-8"
+           inkscape:label="Southern Cross"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-316.13718"
+             y="148.43121"
+             id="tspan952">Southern Cross</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="257.77045"
+           y="-88.245987"
+           id="text9631-7-8-8-7"
+           inkscape:label="Melbourne Central"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="257.77045"
+             y="-88.245987"
+             id="tspan952-4-5">Melbourne</tspan><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="257.77045"
+             y="-53.234165"
+             id="tspan2537">Central</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="257.57181"
+           y="535.30499"
+           id="text9631-7"
+           inkscape:label="Flinders Street"><tspan
+             sodipodi:role="line"
+             id="tspan9629-8"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="257.57181"
+             y="535.30499">Flinders Street</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-107.0767"
+           y="-105.67467"
+           id="text9631-7-8-8-9"
+           inkscape:label="Flagstaff"
+           transform="rotate(90)"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-107.0767"
+             y="-105.67467"
+             id="tspan2402">Flagstaff</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

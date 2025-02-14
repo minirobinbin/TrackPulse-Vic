@@ -2,22 +2,47 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
+x_offset = 800
+y_offset = 3100
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            "Parliament": (3630, 1303, 4398, 1457),
-            "Jolimont": (4537, 1714, 5142, 1930),
-            "Richmond": (4225, 2789, 4921, 2924),
-            "Flinders Street": (2439, 2784, 3519, 2943),
-            "Southern Cross": (67, 1291, 1161, 1454),
-            "Melbourne Central": (2611, 312, 3365, 662),
-            "Flagstaff": (2328, 14, 2535, 672),
-            "North Melbourne": (14, 379, 1171, 576),
+            "Parliament": (3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),
+            "Jolimont": (4277 + x_offset, 1715 + y_offset, 4700 + x_offset, 1837 + y_offset),
+            "Richmond": (4327 + x_offset, 2732 + y_offset, 4807 + x_offset, 2832 + y_offset),
+            "Flinders Street": (2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),
+            "Southern Cross": (431 + x_offset, 1264 + y_offset, 1162 + x_offset, 1378 + y_offset),
+            "Melbourne Central": (2716 + x_offset, 376 + y_offset, 3217 + x_offset, 619 + y_offset),
+            "Flagstaff": (2351 + x_offset, 168 + y_offset, 2494 + x_offset, 619 + y_offset),
+            "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
+            "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
+            "Footscray": (-765 + x_offset, -269 + y_offset, -299 + x_offset, -133 + y_offset),
+            "Macaulay": (3074 + x_offset, -548 + y_offset, 3518 + x_offset, -412 + y_offset),
+            "Flemington Bridge": (3079 + x_offset, -731 + y_offset, 3910 + x_offset, -621 + y_offset),
+            "Royal Park": (3071 + x_offset, -935 + y_offset, 3582 + x_offset, -811 + y_offset),
+            "Jewell": (3064 + x_offset, -1146 + y_offset, 3414 + x_offset, -1008 + y_offset),
+            "Brunswick": (3071 + x_offset, -1329 + y_offset, 3567 + x_offset, -1234 + y_offset),
+            "Anstey": (3086 + x_offset, -1540 + y_offset, 3421 + x_offset, -1423 + y_offset),
+            "Moreland": (3071 + x_offset, -1737 + y_offset, 3516 + x_offset, -1613 + y_offset),
+            "Coburg": (3071 + x_offset, -1956 + y_offset, 3436 + x_offset, -1817 + y_offset),
+            "Batman": (3086 + x_offset, -2123 + y_offset, 3429 + x_offset, -2029 + y_offset),
+            "Merlynston": (3057 + x_offset, -2335 + y_offset, 3596 + x_offset, -2211 + y_offset),
+            "Fawkner": (3064 + x_offset, -2532 + y_offset, 3487 + x_offset, -2422 + y_offset),
+            "Gowrie": (3071 + x_offset, -2736 + y_offset, 3436 + x_offset, -2612 + y_offset),
+            "Upfield": (2780 + x_offset, -3071 + y_offset, 3144 + x_offset, -2933 + y_offset),
+            "Kensington": (2078 + x_offset, -634 + y_offset, 2616 + x_offset, -527 + y_offset),
+            "Newmarket": (2086 + x_offset, -820 + y_offset, 2616 + x_offset, -727 + y_offset),
+            "Showgrounds": (990 + x_offset, -1114 + y_offset, 1649 + x_offset, -992 + y_offset),
+            "Flemington Racecourse": (295 + x_offset, -992 + y_offset, 861 + x_offset, -749 + y_offset),
+            "Ascot Vale": (2071 + x_offset, -1042 + y_offset, 2608 + x_offset, -913 + y_offset),
+            "Moonee Ponds": (2071 + x_offset, -1236 + y_offset, 2759 + x_offset, -1099 + y_offset),
+            "Essendon": (2071 + x_offset, -1443 + y_offset, 2544 + x_offset, -1314 + y_offset),
         }
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (3300, 1081, 3692, 1162),
+                ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2899 + x_offset, 850 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
@@ -45,9 +70,8 @@ class MapImageHandler:
         
         return modified_map
     
-    def highlight_lines(self, station1, station2, line):
+    def highlight_lines(self, modified_map, station1, station2, line):
         # Create a copy of the original image
-        modified_map = self.map_image.copy()
         draw = ImageDraw.Draw(modified_map)
         
         # Check if line exists in line_coordinates
@@ -79,7 +103,7 @@ class MapImageHandler:
             station1 = affected_stations[i]
             station2 = affected_stations[i + 1]
             for line in self.line_coordinates:
-                modified_map = self.highlight_lines(station1, station2, line)
+                modified_map = self.highlight_lines(modified_map, station1, station2, line)
         modified_map.save(output_path)
         
 
@@ -133,12 +157,13 @@ class CoordinateFinder:
         original_y1 = int(self.start_y / self.scale)
         original_x2 = int(event.x / self.scale)
         original_y2 = int(event.y / self.scale)
-        print(f"Coordinates: ({original_x1}, {original_y1}, {original_x2}, {original_y2})")
+        print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset}, {original_y2 - y_offset})")
+        print(f"Copyable: ({original_x1 - x_offset} + x_offset, {original_y1 - y_offset} + y_offset, {original_x2 - x_offset} + x_offset, {original_y2 - y_offset} + y_offset),")
         
     def run(self):
         self.root.mainloop()
 
 # Run coord finder
 # if __name__ == "__main__":
-finder = CoordinateFinder("utils/trainlogger/map/base.png")
-finder.run()
+# finder = CoordinateFinder("utils/trainlogger/map/base.png")
+# finder.run()
