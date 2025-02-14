@@ -47,6 +47,7 @@ class MapImageHandler:
         }
         self.station_order = station_order_dictionary
         self.map_image = Image.open(map_image_path)
+        print('Initalised the map maker')
         
     def highlight_stations(self, affected_stations):
         """
@@ -58,6 +59,8 @@ class MapImageHandler:
         Returns:
             PIL.Image: Modified map image with highlighted stations
         """
+        
+        print('starting to cover stations')
         # Create a copy of the original image
         modified_map = self.map_image.copy()
         draw = ImageDraw.Draw(modified_map)
@@ -67,10 +70,13 @@ class MapImageHandler:
             if station in self.station_coordinates:
                 coords = self.station_coordinates[station]
                 draw.rectangle(coords, fill='white')
-        
+                print(f'{station} covered')
+                
+        print('Done covering stations!')
         return modified_map
     
     def highlight_lines(self, modified_map, station1, station2, line):
+        print('Starting to cover lines')
         # Create a copy of the original image
         draw = ImageDraw.Draw(modified_map)
         
@@ -81,15 +87,18 @@ class MapImageHandler:
             if station_pair in self.line_coordinates[line]:
                 coords = self.line_coordinates[line][station_pair]
                 draw.rectangle(coords, fill='white')
+                print(f'Covered from {station1} to {station2} on the {line}')
             # Check reverse pair
             station_pair = (station2, station1)
             if station_pair in self.line_coordinates[line]:
                 coords = self.line_coordinates[line][station_pair]
                 draw.rectangle(coords, fill='white')
-                
+                print(f'Covered from {station2} to {station2} on the {line}')
+        
+        print('Done covering lines!')
         return modified_map
     
-    def save_modified_map(self, affected_stations, output_path):
+    def coverStations(self, affected_stations, output_path):
         """
         Saves the modified map with highlighted stations
         
@@ -98,13 +107,27 @@ class MapImageHandler:
             output_path (str): Path where the modified image will be saved
         """
         modified_map = self.highlight_stations(affected_stations)
-        # Highlight lines between consecutive stations
-        for i in range(len(affected_stations) - 1):
-            station1 = affected_stations[i]
-            station2 = affected_stations[i + 1]
-            for line in self.line_coordinates:
-                modified_map = self.highlight_lines(modified_map, station1, station2, line)
+        
         modified_map.save(output_path)
+    
+    def coverLines(self, stationPairs, output_path):
+        """
+        Saves the modified map with highlighted lines between station pairs
+        
+        Args:
+            stationPairs (list): List of tuples containing station pairs and line name (station1, station2, line)
+            output_path (str): Path where the modified image will be saved
+        """
+        modified_map = self.map_image.copy()
+        
+        # Iterate through each tuple of (station1, station2, line)
+        for station1, station2, line in stationPairs:
+            modified_map = self.highlight_lines(modified_map, station1, station2, line)
+            
+        modified_map.save(output_path)
+        
+        
+
         
 
 
