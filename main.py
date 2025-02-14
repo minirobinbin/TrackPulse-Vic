@@ -23,5 +23,5 @@ lines_dictionary = {
 }
 
 map_handler = MapImageHandler("utils/trainlogger/map/base.png", lines_dictionary)
-affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont','South Kensington','Footscray','Macaulay','Kensington','Newmarket','Showgrounds','Flemington Racecourse','Ascot Vale','Moonee Ponds','Essendon']
+affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont','South Kensington','Footscray','Macaulay','Flemington Bridge','Royal Park','Jewell','Brunswick','Anstey','Moreland','Coburg','Batman','Merlynston','Fawkner','Gowrie','Upfield','Kensington','Newmarket','Showgrounds','Flemington Racecourse','Ascot Vale','Moonee Ponds','Essendon']
 map_handler.save_modified_map(affected_stations, "temp/themap.png")

@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 
 x_offset = 800
-y_offset = 1500
+y_offset = 3100
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
@@ -19,6 +19,18 @@ class MapImageHandler:
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
             "Footscray": (-765 + x_offset, -269 + y_offset, -299 + x_offset, -133 + y_offset),
             "Macaulay": (3074 + x_offset, -548 + y_offset, 3518 + x_offset, -412 + y_offset),
+            "Flemington Bridge": (3079 + x_offset, -731 + y_offset, 3910 + x_offset, -621 + y_offset),
+            "Royal Park": (3071 + x_offset, -935 + y_offset, 3582 + x_offset, -811 + y_offset),
+            "Jewell": (3064 + x_offset, -1146 + y_offset, 3414 + x_offset, -1008 + y_offset),
+            "Brunswick": (3071 + x_offset, -1329 + y_offset, 3567 + x_offset, -1234 + y_offset),
+            "Anstey": (3086 + x_offset, -1540 + y_offset, 3421 + x_offset, -1423 + y_offset),
+            "Moreland": (3071 + x_offset, -1737 + y_offset, 3516 + x_offset, -1613 + y_offset),
+            "Coburg": (3071 + x_offset, -1956 + y_offset, 3436 + x_offset, -1817 + y_offset),
+            "Batman": (3086 + x_offset, -2123 + y_offset, 3429 + x_offset, -2029 + y_offset),
+            "Merlynston": (3057 + x_offset, -2335 + y_offset, 3596 + x_offset, -2211 + y_offset),
+            "Fawkner": (3064 + x_offset, -2532 + y_offset, 3487 + x_offset, -2422 + y_offset),
+            "Gowrie": (3071 + x_offset, -2736 + y_offset, 3436 + x_offset, -2612 + y_offset),
+            "Upfield": (2780 + x_offset, -3071 + y_offset, 3144 + x_offset, -2933 + y_offset),
             "Kensington": (2078 + x_offset, -634 + y_offset, 2616 + x_offset, -527 + y_offset),
             "Newmarket": (2086 + x_offset, -820 + y_offset, 2616 + x_offset, -727 + y_offset),
             "Showgrounds": (990 + x_offset, -1114 + y_offset, 1649 + x_offset, -992 + y_offset),

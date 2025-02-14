@@ -28,10 +28,10 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="0.32153204"
-     inkscape:cx="2401.0049"
+     inkscape:cx="2483.4228"
      inkscape:cy="752.64661"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(740.83325,595.3125)">
+     transform="translate(740.83325,1098.0208)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:2285.67;stroke-linecap:square"
        id="rect2539"
@@ -51,11 +51,19 @@
        height="1164.1666"
        x="-740.83325"
        y="-595.3125"
+       inkscape:label="Offset" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke-width:2657.95;stroke-linecap:square"
+       id="rect593"
+       width="1494.8959"
+       height="1574.2709"
+       x="-740.83325"
+       y="-1098.0208"
        inkscape:label="Background" />
     <g
        id="g9073"
        inkscape:label="Lines"
-       transform="translate(0,13.229167)">
+       transform="translate(0,-66.14584)">
       <g
          id="g1287"
          inkscape:label="Sandringham">
@@ -937,11 +945,11 @@
              y="-13.49367"
              transform="matrix(0,1,1,0,0,0)" />
           <rect
-             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:1.00162;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:4.98523;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2572"
-             width="134.14903"
+             width="3323.1772"
              height="0.66145831"
-             x="-423.86249"
+             x="-3546.4802"
              y="-0.91273355"
              transform="matrix(0,1,1,0,0,0)" />
         </g>
@@ -982,7 +990,7 @@
     <g
        id="g9042"
        inkscape:label="Stations"
-       transform="translate(0,13.229167)">
+       transform="translate(0,-66.14584)">
       <g
          id="g347"
          inkscape:label="Eastern Line">
@@ -1112,6 +1120,102 @@
            x="264.31882"
            y="-330.72916"
            inkscape:label="Macaulay" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect527"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-383.64584"
+           inkscape:label="Flemington Bridge" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect529"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-436.5625"
+           inkscape:label="Royal Park" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect531"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-489.47916"
+           inkscape:label="Jewell" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect533"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-542.39581"
+           inkscape:label="Brunswick" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect535"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-595.31244"
+           inkscape:label="Anstey" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect537"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-648.22913"
+           inkscape:label="Moreland" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect596"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-701.14581"
+           inkscape:label="Coburg" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect598"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-754.06244"
+           inkscape:label="Batman" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect600"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-806.97913"
+           inkscape:label="Merlynston" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect602"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-859.89581"
+           inkscape:label="Fawkner" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect604"
+           width="13.49375"
+           height="13.229166"
+           x="264.31882"
+           y="-912.81244"
+           inkscape:label="Gowrie" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+           id="rect606"
+           width="39.6875"
+           height="13.229166"
+           x="238.12508"
+           y="-965.72913"
+           inkscape:label="Upfield" />
       </g>
       <g
          id="g2777"
@@ -1333,7 +1437,7 @@
     <g
        id="g10415"
        inkscape:label="Text"
-       transform="translate(0,13.229167)">
+       transform="translate(0,-66.14582)">
       <g
          id="g360"
          inkscape:label="Eastern Line">
@@ -1429,6 +1533,150 @@
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
              x="344.65952"
              y="-317.50003">Macaulay</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="396.67651"
+           y="-370.33731"
+           id="text610"
+           inkscape:label="Flemington Bridge"><tspan
+             sodipodi:role="line"
+             id="tspan608"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="396.67651"
+             y="-370.33731">Flemington Bridge</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="352.45148"
+           y="-423.33334"
+           id="text718"
+           inkscape:label="Royal Park"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="352.45148"
+             y="-423.33334"
+             id="tspan720">Royal Park</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="329.30045"
+           y="-473.49832"
+           id="text726"
+           inkscape:label="Jewell"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="329.30045"
+             y="-473.49832"
+             id="tspan724">Jewell</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="351.22119"
+           y="-526.33563"
+           id="text730"
+           inkscape:label="Brunswick"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="351.22119"
+             y="-526.33563"
+             id="tspan732">Brunswick</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="332.55481"
+           y="-582.08325"
+           id="text1010"
+           inkscape:label="Anstey"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="332.55481"
+             y="-582.08325"
+             id="tspan1008">Anstey</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="343.98477"
+           y="-632.24829"
+           id="text1014"
+           inkscape:label="Moreland"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="343.98477"
+             y="-632.24829"
+             id="tspan1012">Moreland</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="332.38281"
+           y="-687.75793"
+           id="text1018"
+           inkscape:label="Coburg"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="332.38281"
+             y="-687.75793"
+             id="tspan1016">Coburg</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="334.68472"
+           y="-738.0816"
+           id="text1022"
+           inkscape:label="Batman"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="334.68472"
+             y="-738.0816"
+             id="tspan1020">Batman</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="356.01007"
+           y="-793.74994"
+           id="text1026"
+           inkscape:label="Merylnston"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="356.01007"
+             y="-793.74994"
+             id="tspan1024">Merylnston</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="341.3125"
+           y="-843.91498"
+           id="text1030"
+           inkscape:label="Fawkner"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="341.3125"
+             y="-843.91498"
+             id="tspan1028">Fawkner</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="331.82721"
+           y="-896.67285"
+           id="text1034"
+           inkscape:label="Gowrie"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="331.82721"
+             y="-896.67285"
+             id="tspan1032">Gowrie</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="257.87622"
+           y="-984.46167"
+           id="text1038"
+           inkscape:label="Upfield"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="257.87622"
+             y="-984.46167"
+             id="tspan1036">Upfield</tspan></text>
       </g>
       <g
          id="g2787"
