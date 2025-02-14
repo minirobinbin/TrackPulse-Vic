@@ -48,9 +48,8 @@ class MapImageHandler:
         
         return modified_map
     
-    def highlight_lines(self, station1, station2, line):
+    def highlight_lines(self, modified_map, station1, station2, line):
         # Create a copy of the original image
-        modified_map = self.map_image.copy()
         draw = ImageDraw.Draw(modified_map)
         
         # Check if line exists in line_coordinates
@@ -82,7 +81,7 @@ class MapImageHandler:
             station1 = affected_stations[i]
             station2 = affected_stations[i + 1]
             for line in self.line_coordinates:
-                modified_map = self.highlight_lines(station1, station2, line)
+                modified_map = self.highlight_lines(modified_map, station1, station2, line)
         modified_map.save(output_path)
         
 
