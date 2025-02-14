@@ -20,7 +20,7 @@ class MapImageHandler:
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (2500 + x_offset, 750 + y_offset, 2900 + x_offset, 900 + y_offset),
+                ("Flagstaff", "Parliament"): (2500 + x_offset, 800 + y_offset, 2899 + x_offset, 850 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
