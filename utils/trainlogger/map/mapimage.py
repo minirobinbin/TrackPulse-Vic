@@ -8,19 +8,29 @@ y_offset = 1500
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            "Parliament": (3630 + x_offset, 1303 + y_offset, 4398 + x_offset, 1457 + y_offset),
-            "Jolimont": (4537 + x_offset, 1714 + y_offset, 5142 + x_offset, 1930 + y_offset),
-            "Richmond": (4225 + x_offset, 2789 + y_offset, 4921 + x_offset, 2924 + y_offset),
-            "Flinders Street": (2439 + x_offset, 2784 + y_offset, 3519 + x_offset, 2943 + y_offset),
-            "Southern Cross": (67 + x_offset, 1291 + y_offset, 1161 + x_offset, 1454 + y_offset),
-            "Melbourne Central": (2611 + x_offset, 312 + y_offset, 3365 + x_offset, 662 + y_offset),
-            "Flagstaff": (2328 + x_offset, 14 + y_offset, 2535 + x_offset, 672 + y_offset),
-            "North Melbourne": (14 + x_offset, 379 + y_offset, 1171 + x_offset, 576 + y_offset),
+            "Parliament": (3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),
+            "Jolimont": (4277 + x_offset, 1715 + y_offset, 4700 + x_offset, 1837 + y_offset),
+            "Richmond": (4327 + x_offset, 2732 + y_offset, 4807 + x_offset, 2832 + y_offset),
+            "Flinders Street": (2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),
+            "Southern Cross": (431 + x_offset, 1264 + y_offset, 1162 + x_offset, 1378 + y_offset),
+            "Melbourne Central": (2716 + x_offset, 376 + y_offset, 3217 + x_offset, 619 + y_offset),
+            "Flagstaff": (2351 + x_offset, 168 + y_offset, 2494 + x_offset, 619 + y_offset),
+            "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
+            "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
+            "Footscray": (-765 + x_offset, -269 + y_offset, -299 + x_offset, -133 + y_offset),
+            "Macaulay": (3074 + x_offset, -548 + y_offset, 3518 + x_offset, -412 + y_offset),
+            "Kensington": (2078 + x_offset, -634 + y_offset, 2616 + x_offset, -527 + y_offset),
+            "Newmarket": (2086 + x_offset, -820 + y_offset, 2616 + x_offset, -727 + y_offset),
+            "Showgrounds": (990 + x_offset, -1114 + y_offset, 1649 + x_offset, -992 + y_offset),
+            "Flemington Racecourse": (295 + x_offset, -992 + y_offset, 861 + x_offset, -749 + y_offset),
+            "Ascot Vale": (2071 + x_offset, -1042 + y_offset, 2608 + x_offset, -913 + y_offset),
+            "Moonee Ponds": (2071 + x_offset, -1236 + y_offset, 2759 + x_offset, -1099 + y_offset),
+            "Essendon": (2071 + x_offset, -1443 + y_offset, 2544 + x_offset, -1314 + y_offset),
         }
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Parliament"): (2500 + x_offset, 800 + y_offset, 2899 + x_offset, 850 + y_offset),
+                ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2899 + x_offset, 850 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
@@ -136,11 +146,12 @@ class CoordinateFinder:
         original_x2 = int(event.x / self.scale)
         original_y2 = int(event.y / self.scale)
         print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset}, {original_y2 - y_offset})")
+        print(f"Copyable: ({original_x1 - x_offset} + x_offset, {original_y1 - y_offset} + y_offset, {original_x2 - x_offset} + x_offset, {original_y2 - y_offset} + y_offset),")
         
     def run(self):
         self.root.mainloop()
 
 # Run coord finder
 # if __name__ == "__main__":
-#finder = CoordinateFinder("utils/trainlogger/map/base.png")
-#finder.run()
+# finder = CoordinateFinder("utils/trainlogger/map/base.png")
+# finder.run()
