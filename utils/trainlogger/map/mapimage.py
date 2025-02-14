@@ -2,8 +2,8 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 0
-y_offset = 0
+x_offset = 800
+y_offset = 1500
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
