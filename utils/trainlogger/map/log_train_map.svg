@@ -7,9 +7,9 @@
    viewBox="0 0 2645.8333 2645.8333"
    version="1.1"
    id="svg5"
-   sodipodi:docname="log train map.svg"
+   sodipodi:docname="log_train_map.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   inkscape:export-filename=" log train map.png"
+   inkscape:export-filename=" log_train_map.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -27,15 +27,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.13062462"
-     inkscape:cx="4168.4332"
-     inkscape:cy="1952.1588"
+     inkscape:zoom="0.32"
+     inkscape:cx="868.75"
+     inkscape:cy="2337.5"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g10415"
      shape-rendering="auto" />
   <defs
      id="defs2" />
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1362.604,1098.0208)">
+     transform="translate(1428.7499,1098.0208)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
@@ -53,11 +53,11 @@
        y="-277.81247"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:3202.07;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:3250.52;stroke-linecap:square"
        id="rect593"
-       width="2169.5833"
+       width="2235.7292"
        height="1574.2709"
-       x="-1362.604"
+       x="-1428.7499"
        y="-1098.0208"
        inkscape:label="Background" />
     <g
@@ -580,19 +580,19 @@
              x="3657.0452"
              y="411.53693" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:33.7866;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:55.1733;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect862"
              width="1763.8889"
-             height="57.241585"
+             height="152.64423"
              x="3127.8813"
-             y="350.47925" />
+             y="255.0766" />
           <rect
-             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:21.4633;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:34.4852;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect864"
              width="705.55554"
-             height="57.750401"
+             height="149.08253"
              x="3657.0452"
-             y="350.22482" />
+             y="258.8927" />
           <rect
              style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:31.9339;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect871"
@@ -621,6 +621,19 @@
              height="112.44791"
              x="-3398.5073"
              y="350.22482" />
+        </g>
+        <g
+           id="g758"
+           inkscape:label="Bendigo Line - V/Line Paper"
+           transform="matrix(0,-0.00789453,1.04,0,-1595.0753,-105.52471)">
+          <path
+             id="path756"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:98.2075;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 75447.322,185.36904 H 8384.2673 v 12.72035 H 75447.322 Z" />
+          <path
+             id="path764"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:62.3598;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 75480.829,189.18511 H 7881.5449 v 5.08814 H 75480.829 Z" />
         </g>
         <g
            id="g3061"
@@ -740,12 +753,12 @@
            inkscape:label="Sunshine Junction - V/Line"
            transform="matrix(0,-0.0075,1.04,0,-1568.617,-135.29088)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:37.4205;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:52.8726;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect845"
              width="1763.8889"
-             height="70.216347"
+             height="140.17828"
              x="6655.6562"
-             y="255.33099" />
+             y="185.36903" />
           <rect
              style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:31.9339;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect847"
@@ -760,6 +773,15 @@
              height="70.216347"
              x="-399.89899"
              y="255.33099" />
+        </g>
+        <g
+           id="g749"
+           inkscape:label="Bendigo Line - V/Line"
+           transform="matrix(0,-0.0075,1.04,0,-1568.617,-135.29088)">
+          <path
+             id="rect745"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:98.2075;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 75447.322,185.36904 H 8384.2673 v 12.72035 H 75447.322 Z" />
         </g>
         <g
            id="g3078"
@@ -1014,12 +1036,20 @@
            id="g680"
            inkscape:label="Sunbury Line">
           <rect
-             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:13.8554;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:14.1381;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect676"
              width="13.229166"
-             height="1283.4938"
+             height="1336.4104"
              x="-224.89584"
-             y="-1296.4583"
+             y="-1349.3749"
+             transform="matrix(0,1,1,0,0,0)" />
+          <rect
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:8.32662;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect672"
+             width="463.54999"
+             height="13.229166"
+             x="-688.18121"
+             y="-1349.3749"
              transform="matrix(0,1,1,0,0,0)" />
         </g>
         <g
@@ -1334,6 +1364,92 @@
              style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:47.5866;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect832"
              width="35.980427"
+             height="13.229166"
+             x="308.85016"
+             y="185.20833" />
+        </g>
+      </g>
+      <g
+         id="g695"
+         inkscape:label="Sunbury Line"
+         transform="translate(8.6666678e-6,-39.687525)"
+         style="display:inline">
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect674"
+           width="13.49375"
+           height="13.229166"
+           x="-1336.4103"
+           y="-357.18744"
+           inkscape:label="Albion" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect708"
+           width="13.49375"
+           height="13.229166"
+           x="-1336.4103"
+           y="-410.1041"
+           inkscape:label="Ginifer" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect710"
+           width="13.49375"
+           height="13.229166"
+           x="-1336.4103"
+           y="-463.02078"
+           inkscape:label="St Albans" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect712"
+           width="13.49375"
+           height="13.229166"
+           x="-1336.4103"
+           y="-515.93744"
+           inkscape:label="Keilor Plains" />
+        <g
+           id="g728"
+           inkscape:label="Watergardens"
+           transform="matrix(-1.1030303,0,0,-1,-995.47466,-370.4166)"
+           style="display:inline">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:125.902;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect716"
+             width="83.954323"
+             height="39.6875"
+             x="296.85666"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.434;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect726"
+             width="59.967377"
+             height="13.229166"
+             x="308.85016"
+             y="185.20833" />
+        </g>
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect714"
+           width="13.49375"
+           height="13.229166"
+           x="-1336.4103"
+           y="-621.77075"
+           inkscape:label="Diggers Rest" />
+        <g
+           id="g741"
+           inkscape:label="Sunbury"
+           transform="matrix(-1.1030303,0,0,-1,-995.47466,-476.24993)"
+           style="display:inline">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:125.902;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect737"
+             width="83.954323"
+             height="39.6875"
+             x="296.85666"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.434;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect739"
+             width="59.967377"
              height="13.229166"
              x="308.85016"
              y="185.20833" />
@@ -1870,6 +1986,95 @@
              x="-1223.8301"
              y="-60.007515"
              id="tspan1234">Sunshine</tspan></text>
+      </g>
+      <g
+         id="g1700"
+         inkscape:label="Sunbury Line"
+         transform="translate(-79.375023)">
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1194.4481"
+           y="-380.81479"
+           id="text1698"
+           inkscape:label="Albion"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1194.4481"
+             y="-380.81479"
+             id="tspan1696">Albion</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1192.1992"
+           y="-433.65207"
+           id="text1851"
+           inkscape:label="Ginifer"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1192.1992"
+             y="-433.65207"
+             id="tspan1849">Ginifer</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1174.525"
+           y="-486.56876"
+           id="text1855"
+           inkscape:label="St Albans"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1174.525"
+             y="-486.56876"
+             id="tspan1853">St Albans</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1159.7349"
+           y="-539.56476"
+           id="text1859"
+           inkscape:label="Keilor Plains"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1159.7349"
+             y="-539.56476"
+             id="tspan1857">Keilor Plains</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1146.2147"
+           y="-595.3125"
+           id="text1863"
+           inkscape:label="Watergardens"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1146.2147"
+             y="-595.3125"
+             id="tspan1861">Watergardens</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1156.1498"
+           y="-648.14978"
+           id="text2659"
+           inkscape:label="Digger's Rest"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1156.1498"
+             y="-648.14978"
+             id="tspan2657">Diggers Rest</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-1182.7933"
+           y="-700.98706"
+           id="text2663"
+           inkscape:label="Sunbury"><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-1182.7933"
+             y="-700.98706"
+             id="tspan2661">Sunbury</tspan></text>
       </g>
       <g
          id="g2668"

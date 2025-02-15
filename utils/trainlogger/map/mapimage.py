@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 3150
+x_offset = 3400
 y_offset = 3100
 
 class MapImageHandler:
@@ -27,6 +27,13 @@ class MapImageHandler:
             "West Footscray": (-1994 + x_offset, -435 + y_offset, -1498 + x_offset, -146 + y_offset),
             "Tottenham": (-2600 + x_offset, -263 + y_offset, -2069 + x_offset, -119 + y_offset),
             "Sunshine": (-3137 + x_offset, 474 + y_offset, -2710 + x_offset, 591 + y_offset),
+            "Albion": (-2980 + x_offset, -738 + y_offset, -2664 + x_offset, -635 + y_offset),
+            "Ginifer": (-2974 + x_offset, -924 + y_offset, -2657 + x_offset, -835 + y_offset),
+            "St Albans": (-2974 + x_offset, -1131 + y_offset, -2512 + x_offset, -1007 + y_offset),
+            "Keilor Plains": (-2974 + x_offset, -1331 + y_offset, -2409 + x_offset, -1214 + y_offset),
+            "Watergardens": (-2974 + x_offset, -1537 + y_offset, -2306 + x_offset, -1420 + y_offset),
+            "Diggers Rest": (-2967 + x_offset, -1737 + y_offset, -2361 + x_offset, -1634 + y_offset),
+            "Sunbury": (-2974 + x_offset, -1944 + y_offset, -2574 + x_offset, -1813 + y_offset),
             "Macaulay": (3074 + x_offset, -548 + y_offset, 3518 + x_offset, -412 + y_offset),
             "Flemington Bridge": (3079 + x_offset, -731 + y_offset, 3910 + x_offset, -621 + y_offset),
             "Royal Park": (3071 + x_offset, -935 + y_offset, 3582 + x_offset, -811 + y_offset),
