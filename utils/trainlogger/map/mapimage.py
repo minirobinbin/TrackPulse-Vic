@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 
 x_offset = 3400
-y_offset = 3100
+y_offset = 3400
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
@@ -54,6 +54,15 @@ class MapImageHandler:
             "Ascot Vale": (2071 + x_offset, -1042 + y_offset, 2608 + x_offset, -913 + y_offset),
             "Moonee Ponds": (2071 + x_offset, -1236 + y_offset, 2759 + x_offset, -1099 + y_offset),
             "Essendon": (2071 + x_offset, -1443 + y_offset, 2544 + x_offset, -1314 + y_offset),
+            "Glenbervie": (2068 + x_offset, -1650 + y_offset, 2582 + x_offset, -1505 + y_offset),
+            "Strathmore": (2075 + x_offset, -1838 + y_offset, 2618 + x_offset, -1715 + y_offset),
+            "Pascoe Vale": (2075 + x_offset, -2026 + y_offset, 2654 + x_offset, -1910 + y_offset),
+            "Oak Park": (2061 + x_offset, -2229 + y_offset, 2510 + x_offset, -2113 + y_offset),
+            "Glenroy": (2061 + x_offset, -2446 + y_offset, 2466 + x_offset, -2315 + y_offset),
+            "Jacana": (2083 + x_offset, -2634 + y_offset, 2415 + x_offset, -2525 + y_offset),
+            "Broadmeadows": (933 + x_offset, -2880 + y_offset, 1663 + x_offset, -2764 + y_offset),
+            "Roxburgh Park": (2075 + x_offset, -3191 + y_offset, 2531 + x_offset, -2966 + y_offset),
+            "Craigieburn": (1135 + x_offset, -3350 + y_offset, 1656 + x_offset, -3212 + y_offset),
         }
         
         self.line_coordinates = {

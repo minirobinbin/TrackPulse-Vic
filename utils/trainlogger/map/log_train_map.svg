@@ -27,15 +27,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.32"
-     inkscape:cx="868.75"
-     inkscape:cy="2337.5"
+     inkscape:zoom="0.14928528"
+     inkscape:cx="7281.361"
+     inkscape:cy="2572.2563"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g10415"
+     inkscape:current-layer="layer1"
      shape-rendering="auto" />
   <defs
      id="defs2" />
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1428.7499,1098.0208)">
+     transform="translate(1428.7499,1177.3959)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
@@ -53,12 +53,12 @@
        y="-277.81247"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:3250.52;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:3331.46;stroke-linecap:square"
        id="rect593"
        width="2235.7292"
-       height="1574.2709"
+       height="1653.6458"
        x="-1428.7499"
-       y="-1098.0208"
+       y="-1177.3959"
        inkscape:label="Background" />
     <g
        id="g9073"
@@ -367,6 +367,185 @@
              y="-4.9584413"
              inkscape:label="rect441" />
         </g>
+        <g
+           id="g3435"
+           inkscape:label="Sunshine Line - V/Line SG"
+           transform="matrix(1,0,0,1.0664894,13.229253,-164.04516)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:12.4108;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3437"
+             width="1098.2854"
+             height="12.404405"
+             x="-1230.3125"
+             y="-168.69661" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:3.85257;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3419"
+             width="13.229166"
+             height="99.235237"
+             x="-132.29167"
+             y="-168.69661" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:7.84928;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3440"
+             width="1098.2854"
+             height="4.961762"
+             x="-1226.3438"
+             y="-164.97528" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke-width:54.0954;stroke-linecap:square"
+             id="rect3421"
+             width="5.2916665"
+             height="95.513916"
+             x="-128.29646"
+             y="-164.97528"
+             inkscape:label="rect1487" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3427"
+             width="13.229167"
+             height="6.2022023"
+             x="-132.29167"
+             y="-65.740044" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3429"
+             width="5.2916665"
+             height="6.2022023"
+             x="-128.32292"
+             y="-65.740028"
+             inkscape:label="rect441" />
+        </g>
+        <g
+           id="g2129"
+           inkscape:label="Albion Jacana Line - V/Line SG"
+           transform="matrix(1,0,0,1.0664894,13.229253,-164.04516)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:10.2836;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2117"
+             width="754.0625"
+             height="12.404405"
+             x="-1230.3125"
+             y="-243.12309" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:3.05788;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2119"
+             width="13.229166"
+             height="62.5182"
+             x="-1230.3125"
+             y="-230.96678" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:8.28974;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2131"
+             width="13.229166"
+             height="459.45917"
+             x="-489.47916"
+             y="-702.33417" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:7.46048;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3036"
+             width="396.875"
+             height="12.404405"
+             x="-489.47916"
+             y="-714.49048" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:6.44892;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2121"
+             width="741.36249"
+             height="4.961762"
+             x="-1226.3438"
+             y="-239.40178" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke-width:46.2972;stroke-linecap:square"
+             id="rect2123"
+             width="5.2916665"
+             height="69.960846"
+             x="-1226.3438"
+             y="-234.68811"
+             inkscape:label="rect1487" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:5.31319;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2134"
+             width="5.2916665"
+             height="471.86356"
+             x="-485.51041"
+             y="-706.05548" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:4.69477;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3040"
+             width="392.90625"
+             height="4.961762"
+             x="-485.51041"
+             y="-710.76917"
+             transform="translate(-4.5000002e-6,-1.0447008e-5)" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2125"
+             width="12.404406"
+             height="6.614583"
+             x="702.08606"
+             y="-88.635422"
+             transform="rotate(-90)" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2127"
+             width="4.961762"
+             height="6.614583"
+             x="705.80737"
+             y="-88.635422"
+             inkscape:label="rect441"
+             transform="rotate(-90)" />
+        </g>
+        <g
+           id="g3626"
+           inkscape:label="Seymour Line - V/Line SG"
+           transform="matrix(1,0,0,1.0664894,13.229253,-164.04516)">
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:1.93589;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3630"
+             width="13.229166"
+             height="25.056898"
+             x="158.75"
+             y="-739.29926" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:4.91109;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3612"
+             width="171.97917"
+             height="12.404405"
+             x="-4.5000002e-06"
+             y="-714.49048" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:1.41551;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3634"
+             width="5.2916665"
+             height="33.491894"
+             x="162.71875"
+             y="-739.29926" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:3.02372;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3622"
+             width="162.98334"
+             height="4.961762"
+             x="-4.5000002e-06"
+             y="-710.76917" />
+          <rect
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963146;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3620"
+             width="12.404406"
+             height="6.614583"
+             x="702.08606"
+             y="-10.583338"
+             transform="rotate(-90)" />
+          <rect
+             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609147;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect3624"
+             width="4.961762"
+             height="6.614583"
+             x="705.80737"
+             y="-10.583338"
+             inkscape:label="rect441"
+             transform="rotate(-90)" />
+        </g>
       </g>
       <g
          id="g1258"
@@ -654,19 +833,19 @@
              x="3657.0452"
              y="576.90149" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:79.6357;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:126.417;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3045"
              width="1763.8889"
-             height="318.00882"
-             x="3127.8813"
-             y="255.33099" />
+             height="801.3822"
+             x="3127.8789"
+             y="-228.04243" />
           <rect
-             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:50.4063;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:79.9789;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3047"
              width="705.55554"
-             height="318.51764"
+             height="801.89099"
              x="3657.0452"
-             y="255.07658" />
+             y="-228.29684" />
         </g>
       </g>
       <g
@@ -795,12 +974,12 @@
              x="3127.8787"
              y="577.15588" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:79.6357;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:126.417;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3074"
              width="1763.8889"
-             height="318.00882"
+             height="801.3822"
              x="3127.8813"
-             y="255.33099" />
+             y="-228.04243" />
         </g>
       </g>
       <g
@@ -1057,25 +1236,25 @@
            inkscape:label="Craigieburn Line"
            transform="matrix(1,0,0,1.5490671,-5.6240846e-6,123.33763)">
           <rect
-             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:5.87486;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:8.97352;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect682"
-             width="230.75313"
+             width="538.367"
              height="13.229166"
-             x="-455.3844"
+             x="-762.99829"
              y="-13.229087"
              transform="matrix(0,1,1,0,0,0)" />
         </g>
         <g
            id="g2570"
            inkscape:label="Upfield Line"
-           transform="matrix(20.000001,0,0,0.19920319,269.60891,-259.52357)">
+           transform="matrix(20.000001,0,0,0.19920319,296.06725,-259.52357)">
           <rect
              style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:3.15168;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2568"
              width="66.410416"
              height="13.229166"
              x="-291.04166"
-             y="-13.49367"
+             y="-14.816586"
              transform="matrix(0,1,1,0,0,0)" />
           <rect
              style="fill:#fcb818;fill-opacity:1;stroke:none;stroke-width:4.98523;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
@@ -1083,7 +1262,7 @@
              width="3323.1772"
              height="0.66145831"
              x="-3546.4802"
-             y="-0.91273355"
+             y="-2.2356501"
              transform="matrix(0,1,1,0,0,0)" />
         </g>
       </g>
@@ -1458,7 +1637,7 @@
       <g
          id="g2591"
          inkscape:label="Upfield Line"
-         transform="translate(-5.3749991e-6,-13.229168)">
+         transform="translate(2.7060544e-6,-13.229168)">
         <rect
            style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
            id="rect2589"
@@ -1614,6 +1793,100 @@
           <rect
              style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.4341;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2532"
+             width="59.967377"
+             height="13.229166"
+             x="332.8371"
+             y="185.20833" />
+        </g>
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect658"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-595.31244"
+           inkscape:label="Glenbervie" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect660"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-648.22913"
+           inkscape:label="Strathmore" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect662"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-701.14575"
+           inkscape:label="Pascoe Vale" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect664"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-754.06244"
+           inkscape:label="Oak Park" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect666"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-806.97913"
+           inkscape:label="Glenroy" />
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect668"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-859.89575"
+           inkscape:label="Jacana" />
+        <g
+           id="g675"
+           inkscape:label="Broadmeadows"
+           transform="matrix(1.1030303,0,0,1,-433.27516,-1111.2499)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:218.069;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect670"
+             width="251.86298"
+             height="39.6875"
+             x="320.84363"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:119.757;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect673"
+             width="227.87602"
+             height="13.229166"
+             x="332.8371"
+             y="185.20833" />
+        </g>
+        <rect
+           style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+           id="rect677"
+           width="13.49375"
+           height="13.229166"
+           x="-0.26450396"
+           y="-992.1875"
+           inkscape:label="Roxburgh Park" />
+        <g
+           id="g683"
+           inkscape:label="Craigieburn"
+           transform="matrix(1.1030303,0,0,1,-433.27516,-1230.3125)">
+          <rect
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:125.902;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect679"
+             width="83.954323"
+             height="39.6875"
+             x="320.84363"
+             y="171.97917" />
+          <rect
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.4341;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect681"
              width="59.967377"
              height="13.229166"
              x="332.8371"
@@ -2079,7 +2352,7 @@
       <g
          id="g2668"
          inkscape:label="Upfield Line"
-         transform="translate(-5.3749991e-6,-13.229168)">
+         transform="translate(-7.0541704e-5,-13.229168)">
         <text
            xml:space="preserve"
            style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
@@ -2301,6 +2574,119 @@
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
              x="82.523521"
              y="-526.41504">Essendon</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="88.900009"
+           y="-579.17291"
+           id="text687"
+           inkscape:label="Glenbervie"><tspan
+             sodipodi:role="line"
+             id="tspan685"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="88.900009"
+             y="-579.17291">Glenbervie</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="93.834442"
+           y="-632.0896"
+           id="text743"
+           inkscape:label="Strathmore"><tspan
+             sodipodi:role="line"
+             id="tspan741"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="93.834442"
+             y="-632.0896">Strathmore</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="97.909081"
+           y="-685.16498"
+           id="text747"
+           inkscape:label="Pascoe Vale"><tspan
+             sodipodi:role="line"
+             id="tspan745"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="97.909081"
+             y="-685.16498">Pascoe Vale</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="78.740021"
+           y="-737.92291"
+           id="text751"
+           inkscape:label="Oak Park"><tspan
+             sodipodi:role="line"
+             id="tspan749"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="78.740021"
+             y="-737.92291">Oak Park</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="71.172943"
+           y="-793.59125"
+           id="text805"
+           inkscape:label="Glenroy"><tspan
+             sodipodi:role="line"
+             id="tspan803"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="71.172943"
+             y="-793.59125">Glenroy</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="67.283607"
+           y="-843.91498"
+           id="text809"
+           inkscape:label="Jacana"><tspan
+             sodipodi:role="line"
+             id="tspan807"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="67.283607"
+             y="-843.91498">Jacana</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-183.63383"
+           y="-910.06079"
+           id="text867"
+           inkscape:label="Broadmeadows"><tspan
+             sodipodi:role="line"
+             id="tspan865"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-183.63383"
+             y="-910.06079">Broadmeadows</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="81.187416"
+           y="-993.71259"
+           id="text871"
+           inkscape:label="Roxburgh Park"><tspan
+             sodipodi:role="line"
+             id="tspan869"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="81.187416"
+             y="-993.71259">Roxburgh</tspan><tspan
+             sodipodi:role="line"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="81.187416"
+             y="-958.70074"
+             id="tspan1701">Park</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+           x="-158.65712"
+           y="-1031.7163"
+           id="text1286"
+           inkscape:label="Craigieburn"><tspan
+             sodipodi:role="line"
+             id="tspan1284"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+             x="-158.65712"
+             y="-1031.7163">Craigieburn</tspan></text>
       </g>
       <g
          id="g516"
