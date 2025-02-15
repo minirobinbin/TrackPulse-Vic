@@ -4701,6 +4701,29 @@ async def send(ctx, user: discord.Member, *, message: str):
     else:
         await ctx.send("You are not authorized to use this command.")
 
+# analytics viewer
+@bot.command()
+async def analytics(ctx,user: discord.Member=None):
+    if ctx.author.id in admin_users:
+        log_command(ctx.author.id,'analytics')
+        if user == None:
+            all_files = []
+            folder_path = 'utils/stats/data'
+
+            for filename in os.listdir(folder_path):
+                if filename.endswith('.csv'):
+                    all_files.append(f'<@{filename.strip('.csv')}>')
+            
+            await ctx.send(f"{len(all_files)} users:\n" + "\n".join(all_files))
+            
+        else:
+            try:
+                file = discord.File(f'utils/stats/data/{user.id}.csv')
+                await ctx.send(file=file)
+            except FileNotFoundError:
+                await ctx.send(f'No analytics data found for {user.mention}')
+
+# ping command
 @bot.command()
 async def ping(ctx):
     latency = round(bot.latency * 1000)  # Convert latency to ms
