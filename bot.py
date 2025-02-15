@@ -4428,33 +4428,31 @@ async def viewAchievements(ctx, user: discord.User = None):
             
         return embed
 
-    # Create buttons
+       # Create buttons
     class NavButtons(discord.ui.View):
-        async def __init__(self):
+        def __init__(self):
             super().__init__(timeout=180)
 
         @discord.ui.button(label="Previous", style=discord.ButtonStyle.gray)
-        async def previous_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        async def previous_button(self, interaction: discord.Interaction, _):
             nonlocal current_page
             if current_page > 0:
                 current_page -= 1
-                await interaction.response.edit_message(embed=get_page_embed(current_page), view=self)
+                await interaction.response.edit_message(embed=await get_page_embed(current_page), view=self)
             else:
                 await interaction.response.defer()
 
         @discord.ui.button(label="Next", style=discord.ButtonStyle.gray)
-        async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        async def next_button(self, interaction: discord.Interaction, _):
             nonlocal current_page
             if current_page < len(pages) - 1:
                 current_page += 1
-                await interaction.response.edit_message(embed=get_page_embed(current_page), view=self)
+                await interaction.response.edit_message(embed=await get_page_embed(current_page), view=self)
             else:
                 await interaction.response.defer()
-
-    # Send initial embed with buttons
-    await ctx.edit_original_response(embed=get_page_embed(0), view=NavButtons())
-
-    
+      # Send initial embed with buttons
+    await ctx.edit_original_response(embed=await get_page_embed(0), view=NavButtons())
+   
     
 @bot.tree.command(name="line-status", description="View your line status for all lines.")
 @app_commands.allowed_installs(guilds=True, users=True)
