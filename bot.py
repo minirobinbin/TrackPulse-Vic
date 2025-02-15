@@ -4750,15 +4750,15 @@ async def analytics(ctx,user: discord.Member=None):
             
             # Format the output strings
             all_files = [f'{user} - {count} commands' for user, count in command_counts]
-            
-            await ctx.send(f"{len(all_files)} users:\n" + "\n".join(all_files))
+            msg = await ctx.send('...')
+            await msg.edit(content=  df"{len(all_files)} users:\n" + "\n".join(all_files))
             
         else:
             try:
                 file = discord.File(f'utils/stats/data/{user.id}.csv')
                 await ctx.send(file=file)
             except FileNotFoundError:
-                await ctx.send(f'No analytics data found for {user.mention}')
+                await ctx.send(content=f'No analytics data found for {user.mention}')
 
 # ping command
 @bot.command()
