@@ -4710,6 +4710,7 @@ async def analytics(ctx,user: discord.Member=None):
             all_files = []
             folder_path = 'utils/stats/data'
 
+            command_counts = []
             for filename in os.listdir(folder_path):
                 if filename.endswith('.csv'):
                     # Read command counts for this user
@@ -4720,7 +4721,13 @@ async def analytics(ctx,user: discord.Member=None):
                             count = int(line.strip().split(',')[1])
                             total_commands += count
                     
-                    all_files.append(f'<@{filename.strip(".csv")}> - {total_commands} commands')
+                    command_counts.append((f'<@{filename.strip(".csv")}>', total_commands))
+            
+            # Sort by number of commands (descending)
+            command_counts.sort(key=lambda x: x[1], reverse=True)
+            
+            # Format the output strings
+            all_files = [f'{user} - {count} commands' for user, count in command_counts]
             
             await ctx.send(f"{len(all_files)} users:\n" + "\n".join(all_files))
             
