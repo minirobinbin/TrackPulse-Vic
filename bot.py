@@ -326,6 +326,7 @@ trainlogs = CommandGroups(name='log')
 games = CommandGroups(name='games')
 search = CommandGroups(name='search')
 stats = CommandGroups(name='stats')
+maps = CommandGroups(name='maps')
 myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
@@ -356,6 +357,7 @@ async def on_ready():
     bot.tree.add_command(games)
     bot.tree.add_command(search)
     bot.tree.add_command(stats)
+    bot.tree.add_command(maps)
     bot.tree.add_command(myki)
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
@@ -4360,6 +4362,20 @@ async def profile(ctx, user: discord.User = None):
         
     except Exception as e:
         await ctx.edit_original_response(content = f"Error: `{e}`")
+
+@maps.command(name='view', description='View the maps the bot uses')
+@app_commands.choices(map_choice=[
+        app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
+])
+async def viewMaps(ctx, map_choice: str):
+    await ctx.response.defer()
+    map_choice2 = map_choice.replace("_"," ")
+    map_choice2 = map_choice2.replace("map.png","")
+    map_choice2 = "/" + map_choice2
+    file=discord.File(f'utils/trainlogger/map/{map_choice}')
+    await ctx.edit_original_response(content = f"Map for {map_choice2}")
+    await ctx.channel.send(file=file)
+    await printlog(f"Retrieved {map_choice2} map for {ctx.user.name}")
 
 @bot.command()
 async def refreshachievements(ctx):
