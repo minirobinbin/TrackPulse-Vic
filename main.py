@@ -22,11 +22,11 @@ lines_dictionary = {
     'Unknown/Other':[[None], ptv_grey],
 }
 
-map_handler = MapImageHandler("utils/trainlogger/map/base.png", lines_dictionary)
+map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
 affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont','South Kensington','Footscray','Macaulay','Flemington Bridge','Royal Park','Jewell','Brunswick','Anstey','Moreland','Coburg','Batman','Merlynston','Fawkner','Gowrie','Upfield','Kensington','Newmarket','Showgrounds','Flemington Racecourse','Ascot Vale','Moonee Ponds','Essendon']
 
 affected_lines = [('Flagstaff','Parliament','burnley_group')]
 
 
-map_handler.coverStations(affected_stations, "temp/themap.png")
-map_handler.coverLines(affected_lines, "temp/themap.png")
+a = map_handler.coverStations(affected_stations, "temp/themap.png")
+map_handler.coverLines(a, affected_lines, "temp/themap.png")

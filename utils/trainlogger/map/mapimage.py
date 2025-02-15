@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 800
+x_offset = 3150
 y_offset = 3100
 
 class MapImageHandler:
@@ -109,8 +109,10 @@ class MapImageHandler:
         modified_map = self.highlight_stations(affected_stations)
         
         modified_map.save(output_path)
+
+        return modified_map
     
-    def coverLines(self, stationPairs, output_path):
+    def coverLines(self, modified_map, stationPairs, output_path):
         """
         Saves the modified map with highlighted lines between station pairs
         
@@ -118,7 +120,6 @@ class MapImageHandler:
             stationPairs (list): List of tuples containing station pairs and line name (station1, station2, line)
             output_path (str): Path where the modified image will be saved
         """
-        modified_map = self.map_image.copy()
         
         # Iterate through each tuple of (station1, station2, line)
         for station1, station2, line in stationPairs:
@@ -188,5 +189,5 @@ class CoordinateFinder:
 
 # Run coord finder
 # if __name__ == "__main__":
-# finder = CoordinateFinder("utils/trainlogger/map/base.png")
+# finder = CoordinateFinder("utils/trainlogger/map/log_train_map.png")
 # finder.run()
