@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 
 x_offset = 3400
-y_offset = 3100
+y_offset = 3400
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
