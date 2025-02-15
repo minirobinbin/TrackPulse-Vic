@@ -591,8 +591,6 @@ async def line_info(ctx, line: str):
 
     routes = json_info["routes"]
     status = json_info["status"]
-    version = status["version"]
-    health = status["health"]
 
     route = routes[0]
     route_service_status = route["route_service_status"]
@@ -611,20 +609,17 @@ async def line_info(ctx, line: str):
     disruption_description = ""
     try:
         disruptions = disruption_api_request(route_id)
-        await printlog(disruptions)
 
         # Extracting title and description
         for general_disruption in disruptions["disruptions"]["metro_train"]:
             if general_disruption["display_on_board"]:
-                disruption_title = general_disruption["title"]
                 disruption_description = general_disruption["description"]
                 url = general_disruption['url']
-                display = general_disruption['display_on_board']
                 updateTime = convert_iso_to_unix_time(general_disruption['last_updated'])
                 break
 
     except Exception as e:
-        await printlog(e)
+        await printlog(f'here: {e}')
 
     # Determine the color of the embed based on the status description
     color = genColor(description)
