@@ -4370,7 +4370,7 @@ async def profile(ctx, user: discord.User = None):
 ])
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
-    log_command(ctx.author.id,'map-view')
+    log_command(ctx.user.id,'map-view')
     map_choice2 = map_choice.replace("_"," ")
     map_choice2 = map_choice2.replace("map.png","")
     map_choice2 = "/" + map_choice2
