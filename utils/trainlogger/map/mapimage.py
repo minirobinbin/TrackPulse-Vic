@@ -2,22 +2,38 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 3150
+x_offset = 3400
 y_offset = 3100
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
             "Parliament": (3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),
-            "Jolimont": (4277 + x_offset, 1715 + y_offset, 4700 + x_offset, 1837 + y_offset),
-            "Richmond": (4327 + x_offset, 2732 + y_offset, 4807 + x_offset, 2832 + y_offset),
             "Flinders Street": (2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),
             "Southern Cross": (431 + x_offset, 1264 + y_offset, 1162 + x_offset, 1378 + y_offset),
             "Melbourne Central": (2716 + x_offset, 376 + y_offset, 3217 + x_offset, 619 + y_offset),
             "Flagstaff": (2351 + x_offset, 168 + y_offset, 2494 + x_offset, 619 + y_offset),
+            "Jolimont": (4277 + x_offset, 1715 + y_offset, 4700 + x_offset, 1837 + y_offset),
+            "West Richmond": (4280 + x_offset, 1514 + y_offset, 5010 + x_offset, 1631 + y_offset),
+            "North Richmond": (4280 + x_offset, 1321 + y_offset, 5010 + x_offset, 1438 + y_offset),
+            "Collingwood": (4273 + x_offset, 1100 + y_offset, 4852 + x_offset, 1224 + y_offset),
+            "Victoria Park": (4273 + x_offset, 914 + y_offset, 4886 + x_offset, 1031 + y_offset),
+            "Clifton Hill": (4266 + x_offset, 708 + y_offset, 4769 + x_offset, 839 + y_offset),
+            "Richmond": (4327 + x_offset, 2732 + y_offset, 4807 + x_offset, 2832 + y_offset),
             "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
             "Footscray": (-765 + x_offset, -269 + y_offset, -299 + x_offset, -133 + y_offset),
+            "Middle Footscray": (-1394 + x_offset, -422 + y_offset, -878 + x_offset, -132 + y_offset),
+            "West Footscray": (-1994 + x_offset, -435 + y_offset, -1498 + x_offset, -146 + y_offset),
+            "Tottenham": (-2600 + x_offset, -263 + y_offset, -2069 + x_offset, -119 + y_offset),
+            "Sunshine": (-3137 + x_offset, 474 + y_offset, -2710 + x_offset, 591 + y_offset),
+            "Albion": (-2980 + x_offset, -738 + y_offset, -2664 + x_offset, -635 + y_offset),
+            "Ginifer": (-2974 + x_offset, -924 + y_offset, -2657 + x_offset, -835 + y_offset),
+            "St Albans": (-2974 + x_offset, -1131 + y_offset, -2512 + x_offset, -1007 + y_offset),
+            "Keilor Plains": (-2974 + x_offset, -1331 + y_offset, -2409 + x_offset, -1214 + y_offset),
+            "Watergardens": (-2974 + x_offset, -1537 + y_offset, -2306 + x_offset, -1420 + y_offset),
+            "Diggers Rest": (-2967 + x_offset, -1737 + y_offset, -2361 + x_offset, -1634 + y_offset),
+            "Sunbury": (-2974 + x_offset, -1944 + y_offset, -2574 + x_offset, -1813 + y_offset),
             "Macaulay": (3074 + x_offset, -548 + y_offset, 3518 + x_offset, -412 + y_offset),
             "Flemington Bridge": (3079 + x_offset, -731 + y_offset, 3910 + x_offset, -621 + y_offset),
             "Royal Park": (3071 + x_offset, -935 + y_offset, 3582 + x_offset, -811 + y_offset),
@@ -45,7 +61,7 @@ class MapImageHandler:
                 ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
             },
             'northern_group': {
-                ('North Melbourne', 'Footscray'): (-451 + x_offset, -57 + y_offset, 1946 + x_offset, -2 + y_offset),
+                ('North Melbourne', 'Footscray'): (-450 + x_offset, -57 + y_offset, 1949 + x_offset, 1 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
