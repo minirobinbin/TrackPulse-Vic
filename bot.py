@@ -4373,9 +4373,11 @@ async def viewMaps(ctx, map_choice: str):
     map_choice2 = map_choice.replace("_"," ")
     map_choice2 = map_choice2.replace("map.png","")
     map_choice2 = "/" + map_choice2
-    file=discord.File(f'utils/trainlogger/map/{map_choice}')
-    await ctx.edit_original_response(content = f"Map for {map_choice2}")
-    await ctx.channel.send(file=file)
+    file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
+    embed = discord.Embed(title=f"Map for {map_choice2}")
+    embed.set_image(url="attachment://map.png")
+    await ctx.followup.send(embed=embed, file=file)
+    # await ctx.channel.send(file=file)
     await printlog(f"Retrieved {map_choice2} map for {ctx.user.name}")
 
 
