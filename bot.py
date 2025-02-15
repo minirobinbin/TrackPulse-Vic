@@ -349,7 +349,7 @@ async def on_ready():
     csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
     save_location = "utils/trainsets.csv"
     await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
-    download_csv(csv_url, save_location)
+    await download_csv(csv_url, save_location)
     
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
