@@ -4363,6 +4363,7 @@ async def profile(ctx, user: discord.User = None):
     except Exception as e:
         await ctx.edit_original_response(content = f"Error: `{e}`")
 
+# map view command
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(map_choice=[
         app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
@@ -4377,6 +4378,8 @@ async def viewMaps(ctx, map_choice: str):
     await ctx.channel.send(file=file)
     await printlog(f"Retrieved {map_choice2} map for {ctx.user.name}")
 
+
+# achievement commands
 @bot.command()
 async def refreshachievements(ctx):
     log_command(ctx.author.id, 'refresh-achievements')
