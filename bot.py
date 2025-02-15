@@ -21,6 +21,7 @@ from numbers import Number
 import operator
 from shutil import ExecError
 from tracemalloc import stop
+from anyio import value
 from cycler import V
 from discord.ext import commands, tasks
 from discord import app_commands
@@ -4370,15 +4371,20 @@ async def profile(ctx, user: discord.User = None):
 ])
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
-    log_command(ctx.author.id,'map-view')
+    log_command(ctx.user.id,'map-view')
     map_choice2 = map_choice.replace("_"," ")
     map_choice2 = map_choice2.replace("map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
-    embed = discord.Embed(title=f"Map for {map_choice2}", color=0xb8b8b8)
-    embed.set_image(url="attachment://map.png")
     if map_choice == "log_train_map.png":
-        embed.set_footer(text='This is a work in progress map to show where you have been on the railway network.')
+        embed = discord.Embed(title=f"Map for {map_choice2}",description='This is a work in progress map to show where you have been on the railway network.' ,color=0xb8b8b8)
+        embed.set_image(url="attachment://map.png")
+        user = await bot.fetch_user(1002449671224041502) # get comeng17's pfp
+        embed.set_author(name='Map by Comeng17', icon_url=user.avatar.url)
+        embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+    else:
+        await ctx.followup.send(content=f'Invalid choice {map_choice}')
+        
     await ctx.followup.send(embed=embed, file=file)
     await printlog(f"Retrieved {map_choice2} map for {ctx.user.name} in {ctx.channel.mention}")
 
