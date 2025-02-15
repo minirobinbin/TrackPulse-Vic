@@ -232,7 +232,7 @@ Optional:
 
 Required:
     Line: choose the line you want to view the distruption status for. You must choose from the list.''',
-        '/maps view': '''</myki calculate-fare:1289843416628330507> is a command that allows you to the maps this bot will use to display your logs (when it's finished).
+        '/maps view': '''</maps view:1340254752461819934> is a command that allows you to the maps this bot will use to display your logs (when it's finished).
 
 **Options:**
 
