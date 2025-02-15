@@ -4375,10 +4375,13 @@ async def viewMaps(ctx, map_choice: str):
     map_choice2 = map_choice2.replace("map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
-    embed = discord.Embed(title=f"Map for {map_choice2}", color=0xb8b8b8)
+    embed = discord.Embed(title=f"Map for {map_choice2}", color=0xb8b8b8, description="This is a work in progress map to show where you have been on the railway network.")
     embed.set_image(url="attachment://map.png")
     if map_choice == "log_train_map.png":
-        embed.set_footer(text='This is a work in progress map to show where you have been on the railway network.')
+        user = await bot.fetch_user(1002449671224041502)
+        pfp = user.avatar.url
+        embed.set_author(name="Map by Comeng17", icon_url=pfp)
+        embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
     await ctx.followup.send(embed=embed, file=file)
     await printlog(f"Retrieved {map_choice2} map for {ctx.user.name} in {ctx.channel.mention}")
 
