@@ -42,7 +42,10 @@ class MapImageHandler:
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2899 + x_offset, 850 + y_offset),
+                ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
+            },
+            'northern_group': {
+                ('North Melbourne', 'Footscray'): (-451 + x_offset, -57 + y_offset, 1946 + x_offset, -2 + y_offset),
             }
         }
         self.station_order = station_order_dictionary
@@ -187,7 +190,7 @@ class CoordinateFinder:
     def run(self):
         self.root.mainloop()
 
-# Run coord finder
-# if __name__ == "__main__":
-# finder = CoordinateFinder("utils/trainlogger/map/log_train_map.png")
-# finder.run()
+# Run coord finder if this script is run
+if __name__ == "__main__":
+    finder = CoordinateFinder("utils/trainlogger/map/log_train_map.png")
+    finder.run()
