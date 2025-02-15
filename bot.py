@@ -4725,10 +4725,41 @@ async def send(ctx, user: discord.Member, *, message: str):
 
 # analytics viewer
 @bot.command()
-async def analytics(ctx,user: discord.Member=None):
+async def analytics(ctx,show_commands: str=None, user: discord.Member=None):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id,'analytics')
-        if user == None:
+        
+        if show_commands == "commands":
+            # Dictionary to store total command counts across all users
+            total_commands = {}
+            folder_path = 'utils/stats/data'
+            
+            # Process each user's CSV file
+            for filename in os.listdir(folder_path):
+                if filename.endswith('.csv'):
+                    with open(os.path.join(folder_path, filename), 'r') as f:
+                        next(f) # Skip header
+                        for line in f:
+                            command, count = line.strip().split(',')
+                            total_commands[command] = total_commands.get(command, 0) + int(count)
+            
+            # Sort commands by count
+            sorted_commands = sorted(total_commands.items(), key=lambda x: x[1], reverse=True)
+            
+            # Format output
+            output = "Top commands across all users:\n"
+            for command, count in sorted_commands:
+                output += f"{command}: {count}\n"
+                
+            # Split into chunks if too long
+            if len(output) > 2000:
+                chunks = [output[i:i+1990] for i in range(0, len(output), 1990)]
+                for chunk in chunks:
+                    await ctx.send(chunk)
+            else:
+                await ctx.send(output)
+            
+        elif user == None:
             all_files = []
             folder_path = 'utils/stats/data'
 
@@ -4751,7 +4782,7 @@ async def analytics(ctx,user: discord.Member=None):
             # Format the output strings
             all_files = [f'{user} - {count} commands' for user, count in command_counts]
             msg = await ctx.send('...')
-            await msg.edit(content=  df"{len(all_files)} users:\n" + "\n".join(all_files))
+            await msg.edit(content=  f"{len(all_files)} users:\n" + "\n".join(all_files))
             
         else:
             try:
