@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="10000"
-   height="10000"
-   viewBox="0 0 2645.8333 2645.8333"
+   width="8550"
+   height="8000.0005"
+   viewBox="0 0 2262.1875 2116.6668"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -27,11 +27,11 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.11196396"
-     inkscape:cx="5122.184"
-     inkscape:cy="2813.4053"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:zoom="0.041053452"
+     inkscape:cx="2484.5658"
+     inkscape:cy="4262.7354"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -131,12 +131,56 @@
            inkscape:label="Footscray Line - Cross City"
            transform="matrix(0.0075,0,0,1.0348769,22.072412,-466.97414)">
           <rect
-             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:93.1552;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:98.4765;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect1293"
-             width="60042.777"
+             width="67098.336"
              height="12.783324"
-             x="-89408.805"
+             x="-96464.391"
              y="310.61984" />
+        </g>
+        <g
+           id="g1280"
+           inkscape:label="Williamstown Line"
+           transform="matrix(0.0075,0,0,1.0348769,22.072412,-466.97414)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:86.0124;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1278"
+             width="1763.8889"
+             height="370.97205"
+             x="-98193"
+             y="310.61975" />
+        </g>
+        <g
+           id="g2328"
+           inkscape:label="Altona Loop"
+           transform="matrix(0.0075,0,0,1.0348769,22.072412,-453.74495)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:79.8648;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2326"
+             width="44132.5"
+             height="12.783324"
+             x="-142290.22"
+             y="540.71954" />
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:16.2828;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5656"
+             width="1763.8889"
+             height="13.294657"
+             x="-142290.22"
+             y="527.68054" />
+        </g>
+        <g
+           id="g5663"
+           inkscape:label="Werribee Line"
+           transform="matrix(1.079936,0,0,1,57.083151,-26.458339)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:79.8648;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5658"
+             width="44132.5"
+             height="12.783324"
+             x="-142290.22"
+             y="540.71954"
+             transform="matrix(0.0075,0,0,1.0348769,22.072409,-453.74494)" />
         </g>
       </g>
       <g
@@ -1500,17 +1544,14 @@
                x="332.8371"
                y="185.20833" />
           </g>
-          <g
-             id="g1301"
-             inkscape:label="South Kensington">
-            <rect
-               style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-               id="rect1297"
-               width="13.229166"
-               height="13.49375"
-               x="-515.93738"
-               y="-132.55626" />
-          </g>
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1297"
+             width="13.229166"
+             height="13.49375"
+             x="-515.93738"
+             y="-132.55626"
+             inkscape:label="South Kensington" />
           <g
              id="g2318"
              inkscape:label="Footscray"
@@ -1562,6 +1603,151 @@
           </g>
         </g>
         <g
+           id="g1766"
+           inkscape:label="Williamstown Line"
+           transform="translate(0,13.22917)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1758"
+             width="13.49375"
+             height="13.229166"
+             x="-727.60425"
+             y="-132.29179"
+             inkscape:label="Seddon" />
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1768"
+             width="13.49375"
+             height="13.229166"
+             x="-727.60425"
+             y="-79.375122"
+             inkscape:label="Yarraville" />
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect1772"
+             width="13.49375"
+             height="13.229166"
+             x="-727.60425"
+             y="-26.458454"
+             inkscape:label="Spotswood" />
+          <g
+             id="g1780"
+             inkscape:label="Newport"
+             transform="matrix(1.1030303,0,0,1,-1081.5045,-158.75013)"
+             style="display:inline">
+            <rect
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:82.4222;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect1776"
+               width="35.980427"
+               height="39.6875"
+               x="320.84363"
+               y="171.97917" />
+            <rect
+               style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:27.4742;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect1778"
+               width="11.993475"
+               height="13.229166"
+               x="332.8371"
+               y="185.20833" />
+          </g>
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect4500"
+             width="13.49375"
+             height="13.229166"
+             x="-701.41052"
+             y="119.06237"
+             inkscape:label="North Williamstown" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect4503"
+             width="13.49375"
+             height="13.229166"
+             x="-701.41052"
+             y="171.97903"
+             inkscape:label="Williamstown Beach" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect3527"
+             width="39.6875"
+             height="13.229166"
+             x="-727.60425"
+             y="224.89571"
+             inkscape:label="Williamstown" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5067"
+             width="13.49375"
+             height="13.229166"
+             x="-701.41052"
+             y="119.06237"
+             inkscape:label="North Williamstown" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5073"
+             width="13.49375"
+             height="13.229166"
+             x="-701.41052"
+             y="171.97903"
+             inkscape:label="Williamstown Beach" />
+        </g>
+        <g
+           id="g2348"
+           inkscape:label="Altona Loop"
+           style="display:inline"
+           transform="translate(0,13.229163)">
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect2330"
+             width="13.229166"
+             height="13.49375"
+             x="-793.75006"
+             y="105.56863"
+             inkscape:label="Seaholme" />
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5644"
+             width="13.229166"
+             height="13.49375"
+             x="-912.81256"
+             y="105.56863"
+             inkscape:label="Altona" />
+          <rect
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5654"
+             width="13.229166"
+             height="13.49375"
+             x="-1018.6459"
+             y="105.56863"
+             inkscape:label="Westona" />
+        </g>
+        <g
+           id="g5687"
+           inkscape:label="Werribee Line"
+           transform="translate(-8.2500023e-6,13.229173)"
+           style="display:inline">
+          <g
+             id="g5675"
+             inkscape:label="Newport"
+             transform="matrix(1.1030303,0,0,1,-1451.9211,-119.06264)"
+             style="display:inline">
+            <rect
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:82.4222;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect5671"
+               width="35.980427"
+               height="39.6875"
+               x="320.84363"
+               y="171.97917" />
+            <rect
+               style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:27.4742;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect5673"
+               width="11.993475"
+               height="13.229166"
+               x="332.8371"
+               y="185.20833" />
+          </g>
+        </g>
+        <g
            id="g1579"
            inkscape:label="Clifton Hill Line"
            transform="translate(-5.3749991e-6,-13.229168)">
@@ -1607,7 +1793,7 @@
              inkscape:label="Victoria Park" />
           <g
              id="g2182"
-             inkscape:label="Essendon"
+             inkscape:label="Clifton Hill"
              transform="matrix(1.1030303,0,0,1,201.72483,-185.20831)">
             <rect
                style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:82.4222;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
@@ -2382,6 +2568,152 @@
                x="-589.0946"
                y="-283.63345"
                id="tspan2308">Footscray</tspan></text>
+        </g>
+        <g
+           id="g2372"
+           inkscape:label="Williamstown Line"
+           transform="translate(0,13.229157)">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-784.70111"
+             y="-116.15223"
+             id="text2364"
+             inkscape:label="Seddon"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-784.70111"
+               y="-116.15223"
+               id="tspan2362">Seddon</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-795.73425"
+             y="-63.314938"
+             id="text2430"
+             inkscape:label="Yarraville"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-795.73425"
+               y="-63.314938"
+               id="tspan2495">Yarraville</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-807.99774"
+             y="-12.911804"
+             id="text2501"
+             inkscape:label="Spotswood"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-807.99774"
+               y="-12.911804"
+               id="tspan2499">Spotswood</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-624.39038"
+             y="39.8461"
+             id="text2505"
+             inkscape:label="Newport"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-624.39038"
+               y="39.8461"
+               id="tspan2507">Newport</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-559.58075"
+             y="135.12256"
+             id="text5009"
+             inkscape:label="North Williamstown"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-559.58075"
+               y="135.12256"
+               id="tspan5063">North Williamstown</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-556.00879"
+             y="188.03923"
+             id="text5071"
+             inkscape:label="Williamstown Beach"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-556.00879"
+               y="188.03923"
+               id="tspan5069">Williamstown Beach</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-707.62817"
+             y="270.56274"
+             id="text5077"
+             inkscape:label="Williamstown"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-707.62817"
+               y="270.56274"
+               id="tspan5075">Williamstown</tspan></text>
+        </g>
+        <g
+           id="g2519"
+           inkscape:label="Altona Loop"
+           transform="translate(0,13.229167)">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-787.26776"
+             y="151.65901"
+             id="text2513"
+             inkscape:label="Seaholme"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-787.26776"
+               y="151.65901"
+               id="tspan2511">Seaholme</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-906.06567"
+             y="151.34151"
+             id="text5590"
+             inkscape:label="Altona"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-906.06567"
+               y="151.34151"
+               id="tspan5588">Altona</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1011.899"
+             y="151.34151"
+             id="text5648"
+             inkscape:label="Westona"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1011.899"
+               y="151.34151"
+               id="tspan5650">Westona</tspan></text>
+        </g>
+        <g
+           id="g6231"
+           inkscape:label="Werribee Line">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1078.3094"
+             y="52.59901"
+             id="text6225"
+             inkscape:label="Laverton"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1078.3094"
+               y="52.59901"
+               id="tspan6223">Laverton</tspan></text>
         </g>
         <g
            id="g1630"

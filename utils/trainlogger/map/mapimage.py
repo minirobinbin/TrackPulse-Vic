@@ -23,6 +23,17 @@ class MapImageHandler:
             "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
             "Footscray": (-765 + x_offset, -369 + y_offset, -299 + x_offset, -233 + y_offset),
+            "Seddon": (-1183 + x_offset, 303 + y_offset, -779 + x_offset, 433 + y_offset),
+            "Yarraville": (-1248 + x_offset, 511 + y_offset, -792 + x_offset, 629 + y_offset),
+            "Spotswood": (-1365 + x_offset, 694 + y_offset, -779 + x_offset, 850 + y_offset),
+            "Newport": (-597 + x_offset, 863 + y_offset, -154 + x_offset, 1045 + y_offset),
+            "North Williamstown": (-581 + x_offset, 1215 + y_offset, 341 + x_offset, 1423 + y_offset),
+            "Williamstown Beach": (-584 + x_offset, 1462 + y_offset, 367 + x_offset, 1592 + y_offset),
+            "Williamstown": (-1014 + x_offset, 1761 + y_offset, -336 + x_offset, 1918 + y_offset),
+            "Seaholme": (-1261 + x_offset, 1306 + y_offset, -740 + x_offset, 1436 + y_offset),
+            "Altona": (-1599 + x_offset, 1306 + y_offset, -1261 + x_offset, 1436 + y_offset),
+            "Westona": (-2042 + x_offset, 1306 + y_offset, -1612 + x_offset, 1462 + y_offset),
+            "Laverton": (-2316 + x_offset, 863 + y_offset, -1847 + x_offset, 1006 + y_offset),
             "Middle Footscray": (-1394 + x_offset, -522 + y_offset, -878 + x_offset, -232 + y_offset),
             "West Footscray": (-1994 + x_offset, -535 + y_offset, -1498 + x_offset, -246 + y_offset),
             "Tottenham": (-2600 + x_offset, -363 + y_offset, -2069 + x_offset, -219 + y_offset),
@@ -76,7 +87,7 @@ class MapImageHandler:
         self.line_coordinates = {
             "burnley_group": {
                 ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
-                ('Richmond','Flinders Street'):[(3546 + x_offset, 1992 + y_offset, 4490 + x_offset, 2057 + y_offset),(3046 + x_offset, 1992 + y_offset, 3490 + x_offset, 2066 + y_offset),]
+                ('Richmond','Flinders Street'):[(3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),(3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),]
             },
               'northern_group': {
             ('North Melbourne', 'Footscray'): [
