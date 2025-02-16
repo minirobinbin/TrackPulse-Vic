@@ -87,7 +87,7 @@ class MapImageHandler:
         self.line_coordinates = {
             "burnley_group": {
                 ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
-                ('Richmond','Flinders Street'):[(3546 + x_offset, 1992 + y_offset, 4490 + x_offset, 2057 + y_offset),(3046 + x_offset, 1992 + y_offset, 3490 + x_offset, 2066 + y_offset),]
+                ('Richmond','Flinders Street'):[(3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),(3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),]
             },
               'northern_group': {
             ('North Melbourne', 'Footscray'): [
