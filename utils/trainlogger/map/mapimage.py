@@ -77,8 +77,11 @@ class MapImageHandler:
             "burnley_group": {
                 ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
             },
-            'northern_group': {
-                ('North Melbourne', 'Footscray'): (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
+              'northern_group': {
+            ('North Melbourne', 'Footscray'): [
+                (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
+                (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset)
+            ],
             }
         }
         self.station_order = station_order_dictionary
@@ -113,39 +116,23 @@ class MapImageHandler:
     
     def highlight_lines(self, modified_map, station1, station2, line):
         print('Starting to cover lines')
-        # Create a copy of the original image
         draw = ImageDraw.Draw(modified_map)
         
         # Check if line exists in line_coordinates
         if line in self.line_coordinates:
             # Check if station pair exists in the line
-            station_pair = (station1, station2)
-            if station_pair in self.line_coordinates[line]:
-                coords = self.line_coordinates[line][station_pair]
-                draw.rectangle(coords, fill='white')
-                print(f'Covered from {station1} to {station2} on the {line}')
-            # Check reverse pair
-            station_pair = (station2, station1)
-            if station_pair in self.line_coordinates[line]:
-                coords = self.line_coordinates[line][station_pair]
-                draw.rectangle(coords, fill='white')
-                print(f'Covered from {station2} to {station2} on the {line}')
+            for station_pair, coords in self.line_coordinates[line].items():
+                if (station_pair[0] == station1 and station_pair[1] == station2) or \
+                   (station_pair[0] == station2 and station_pair[1] == station1):
+                    # Handle both list and single coordinate cases
+                    if isinstance(coords, list):
+                        for coord in coords:
+                            draw.rectangle(coord, fill='white')
+                    else:
+                        draw.rectangle(coords, fill='white')
+                    print(f'Covered from {station_pair[0]} to {station_pair[1]} on the {line}')
         
         print('Done covering lines!')
-        return modified_map
-    
-    def coverStations(self, affected_stations, output_path):
-        """
-        Saves the modified map with highlighted stations
-        
-        Args:
-            affected_stations (list): List of station names to highlight
-            output_path (str): Path where the modified image will be saved
-        """
-        modified_map = self.highlight_stations(affected_stations)
-        
-        modified_map.save(output_path)
-
         return modified_map
     
     def coverLines(self, modified_map, stationPairs, output_path):
@@ -162,6 +149,21 @@ class MapImageHandler:
             modified_map = self.highlight_lines(modified_map, station1, station2, line)
             
         modified_map.save(output_path)
+        
+    def coverStations(self, affected_stations, output_path):
+        """
+        Saves the modified map with highlighted stations
+        
+        Args:
+            affected_stations (list): List of station names to highlight
+            output_path (str): Path where the modified image will be saved
+        """
+        modified_map = self.highlight_stations(affected_stations)
+        
+        modified_map.save(output_path)
+
+        return modified_map
+    
         
         
 
