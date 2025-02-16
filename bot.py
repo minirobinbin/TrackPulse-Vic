@@ -4375,7 +4375,7 @@ async def viewMaps(ctx, map_choice: str):
     map_choice2 = map_choice2.replace("map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
-    embed = discord.Embed(title=f"Map for {map_choice2}", color=0xb8b8b8, description="This is a work in progress map to show where you have been on the railway network.")
+    embed = discord.Embed(title=f"Map for {map_choice2}", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
     embed.set_image(url="attachment://map.png")
     if map_choice == "log_train_map.png":
         user = await bot.fetch_user(1002449671224041502)
@@ -4586,8 +4586,8 @@ async def about(ctx):
     await ctx.response.defer()
     log_command(ctx.user.id, 'about')
     embed = discord.Embed(title="About", description="TrackPulse VIC is a Discord bot that allows users to log their train, tram, and bus trips in Victoria, New South Wales and South Australia. It also provides real-time line status updates for Metro Trains Melbourne, as well as a range of other features.", color=discord.Color.blue())
-    embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n", inline=True)
-    embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Comeng17](https://github.com/Comeng17)',inline=True)
+    embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
+    embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')

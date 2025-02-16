@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 
 x_offset = 3400
-y_offset = 3400
+y_offset = 5200
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
@@ -63,6 +63,14 @@ class MapImageHandler:
             "Broadmeadows": (933 + x_offset, -2880 + y_offset, 1663 + x_offset, -2764 + y_offset),
             "Roxburgh Park": (2075 + x_offset, -3191 + y_offset, 2531 + x_offset, -2966 + y_offset),
             "Craigieburn": (1135 + x_offset, -3350 + y_offset, 1656 + x_offset, -3212 + y_offset),
+            "Donnybrook": (1975 + x_offset, -3533 + y_offset, 2535 + x_offset, -3400 + y_offset),
+            "Wallan": (1957 + x_offset, -3738 + y_offset, 2311 + x_offset, -3617 + y_offset),
+            "Heathcote Junction": (1975 + x_offset, -4064 + y_offset, 2479 + x_offset, -3812 + y_offset),
+            "Wandong": (1975 + x_offset, -4250 + y_offset, 2413 + x_offset, -4092 + y_offset),
+            "Kilmore East": (1966 + x_offset, -4539 + y_offset, 2357 + x_offset, -4306 + y_offset),
+            "Broadford": (1966 + x_offset, -4735 + y_offset, 2451 + x_offset, -4614 + y_offset),
+            "Tallarook": (1975 + x_offset, -4930 + y_offset, 2413 + x_offset, -4818 + y_offset),
+            "Seymour": (1221 + x_offset, -5154 + y_offset, 1668 + x_offset, -5005 + y_offset),
         }
         
         self.line_coordinates = {
