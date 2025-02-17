@@ -4369,7 +4369,7 @@ async def profile(ctx, user: discord.User = None):
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(map_choice=[
         app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
-        app_commands.Choice(name="Sydney Trains (Unfinished)", value="log_sydney-train_map.png"),
+        app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
 ])
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
