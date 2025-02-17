@@ -208,8 +208,8 @@ class CoordinateFinder:
         original_y1 = round(int(self.start_y / self.scale) / 50) * 50
         original_x2 = round(int(event.x / self.scale) / 50) * 50
         original_y2 = round(int(event.y / self.scale) / 50) * 50
-        print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset}, {original_y2 - y_offset})")
-        print(f"Copyable: ({original_x1 - x_offset} + x_offset, {original_y1 - y_offset} + y_offset, {original_x2 - x_offset} + x_offset, {original_y2 - y_offset} + y_offset),")
+        print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset - 1}, {original_y2 - y_offset -1})")
+        print(f"Copyable: ({original_x1 - x_offset} + x_offset, {original_y1 - y_offset} + y_offset, {original_x2 - x_offset - 1} + x_offset, {original_y2 - y_offset - 1} + y_offset),")
     def run(self):
         self.root.mainloop()
 
