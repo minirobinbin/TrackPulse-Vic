@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 3500
+x_offset = 4950
 y_offset = 5100
 
 class MapImageHandler:
@@ -30,6 +30,10 @@ class MapImageHandler:
             "North Williamstown": (-581 + x_offset, 1215 + y_offset, 341 + x_offset, 1423 + y_offset),
             "Williamstown Beach": (-584 + x_offset, 1462 + y_offset, 367 + x_offset, 1592 + y_offset),
             "Williamstown": (-1014 + x_offset, 1761 + y_offset, -336 + x_offset, 1918 + y_offset),
+            "Aircraft": (-2737 + x_offset, 889 + y_offset, -2333 + x_offset, 1019 + y_offset),
+            "Williams Landing": (-3531 + x_offset, 850 + y_offset, -2724 + x_offset, 1019 + y_offset),
+            "Hoppers Crossing": (-4404 + x_offset, 876 + y_offset, -3557 + x_offset, 1006 + y_offset),
+            "Werribee": (-4924 + x_offset, 1045 + y_offset, -4495 + x_offset, 1202 + y_offset),
             "Seaholme": (-1261 + x_offset, 1306 + y_offset, -740 + x_offset, 1436 + y_offset),
             "Altona": (-1599 + x_offset, 1306 + y_offset, -1261 + x_offset, 1436 + y_offset),
             "Westona": (-2042 + x_offset, 1306 + y_offset, -1612 + x_offset, 1462 + y_offset),

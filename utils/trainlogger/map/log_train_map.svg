@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="8550"
+   width="10000"
    height="8000.0005"
-   viewBox="0 0 2262.1875 2116.6668"
+   viewBox="0 0 2645.8333 2116.6668"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.041053452"
-     inkscape:cx="2484.5658"
-     inkscape:cy="4262.7354"
+     inkscape:zoom="0.23579016"
+     inkscape:cx="2035.7083"
+     inkscape:cy="4482.7994"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1455.2084,1627.1876)">
+     transform="translate(1838.8542,1627.1876)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
@@ -53,11 +53,11 @@
        y="-277.81262"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:3791.36;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:4100.27;stroke-linecap:square"
        id="rect593"
-       width="2262.1875"
+       width="2645.8333"
        height="2116.6667"
-       x="-1455.2084"
+       x="-1838.8542"
        y="-1627.1876"
        inkscape:label="Background" />
     <g
@@ -174,13 +174,12 @@
            inkscape:label="Werribee Line"
            transform="matrix(1.079936,0,0,1,57.083151,-26.458339)">
           <rect
-             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:79.8648;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:11.6472;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect5658"
-             width="44132.5"
-             height="12.783324"
-             x="-142290.22"
-             y="540.71954"
-             transform="matrix(0.0075,0,0,1.0348769,22.072409,-453.74494)" />
+             width="906.98663"
+             height="13.229167"
+             x="-1621.097"
+             y="105.83322" />
         </g>
       </g>
       <g
@@ -393,14 +392,14 @@
            inkscape:label="North Melbourne Junction - V/Line SG"
            transform="matrix(1,0,0,1.0664894,-39.687411,34.392298)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:6.39165;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:6.39165;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-5-3"
              width="13.229166"
              height="273.14499"
              x="-132.29167"
              y="-193.50548" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke-width:90.8544;stroke-linecap:square"
+             style="fill:#d2a9e5;fill-opacity:1;stroke-width:90.8544;stroke-linecap:square"
              id="rect2295-1-9"
              width="5.2916665"
              height="269.42368"
@@ -412,28 +411,28 @@
            inkscape:label="Sunshine Line - V/Line SG"
            transform="matrix(1,0,0,1.0664894,-39.687402,7.9339013)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.7977;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.7977;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3437"
              width="992.45209"
              height="12.404405"
              x="-1124.4791"
              y="-168.69661" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:7.47641;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:7.47641;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3440"
              width="996.42084"
              height="4.961762"
              x="-1124.4791"
              y="-164.97525" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10935"
              width="6.614583"
              height="12.404405"
              x="-1135.0625"
              y="-168.69658" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10937"
              width="6.614583"
              height="4.961762"
@@ -445,42 +444,42 @@
            inkscape:label="Sunshine Junction - V/Line SG"
            transform="matrix(1,0,0,1.0664894,-104.51032,7.9339075)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10943"
              width="6.614583"
              height="12.404405"
              x="-1135.0625"
              y="-168.69658" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10945"
              width="6.614583"
              height="4.961762"
              x="-1135.0625"
              y="-164.97522" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:1.72293;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:1.72293;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10954"
              width="21.166666"
              height="12.404405"
              x="-1109.9271"
              y="-168.69658" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:1.08968;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:1.08968;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect10956"
              width="21.166666"
              height="4.961762"
              x="-1109.9271"
              y="-164.97522" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:5.10015;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:5.10015;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect11432"
              width="185.47292"
              height="12.404405"
              x="-1324.5042"
              y="-168.69658" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:5.4518;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:5.4518;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13344"
              width="198.71857"
              height="13.229166"
@@ -488,7 +487,7 @@
              y="-1337.4689"
              transform="rotate(-90)" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:1.9263;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:1.9263;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13349"
              width="12.404405"
              height="26.458332"
@@ -496,14 +495,14 @@
              y="-1337.4689"
              transform="rotate(-90)" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:3.25994;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:3.25994;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect11434"
              width="189.44167"
              height="4.961762"
              x="-1328.4729"
              y="-164.97522" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:3.48868;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:3.48868;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13346"
              width="203.43224"
              height="5.2916665"
@@ -511,7 +510,7 @@
              y="-1333.5001"
              transform="rotate(-90)" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.989749;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.989749;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13352"
              width="4.961762"
              height="17.4625"
@@ -519,7 +518,7 @@
              y="-1328.4729"
              transform="rotate(-90)" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.963148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.963148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13356"
              width="12.404405"
              height="6.614583"
@@ -527,7 +526,7 @@
              y="-1307.0416"
              transform="rotate(-90)" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.609148;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect13354"
              width="4.961762"
              height="6.614583"
@@ -540,56 +539,56 @@
            inkscape:label="Albion Jacana Line - V/Line SG"
            transform="matrix(1,0,0,1.0664894,13.229253,-190.50347)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.96315;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect12862"
              width="6.614583"
              height="12.404405"
              x="-1346.7291"
              y="-181.10109" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:0.605953;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.605953;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect12865"
              width="6.5453844"
              height="4.961762"
              x="-1346.7291"
              y="-177.37976" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:10.9816;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:10.9816;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2117"
              width="859.89581"
              height="12.404405"
              x="-1336.1459"
              y="-181.1011" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:8.72588;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:8.72588;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2131"
              width="13.229166"
              height="509.07678"
              x="-489.47916"
              y="-689.92981" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:7.33509;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:7.33509;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3036"
              width="383.64584"
              height="12.404405"
              x="-489.47916"
              y="-702.08612" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:6.90893;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:6.90893;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2121"
              width="850.89996"
              height="4.961762"
              x="-1336.1459"
              y="-177.37978" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:5.58556;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:5.58556;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2134"
              width="5.2916665"
              height="521.4812"
              x="-485.51041"
              y="-693.65112" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:4.59086;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:4.59086;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3040"
              width="375.70834"
              height="4.961762"
@@ -601,14 +600,14 @@
            inkscape:label="Seymour Line - V/Line SG"
            transform="matrix(1,0,0,1.0664894,-264.58342,-190.50347)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:9.03712;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:9.03712;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3630"
              width="13.229166"
              height="546.04193"
              x="158.75"
              y="-1247.8799" />
           <rect
-             style="fill:#e174e7;fill-opacity:1;stroke:none;stroke-width:5.7595;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:5.7595;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3634"
              width="5.2916665"
              height="554.47693"
@@ -624,7 +623,7 @@
            inkscape:label="Flinders Street Viaduct - V/Line Paper"
            transform="translate(-13.229088,39.687489)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:47.4938;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:47.4938;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-5"
              width="502.70831"
              height="396.875"
@@ -652,7 +651,7 @@
              x="-39.6875"
              y="-26.458332" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:1.42065;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-0-9-0-59"
              width="13.229167"
              height="13.49375"
@@ -666,7 +665,7 @@
              x="-48.947914"
              y="-39.952084" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.994652;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-0-9-0-5-8"
              width="13.229167"
              height="6.6145835"
@@ -685,7 +684,7 @@
            inkscape:label="Richmond Junction - V/Line Paper"
            transform="matrix(0.1503,0,0,1,469.67975,-11.100234)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-5"
              width="1762.1285"
              height="13.229166"
@@ -704,7 +703,7 @@
            inkscape:label="North Melbourne Junction - V/Line Paper"
            transform="matrix(0.0075,0,0,1.04,-89.604842,-463.98174)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-5-9"
              width="1763.8889"
              height="6.3601761"
@@ -718,7 +717,7 @@
              x="3657.0452"
              y="411.53693" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:59.5939;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:59.5939;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-5"
              width="1763.8889"
              height="178.08493"
@@ -732,7 +731,7 @@
              x="3657.0452"
              y="229.63582" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect1132"
              width="1763.8889"
              height="6.3601761"
@@ -746,7 +745,7 @@
              x="3657.0435"
              y="219.45953" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:39.0785;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:39.0785;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-7-9"
              width="10618.611"
              height="12.720352"
@@ -760,7 +759,7 @@
              x="-6926.2876"
              y="462.67273" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:63.7483;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:63.7483;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-4-9"
              width="1763.8889"
              height="203.78004"
@@ -779,7 +778,7 @@
            inkscape:label="Sunshine Line - V/Line Paper"
            transform="matrix(0.0075,0,0,1.04,-565.85484,-675.64847)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:142.475;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:142.475;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2358"
              width="141146.39"
              height="12.720352"
@@ -793,7 +792,7 @@
              x="-85101.836"
              y="462.67273" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect867"
              width="1763.8889"
              height="6.3601761"
@@ -814,7 +813,7 @@
            inkscape:label="Sunshine Junction - V/Line Paper"
            transform="matrix(0,-0.0075,1.04,0,-1667.5712,-161.7493)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect858"
              width="1763.8889"
              height="6.3601761"
@@ -828,7 +827,7 @@
              x="3657.0452"
              y="411.53693" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:55.1733;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:55.1733;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect862"
              width="1763.8889"
              height="152.64423"
@@ -842,7 +841,7 @@
              x="3657.0452"
              y="258.8927" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect871"
              width="10618.611"
              height="12.720352"
@@ -856,7 +855,7 @@
              x="-6926.2852"
              y="462.41833" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:46.4897;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:46.4897;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect875"
              width="1763.8889"
              height="108.3774"
@@ -876,7 +875,7 @@
            transform="matrix(0,-0.00789453,1.04,0,-1595.0753,-131.98315)">
           <path
              id="path756"
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:93.1704;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:93.1704;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              d="M 68744.357,185.36904 H 8384.2624 v 12.72035 H 68744.357 Z" />
           <path
              id="path764"
@@ -888,7 +887,7 @@
            inkscape:label="Seymour Line - V/Line Paper"
            transform="matrix(0.0075,0,0,1.04,-89.604842,-860.85674)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3041"
              width="1763.8889"
              height="6.3601761"
@@ -902,7 +901,7 @@
              x="3657.0452"
              y="576.90149" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:155.238;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:155.238;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3045"
              width="1763.8889"
              height="1208.4335"
@@ -925,7 +924,7 @@
            inkscape:label="Flinders Street Viaduct - V/Line"
            transform="translate(13.229245)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:46.9912;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:46.9912;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5"
              width="476.25"
              height="410.10416"
@@ -944,7 +943,7 @@
            inkscape:label="Richmond Junction - V/Line"
            transform="matrix(0.1503,0,0,1,469.67975,-11.100234)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:16.2345;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4"
              width="1762.1285"
              height="13.229166"
@@ -956,28 +955,28 @@
            inkscape:label="North Melbourne Junction - V/Line"
            transform="matrix(0.0075,0,0,1.04,-89.604842,-463.98174)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect1128"
              width="1763.8889"
              height="6.3601761"
              x="6655.6592"
              y="219.71394" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:61.7269;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:61.7269;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42"
              width="1763.8889"
              height="191.05969"
              x="6655.6562"
              y="229.89023" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-7"
              width="10618.611"
              height="12.720352"
              x="-3927.6765"
              y="420.69559" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:61.7268;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:61.7268;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect234-7-3-1-5-0-3-5-4-42-4"
              width="1763.8889"
              height="191.05969"
@@ -989,7 +988,7 @@
            inkscape:label="Sunshine Line - V/Line"
            transform="matrix(0.0075,0,0,1.04,-89.604842,-490.44014)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:145.992;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:145.992;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect2340"
              width="148201.94"
              height="12.720352"
@@ -1001,21 +1000,21 @@
            inkscape:label="Sunshine Junction - V/Line"
            transform="matrix(0,-0.0075,1.04,0,-1568.617,-161.74932)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:52.8726;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:52.8726;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect845"
              width="1763.8889"
              height="140.17828"
              x="6655.6562"
              y="185.36903" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:39.0784;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect847"
              width="10618.611"
              height="12.720352"
              x="-3927.6812"
              y="325.29291" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:37.4204;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:37.4204;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect849"
              width="1763.8889"
              height="70.216347"
@@ -1028,22 +1027,22 @@
            transform="matrix(0,-0.0075,1.04,0,-1568.617,-161.74938)">
           <path
              id="rect745"
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:92.8979;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:92.8979;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              d="M 68391.754,185.36904 H 8384.2548 v 12.72035 H 68391.754 Z" />
         </g>
         <g
            id="g3078"
-           inkscape:label="Seymour Line - V/Line Paper"
+           inkscape:label="Seymour Line - V/Line"
            transform="matrix(0.0075,0,0,1.04,-63.146515,-860.85679)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3070"
              width="1763.8889"
              height="6.3601761"
              x="3127.8787"
              y="577.15588" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke:none;stroke-width:154.435;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:154.435;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3074"
              width="1763.8889"
              height="1195.9675"
@@ -1389,59 +1388,67 @@
            inkscape:label="Seymour Line"
            transform="translate(-5.3708536e-6,-66.145898)">
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
-             id="rect4740"
-             width="13.49375"
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
+             id="rect16753"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181297"
+             y="-542.39587"
+             inkscape:label="Essendon" />
+          <rect
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
+             id="rect4740"
+             width="39.952084"
+             height="13.229166"
+             x="-53.181286"
              y="-1098.0208"
              inkscape:label="Donnybrook" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6584"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1150.9375"
              inkscape:label="Wallan" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6586"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1203.8541"
              inkscape:label="Heathcote Junction" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6588"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1256.7708"
              inkscape:label="Wandong" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6590"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1309.6875"
              inkscape:label="Kilmore East" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6592"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1362.6042"
              inkscape:label="Broadford" />
           <rect
-             style="fill:#8f1a95;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             style="fill:#782f9a;fill-opacity:1;stroke-width:222.031;stroke-linecap:square"
              id="rect6594"
-             width="13.49375"
+             width="39.952084"
              height="13.229166"
-             x="-26.72283"
+             x="-53.181286"
              y="-1415.5209"
              inkscape:label="Tallarook" />
           <g
@@ -1652,30 +1659,6 @@
           </g>
           <rect
              style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             id="rect4500"
-             width="13.49375"
-             height="13.229166"
-             x="-701.41052"
-             y="119.06237"
-             inkscape:label="North Williamstown" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             id="rect4503"
-             width="13.49375"
-             height="13.229166"
-             x="-701.41052"
-             y="171.97903"
-             inkscape:label="Williamstown Beach" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
-             id="rect3527"
-             width="39.6875"
-             height="13.229166"
-             x="-727.60425"
-             y="224.89571"
-             inkscape:label="Williamstown" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect5067"
              width="13.49375"
              height="13.229166"
@@ -1690,6 +1673,15 @@
              x="-701.41052"
              y="171.97903"
              inkscape:label="Williamstown Beach" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect3527"
+             width="39.6875"
+             height="13.229166"
+             x="-727.60425"
+             y="224.89571"
+             inkscape:label="Williamstown"
+             transform="translate(1.1025461e-5)" />
         </g>
         <g
            id="g2348"
@@ -1728,7 +1720,7 @@
            style="display:inline">
           <g
              id="g5675"
-             inkscape:label="Newport"
+             inkscape:label="Laverton"
              transform="matrix(1.1030303,0,0,1,-1451.9211,-119.06264)"
              style="display:inline">
             <rect
@@ -1746,6 +1738,39 @@
                x="332.8371"
                y="185.20833" />
           </g>
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8917"
+             width="13.229166"
+             height="13.49375"
+             x="-1203.8542"
+             y="52.916534"
+             inkscape:label="Aircraft" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect9452"
+             width="13.229166"
+             height="13.49375"
+             x="-1362.6042"
+             y="52.916534"
+             inkscape:label="Williams Landing" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect9454"
+             width="13.229166"
+             height="13.49375"
+             x="-1587.5"
+             y="52.916534"
+             inkscape:label="Hoppers Crossing" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect9461"
+             width="39.6875"
+             height="13.229166"
+             x="52.916534"
+             y="1693.3334"
+             inkscape:label="Werribee"
+             transform="rotate(90)" />
         </g>
         <g
            id="g1579"
@@ -2118,25 +2143,14 @@
              x="-0.26450396"
              y="-489.47916"
              inkscape:label="Moonee Ponds" />
-          <g
-             id="g2534"
-             inkscape:label="Essendon"
-             transform="matrix(1.1030303,0,0,1,-433.27516,-727.60416)">
-            <rect
-               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:125.902;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-               id="rect2522"
-               width="83.954323"
-               height="39.6875"
-               x="320.84363"
-               y="171.97917" />
-            <rect
-               style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:61.4341;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-               id="rect2532"
-               width="59.967377"
-               height="13.229166"
-               x="332.8371"
-               y="185.20833" />
-          </g>
+          <rect
+             style="display:inline;fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect16757"
+             width="13.49375"
+             height="13.229166"
+             x="-0.26449141"
+             y="-542.39587"
+             inkscape:label="Essendon" />
           <rect
              style="fill:#fcb818;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
              id="rect658"
@@ -2714,6 +2728,54 @@
                x="-1078.3094"
                y="52.59901"
                id="tspan6223">Laverton</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1197.2396"
+             y="52.599007"
+             id="text8915"
+             inkscape:label="Aircraft"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1197.2396"
+               y="52.599007"
+               id="tspan8913">Aircraft</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1355.9235"
+             y="47.095676"
+             id="text9450"
+             inkscape:label="Williams Landing"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1355.9235"
+               y="47.095676"
+               id="tspan9448">Williams Landing</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1581.0839"
+             y="47.095676"
+             id="text9458"
+             inkscape:label="Hoppers Crossing"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1581.0839"
+               y="47.095676"
+               id="tspan9456">Hoppers Crossing</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1773.7533"
+             y="95.435066"
+             id="text9466"
+             inkscape:label="Werribee"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1773.7533"
+               y="95.435066"
+               id="tspan9464">Werribee</tspan></text>
         </g>
         <g
            id="g1630"
