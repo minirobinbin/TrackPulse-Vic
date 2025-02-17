@@ -90,13 +90,18 @@ class MapImageHandler:
         
         self.line_coordinates = {
             "burnley_group": {
-                ("Flagstaff", "Melbourne Central"): (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
-                ('Richmond','Flinders Street'):[(3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),(3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),]
+            ("Flagstaff", "Melbourne Central"):[
+                (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
+            ],
+            ('Richmond','Flinders Street'):[
+                (3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),
+                (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
+            ],
             },
               'northern_group': {
             ('North Melbourne', 'Footscray'): [
                 (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
-                (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset)
+                (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
             ],
             }
         }
@@ -135,6 +140,16 @@ class MapImageHandler:
                 else:
                     draw.rectangle(coords, fill=(255, 255, 255, 0))
                 print(f'Created hole for {station}')
+
+        # for testing only, comment out when finished
+        for station in self.station_coordinates:
+            coords = self.station_coordinates[station]
+            if isinstance(coords, list):
+                for coord in coords:
+                    draw.rectangle(coord, fill=(255, 255, 255, 0))
+            else:
+                draw.rectangle(coords, fill=(255, 255, 255, 0))
+            print(f'Created hole for {station}')
         
         # Create holes for lines
         for station1, station2, line in station_pairs:
