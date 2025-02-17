@@ -2152,63 +2152,64 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 while not correct:
                     # Wait for user's response in the same channel
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                    if await check(user_response) == True:  # fixed cause check broke
                     
-                    # Check if the user's response matches the correct station
-                    if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
-                        log_command(user_response.author.id, 'game-station-guesser-correct')
-                        if ultrahard:
-                            await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
-                        else:
-                            await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
-                        correct = True
-                        roundResponse = True
-                        correctAnswers += 1
-                        ignoredRounds = 0
-                        await printlog(f'Ignored rounds: {ignoredRounds}')
-                        if ultrahard:
-                            addLb(user_response.author.id, user_response.author.name, 'ultrahard')
-                        else:
-                            addLb(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author not in participants:
-                            participants.append(user_response.author)
-                            
-                    elif user_response.content.lower() == '!skip':
-                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Round {round+1} skipped.")
-                            log_command(user_response.author.id, 'game-station-guesser-skip')
-                            skippedGames += 1
+                        # Check if the user's response matches the correct station
+                        if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
+                            log_command(user_response.author.id, 'game-station-guesser-correct')
+                            if ultrahard:
+                                await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
+                            correct = True
                             roundResponse = True
-                            break
+                            correctAnswers += 1
+                            ignoredRounds = 0
+                            await printlog(f'Ignored rounds: {ignoredRounds}')
+                            if ultrahard:
+                                addLb(user_response.author.id, user_response.author.name, 'ultrahard')
+                            else:
+                                addLb(user_response.author.id, user_response.author.name, 'guesser')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
+                                
+                        elif user_response.content.lower() == '!skip':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Round {round+1} skipped.")
+                                log_command(user_response.author.id, 'game-station-guesser-skip')
+                                skippedGames += 1
+                                roundResponse = True
+                                break
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                                roundResponse = True
+                        elif user_response.content.lower() == '!stop':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Game ended.")
+                                log_command(user_response.author.id, 'game-station-guesser-stop')
+                                embed = discord.Embed(title=f"Game Summary | {setLine}")
+                                embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                                embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                                embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                                embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                                await ctx.channel.send(embed=embed)  
+                                for user in participants:
+                                    await addGameAchievement(user.name,ctx.channel.id,user.mention)  
+                                channel_game_status[channel] = False
+                                return
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                         else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            log_command(user_response.author.id, 'game-station-guesser-incorrect')
                             roundResponse = True
-                    elif user_response.content.lower() == '!stop':
-                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Game ended.")
-                            log_command(user_response.author.id, 'game-station-guesser-stop')
-                            embed = discord.Embed(title=f"Game Summary | {setLine}")
-                            embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
-                            embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
-                            embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-                            embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
-                            await ctx.channel.send(embed=embed)  
-                            for user in participants:
-                                await addGameAchievement(user.name,ctx.channel.id,user.mention)  
-                            channel_game_status[channel] = False
-                            return
-                        else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
-                    else:
-                        await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                        log_command(user_response.author.id, 'game-station-guesser-incorrect')
-                        roundResponse = True
-                        incorrectAnswers += 1
-                        if ultrahard:
-                            addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
-                        else:
-                            addLoss(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author not in participants:
-                            participants.append(user_response.author)
+                            incorrectAnswers += 1
+                            if ultrahard:
+                                addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
+                            else:
+                                addLoss(user_response.author.id, user_response.author.name, 'guesser')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
                         
             except asyncio.TimeoutError:
                 if ultrahard:
