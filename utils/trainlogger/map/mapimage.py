@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 
-x_offset = 3500
+x_offset = 4950
 y_offset = 5100
 
 class MapImageHandler:
