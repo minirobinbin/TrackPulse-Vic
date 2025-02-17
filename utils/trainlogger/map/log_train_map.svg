@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="8550"
+   width="10000"
    height="8000.0005"
-   viewBox="0 0 2262.1875 2116.6668"
+   viewBox="0 0 2645.8333 2116.6668"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.041053452"
-     inkscape:cx="2484.5658"
-     inkscape:cy="4262.7354"
+     inkscape:zoom="0.066245342"
+     inkscape:cx="4830.5283"
+     inkscape:cy="6234.4006"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1455.2084,1627.1876)">
+     transform="translate(1838.8542,1627.1876)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
@@ -53,11 +53,11 @@
        y="-277.81262"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:3791.36;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:4100.27;stroke-linecap:square"
        id="rect593"
-       width="2262.1875"
+       width="2645.8333"
        height="2116.6667"
-       x="-1455.2084"
+       x="-1838.8542"
        y="-1627.1876"
        inkscape:label="Background" />
     <g
@@ -174,13 +174,12 @@
            inkscape:label="Werribee Line"
            transform="matrix(1.079936,0,0,1,57.083151,-26.458339)">
           <rect
-             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:79.8648;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#009645;fill-opacity:1;stroke:none;stroke-width:11.6472;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect5658"
-             width="44132.5"
-             height="12.783324"
-             x="-142290.22"
-             y="540.71954"
-             transform="matrix(0.0075,0,0,1.0348769,22.072409,-453.74494)" />
+             width="906.98663"
+             height="13.229167"
+             x="-1621.097"
+             y="105.83322" />
         </g>
       </g>
       <g
@@ -1652,30 +1651,6 @@
           </g>
           <rect
              style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             id="rect4500"
-             width="13.49375"
-             height="13.229166"
-             x="-701.41052"
-             y="119.06237"
-             inkscape:label="North Williamstown" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             id="rect4503"
-             width="13.49375"
-             height="13.229166"
-             x="-701.41052"
-             y="171.97903"
-             inkscape:label="Williamstown Beach" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
-             id="rect3527"
-             width="39.6875"
-             height="13.229166"
-             x="-727.60425"
-             y="224.89571"
-             inkscape:label="Williamstown" />
-          <rect
-             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect5067"
              width="13.49375"
              height="13.229166"
@@ -1690,6 +1665,15 @@
              x="-701.41052"
              y="171.97903"
              inkscape:label="Williamstown Beach" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect3527"
+             width="39.6875"
+             height="13.229166"
+             x="-727.60425"
+             y="224.89571"
+             inkscape:label="Williamstown"
+             transform="translate(1.1025461e-5)" />
         </g>
         <g
            id="g2348"
@@ -1728,7 +1712,7 @@
            style="display:inline">
           <g
              id="g5675"
-             inkscape:label="Newport"
+             inkscape:label="Laverton"
              transform="matrix(1.1030303,0,0,1,-1451.9211,-119.06264)"
              style="display:inline">
             <rect
@@ -1746,6 +1730,39 @@
                x="332.8371"
                y="185.20833" />
           </g>
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect8917"
+             width="13.229166"
+             height="13.49375"
+             x="-1203.8542"
+             y="52.916534"
+             inkscape:label="Aircraft" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect9452"
+             width="13.229166"
+             height="13.49375"
+             x="-1362.6042"
+             y="52.916534"
+             inkscape:label="Williams Landing" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke:none;stroke-width:29.1419;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect9454"
+             width="13.229166"
+             height="13.49375"
+             x="-1587.5"
+             y="52.916534"
+             inkscape:label="Hoppers Crossing" />
+          <rect
+             style="display:inline;fill:#009645;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect9461"
+             width="39.6875"
+             height="13.229166"
+             x="52.916534"
+             y="1693.3334"
+             inkscape:label="Werribee"
+             transform="rotate(90)" />
         </g>
         <g
            id="g1579"
@@ -2714,6 +2731,54 @@
                x="-1078.3094"
                y="52.59901"
                id="tspan6223">Laverton</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1197.2396"
+             y="52.599007"
+             id="text8915"
+             inkscape:label="Aircraft"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1197.2396"
+               y="52.599007"
+               id="tspan8913">Aircraft</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1355.9235"
+             y="47.095676"
+             id="text9450"
+             inkscape:label="Williams Landing"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1355.9235"
+               y="47.095676"
+               id="tspan9448">Williams Landing</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1581.0839"
+             y="47.095676"
+             id="text9458"
+             inkscape:label="Hoppers Crossing"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1581.0839"
+               y="47.095676"
+               id="tspan9456">Hoppers Crossing</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1773.7533"
+             y="95.435066"
+             id="text9466"
+             inkscape:label="Werribee"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1773.7533"
+               y="95.435066"
+               id="tspan9464">Werribee</tspan></text>
         </g>
         <g
            id="g1630"
