@@ -19,14 +19,14 @@ class MapImageHandler:
             "Collingwood": (4273 + x_offset, 1100 + y_offset, 4852 + x_offset, 1224 + y_offset),
             "Victoria Park": (4273 + x_offset, 914 + y_offset, 4886 + x_offset, 1031 + y_offset),
             "Clifton Hill": (4266 + x_offset, 708 + y_offset, 4769 + x_offset, 839 + y_offset),
-            "Richmond": (4327 + x_offset, 2632 + y_offset, 4807 + x_offset, 2732 + y_offset),
+            "Richmond": [(4327 + x_offset, 2632 + y_offset, 4807 + x_offset, 2732 + y_offset), (4500 + x_offset, 1946 + y_offset, 4651 + x_offset, 2622 + y_offset)],
             "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
             "Footscray": (-765 + x_offset, -369 + y_offset, -299 + x_offset, -233 + y_offset),
             "Seddon": (-1183 + x_offset, 303 + y_offset, -779 + x_offset, 433 + y_offset),
             "Yarraville": (-1248 + x_offset, 511 + y_offset, -792 + x_offset, 629 + y_offset),
             "Spotswood": (-1365 + x_offset, 694 + y_offset, -779 + x_offset, 850 + y_offset),
-            "Newport": (-597 + x_offset, 863 + y_offset, -154 + x_offset, 1045 + y_offset),
+            "Newport":[ (-597 + x_offset, 863 + y_offset, -154 + x_offset, 1045 + y_offset),(-756 + x_offset, 899 + y_offset, -71 + x_offset, 1048 + y_offset)],
             "North Williamstown": (-581 + x_offset, 1215 + y_offset, 341 + x_offset, 1423 + y_offset),
             "Williamstown Beach": (-584 + x_offset, 1462 + y_offset, 367 + x_offset, 1592 + y_offset),
             "Williamstown": (-1014 + x_offset, 1761 + y_offset, -336 + x_offset, 1918 + y_offset),
@@ -75,7 +75,7 @@ class MapImageHandler:
             "Oak Park": (2083 + x_offset, -2341 + y_offset, 2499 + x_offset, -2202 + y_offset),
             "Glenroy": (2074 + x_offset, -2536 + y_offset, 2453 + x_offset, -2406 + y_offset),
             "Jacana": (2074 + x_offset, -2721 + y_offset, 2435 + x_offset, -2610 + y_offset),
-            "Broadmeadows": (768 + x_offset, -2934 + y_offset, 1499 + x_offset, -2813 + y_offset),
+            "Broadmeadows": [(768 + x_offset, -2934 + y_offset, 1499 + x_offset, -2813 + y_offset),(1550 + x_offset, -2950 + y_offset, 2050 + x_offset, -2800 + y_offset)],
             "Roxburgh Park": (2064 + x_offset, -3249 + y_offset, 2555 + x_offset, -2999 + y_offset),
             "Craigieburn": (2064 + x_offset, -3443 + y_offset, 2629 + x_offset, -3323 + y_offset),
             "Donnybrook": (1981 + x_offset, -3647 + y_offset, 2546 + x_offset, -3508 + y_offset),
@@ -203,14 +203,13 @@ class CoordinateFinder:
         )
         
     def on_release(self, event):
-        # Convert coordinates back to original scale
-        original_x1 = int(self.start_x / self.scale)
-        original_y1 = int(self.start_y / self.scale)
-        original_x2 = int(event.x / self.scale)
-        original_y2 = int(event.y / self.scale)
+        # Convert coordinates back to original scale and round to nearest 50
+        original_x1 = round(int(self.start_x / self.scale) / 50) * 50
+        original_y1 = round(int(self.start_y / self.scale) / 50) * 50
+        original_x2 = round(int(event.x / self.scale) / 50) * 50
+        original_y2 = round(int(event.y / self.scale) / 50) * 50
         print(f"Coordinates: ({original_x1 - x_offset}, {original_y1 - y_offset}, {original_x2 - x_offset}, {original_y2 - y_offset})")
         print(f"Copyable: ({original_x1 - x_offset} + x_offset, {original_y1 - y_offset} + y_offset, {original_x2 - x_offset} + x_offset, {original_y2 - y_offset} + y_offset),")
-        
     def run(self):
         self.root.mainloop()
 
