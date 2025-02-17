@@ -231,6 +231,7 @@ ptv_grey = 0x333434
 
 metro_colour = 0x0072ce
 vline_colour = 0x8f1a95
+vline_map_colour = 0x782f9a
 tram_colour = 0x78be20
 bus_colour = 0xff8200
 coach_colour = 0xa57fb2
@@ -2540,7 +2541,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
         if line in vLineLines:
-            embed = discord.Embed(title="Train Logged",colour=vline_colour)
+            embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
         elif line == 'Unknown':
                 embed = discord.Embed(title="Train Logged")
         else:
@@ -3247,7 +3248,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                                         
                         # Make the embed
                         if row[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log {row[0]}",colour=vline_colour)
+                            embed = discord.Embed(title=f"Log {row[0]}",colour=vline_map_colour)
                         elif row[4] == 'Unknown':
                                 embed = discord.Embed(title=f"Log {row[0]}")
                         else:
