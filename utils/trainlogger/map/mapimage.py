@@ -8,8 +8,8 @@ y_offset = 5100
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            "Parliament": (3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),
-            "Flinders Street": (2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),
+            "Parliament": [(3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),(3049 + x_offset, 1251 + y_offset, 3670 + x_offset, 1399 + y_offset)],
+            "Flinders Street": [(2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),(2901 + x_offset, 1742 + y_offset, 3049 + x_offset, 2733 + y_offset)],
             "Southern Cross": (431 + x_offset, 1264 + y_offset, 1162 + x_offset, 1378 + y_offset),
             "Melbourne Central": (2716 + x_offset, 376 + y_offset, 3217 + x_offset, 619 + y_offset),
             "Flagstaff": (2351 + x_offset, 168 + y_offset, 2494 + x_offset, 619 + y_offset),
@@ -104,82 +104,55 @@ class MapImageHandler:
         self.map_image = Image.open(map_image_path)
         print('Initalised the map maker')
         
-    def highlight_stations(self, affected_stations):
+    def highlight_map(self, station_pairs, output_path):
         """
-        Highlights stations on the map by covering their areas with white rectangles
+        Creates a white cover over the entire map except for holes where the stations and lines are
         
         Args:
-            affected_stations (list): List of station names to highlight
-        
-        Returns:
-            PIL.Image: Modified map image with highlighted stations
+            station_pairs (list): List of tuples containing station pairs and line name (station1, station2, line)
+            output_path (str): Path where the modified image will be saved
         """
-        
-        print('starting to cover stations')
         # Create a copy of the original image
         modified_map = self.map_image.copy()
-        draw = ImageDraw.Draw(modified_map)
         
-        # Draw white rectangles for each affected station
+        # Create a white overlay
+        overlay = Image.new('RGBA', modified_map.size, 'white')
+        draw = ImageDraw.Draw(overlay)
+        
+        # Get unique stations from pairs
+        affected_stations = set()
+        for station1, station2, _ in station_pairs:
+            affected_stations.add(station1)
+            affected_stations.add(station2)
+        
+        # Create holes for stations
         for station in affected_stations:
             if station in self.station_coordinates:
                 coords = self.station_coordinates[station]
-                draw.rectangle(coords, fill='white')
-                print(f'{station} covered')
-                
-        print('Done covering stations!')
-        return modified_map
-    
-    def highlight_lines(self, modified_map, station1, station2, line):
-        print('Starting to cover lines')
-        draw = ImageDraw.Draw(modified_map)
+                if isinstance(coords, list):
+                    for coord in coords:
+                        draw.rectangle(coord, fill=(255, 255, 255, 0))
+                else:
+                    draw.rectangle(coords, fill=(255, 255, 255, 0))
+                print(f'Created hole for {station}')
         
-        # Check if line exists in line_coordinates
-        if line in self.line_coordinates:
-            # Check if station pair exists in the line
-            for station_pair, coords in self.line_coordinates[line].items():
-                if (station_pair[0] == station1 and station_pair[1] == station2) or \
-                   (station_pair[0] == station2 and station_pair[1] == station1):
-                    # Handle both list and single coordinate cases
-                    if isinstance(coords, list):
-                        for coord in coords:
-                            draw.rectangle(coord, fill='white')
-                    else:
-                        draw.rectangle(coords, fill='white')
-                    print(f'Covered from {station_pair[0]} to {station_pair[1]} on the {line}')
+        # Create holes for lines
+        for station1, station2, line in station_pairs:
+            if line in self.line_coordinates:
+                for station_pair, coords in self.line_coordinates[line].items():
+                    if (station_pair[0] == station1 and station_pair[1] == station2) or \
+                       (station_pair[0] == station2 and station_pair[1] == station1):
+                        if isinstance(coords, list):
+                            for coord in coords:
+                                draw.rectangle(coord, fill=(255, 255, 255, 0))
+                        else:
+                            draw.rectangle(coords, fill=(255, 255, 255, 0))
+                        print(f'Created line hole from {station1} to {station2}')
         
-        print('Done covering lines!')
-        return modified_map
-    
-    def coverLines(self, modified_map, stationPairs, output_path):
-        """
-        Saves the modified map with highlighted lines between station pairs
-        
-        Args:
-            stationPairs (list): List of tuples containing station pairs and line name (station1, station2, line)
-            output_path (str): Path where the modified image will be saved
-        """
-        
-        # Iterate through each tuple of (station1, station2, line)
-        for station1, station2, line in stationPairs:
-            modified_map = self.highlight_lines(modified_map, station1, station2, line)
-            
+        # Composite and save
+        modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
         modified_map.save(output_path)
-        
-    def coverStations(self, affected_stations, output_path):
-        """
-        Saves the modified map with highlighted stations
-        
-        Args:
-            affected_stations (list): List of station names to highlight
-            output_path (str): Path where the modified image will be saved
-        """
-        modified_map = self.highlight_stations(affected_stations)
-        
-        modified_map.save(output_path)
-
         return modified_map
-    
         
         
 

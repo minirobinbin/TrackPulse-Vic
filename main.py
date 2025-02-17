@@ -23,10 +23,8 @@ lines_dictionary = {
 }
 
 map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont','West Richmond','North Richmond','Collingwood','Victoria Park','Clifton Hill','South Kensington','Footscray','Seddon','Yarraville','Spotswood','Newport','North Williamstown','Williamstown Beach','Williamstown','Aircraft','Williams Landing','Hoppers Crossing','Werribee','Seaholme','Altona','Westona','Laverton','Middle Footscray','West Footscray','Tottenham','Sunshine','Albion','Ginifer','St Albans','Keilor Plains','Watergardens','Diggers Rest','Sunbury','Macaulay','Flemington Bridge','Royal Park','Jewell','Brunswick','Anstey','Moreland','Coburg','Batman','Merlynston','Fawkner','Gowrie','Upfield','Kensington','Newmarket','Showgrounds','Flemington Racecourse','Ascot Vale','Moonee Ponds','Essendon','Glenbervie','Strathmore','Pascoe Vale','Oak Park','Glenroy','Jacana','Broadmeadows','Roxburgh Park','Craigieburn','Donnybrook','Wallan','Heathcote Junction','Wandong','Kilmore East','Broadford','Tallarook','Seymour']
-
 affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group'),('Flinders Street','Richmond','burnley_group')]
 
 
-a = map_handler.coverStations(affected_stations, "temp/themap.png")
-map_handler.coverLines(a, affected_lines, "temp/themap.png")
+a = map_handler.highlight_map(affected_lines, "temp/themap.png")
+# map_handler.coverLines(a, affected_lines, "temp/themap.png")
