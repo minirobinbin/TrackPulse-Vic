@@ -50,7 +50,7 @@ class MapImageHandler:
             "Diggers Rest": (-2967 + x_offset, -1637 + y_offset, -2361 + x_offset, -1484 + y_offset),
             "Sunbury": [(-2974 + x_offset, -1844 + y_offset, -2574 + x_offset, -1713 + y_offset),(-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset)],
             "Macaulay": (3074 + x_offset, -648 + y_offset, 3518 + x_offset, -512 + y_offset),
-            "Flemington Bridge": (3079 + x_offset, -831 + y_offset, 4390 + x_offset, -721 + y_offset),
+            "Flemington Bridge": (3050 + x_offset, -850 + y_offset, 3999 + x_offset, -701 + y_offset),
             "Royal Park": (3071 + x_offset, -1035 + y_offset, 3582 + x_offset, -911 + y_offset),
             "Jewell": (3064 + x_offset, -1246 + y_offset, 3414 + x_offset, -1108 + y_offset),
             "Brunswick": (3071 + x_offset, -1429 + y_offset, 3567 + x_offset, -1334 + y_offset),
