@@ -4385,7 +4385,7 @@ async def viewMaps(ctx, map_choice: str):
         pfp = user.avatar.url
         embed.set_author(name="Map by Comeng17", icon_url=pfp)
     elif map_choice == "log_sydney-train_map.png":
-        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
         user = await bot.fetch_user(829535993643794482)
         pfp = user.avatar.url
         embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
