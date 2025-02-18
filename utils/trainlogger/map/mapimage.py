@@ -124,6 +124,19 @@ class MapImageHandler:
             "Broadford": (1981 + x_offset, -4628 + y_offset, 2453 + x_offset, -4526 + y_offset),
             "Tallarook": (1990 + x_offset, -4832 + y_offset, 2416 + x_offset, -4702 + y_offset),
             "Seymour": (1037 + x_offset, -5063 + y_offset, 1518 + x_offset, -4888 + y_offset),
+            "Nagambie": (1800.0 + x_offset, -5400.0 + y_offset, 2249.0 + x_offset, -5251.0 + y_offset),
+            "Murchison East": (1800.0 + x_offset, -5550.0 + y_offset, 2549.0 + x_offset, -5551.0 + y_offset),
+            "Mooroopna": (1800.0 + x_offset, -5850.0 + y_offset, 2399.0 + x_offset, -5701.0 + y_offset),
+            "Shepparton": (1500.0 + x_offset, -6150.0 + y_offset, 2099.0 + x_offset, -6001.0 + y_offset),
+            "Avenel": (2400.0 + x_offset, -5100.0 + y_offset, 2849.0 + x_offset, -4951.0 + y_offset),
+            "Euroa": (2850.0 + x_offset, -5100.0 + y_offset, 3149.0 + x_offset, -4951.0 + y_offset),
+            "Violet Town": (3150.0 + x_offset, -5100.0 + y_offset, 3749.0 + x_offset, -4951.0 + y_offset),
+            "Benalla": (3750.0 + x_offset, -5100.0 + y_offset, 4199.0 + x_offset, -4951.0 + y_offset),
+            "Wangaratta": (4200.0 + x_offset, -5100.0 + y_offset, 4799.0 + x_offset, -4801.0 + y_offset),
+            "Springhurst": (4800.0 + x_offset, -5100.0 + y_offset, 5399.0 + x_offset, -4951.0 + y_offset),
+            "Chiltern": (5400.0 + x_offset, -4950.0 + y_offset, 5699.0 + x_offset, -4951.0 + y_offset),
+            "Wodonga": (5850.0 + x_offset, -4950.0 + y_offset, 6299.0 + x_offset, -4951.0 + y_offset),
+            "Albury": (6300.0 + x_offset, -5250.0 + y_offset, 6599.0 + x_offset, -5101.0 + y_offset),
         }
         
         self.line_coordinates = {
