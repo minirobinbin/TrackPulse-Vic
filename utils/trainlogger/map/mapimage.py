@@ -8,8 +8,8 @@ y_offset = 5100
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
-            "Parliament": [(3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),(3049 + x_offset, 1251 + y_offset, 3670 + x_offset, 1399 + y_offset)],
-            "Flinders Street": [(2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),(2901 + x_offset, 1742 + y_offset, 3049 + x_offset, 2733 + y_offset)],
+            "Parliament": (3618 + x_offset, 1264 + y_offset, 4134 + x_offset, 1393 + y_offset),
+            "Flinders Street": (2616 + x_offset, 2732 + y_offset, 3325 + x_offset, 2832 + y_offset),
             "Southern Cross": (431 + x_offset, 1264 + y_offset, 1162 + x_offset, 1378 + y_offset),
             "Melbourne Central": (2716 + x_offset, 376 + y_offset, 3217 + x_offset, 619 + y_offset),
             "Flagstaff": (2351 + x_offset, 168 + y_offset, 2494 + x_offset, 619 + y_offset),
@@ -19,14 +19,14 @@ class MapImageHandler:
             "Collingwood": (4273 + x_offset, 1100 + y_offset, 4852 + x_offset, 1224 + y_offset),
             "Victoria Park": (4273 + x_offset, 914 + y_offset, 4886 + x_offset, 1031 + y_offset),
             "Clifton Hill": (4266 + x_offset, 708 + y_offset, 4769 + x_offset, 839 + y_offset),
-            "Richmond": [(4327 + x_offset, 2632 + y_offset, 4807 + x_offset, 2732 + y_offset), (4500 + x_offset, 1946 + y_offset, 4651 + x_offset, 2622 + y_offset)],
+            "Richmond": (4327 + x_offset, 2632 + y_offset, 4807 + x_offset, 2732 + y_offset),
             "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
             "Footscray": (-765 + x_offset, -369 + y_offset, -299 + x_offset, -233 + y_offset),
             "Seddon": (-1183 + x_offset, 303 + y_offset, -779 + x_offset, 433 + y_offset),
             "Yarraville": (-1248 + x_offset, 511 + y_offset, -792 + x_offset, 629 + y_offset),
             "Spotswood": (-1365 + x_offset, 694 + y_offset, -779 + x_offset, 850 + y_offset),
-            "Newport":[ (-597 + x_offset, 863 + y_offset, -154 + x_offset, 1045 + y_offset),(-756 + x_offset, 899 + y_offset, -71 + x_offset, 1048 + y_offset)],
+            "Newport":(-597 + x_offset, 863 + y_offset, -154 + x_offset, 1045 + y_offset),
             "North Williamstown": (-581 + x_offset, 1215 + y_offset, 341 + x_offset, 1423 + y_offset),
             "Williamstown Beach": (-584 + x_offset, 1462 + y_offset, 367 + x_offset, 1592 + y_offset),
             "Williamstown": (-1014 + x_offset, 1761 + y_offset, -336 + x_offset, 1918 + y_offset),
@@ -46,9 +46,9 @@ class MapImageHandler:
             "Ginifer": (-2974 + x_offset, -824 + y_offset, -2657 + x_offset, -735 + y_offset),
             "St Albans": (-2974 + x_offset, -1031 + y_offset, -2512 + x_offset, -907 + y_offset),
             "Keilor Plains": (-2974 + x_offset, -1231 + y_offset, -2409 + x_offset, -1114 + y_offset),
-            "Watergardens": [(-2974 + x_offset, -1437 + y_offset, -2306 + x_offset, -1320 + y_offset),(-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset)],
+            "Watergardens": (-2974 + x_offset, -1437 + y_offset, -2306 + x_offset, -1320 + y_offset),
             "Diggers Rest": (-2967 + x_offset, -1637 + y_offset, -2361 + x_offset, -1484 + y_offset),
-            "Sunbury": [(-2974 + x_offset, -1844 + y_offset, -2574 + x_offset, -1713 + y_offset),(-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset)],
+            "Sunbury": (-2974 + x_offset, -1844 + y_offset, -2574 + x_offset, -1713 + y_offset),
             "Macaulay": (3074 + x_offset, -648 + y_offset, 3518 + x_offset, -512 + y_offset),
             "Flemington Bridge": (3050 + x_offset, -850 + y_offset, 3999 + x_offset, -701 + y_offset),
             "Royal Park": (3071 + x_offset, -1035 + y_offset, 3582 + x_offset, -911 + y_offset),
@@ -75,9 +75,9 @@ class MapImageHandler:
             "Oak Park": (2083 + x_offset, -2341 + y_offset, 2499 + x_offset, -2202 + y_offset),
             "Glenroy": (2074 + x_offset, -2536 + y_offset, 2453 + x_offset, -2406 + y_offset),
             "Jacana": (2074 + x_offset, -2721 + y_offset, 2435 + x_offset, -2610 + y_offset),
-            "Broadmeadows": [(768 + x_offset, -2934 + y_offset, 1499 + x_offset, -2813 + y_offset),(1550 + x_offset, -2950 + y_offset, 2050 + x_offset, -2800 + y_offset)],
+            "Broadmeadows": (768 + x_offset, -2934 + y_offset, 1499 + x_offset, -2813 + y_offset),
             "Roxburgh Park": (2064 + x_offset, -3249 + y_offset, 2555 + x_offset, -2999 + y_offset),
-            "Craigieburn": [(2064 + x_offset, -3443 + y_offset, 2629 + x_offset, -3323 + y_offset),(1700 + x_offset, -3450 + y_offset, 2050 + x_offset, -3300 + y_offset)],
+            "Craigieburn": (2064 + x_offset, -3443 + y_offset, 2629 + x_offset, -3323 + y_offset),
             "Donnybrook": (1981 + x_offset, -3647 + y_offset, 2546 + x_offset, -3508 + y_offset),
             "Wallan": (1981 + x_offset, -3841 + y_offset, 2324 + x_offset, -3721 + y_offset),
             "Heathcote Junction": (1981 + x_offset, -4036 + y_offset, 2888 + x_offset, -3915 + y_offset),
@@ -89,6 +89,13 @@ class MapImageHandler:
         }
         
         self.line_coordinates = {
+            'standard_guage': {
+                ('Broadmeadows','Seymour'): [
+                    (1600 + x_offset, -4900 + y_offset, 1649 + x_offset, -2951 + y_offset),
+                    (1550 + x_offset, -5050 + y_offset, 1949 + x_offset, -4901 + y_offset),
+                    (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset),
+                    ]
+            },
             "burnley_group": {
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
