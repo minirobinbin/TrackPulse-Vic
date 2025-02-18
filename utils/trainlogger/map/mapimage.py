@@ -113,6 +113,13 @@ class MapImageHandler:
                     (-2150 + x_offset, 1050 + y_offset, -2001 + x_offset, 1199 + y_offset),
                     (-2000 + x_offset, 1100 + y_offset, -651 + x_offset, 1149 + y_offset),
                     (-750 + x_offset, 900 + y_offset, -601 + x_offset, 1149 + y_offset),
+                ],
+                ('Westona', 'Laverton'):[
+                    (-2000 + x_offset, 1100 + y_offset, -1901 + x_offset, 1249 + y_offset),
+                    (-1950 + x_offset, 1200 + y_offset, -1801 + x_offset, 1299 + y_offset),
+                ],
+                ('Westona', 'Altona'):[
+                    (-1850 + x_offset, 1200 + y_offset, -1401 + x_offset, 1299 + y_offset),
                 ]
                 
             },
@@ -169,14 +176,14 @@ class MapImageHandler:
                 print(f'Created hole for {station}')
 
         # for testing only, comment out when finished
-        for station in self.station_coordinates:
+        '''for station in self.station_coordinates:
             coords = self.station_coordinates[station]
             if isinstance(coords, list):
                 for coord in coords:
                     draw.rectangle(coord, fill=(255, 255, 255, 0))
             else:
                 draw.rectangle(coords, fill=(255, 255, 255, 0))
-            print(f'Created hole for {station}')
+            print(f'Created hole for {station}')'''
         
         # Create holes for lines
         for station1, station2, line in station_pairs:
