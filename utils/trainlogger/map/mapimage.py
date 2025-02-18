@@ -214,8 +214,16 @@ class MapImageHandler:
                 (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
                 (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
             ],
+            },
+              
+            'flemington': {
+                ('Flinders Street','Southern Cross'): [
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                    (1650.0 + x_offset, 2550.0 + y_offset, 2849.0 + x_offset, 2699.0 + y_offset),
+                    ],
+            },
             }
-        }
         self.station_order = station_order_dictionary
         self.map_image = Image.open(map_image_path)
         print('Initalised the map maker')
