@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="10000"
-   height="8000.0005"
-   viewBox="0 0 2645.8333 2116.6668"
+   width="11100"
+   height="9050"
+   viewBox="0 0 2936.875 2394.4792"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.20363696"
-     inkscape:cx="10184.792"
-     inkscape:cy="2195.0829"
+     inkscape:zoom="0.25722563"
+     inkscape:cx="7009.4103"
+     inkscape:cy="345.99973"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -43,7 +43,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1838.8542,1627.1876)">
+     transform="translate(1838.8542,1905.0001)">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
@@ -53,12 +53,12 @@
        y="-277.81262"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:4319.91;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:4594.67;stroke-linecap:square"
        id="rect593"
        width="2936.875"
-       height="2116.6667"
+       height="2394.4792"
        x="-1838.8542"
-       y="-1627.1876"
+       y="-1905.0001"
        inkscape:label="Background" />
     <g
        id="g9073"
@@ -884,7 +884,7 @@
         </g>
         <g
            id="g3061"
-           inkscape:label="Seymour Line - V/Line Paper"
+           inkscape:label="Shepparton Line - V/Line Paper"
            transform="matrix(0.0075,0,0,1.04,-89.604842,-860.85674)">
           <rect
              style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:11.2622;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
@@ -894,26 +894,26 @@
              x="3127.8787"
              y="577.15588" />
           <rect
-             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.40227;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.63046;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3043"
              width="705.55554"
-             height="6.8689904"
-             x="3657.0452"
-             y="576.90149" />
+             height="7.2990193"
+             x="3657.0234"
+             y="576.47137" />
           <rect
-             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:155.238;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:170.012;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3045"
              width="1763.8889"
-             height="1208.4335"
-             x="3127.8789"
-             y="-635.09369" />
+             height="1449.3817"
+             x="3127.8572"
+             y="-876.7298" />
           <rect
-             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:98.2018;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:107.547;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3047"
              width="705.55554"
-             height="1208.9423"
-             x="3657.0452"
-             y="-635.34808" />
+             height="1449.9919"
+             x="3657.0234"
+             y="-877.03491" />
         </g>
       </g>
       <g
@@ -1504,6 +1504,43 @@
                x="332.8371"
                y="238.12505" />
           </g>
+        </g>
+        <g
+           id="g2373"
+           inkscape:label="Shepparton Line"
+           transform="translate(-5.3708536e-6,-66.145898)">
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect2351"
+             width="13.49375"
+             height="13.229166"
+             x="-53.181297"
+             y="-1561.0417"
+             inkscape:label="Nagambie" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect2375"
+             width="13.49375"
+             height="13.229166"
+             x="-53.181297"
+             y="-1613.9584"
+             inkscape:label="Murchison East" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect2377"
+             width="13.49375"
+             height="13.229166"
+             x="-53.181297"
+             y="-1666.875"
+             inkscape:label="Mooroopna" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect2379"
+             width="39.6875"
+             height="13.229166"
+             x="-79.375076"
+             y="-1719.7917"
+             inkscape:label="Shepparton" />
         </g>
       </g>
       <g
@@ -2855,6 +2892,59 @@
                x="-184.26897"
                y="-1455.0497"
                id="tspan7106">Seymour</tspan></text>
+        </g>
+        <g
+           id="g3069"
+           inkscape:label="Shepparton Line"
+           transform="translate(2.6250009e-6,-66.145879)">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="30.082981"
+             y="-1547.7333"
+             id="text3039"
+             inkscape:label="Nagambie"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="30.082979"
+               y="-1547.7333"
+               id="tspan3071">Nagambie</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="62.031364"
+             y="-1597.8982"
+             id="text3077"
+             inkscape:label="Murchison East"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="62.031361"
+               y="-1597.8982"
+               id="tspan3075">Murchison East</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="37.9146"
+             y="-1653.4872"
+             id="text3081"
+             inkscape:label="Mooroopna"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="37.9146"
+               y="-1653.4872"
+               id="tspan3079">Mooroopna</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-59.597481"
+             y="-1738.5243"
+             id="text3085"
+             inkscape:label="Shepparton"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-59.597485"
+               y="-1738.5243"
+               id="tspan3083">Shepparton</tspan></text>
         </g>
       </g>
       <g
