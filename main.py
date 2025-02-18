@@ -23,5 +23,5 @@ lines_dictionary = {
 }
 
 map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group'),('Flinders Street','Richmond','burnley_group'),('Seymour','Broadmeadows','standard_guage'),('Hoppers Crossing','Werribee','cross_city'),('Hoppers Crossing', 'Williams Landing','cross_city'),('Aircraft', 'Williams Landing','cross_city'),('Aircraft', 'Laverton','cross_city'),('Altona','Westona', 'cross_city')]
+affected_lines = [('Werribee','Hoppers Crossing','cross_city'),('Williams Landing','Hoppers Crossing','cross_city'),('Williams Landing','Aircraft','cross_city'),('Laverton','Aircraft','cross_city'),('Laverton','Newport','cross_city'),('Laverton','Westona','cross_city'),('Altona','Westona','cross_city'),('Altona','Seaholme','cross_city'),('Newport','Seaholme','cross_city'),('Newport','Spotswood','cross_city'),('Yarraville','Spotswood','cross_city'),('Yarraville','Seddon','cross_city'),('Footscray','Seddon','cross_city'),('Footscray','South Kensington','cross_city'),('North Melbourne','South Kensington','cross_city'),('North Melbourne','Southern Cross','cross_city'),('Flinders Street','Southern Cross','cross_city')]
 a = map_handler.highlight_map(affected_lines, "temp/themap.png")

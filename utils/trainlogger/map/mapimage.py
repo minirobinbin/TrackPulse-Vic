@@ -139,7 +139,54 @@ class MapImageHandler:
                 ],
                 ('Westona', 'Altona'):[
                     (-1850 + x_offset, 1200 + y_offset, -1401 + x_offset, 1299 + y_offset),
-                ]
+                ],
+                ('Altona', 'Seaholme'):[
+                    (-1450 + x_offset, 1200 + y_offset, -951 + x_offset, 1299 + y_offset),
+                ],
+                ('Seaholme','Newport'):[
+                    (-1000 + x_offset, 1200 + y_offset, -701 + x_offset, 1299 + y_offset),
+                    (-700 + x_offset, 1050 + y_offset, -651 + x_offset, 1249 + y_offset),
+                    (-750 + x_offset, 900 + y_offset, -601 + x_offset, 1049 + y_offset),
+                ],
+                ('Newport', 'Spotswood'):[
+                    (-750 + x_offset, 750 + y_offset, -601 + x_offset, 1049 + y_offset),
+                ],
+                ('Spotswood','Yarraville'):[
+                    (-750 + x_offset, 550 + y_offset, -651 + x_offset, 799 + y_offset),
+                ],
+                ('Seddon', 'Yarraville'):[
+                    (-750 + x_offset, 350 + y_offset, -651 + x_offset, 599 + y_offset),
+                ],
+                ('Seddon', 'Footscray'):[
+                    (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+                    (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+                    (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+                    (-750 + x_offset, 250 + y_offset, -601 + x_offset, 399 + y_offset),
+                ],
+                ('Footscray','South Kensington'):[
+                    (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+                    (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+                    (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+                    (-450 + x_offset, 250 + y_offset, 99 + x_offset, 349 + y_offset),
+                ],
+                ('South Kensington', 'North Melbourne'):[
+                    (50 + x_offset, 250 + y_offset, 1299 + x_offset, 349 + y_offset),
+                    (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+                    (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+                    (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+                ],
+                ('North Melbourne', 'Southern Cross'):[
+                    (1250 + x_offset, 500 + y_offset, 1299 + x_offset, 1249 + y_offset),
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                ],
+                ('Southern Cross', 'Flinders Street'):[
+                    (1250 + x_offset, 1400 + y_offset, 1299 + x_offset, 2449 + y_offset),
+                    (1250 + x_offset, 2400 + y_offset, 2899 + x_offset, 2449 + y_offset),
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                ],
+                
+                
                 
             },
             "burnley_group": {
