@@ -96,6 +96,26 @@ class MapImageHandler:
                     (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset),
                     ]
             },
+            'cross_city': {
+                ('Werribee', 'Hoppers Crossing'):[
+                    (-4450 + x_offset, 1050 + y_offset, -3951 + x_offset, 1199 + y_offset),
+                ],
+                ('Hoppers Crossing', 'Williams Landing'):[
+                    (-4000 + x_offset, 1050 + y_offset, -3101 + x_offset, 1149 + y_offset),
+                ],
+                ('Williams Landing','Aircraft'): [
+                    (-3150 + x_offset, 1050 + y_offset, -2501 + x_offset, 1199 + y_offset),
+                ],
+                ('Aircraft', 'Laverton'):[
+                    (-2550 + x_offset, 1050 + y_offset, -2001 + x_offset, 1199 + y_offset),
+                ],
+                ('Laverton', 'Newport'):[ # express route
+                    (-2150 + x_offset, 1050 + y_offset, -2001 + x_offset, 1199 + y_offset),
+                    (-2000 + x_offset, 1100 + y_offset, -651 + x_offset, 1149 + y_offset),
+                    (-750 + x_offset, 900 + y_offset, -601 + x_offset, 1149 + y_offset),
+                ]
+                
+            },
             "burnley_group": {
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
