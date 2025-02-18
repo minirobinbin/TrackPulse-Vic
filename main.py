@@ -23,5 +23,5 @@ lines_dictionary = {
 }
 
 map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group'),('Flinders Street','Richmond','burnley_group'),('Newport','Broadmeadows','')]
+affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group'),('Flinders Street','Richmond','burnley_group'),('Seymour','Broadmeadows','standard_guage')]
 a = map_handler.highlight_map(affected_lines, "temp/themap.png")
