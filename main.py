@@ -1,4 +1,4 @@
-from utils.trainlogger.map.mapimage import MapImageHandler
+from utils.trainlogger.map.readlogs import logMap
 
 ptv_grey = 0x00000
 lines_dictionary = {
@@ -22,6 +22,4 @@ lines_dictionary = {
     'Unknown/Other':[[None], ptv_grey],
 }
 
-map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-affected_lines = [('Werribee','Hoppers Crossing','cross_city'),('Williams Landing','Hoppers Crossing','cross_city'),('Williams Landing','Aircraft','cross_city'),('Laverton','Aircraft','cross_city'),('Laverton','Newport','cross_city'),('Laverton','Westona','cross_city'),('Altona','Westona','cross_city'),('Altona','Seaholme','cross_city'),('Newport','Seaholme','cross_city'),('Newport','Spotswood','cross_city'),('Yarraville','Spotswood','cross_city'),('Yarraville','Seddon','cross_city'),('Footscray','Seddon','cross_city'),('Footscray','South Kensington','cross_city'),('North Melbourne','South Kensington','cross_city'),('North Melbourne','Southern Cross','cross_city'),('Flinders Street','Southern Cross','cross_city')]
-a = map_handler.highlight_map(affected_lines, "temp/themap.png")
+logMap('xm9g',lines_dictionary)

@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
+from matplotlib.pylab import f
 
 x_offset = 4950
 y_offset = 6150
@@ -186,11 +187,20 @@ class MapImageHandler:
                     (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
                     (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
                 ],
-                
+                # Williamstown Branch
+                ('Newport', 'North Williamstown'):[
+                    (-750.0 + x_offset, 1050.0 + y_offset, -601.0 + x_offset, 1349.0 + y_offset),
+                ],
+                ('North Williamstown', 'Williamstown Beach'):[
+                    (-750.0 + x_offset, 1350.0 + y_offset, -601.0 + x_offset, 1499.0 + y_offset),
+                ],
+                ('Williamstown Beach', 'Williamstown'):[
+                    (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1799.0 + y_offset),
+                ],
                 
                 
             },
-            "burnley_group": {
+            "burnley": {
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
             ],
@@ -199,7 +209,7 @@ class MapImageHandler:
                 (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
             ],
             },
-              'northern_group': {
+              'northernp': {
             ('North Melbourne', 'Footscray'): [
                 (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
                 (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
@@ -210,7 +220,7 @@ class MapImageHandler:
         self.map_image = Image.open(map_image_path)
         print('Initalised the map maker')
         
-    def highlight_map(self, station_pairs, output_path):
+    def highlight_map(self, station_pairs, output_path, stations):
         """
         Creates a white cover over the entire map except for holes where the stations and lines are
         
@@ -232,7 +242,7 @@ class MapImageHandler:
             affected_stations.add(station2)
         
         # Create holes for stations
-        for station in affected_stations:
+        for station in stations:
             if station in self.station_coordinates:
                 coords = self.station_coordinates[station]
                 if isinstance(coords, list):
@@ -248,9 +258,11 @@ class MapImageHandler:
                     for coor in coords:
                         coor = coor * dpi
                         coord2.append(coor)
-                    coords = tuple(coord2)
-                    draw.rectangle(coords, fill=(255, 255, 255, 0))
+                    coord = tuple(coord2)
+                    draw.rectangle(coord, fill=(255, 255, 255, 0))
                 print(f'Created hole for {station}')
+            else:
+                print(f'No coordinates for {station}')
 
         # for testing only, comment out when finished
         '''for station in self.station_coordinates:
@@ -294,6 +306,8 @@ class MapImageHandler:
                             coords = tuple(coord2)
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
                         print(f'Created line hole from {station1} to {station2}')
+                    else:
+                        print(f'No line coordinates for {station1} to {station2}')
         
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
