@@ -190,7 +190,12 @@ class MapImageHandler:
                 coords = self.station_coordinates[station]
                 if isinstance(coords, list):
                     for coord in coords:
-                        draw.rectangle(coord * dpi, fill=(255, 255, 255, 0))
+                        coord2 = []
+                        for coor in coord:
+                            coor = coor * dpi
+                            coord2.append(coor)
+                        coord = tuple(coord2)
+                        draw.rectangle(coord, fill=(255, 255, 255, 0))
                 else:
                     draw.rectangle(coords, fill=(255, 255, 255, 0))
                 print(f'Created hole for {station}')
@@ -200,7 +205,12 @@ class MapImageHandler:
             coords = self.station_coordinates[station]
             if isinstance(coords, list):
                 for coord in coords:
-                    draw.rectangle(coord * dpi, fill=(255, 255, 255, 0))
+                    coord2 = []
+                        for coor in coord:
+                            coor = coor * dpi
+                            coord2.append(coor)
+                        coord = tuple(coord2)
+                    draw.rectangle(coord, fill=(255, 255, 255, 0))
             else:
                 draw.rectangle(coords, fill=(255, 255, 255, 0))
             print(f'Created hole for {station}')'''
@@ -213,7 +223,12 @@ class MapImageHandler:
                        (station_pair[0] == station2 and station_pair[1] == station1):
                         if isinstance(coords, list):
                             for coord in coords:
-                                draw.rectangle(coord * dpi, fill=(255, 255, 255, 0))
+                                coord2 = []
+                                for coor in coord:
+                                    coor = coor * dpi
+                                    coord2.append(coor)
+                                coord = tuple(coord2)
+                                draw.rectangle(coord, fill=(255, 255, 255, 0))
                         else:
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
                         print(f'Created line hole from {station1} to {station2}')
