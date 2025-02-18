@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="11100"
+   width="11600"
    height="9050"
-   viewBox="0 0 2936.875 2394.4792"
+   viewBox="0 0 3069.1667 2394.4792"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.25722563"
-     inkscape:cx="7009.4103"
-     inkscape:cy="345.99973"
+     inkscape:zoom="0.24258858"
+     inkscape:cx="10804.301"
+     inkscape:cy="1442.772"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -53,9 +53,9 @@
        y="-277.81262"
        inkscape:label="Offset" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:4594.67;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:4697.02;stroke-linecap:square"
        id="rect593"
-       width="2936.875"
+       width="3069.1667"
        height="2394.4792"
        x="-1838.8542"
        y="-1905.0001"
@@ -600,19 +600,80 @@
            inkscape:label="Seymour Line - V/Line SG"
            transform="matrix(1,0,0,1.0664894,-264.58342,-190.50347)">
           <rect
-             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:9.03712;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:9.43879;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3630"
              width="13.229166"
-             height="546.04193"
+             height="595.65955"
              x="158.75"
-             y="-1247.8799" />
+             y="-1297.4976" />
           <rect
-             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:5.7595;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:1.37564;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect6531"
+             width="13.49375"
+             height="12.404406"
+             x="171.71465"
+             y="-1297.4976" />
+          <rect
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.96313;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect6536"
+             width="6.6145835"
+             height="12.404406"
+             x="189.17717"
+             y="-1297.4976" />
+          <rect
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:5.99312;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
              id="rect3634"
              width="5.2916665"
-             height="554.47693"
+             height="600.37323"
              x="162.71875"
-             y="-1247.8799" />
+             y="-1293.7762" />
+          <rect
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.989731;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect6529"
+             width="17.4625"
+             height="4.961762"
+             x="167.7459"
+             y="-1293.7762" />
+          <rect
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.609137;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect6534"
+             width="6.6145835"
+             height="4.961762"
+             x="189.17715"
+             y="-1293.7762" />
+        </g>
+        <g
+           id="g7450"
+           inkscape:label="Albury Line - V/Line SG"
+           transform="matrix(1,0,0,1.0664894,-264.58342,-190.50347)">
+          <rect
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:12.779;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect7440"
+             width="1164.4313"
+             height="12.404406"
+             x="224.8959"
+             y="-1297.4976" />
+          <rect
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:0.96313;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect7442"
+             width="6.6145835"
+             height="12.404406"
+             x="214.31258"
+             y="-1297.4976" />
+          <rect
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:8.08204;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect7446"
+             width="1164.4313"
+             height="4.961762"
+             x="224.8959"
+             y="-1293.7762" />
+          <rect
+             style="fill:#d2a9e5;fill-opacity:1;stroke:none;stroke-width:0.609137;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             id="rect7448"
+             width="6.6145835"
+             height="4.961762"
+             x="214.31256"
+             y="-1293.7762" />
         </g>
       </g>
       <g
@@ -1541,6 +1602,83 @@
              x="-79.375076"
              y="-1719.7917"
              inkscape:label="Shepparton" />
+        </g>
+        <g
+           id="g8134"
+           inkscape:label="Albury Line"
+           transform="translate(-5.3708536e-6,-66.145898)">
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8126"
+             width="13.229167"
+             height="13.49375"
+             x="158.74998"
+             y="-1495.1604"
+             inkscape:label="Avenel" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8210"
+             width="13.229167"
+             height="13.49375"
+             x="264.58331"
+             y="-1495.1604"
+             inkscape:label="Euroa" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8266"
+             width="13.229167"
+             height="13.49375"
+             x="383.64578"
+             y="-1495.1604"
+             inkscape:label="Violet Town" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8272"
+             width="13.229167"
+             height="13.49375"
+             x="515.9375"
+             y="-1495.1604"
+             inkscape:label="Benalla" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8278"
+             width="13.229167"
+             height="13.49375"
+             x="648.22913"
+             y="-1495.1604"
+             inkscape:label="Wangaratta" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8284"
+             width="13.229167"
+             height="13.49375"
+             x="806.97919"
+             y="-1495.1604"
+             inkscape:label="Springhurst" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8290"
+             width="13.229167"
+             height="13.49375"
+             x="939.27081"
+             y="-1495.1604"
+             inkscape:label="Chiltern" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8296"
+             width="13.229167"
+             height="13.49375"
+             x="1058.3334"
+             y="-1495.1604"
+             inkscape:label="Wodonga" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect8298"
+             width="13.229167"
+             height="39.6875"
+             x="1124.4791"
+             y="-1521.3542"
+             inkscape:label="Albury" />
         </g>
       </g>
       <g
@@ -2945,6 +3083,119 @@
                x="-59.597485"
                y="-1738.5243"
                id="tspan3083">Shepparton</tspan></text>
+        </g>
+        <g
+           id="g8152"
+           inkscape:label="Shepparton Line"
+           transform="translate(2.6250009e-6,-66.145879)">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="165.23224"
+             y="-1449.3876"
+             id="text8138"
+             inkscape:label="Avenel"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="165.23224"
+               y="-1449.3876"
+               id="tspan8136">Avenel</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="271.06561"
+             y="-1449.3876"
+             id="text8208"
+             inkscape:label="Euroa"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="271.06561"
+               y="-1449.3876"
+               id="tspan8206">Euroa</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="390.39264"
+             y="-1449.2289"
+             id="text8214"
+             inkscape:label="Violet Town"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="390.39264"
+               y="-1449.2289"
+               id="tspan8212">Violet Town</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="522.4198"
+             y="-1449.2289"
+             id="text8270"
+             inkscape:label="Benalla"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="522.4198"
+               y="-1449.2289"
+               id="tspan8268">Benalla</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="654.97601"
+             y="-1449.3876"
+             id="text8276"
+             inkscape:label="Wangaratta"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="654.97601"
+               y="-1449.3876"
+               id="tspan8274">Wangaratta</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="813.39532"
+             y="-1449.3876"
+             id="text8282"
+             inkscape:label="Springhurst"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="813.39532"
+               y="-1449.3876"
+               id="tspan8280">Springhurst</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="945.81921"
+             y="-1449.3876"
+             id="text8288"
+             inkscape:label="Chiltern"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="945.81921"
+               y="-1449.3876"
+               id="tspan8286">Chiltern</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="1065.0802"
+             y="-1449.3876"
+             id="text8294"
+             inkscape:label="Wodonga"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="1065.0802"
+               y="-1449.3876"
+               id="tspan8292">Wodonga</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="1187.9923"
+             y="-1494.896"
+             id="text8302"
+             inkscape:label="Albury"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="1187.9923"
+               y="-1494.896"
+               id="tspan8300">Albury</tspan></text>
         </g>
       </g>
       <g
