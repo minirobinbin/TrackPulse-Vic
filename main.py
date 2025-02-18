@@ -23,10 +23,5 @@ lines_dictionary = {
 }
 
 map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-affected_stations = ['Parliament','Flagstaff','Melbourne Central','Flinders Street','Southern Cross','North Melbourne','Richmond','Jolimont','West Richmond','North Richmond','Collingwood','Victoria Park','Clifton Hill','South Kensington','Footscray','Middle Footscray','West Footscray','Tottenham','Sunshine','Albion','Ginifer','St Albans','Keilor Plains','Watergardens','Diggers Rest','Sunbury','Macaulay','Flemington Bridge','Royal Park','Jewell','Brunswick','Anstey','Moreland','Coburg','Batman','Merlynston','Fawkner','Gowrie','Upfield','Kensington','Newmarket','Showgrounds','Flemington Racecourse','Ascot Vale','Moonee Ponds','Essendon']
-
-affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group')]
-
-
-a = map_handler.coverStations(affected_stations, "temp/themap.png")
-map_handler.coverLines(a, affected_lines, "temp/themap.png")
+affected_lines = [('Flagstaff','Melbourne Central','burnley_group'), ('Footscray','North Melbourne','northern_group'),('Flinders Street','Richmond','burnley_group'),('Newport','Broadmeadows','')]
+a = map_handler.highlight_map(affected_lines, "temp/themap.png")

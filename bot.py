@@ -232,6 +232,7 @@ ptv_grey = 0x333434
 
 metro_colour = 0x0072ce
 vline_colour = 0x8f1a95
+vline_map_colour = 0x782f9a
 tram_colour = 0x78be20
 bus_colour = 0xff8200
 coach_colour = 0xa57fb2
@@ -520,7 +521,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -2152,63 +2153,64 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                 while not correct:
                     # Wait for user's response in the same channel
                     user_response = await bot.wait_for('message', check=check, timeout=30.0)
+                    if await check(user_response) == True:  # fixed cause check broke
                     
-                    # Check if the user's response matches the correct station
-                    if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
-                        log_command(user_response.author.id, 'game-station-guesser-correct')
-                        if ultrahard:
-                            await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
-                        else:
-                            await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
-                        correct = True
-                        roundResponse = True
-                        correctAnswers += 1
-                        ignoredRounds = 0
-                        await printlog(f'Ignored rounds: {ignoredRounds}')
-                        if ultrahard:
-                            addLb(user_response.author.id, user_response.author.name, 'ultrahard')
-                        else:
-                            addLb(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author not in participants:
-                            participants.append(user_response.author)
-                            
-                    elif user_response.content.lower() == '!skip':
-                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Round {round+1} skipped.")
-                            log_command(user_response.author.id, 'game-station-guesser-skip')
-                            skippedGames += 1
+                        # Check if the user's response matches the correct station
+                        if user_response.content[1:].lower().replace(" ", "") == station.lower().replace(" ", ""):
+                            log_command(user_response.author.id, 'game-station-guesser-correct')
+                            if ultrahard:
+                                await ctx.channel.send(f"{user_response.author.mention} guessed it right!")
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} guessed it right! {station.title()} was the correct answer!")
+                            correct = True
                             roundResponse = True
-                            break
+                            correctAnswers += 1
+                            ignoredRounds = 0
+                            await printlog(f'Ignored rounds: {ignoredRounds}')
+                            if ultrahard:
+                                addLb(user_response.author.id, user_response.author.name, 'ultrahard')
+                            else:
+                                addLb(user_response.author.id, user_response.author.name, 'guesser')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
+                                
+                        elif user_response.content.lower() == '!skip':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Round {round+1} skipped.")
+                                log_command(user_response.author.id, 'game-station-guesser-skip')
+                                skippedGames += 1
+                                roundResponse = True
+                                break
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                                roundResponse = True
+                        elif user_response.content.lower() == '!stop':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Game ended.")
+                                log_command(user_response.author.id, 'game-station-guesser-stop')
+                                embed = discord.Embed(title=f"Game Summary | {setLine}")
+                                embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                                embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                                embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                                embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                                await ctx.channel.send(embed=embed)  
+                                for user in participants:
+                                    await addGameAchievement(user.name,ctx.channel.id,user.mention)  
+                                channel_game_status[channel] = False
+                                return
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
                         else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            log_command(user_response.author.id, 'game-station-guesser-incorrect')
                             roundResponse = True
-                    elif user_response.content.lower() == '!stop':
-                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Game ended.")
-                            log_command(user_response.author.id, 'game-station-guesser-stop')
-                            embed = discord.Embed(title=f"Game Summary | {setLine}")
-                            embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
-                            embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
-                            embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
-                            embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
-                            await ctx.channel.send(embed=embed)  
-                            for user in participants:
-                                await addGameAchievement(user.name,ctx.channel.id,user.mention)  
-                            channel_game_status[channel] = False
-                            return
-                        else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")    
-                    else:
-                        await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                        log_command(user_response.author.id, 'game-station-guesser-incorrect')
-                        roundResponse = True
-                        incorrectAnswers += 1
-                        if ultrahard:
-                            addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
-                        else:
-                            addLoss(user_response.author.id, user_response.author.name, 'guesser')
-                        if user_response.author not in participants:
-                            participants.append(user_response.author)
+                            incorrectAnswers += 1
+                            if ultrahard:
+                                addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
+                            else:
+                                addLoss(user_response.author.id, user_response.author.name, 'guesser')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
                         
             except asyncio.TimeoutError:
                 if ultrahard:
@@ -2541,7 +2543,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
         if line in vLineLines:
-            embed = discord.Embed(title="Train Logged",colour=vline_colour)
+            embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
         elif line == 'Unknown':
                 embed = discord.Embed(title="Train Logged")
         else:
@@ -3248,7 +3250,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                                         
                         # Make the embed
                         if row[4] in vLineLines:
-                            embed = discord.Embed(title=f"Log {row[0]}",colour=vline_colour)
+                            embed = discord.Embed(title=f"Log {row[0]}",colour=vline_map_colour)
                         elif row[4] == 'Unknown':
                                 embed = discord.Embed(title=f"Log {row[0]}")
                         else:
@@ -4368,23 +4370,27 @@ async def profile(ctx, user: discord.User = None):
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(map_choice=[
         app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
+        app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
 ])
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
     map_choice2 = map_choice.replace("_"," ")
-    map_choice2 = map_choice2.replace("map.png","")
+    map_choice2 = map_choice2.replace(" map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
     if map_choice == "log_train_map.png":
-        embed = discord.Embed(title=f"Map for {map_choice2}",description='This is a work in progress map to show where you have been on the railway network.' ,color=0xb8b8b8)
-        embed.set_image(url="attachment://map.png")
-        user = await bot.fetch_user(1002449671224041502) # get comeng17's pfp
-        embed.set_author(name='Map by Comeng17', icon_url=user.avatar.url)
-        embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
-    else:
-        await ctx.followup.send(content=f'Invalid choice {map_choice}')
-        
+        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+        user = await bot.fetch_user(1002449671224041502)
+        pfp = user.avatar.url
+        embed.set_author(name="Map by Comeng17", icon_url=pfp)
+    elif map_choice == "log_sydney-train_map.png":
+        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+        user = await bot.fetch_user(829535993643794482)
+        pfp = user.avatar.url
+        embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+    embed.set_image(url="attachment://map.png")
+    embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
     await ctx.followup.send(embed=embed, file=file)
     await printlog(f"Retrieved {map_choice2} map for {ctx.user.name} in {ctx.channel.mention}")
 
@@ -4589,8 +4595,8 @@ async def about(ctx):
     await ctx.response.defer()
     log_command(ctx.user.id, 'about')
     embed = discord.Embed(title="About", description="TrackPulse VIC is a Discord bot that allows users to log their train, tram, and bus trips in Victoria, New South Wales and South Australia. It also provides real-time line status updates for Metro Trains Melbourne, as well as a range of other features.", color=discord.Color.blue())
-    embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n", inline=True)
-    embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Comeng17](https://github.com/Comeng17)',inline=True)
+    embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
+    embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
