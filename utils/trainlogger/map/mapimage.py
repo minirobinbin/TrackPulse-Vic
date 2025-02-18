@@ -244,6 +244,11 @@ class MapImageHandler:
                         coord = tuple(coord2)
                         draw.rectangle(coord, fill=(255, 255, 255, 0))
                 else:
+                    coord2 = []
+                    for coor in coords:
+                        coor = coor * dpi
+                        coord2.append(coor)
+                    coords = tuple(coord2)
                     draw.rectangle(coords, fill=(255, 255, 255, 0))
                 print(f'Created hole for {station}')
 
@@ -259,6 +264,11 @@ class MapImageHandler:
                         coord = tuple(coord2)
                     draw.rectangle(coord, fill=(255, 255, 255, 0))
             else:
+                coord2 = []
+                for coor in coords:
+                    coor = coor * dpi
+                    coord2.append(coor)
+                coords = tuple(coord2)
                 draw.rectangle(coords, fill=(255, 255, 255, 0))
             print(f'Created hole for {station}')'''
         
@@ -277,6 +287,11 @@ class MapImageHandler:
                                 coord = tuple(coord2)
                                 draw.rectangle(coord, fill=(255, 255, 255, 0))
                         else:
+                            coord2 = []
+                            for coor in coords:
+                                coor = coor * dpi
+                                coord2.append(coor)
+                            coords = tuple(coord2)
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
                         print(f'Created line hole from {station1} to {station2}')
         
