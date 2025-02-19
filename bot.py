@@ -4923,6 +4923,7 @@ async def mapstrips(ctx):
 
     tripMap(ctx.author.name)
     file=discord.File('temp/themap.png', filename='map.png')
+    time.sleep(10)
     await ctx.channel.send(file=file)
     
 # important
