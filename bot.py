@@ -4922,8 +4922,8 @@ async def mapstrips(ctx):
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
     tripMap(ctx.author.name)
-    file=discord.File('temp/themap.png', filename='map.png')
     time.sleep(10)
+    file=discord.File('temp/themap.png', filename='map.png')
     await ctx.channel.send(file=file)
     
 # important
