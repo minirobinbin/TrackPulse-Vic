@@ -275,7 +275,31 @@ class MapImageHandler:
                 ('Flinders Street','Southern Cross'): [
                     (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
                     (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
-                    (1650.0 + x_offset, 2550.0 + y_offset, 2849.0 + x_offset, 2699.0 + y_offset),
+                    (1650 + x_offset, 2550 + y_offset, 2849 + x_offset, 2699 + y_offset),
+                    (1612 + x_offset, 2451 + y_offset, 1708 + x_offset, 2688 + y_offset),
+                    (1621 + x_offset, 1398 + y_offset, 1708 + x_offset, 2388 + y_offset),
+                    ],
+                ('Southern Cross','North Melbourne'): [
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                    (1633 + x_offset, 909 + y_offset, 1708 + x_offset, 1239 + y_offset),
+                    (1621 + x_offset, 747 + y_offset, 1696 + x_offset, 834 + y_offset),
+                    (1621 + x_offset, 492 + y_offset, 1717 + x_offset, 684 + y_offset),
+                    (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+                    (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+                    (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+                    
+                ],
+                ('North Melbourne','Showgrounds'): [
+                    (1621 + x_offset, 492 + y_offset, 1717 + x_offset, 684 + y_offset),
+                    (1612 + x_offset, -100 + y_offset, 1708 + x_offset, 345 + y_offset),
+                    (1633 + x_offset, -1020 + y_offset, 1717 + x_offset, -156 + y_offset),
+                    (1300 + x_offset, -1050 + y_offset, 1700 + x_offset, -900 + y_offset),
+                    (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+                    (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+                    (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+                ],
+                ('Showgrounds','Flemington Racecourse'): [
+                    (900 + x_offset, -1050 + y_offset, 1350 + x_offset, -900 + y_offset),
                     ],
             },
             }
@@ -426,16 +450,16 @@ class CoordinateFinder:
         )
         
     def on_release(self, event):
-        # Convert coordinates back to original scale and round to nearest 50
-        x1 = round(int(min(self.start_x, event.x) / self.scale) / 50) * 50
-        y1 = round(int(min(self.start_y, event.y) / self.scale) / 50) * 50
-        x2 = round(int(max(self.start_x, event.x) / self.scale) / 50) * 50
-        y2 = round(int(max(self.start_y, event.y) / self.scale) / 50) * 50
+        # Convert coordinates back to original scale
+        x1 = int(min(self.start_x, event.x) / self.scale)
+        y1 = int(min(self.start_y, event.y) / self.scale)
+        x2 = int(max(self.start_x, event.x) / self.scale) 
+        y2 = int(max(self.start_y, event.y) / self.scale)
         # Swap y coordinates to ensure y2 is greater than y1
-        y1_adj = int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset))
-        y2_adj = int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset))
-        x1_adj = int((x1 / dpi) - x_offset)
-        x2_adj = int((x2 / dpi) - x_offset)
+        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
+        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
+        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50  
+        x2_adj = round(int((x2 / dpi) - x_offset) / 50) * 50
         print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
         print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
     def run(self):
