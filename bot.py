@@ -4919,12 +4919,11 @@ async def update(ctx):
 @bot.command()
 async def mapstrips(ctx):
     log_command(ctx.author.id, 'maps-trips')
-    await ctx.response.defer()
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
     tripMap(ctx.author.name)
     file=discord.File('temp/themap.png', filename='map.png')
-    await ctx.followup.send(file=file)
+    await ctx.channel.send(file=file)
     
 # important
 bot.run(BOT_TOKEN)
