@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
 
-x_offset = 5150
+x_offset = 5950
 y_offset = 6300
 dpi = 32/96
 
