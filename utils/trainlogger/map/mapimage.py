@@ -258,13 +258,43 @@ class MapImageHandler:
             "burnley": {
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
+                (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+                (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
             ],
+            ('Melbourne Central', 'Parliament'):[
+                (3050 + x_offset, 800 + y_offset, 3400 + x_offset, 850 + y_offset),
+                (3300 + x_offset, 800 + y_offset, 3400 + x_offset, 1250 + y_offset),
+                (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+                (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+
+            ],
+            ('Parliament', 'Richmond'):[
+                (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset),
+                (3300 + x_offset, 1950 + y_offset, 3500 + x_offset, 2050 + y_offset),
+                (3550 + x_offset, 2000 + y_offset, 4450 + x_offset, 2050 + y_offset),
+                (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+                (4450 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            ],
+                
             ('Richmond','Flinders Street'):[
                 (3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),
                 (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
             ],
             },
-              'northernp': {
+            
+            'northern': {
+            # ('Sunbury', 'Diggers Rest'): [
+            #     (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+            #     (-3100 + x_offset, -1700 + y_offset, -3000 + x_offset, -1550 + y_offset),
+            # ],
+            # ('Diggers Rest', 'Watergardens'): [
+            #     (2450 + x_offset, 1400 + y_offset, 2550 + x_offset, 1400 + y_offset), # Watergardens Coords
+            # ],
+            
+            ('Tottanham', 'West Footscray'): [
+                (2450 + x_offset, 1400 + y_offset, 2550 + x_offset, 1400 + y_offset),
+            ],
+            
             ('North Melbourne', 'Footscray'): [
                 (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
                 (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
