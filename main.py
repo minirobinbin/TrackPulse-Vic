@@ -35,4 +35,5 @@ lines_dictionary = {
     'Unknown/Other': [[None], ptv_grey],
 }
 
-logMap('xm9g',lines_dictionary)
+def tripMap(user):
+    logMap(user,lines_dictionary)

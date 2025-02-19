@@ -79,6 +79,7 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
+from main import tripMap
 
 
 
@@ -4911,6 +4912,16 @@ async def update(ctx):
             await ctx.send("You are not authorized to use this command.")
     else:
         await ctx.send("Remote updates are not enabled")
+
+@bot.command()
+async def mapstrips(ctx):
+    log_command(ctx.author.id, 'maps-trips')
+    await ctx.response.defer()
+    await printlog(f"Making trip map for {str(ctx.author.id)}")
+
+    tripMap(ctx.author.name)
+    file=discord.File('temp/themap.png', filename='map.png')
+    await ctx.followup.send(file=file)
     
 # important
 bot.run(BOT_TOKEN)
