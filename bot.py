@@ -4858,6 +4858,7 @@ async def syncgame(ctx):
 @bot.command()
 async def synclists(ctx):
     if ctx.author.id in admin_users:
+        log_command(ctx.author.id, 'sync-lists')
         await printlog("Downloading stop name data from PTV")
         await ctx.send("Downloading stop name data from PTV")
         try:
@@ -4880,6 +4881,7 @@ async def synclists(ctx):
 @bot.command()
 async def restart(ctx):
     if ctx.author.id in admin_users:
+        log_command(ctx.author.id, 'restart')
         await ctx.send(f"Restarting bot")
         await printlog("Restarting bot")
         
@@ -4896,6 +4898,7 @@ async def restart(ctx):
 async def update(ctx):
     if automatic_updates == True:
         if ctx.author.id in admin_users:
+            log_command(ctx.author.id, 'update')
             await ctx.send("Updating bot")
             await printlog("Updating bot")
         
