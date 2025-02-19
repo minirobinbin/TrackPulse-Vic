@@ -4917,11 +4917,17 @@ async def update(ctx):
         await ctx.send("Remote updates are not enabled")
 
 @bot.command()
-async def mapstrips(ctx):
+async def mapstrips(ctx,user: discord.Member=None):
     log_command(ctx.author.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
-    tripMap(ctx.author.name)
+    if user == None:
+        tripMap(ctx.author.name)
+    else:
+        try:
+            tripMap(user)
+        except:
+            tripMap(ctx.author.name)
     file=discord.File('temp/themap.png', filename='map.png')
     await ctx.channel.send(file=file)
     
