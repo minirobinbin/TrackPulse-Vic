@@ -40,23 +40,23 @@ class MapImageHandler:
             "Middle Gorge": (4250 + x_offset, -2700 + y_offset, 4899 + x_offset, -2501 + y_offset),
             "Hawkstowe": (4250 + x_offset, -2850 + y_offset, 4849 + x_offset, -2701 + y_offset),
             "Mernda": (3950 + x_offset, -3200 + y_offset, 4349 + x_offset, -3051 + y_offset),
-            'Westgarth': (5400.0 + x_offset, 450.0 + y_offset, 5849.0 + x_offset, 599.0 + y_offset),
-            'Dennis': (5400.0 + x_offset, 300.0 + y_offset, 5699.0 + x_offset, 449.0 + y_offset),
-            'Fairfield': (5400.0 + x_offset, 0.0 + y_offset, 5849.0 + x_offset, 149.0 + y_offset),
-            'Alphington': (5400.0 + x_offset, -150.0 + y_offset, 5849.0 + x_offset, -1.0 + y_offset),
-            'Darebin': (5400.0 + x_offset, -300.0 + y_offset, 5699.0 + x_offset, -151.0 + y_offset),
-            'Ivanhoe': (5400.0 + x_offset, -600.0 + y_offset, 5699.0 + x_offset, -451.0 + y_offset),
-            'Eaglemont': (5400.0 + x_offset, -750.0 + y_offset, 5999.0 + x_offset, -601.0 + y_offset),
-            'Heidelberg': (5400.0 + x_offset, -900.0 + y_offset, 5849.0 + x_offset, -751.0 + y_offset),
-            'Rosanna': (5400.0 + x_offset, -1200.0 + y_offset, 5849.0 + x_offset, -1051.0 + y_offset),
-            'Macleod': (5400.0 + x_offset, -1350.0 + y_offset, 5849.0 + x_offset, -1201.0 + y_offset),
-            'Watsonia': (5400.0 + x_offset, -1650.0 + y_offset, 5849.0 + x_offset, -1351.0 + y_offset),
-            'Greensborough': (5400.0 + x_offset, -1800.0 + y_offset, 6149.0 + x_offset, -1651.0 + y_offset),
-            'Montmorency': (5400.0 + x_offset, -1950.0 + y_offset, 5999.0 + x_offset, -1801.0 + y_offset),
-            'Eltham': (5400.0 + x_offset, -2100.0 + y_offset, 5699.0 + x_offset, -1951.0 + y_offset),
-            'Diamond Creek': (5400.0 + x_offset, -2400.0 + y_offset, 6149.0 + x_offset, -2251.0 + y_offset),
-            'Wattle Glen': (5400.0 + x_offset, -2550.0 + y_offset, 5999.0 + x_offset, -2401.0 + y_offset),
-            'Hurstbridge': (4950.0 + x_offset, -2850.0 + y_offset, 5549.0 + x_offset, -2701.0 + y_offset),
+            'Westgarth': (5400 + x_offset, 450 + y_offset, 5849 + x_offset, 599 + y_offset),
+            'Dennis': (5400 + x_offset, 300 + y_offset, 5699 + x_offset, 449 + y_offset),
+            'Fairfield': (5400 + x_offset, 0 + y_offset, 5849 + x_offset, 149 + y_offset),
+            'Alphington': (5400 + x_offset, -150 + y_offset, 5849 + x_offset, -1 + y_offset),
+            'Darebin': (5400 + x_offset, -300 + y_offset, 5699 + x_offset, -151 + y_offset),
+            'Ivanhoe': (5400 + x_offset, -600 + y_offset, 5699 + x_offset, -451 + y_offset),
+            'Eaglemont': (5400 + x_offset, -750 + y_offset, 5999 + x_offset, -601 + y_offset),
+            'Heidelberg': (5400 + x_offset, -900 + y_offset, 5849 + x_offset, -751 + y_offset),
+            'Rosanna': (5400 + x_offset, -1200 + y_offset, 5849 + x_offset, -1051 + y_offset),
+            'Macleod': (5400 + x_offset, -1350 + y_offset, 5849 + x_offset, -1201 + y_offset),
+            'Watsonia': (5400 + x_offset, -1650 + y_offset, 5849 + x_offset, -1351 + y_offset),
+            'Greensborough': (5400 + x_offset, -1800 + y_offset, 6149 + x_offset, -1651 + y_offset),
+            'Montmorency': (5400 + x_offset, -1950 + y_offset, 5999 + x_offset, -1801 + y_offset),
+            'Eltham': (5400 + x_offset, -2100 + y_offset, 5699 + x_offset, -1951 + y_offset),
+            'Diamond Creek': (5400 + x_offset, -2400 + y_offset, 6149 + x_offset, -2251 + y_offset),
+            'Wattle Glen': (5400 + x_offset, -2550 + y_offset, 5999 + x_offset, -2401 + y_offset),
+            'Hurstbridge': (4950 + x_offset, -2850 + y_offset, 5549 + x_offset, -2701 + y_offset),
             "Richmond": [(4327 + x_offset, 2632 + y_offset, 4807 + x_offset, 2732 + y_offset), (4500 + x_offset, 1946 + y_offset, 4651 + x_offset, 2622 + y_offset)],
             "North Melbourne": (360 + x_offset, 361 + y_offset, 1155 + x_offset, 490 + y_offset),
             "South Kensington": (-213 + x_offset, 383 + y_offset, 331 + x_offset, 641 + y_offset),
@@ -79,7 +79,7 @@ class MapImageHandler:
             "Middle Footscray": (-1394 + x_offset, -522 + y_offset, -878 + x_offset, -232 + y_offset),
             "West Footscray": (-1994 + x_offset, -535 + y_offset, -1498 + x_offset, -246 + y_offset),
             "Tottenham": (-2600 + x_offset, -363 + y_offset, -2069 + x_offset, -219 + y_offset),
-            "Sunshine": (-3200.0 + x_offset, 600.0 + y_offset, -2751.0 + x_offset, 749.0 + y_offset),
+            "Sunshine": (-3200 + x_offset, 600 + y_offset, -2751 + x_offset, 749 + y_offset),
             "Albion": (-2980 + x_offset, -538 + y_offset, -2664 + x_offset, -435 + y_offset),
             "Ginifer": (-2974 + x_offset, -824 + y_offset, -2657 + x_offset, -735 + y_offset),
             "St Albans": (-2974 + x_offset, -1031 + y_offset, -2512 + x_offset, -907 + y_offset),
@@ -87,30 +87,30 @@ class MapImageHandler:
             "Watergardens": (-2974 + x_offset, -1437 + y_offset, -2306 + x_offset, -1320 + y_offset),
             "Diggers Rest": (-2967 + x_offset, -1637 + y_offset, -2361 + x_offset, -1484 + y_offset),
             "Sunbury": (-2974 + x_offset, -1844 + y_offset, -2574 + x_offset, -1713 + y_offset),
-            "Clarkefield": (-3150.0 + x_offset, -2100.0 + y_offset, -2551.0 + x_offset, -1951.0 + y_offset),
-            "Riddells Creek": (-3150.0 + x_offset, -2100.0 + y_offset, -2551.0 + x_offset, -1951.0 + y_offset),
-            "Gisborne": (-3150.0 + x_offset, -2550.0 + y_offset, -2701.0 + x_offset, -2251.0 + y_offset),
-            "Macedon": (-3150.0 + x_offset, -2700.0 + y_offset, -2701.0 + x_offset, -2551.0 + y_offset),
-            "Woodend": (-3150.0 + x_offset, -2850.0 + y_offset, -2551.0 + x_offset, -2701.0 + y_offset),
-            "Kyneton": (-3150.0 + x_offset, -3000.0 + y_offset, -2701.0 + x_offset, -2851.0 + y_offset),
-            "Malmsbury": (-3150.0 + x_offset, -3300.0 + y_offset, -2551.0 + x_offset, -3151.0 + y_offset),
-            "Castlemaine": (-3150.0 + x_offset, -3450.0 + y_offset, -2401.0 + x_offset, -3301.0 + y_offset),
-            "Kangaroo Flat": (-3150.0 + x_offset, -3600.0 + y_offset, -2401.0 + x_offset, -3451.0 + y_offset),
-            "Bendigo": (-3150.0 + x_offset, -3900.0 + y_offset, -2701.0 + x_offset, -3751.0 + y_offset),
-            "Epsom": (-2250.0 + x_offset, -3900.0 + y_offset, -1801.0 + x_offset, -3751.0 + y_offset),
-            "Huntly": (-1800.0 + x_offset, -3900.0 + y_offset, -1501.0 + x_offset, -3751.0 + y_offset),
-            "Goornong": (-1500.0 + x_offset, -3900.0 + y_offset, -1051.0 + x_offset, -3751.0 + y_offset),
-            "Elmore": (-900.0 + x_offset, -3900.0 + y_offset, -601.0 + x_offset, -3751.0 + y_offset),
-            "Rochester": (-600.0 + x_offset, -3900.0 + y_offset, -151.0 + x_offset, -3751.0 + y_offset),
-            "Echuca": (0.0 + x_offset, -4050.0 + y_offset, 449.0 + x_offset, -3901.0 + y_offset),
-            "Eaglehawk": (-3000.0 + x_offset, -4350.0 + y_offset, -2551.0 + x_offset, -4201.0 + y_offset),
-            "Raywood": (-3150.0 + x_offset, -4500.0 + y_offset, -2701.0 + x_offset, -4351.0 + y_offset),
-            "Dingee": (-3150.0 + x_offset, -4650.0 + y_offset, -2851.0 + x_offset, -4651.0 + y_offset),
-            "Pyramid": (-3150.0 + x_offset, -4950.0 + y_offset, -2851.0 + x_offset, -4801.0 + y_offset),
-            "Kerang": (-3150.0 + x_offset, -5100.0 + y_offset, -2851.0 + x_offset, -4951.0 + y_offset),
-            "Swan Hill": (-3600.0 + x_offset, -5400.0 + y_offset, -3001.0 + x_offset, -5251.0 + y_offset),
-            "Ardeer": (-4100.0 + x_offset, 0.0 + y_offset, -3801.0 + x_offset, 149.0 + y_offset),
-            "Deer Park": (-5150.0 + x_offset, 0.0 + y_offset, -4701.0 + x_offset, 149.0 + y_offset),
+            "Clarkefield": (-3150 + x_offset, -2100 + y_offset, -2551 + x_offset, -1951 + y_offset),
+            "Riddells Creek": (-3150 + x_offset, -2100 + y_offset, -2551 + x_offset, -1951 + y_offset),
+            "Gisborne": (-3150 + x_offset, -2550 + y_offset, -2701 + x_offset, -2251 + y_offset),
+            "Macedon": (-3150 + x_offset, -2700 + y_offset, -2701 + x_offset, -2551 + y_offset),
+            "Woodend": (-3150 + x_offset, -2850 + y_offset, -2551 + x_offset, -2701 + y_offset),
+            "Kyneton": (-3150 + x_offset, -3000 + y_offset, -2701 + x_offset, -2851 + y_offset),
+            "Malmsbury": (-3150 + x_offset, -3300 + y_offset, -2551 + x_offset, -3151 + y_offset),
+            "Castlemaine": (-3150 + x_offset, -3450 + y_offset, -2401 + x_offset, -3301 + y_offset),
+            "Kangaroo Flat": (-3150 + x_offset, -3600 + y_offset, -2401 + x_offset, -3451 + y_offset),
+            "Bendigo": (-3150 + x_offset, -3900 + y_offset, -2701 + x_offset, -3751 + y_offset),
+            "Epsom": (-2250 + x_offset, -3900 + y_offset, -1801 + x_offset, -3751 + y_offset),
+            "Huntly": (-1800 + x_offset, -3900 + y_offset, -1501 + x_offset, -3751 + y_offset),
+            "Goornong": (-1500 + x_offset, -3900 + y_offset, -1051 + x_offset, -3751 + y_offset),
+            "Elmore": (-900 + x_offset, -3900 + y_offset, -601 + x_offset, -3751 + y_offset),
+            "Rochester": (-600 + x_offset, -3900 + y_offset, -151 + x_offset, -3751 + y_offset),
+            "Echuca": (0 + x_offset, -4050 + y_offset, 449 + x_offset, -3901 + y_offset),
+            "Eaglehawk": (-3000 + x_offset, -4350 + y_offset, -2551 + x_offset, -4201 + y_offset),
+            "Raywood": (-3150 + x_offset, -4500 + y_offset, -2701 + x_offset, -4351 + y_offset),
+            "Dingee": (-3150 + x_offset, -4650 + y_offset, -2851 + x_offset, -4651 + y_offset),
+            "Pyramid": (-3150 + x_offset, -4950 + y_offset, -2851 + x_offset, -4801 + y_offset),
+            "Kerang": (-3150 + x_offset, -5100 + y_offset, -2851 + x_offset, -4951 + y_offset),
+            "Swan Hill": (-3600 + x_offset, -5400 + y_offset, -3001 + x_offset, -5251 + y_offset),
+            "Ardeer": (-4100 + x_offset, 0 + y_offset, -3801 + x_offset, 149 + y_offset),
+            "Deer Park": (-5150 + x_offset, 0 + y_offset, -4701 + x_offset, 149 + y_offset),
             "Macaulay": (3074 + x_offset, -648 + y_offset, 3518 + x_offset, -512 + y_offset),
             "Flemington Bridge": (3050 + x_offset, -850 + y_offset, 3999 + x_offset, -701 + y_offset),
             "Royal Park": (3071 + x_offset, -1035 + y_offset, 3582 + x_offset, -911 + y_offset),
@@ -137,9 +137,9 @@ class MapImageHandler:
             "Oak Park": (2083 + x_offset, -2341 + y_offset, 2499 + x_offset, -2202 + y_offset),
             "Glenroy": (2074 + x_offset, -2536 + y_offset, 2453 + x_offset, -2406 + y_offset),
             "Jacana": (2074 + x_offset, -2721 + y_offset, 2435 + x_offset, -2610 + y_offset),
-            "Broadmeadows":(2050.0 + x_offset, -3000.0 + y_offset, 2799.0 + x_offset, -2851.0 + y_offset),
-            "Coolaroo": (2050.0 + x_offset, -3150.0 + y_offset, 2499.0 + x_offset, -3001.0 + y_offset),
-            "Roxburgh Park": (2050.0 + x_offset, -3450.0 + y_offset, 2499.0 + x_offset, -3151.0 + y_offset),
+            "Broadmeadows":(2050 + x_offset, -3000 + y_offset, 2799 + x_offset, -2851 + y_offset),
+            "Coolaroo": (2050 + x_offset, -3150 + y_offset, 2499 + x_offset, -3001 + y_offset),
+            "Roxburgh Park": (2050 + x_offset, -3450 + y_offset, 2499 + x_offset, -3151 + y_offset),
             "Craigieburn": (2064 + x_offset, -3593 + y_offset, 2629 + x_offset, -3473 + y_offset),
             "Donnybrook": (1981 + x_offset, -3797 + y_offset, 2546 + x_offset, -3658 + y_offset),
             "Wallan": (1981 + x_offset, -3991 + y_offset, 2324 + x_offset, -3871 + y_offset),
@@ -149,19 +149,19 @@ class MapImageHandler:
             "Broadford": (1981 + x_offset, -4778 + y_offset, 2453 + x_offset, -4676 + y_offset),
             "Tallarook": (1990 + x_offset, -4982 + y_offset, 2416 + x_offset, -4852 + y_offset),
             "Seymour": (1037 + x_offset, -5213 + y_offset, 1518 + x_offset, -5038 + y_offset),
-            "Nagambie": (1800.0 + x_offset, -5550.0 + y_offset, 2249.0 + x_offset, -5401.0 + y_offset),
-            "Murchison East": (1800.0 + x_offset, -5700.0 + y_offset, 2549.0 + x_offset, -5701.0 + y_offset),
-            "Mooroopna": (1800.0 + x_offset, -6000.0 + y_offset, 2399.0 + x_offset, -5851.0 + y_offset),
-            "Shepparton": (1500.0 + x_offset, -6300.0 + y_offset, 2099.0 + x_offset, -6151.0 + y_offset),
-            "Avenel": (2400.0 + x_offset, -5250.0 + y_offset, 2849.0 + x_offset, -5101.0 + y_offset),
-            "Euroa": (2850.0 + x_offset, -5250.0 + y_offset, 3149.0 + x_offset, -5101.0 + y_offset),
-            "Violet Town": (3150.0 + x_offset, -5250.0 + y_offset, 3749.0 + x_offset, -5101.0 + y_offset),
-            "Benalla": (3750.0 + x_offset, -5250.0 + y_offset, 4199.0 + x_offset, -5101.0 + y_offset),
-            "Wangaratta": (4200.0 + x_offset, -5250.0 + y_offset, 4799.0 + x_offset, -4801.0 + y_offset),
-            "Springhurst": (4800.0 + x_offset, -5250.0 + y_offset, 5399.0 + x_offset, -5101.0 + y_offset),
-            "Chiltern": (5400.0 + x_offset, -5100.0 + y_offset, 5699.0 + x_offset, -5101.0 + y_offset),
-            "Wodonga": (5850.0 + x_offset, -5100.0 + y_offset, 6299.0 + x_offset, -5101.0 + y_offset),
-            "Albury": (6300.0 + x_offset, -5400.0 + y_offset, 6599.0 + x_offset, -5101.0 + y_offset),
+            "Nagambie": (1800 + x_offset, -5550 + y_offset, 2249 + x_offset, -5401 + y_offset),
+            "Murchison East": (1800 + x_offset, -5700 + y_offset, 2549 + x_offset, -5701 + y_offset),
+            "Mooroopna": (1800 + x_offset, -6000 + y_offset, 2399 + x_offset, -5851 + y_offset),
+            "Shepparton": (1500 + x_offset, -6300 + y_offset, 2099 + x_offset, -6151 + y_offset),
+            "Avenel": (2400 + x_offset, -5250 + y_offset, 2849 + x_offset, -5101 + y_offset),
+            "Euroa": (2850 + x_offset, -5250 + y_offset, 3149 + x_offset, -5101 + y_offset),
+            "Violet Town": (3150 + x_offset, -5250 + y_offset, 3749 + x_offset, -5101 + y_offset),
+            "Benalla": (3750 + x_offset, -5250 + y_offset, 4199 + x_offset, -5101 + y_offset),
+            "Wangaratta": (4200 + x_offset, -5250 + y_offset, 4799 + x_offset, -4801 + y_offset),
+            "Springhurst": (4800 + x_offset, -5250 + y_offset, 5399 + x_offset, -5101 + y_offset),
+            "Chiltern": (5400 + x_offset, -5100 + y_offset, 5699 + x_offset, -5101 + y_offset),
+            "Wodonga": (5800 + x_offset, -5250 + y_offset, 6250 + x_offset, -4800 + y_offset),
+            "Albury": (6250 + x_offset, -5400 + y_offset, 6700 + x_offset, -5100 + y_offset),
         }
         
         self.line_coordinates = {
@@ -369,8 +369,8 @@ class MapImageHandler:
                             coords = tuple(coord2)
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
                         print(f'Created line hole from {station1} to {station2}')
-                    else:
-                        print(f'No line coordinates for {station1} to {station2}')
+                    # else:
+                    #     print(f'No line coordinates for {station1} to {station2}')
         
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
@@ -427,12 +427,17 @@ class CoordinateFinder:
         
     def on_release(self, event):
         # Convert coordinates back to original scale and round to nearest 50
-        original_x1 = round(int(self.start_x / self.scale) / 50) * 50
-        original_y1 = round(int(self.start_y / self.scale) / 50) * 50
-        original_x2 = round(int(event.x / self.scale) / 50) * 50
-        original_y2 = round(int(event.y / self.scale) / 50) * 50
-        print(f"Coordinates: ({(original_x1 / dpi) - x_offset}, {(original_y1 / dpi) - y_offset}, {(original_x2 / dpi) - x_offset - 1}, {(original_y2 / dpi) - y_offset - 1})")
-        print(f"Copyable: ({(original_x1 / dpi) - x_offset} + x_offset, {(original_y1 / dpi) - y_offset} + y_offset, {(original_x2 / dpi) - x_offset - 1} + x_offset, {(original_y2 / dpi) - y_offset - 1} + y_offset),")
+        x1 = round(int(min(self.start_x, event.x) / self.scale) / 50) * 50
+        y1 = round(int(min(self.start_y, event.y) / self.scale) / 50) * 50
+        x2 = round(int(max(self.start_x, event.x) / self.scale) / 50) * 50
+        y2 = round(int(max(self.start_y, event.y) / self.scale) / 50) * 50
+        # Swap y coordinates to ensure y2 is greater than y1
+        y1_adj = int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset))
+        y2_adj = int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset))
+        x1_adj = int((x1 / dpi) - x_offset)
+        x2_adj = int((x2 / dpi) - x_offset)
+        print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
+        print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
     def run(self):
         self.root.mainloop()
 
