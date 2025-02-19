@@ -3,8 +3,8 @@
 
 <svg
    width="11800"
-   height="9050"
-   viewBox="0 0 3122.0834 2394.4792"
+   height="9200"
+   viewBox="0 0 3122.0834 2434.1667"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map.svg"
@@ -29,7 +29,7 @@
      showgrid="false"
      inkscape:zoom="0.18220149"
      inkscape:cx="7332.5416"
-     inkscape:cy="2793.6105"
+     inkscape:cy="-570.79665"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -41,7 +41,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1891.7709,1905.0001)"><rect
+     transform="translate(1891.7709,1944.6876)"><rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:22.921;stroke-linecap:square"
        id="rect2539"
        width="13.229166"
@@ -4425,7 +4425,7 @@
                sodipodi:role="line"
                id="tspan865"
                style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
-               x="117.09119"
+               x="117.09118"
                y="-896.83167">Broadmeadows</tspan></text><text
              xml:space="preserve"
              style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
