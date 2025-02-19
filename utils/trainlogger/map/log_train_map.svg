@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.12861282"
-     inkscape:cx="2612.4924"
-     inkscape:cy="3444.4468"
+     inkscape:zoom="0.087"
+     inkscape:cx="4988.5057"
+     inkscape:cy="2137.931"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -678,7 +678,7 @@
       </g>
       <g
          id="g1258"
-         inkscape:label="V/Line Paper">
+         inkscape:label="V/Line Long Distance">
         <g
            id="g8649-6"
            inkscape:label="Flinders Street Viaduct - V/Line Paper"
@@ -936,12 +936,49 @@
            transform="matrix(0,-0.00789453,1.04,0,-1595.0753,-131.98315)">
           <path
              id="path756"
-             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:135.354;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             d="M 135773.9,185.36904 H 8384.2691 v 12.72035 H 135773.9 Z" />
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:140.594;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 145828.33,185.36904 H 8384.2689 v 12.72035 H 145828.33 Z" />
           <path
              id="path764"
-             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:85.7853;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             d="M 135807.41,189.18511 H 7881.5429 v 5.08814 H 135807.41 Z" />
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:88.9195;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 145325.61,189.18511 H 7881.5489 v 5.08814 H 145325.61 Z" />
+          <path
+             id="path2705"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:15.6786;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 145828.33,197.8348 h -1675.74 v 12.97476 h 1675.74 z" />
+          <path
+             id="path2707"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:11.782;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 145325.6,194.01869 h -670.3 V 212.336 h 670.3 z" />
+          <path
+             id="path2732"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:10.9772;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 145828.33,214.62566 h -1675.74 v 6.36018 h 1675.74 z" />
+          <path
+             id="path2734"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.21497;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 145325.6,214.37126 h -670.3 v 6.86899 h 670.3 z" />
+        </g>
+        <g
+           id="g2709"
+           inkscape:label="Echuca Line - V/Line Paper"
+           transform="matrix(0,-0.00789453,1.04,0,-1595.0753,-158.44141)">
+          <path
+             id="path2736"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:10.9772;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 142476.86,238.79433 h -1675.74 v 6.36018 h 1675.74 z" />
+          <path
+             id="path2738"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:7.21497;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 141974.13,238.53993 h -670.3 v 6.86899 h 670.3 z" />
+          <path
+             id="path2742"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:119.263;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 142476.86,248.97061 h -1675.74 v 750.75522 h 1675.74 z" />
+          <path
+             id="path2744"
+             style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:75.4417;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 141974.13,248.71621 h -670.3 v 751.00962 h 670.3 z" />
         </g>
         <g
            id="g3061"
@@ -1088,8 +1125,12 @@
            transform="matrix(0,-0.0075,1.04,0,-1568.617,-161.74938)">
           <path
              id="rect745"
-             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:136.119;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-             d="M 137218.71,185.36888 H 8384.264 v 12.72035 H 137218.71 Z" />
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:140.683;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="M 146002.87,185.36888 H 8384.2572 v 12.72035 H 146002.87 Z" />
+          <path
+             id="path2752"
+             style="fill:#782f9a;fill-opacity:1;stroke:none;stroke-width:73.057;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             d="m 146002.87,197.83483 h -1763.89 v 267.63622 h 1763.89 z" />
         </g>
         <g
            id="g3078"
@@ -1776,6 +1817,75 @@
                x="332.8371"
                y="238.12505" />
           </g>
+        </g>
+        <g
+           id="g2758"
+           inkscape:label="Echuca Line">
+          <g
+             id="g2768"
+             inkscape:label="Espom"
+             transform="matrix(0,1.1030303,-1,0,-820.20832,-1650.3587)"
+             style="display:inline">
+            <rect
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:106.407;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect2764"
+               width="59.967377"
+               height="39.6875"
+               x="320.84363"
+               y="224.89587" />
+            <rect
+               style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:47.5866;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+               id="rect2766"
+               width="35.980427"
+               height="13.229166"
+               x="332.8371"
+               y="238.12505" />
+          </g>
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8439"
+             width="13.493751"
+             height="13.229166"
+             x="-1270.2646"
+             y="965.72919"
+             inkscape:label="Huntly"
+             transform="rotate(90)" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8446"
+             width="13.493751"
+             height="13.229166"
+             x="-1270.2646"
+             y="846.66669"
+             inkscape:label="Goornong"
+             transform="rotate(90)" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8452"
+             width="13.493751"
+             height="13.229166"
+             x="-1270.2646"
+             y="727.60419"
+             inkscape:label="Elmore"
+             transform="rotate(90)" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:129.036;stroke-linecap:square"
+             id="rect8454"
+             width="13.493751"
+             height="13.229166"
+             x="-1270.2646"
+             y="608.54169"
+             inkscape:label="Rochester"
+             transform="rotate(90)" />
+          <rect
+             style="display:inline;fill:#782f9a;fill-opacity:1;stroke-width:221.295;stroke-linecap:square"
+             id="rect8464"
+             width="39.6875"
+             height="13.229166"
+             x="-1296.4584"
+             y="542.39587"
+             inkscape:label="Echuca"
+             transform="rotate(90)" />
         </g>
       </g>
       <g
@@ -3183,7 +3293,7 @@
         </g>
         <g
            id="g8152"
-           inkscape:label="Shepparton Line"
+           inkscape:label="Albury Line"
            transform="translate(2.6250009e-6,-66.145879)">
           <text
              xml:space="preserve"
@@ -3417,6 +3527,82 @@
                x="-1290.2804"
                y="-1203.7749"
                id="tspan1227">Bendigo</tspan></text>
+        </g>
+        <g
+           id="g2728"
+           inkscape:label="Echuca Line">
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-1065.0803"
+             y="-1198.0334"
+             id="text2716"
+             inkscape:label="Epsom"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-1065.0803"
+               y="-1198.0334"
+               id="tspan2714">Epsom</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-972.74066"
+             y="-1224.4918"
+             id="text2762"
+             inkscape:label="Huntly"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-972.74066"
+               y="-1224.4918"
+               id="tspan2760">Huntly</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-853.41357"
+             y="-1224.1743"
+             id="text8444"
+             inkscape:label="Goornong"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-853.41357"
+               y="-1224.1743"
+               id="tspan8442">Goornong</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-734.41724"
+             y="-1224.4918"
+             id="text8450"
+             inkscape:label="Elmore"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-734.41724"
+               y="-1224.4918"
+               id="tspan8448">Elmore</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-615.38116"
+             y="-1224.4918"
+             id="text8458"
+             inkscape:label="Rochester"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-615.38116"
+               y="-1224.4918"
+               id="tspan8460">Rochester</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:26.4583px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:179.258;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+             x="-487.99753"
+             y="-1267.2484"
+             id="text8468"
+             inkscape:label="Echuca"><tspan
+               sodipodi:role="line"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.4583px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:179.258"
+               x="-487.99753"
+               y="-1267.2484"
+               id="tspan8466">Echuca</tspan></text>
         </g>
       </g>
       <g
