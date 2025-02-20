@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
 
-x_offset = 5950
+x_offset = 9050
 y_offset = 6300
 dpi = 32/96
 
@@ -129,6 +129,13 @@ class MapImageHandler:
             "Terang": (-5500 + x_offset, 3550 + y_offset, -5150 + x_offset, 3700 + y_offset),
             "Sherwood Park": (-5850 + x_offset, 3750 + y_offset, -5150 + x_offset, 3900 + y_offset),
             "Warrnambool": (-5400 + x_offset, 4050 + y_offset, -4700 + x_offset, 4200 + y_offset),
+            "Caronline Springs": (-6050 + x_offset, 0 + y_offset, -5250 + x_offset, 150 + y_offset),
+            "Rockbank": (-6550 + x_offset, 50 + y_offset, -6050 + x_offset, 150 + y_offset),
+            "Cobblebank": (-7150 + x_offset, 50 + y_offset, -6500 + x_offset, 150 + y_offset),
+            "Melton": (-7500 + x_offset, 50 + y_offset, -7150 + x_offset, 200 + y_offset),
+            "Bacchus Marsh": (-8250 + x_offset, 50 + y_offset, -7550 + x_offset, 200 + y_offset),
+            "Ballan": (-8600 + x_offset, 50 + y_offset, -8300 + x_offset, 150 + y_offset),
+            "Ballarat": (-9050 + x_offset, 50 + y_offset, -8650 + x_offset, 200 + y_offset),
             "Macaulay": (3074 + x_offset, -648 + y_offset, 3518 + x_offset, -512 + y_offset),
             "Flemington Bridge": (3050 + x_offset, -850 + y_offset, 3999 + x_offset, -701 + y_offset),
             "Royal Park": (3071 + x_offset, -1035 + y_offset, 3582 + x_offset, -911 + y_offset),
