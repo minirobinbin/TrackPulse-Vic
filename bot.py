@@ -4371,11 +4371,14 @@ async def profile(ctx, user: discord.User = None):
 @app_commands.choices(map_choice=[
         app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
+        app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
 ])
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
     map_choice2 = map_choice.replace("_"," ")
+    map_choice2 = map_choice.replace("  "," ")
+    map_choice2 = map_choice.replace("  "," ")
     map_choice2 = map_choice2.replace(" map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
@@ -4386,6 +4389,11 @@ async def viewMaps(ctx, map_choice: str):
         embed.set_author(name="Map by Comeng17", icon_url=pfp)
     elif map_choice == "log_sydney-train_map.png":
         embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
+        user = await bot.fetch_user(829535993643794482)
+        pfp = user.avatar.url
+        embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+    elif map_choice == "log___sydney-train___map.png":
+        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
         user = await bot.fetch_user(829535993643794482)
         pfp = user.avatar.url
         embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
