@@ -4377,8 +4377,8 @@ async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
     map_choice2 = map_choice.replace("_"," ")
-    map_choice2 = map_choice.replace("  "," ")
-    map_choice2 = map_choice.replace("  "," ")
+    map_choice2 = map_choice2.replace("  "," ")
+    map_choice2 = map_choice2.replace("  "," ")
     map_choice2 = map_choice2.replace(" map.png","")
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
