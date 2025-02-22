@@ -4746,11 +4746,11 @@ async def send(ctx, user: discord.Member, *, message: str):
 
 # analytics viewer
 @bot.command()
-async def analytics(ctx,show_commands: str=None, user: discord.Member=None):
+async def analytics(ctx,mode: str=None, user: discord.Member=None):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id,'analytics')
         
-        if show_commands == "commands":
+        if mode == "commands":
             # Dictionary to store total command counts across all users
             total_commands = {}
             folder_path = 'utils/stats/data'
@@ -4779,6 +4779,27 @@ async def analytics(ctx,show_commands: str=None, user: discord.Member=None):
                     await ctx.send(chunk)
             else:
                 await ctx.send(output)
+        elif mode == 'servers':
+            guild_list = []
+            total_users = 0
+            
+            # Get all guilds
+            for guild in bot.guilds:
+                member_count = len(guild.members)
+                total_users += member_count
+                guild_list.append(f"{guild.name}: {member_count} members")
+            
+            # Format output
+            output = f"Bot is in {len(bot.guilds)} servers with {total_users} total users:\n"
+            output += "\n".join(guild_list)
+            
+            # Split into chunks if too long
+            if len(output) > 2000:
+                chunks = [output[i:i+1990] for i in range(0, len(output), 1990)]
+                for chunk in chunks:
+                    await ctx.send(f"```{chunk}```")
+            else:
+                await ctx.send(f"```{output}```")
             
         elif user == None:
             all_files = []
