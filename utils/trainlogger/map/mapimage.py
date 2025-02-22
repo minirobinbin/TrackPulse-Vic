@@ -341,6 +341,9 @@ class MapImageHandler:
                 
             },
             "burnley": {
+            ('Lilydale', 'Mooroolbark'): [
+                (6450 + x_offset, -2100 + y_offset, 6600 + x_offset, -1850 + y_offset),
+            ],
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
                 (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
