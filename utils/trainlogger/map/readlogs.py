@@ -53,6 +53,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train'):
                 group = 'burnley'
             elif cols[4] in ['Craigieburn','Upfield','Sunbury']:
                 group = 'northern'
+            elif cols[4] in ['Pakenham','Cranbourne']:
+                group = 'dandenong'
             elif cols[4] in ['Flemington Racecourse']:
                 group = 'flemington'
                 
