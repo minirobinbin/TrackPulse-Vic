@@ -458,7 +458,27 @@ class MapImageHandler:
                 (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
                 (4450 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
             ],
-                
+            
+            # alamein branch
+            ('Alamein', 'Ashburton'):[
+                (9400 + x_offset, 950 + y_offset, 9750 + x_offset, 1150 + y_offset),
+            ],
+            ('Ashburton','Burwood'):[
+                (8900 + x_offset, 1050 + y_offset, 9450 + x_offset, 1150 + y_offset),
+            ],
+            ('Burwood', 'Hartwell'):[
+                (8450 + x_offset, 1050 + y_offset, 8950 + x_offset, 1150 + y_offset),
+            ],
+            ('Hartwell', 'Willison'):[
+                (8000 + x_offset, 1050 + y_offset, 8500 + x_offset, 1150 + y_offset),
+            ],
+            ('Willison', 'Riversdale'):[
+                (7500 + x_offset, 1050 + y_offset, 8050 + x_offset, 1150 + y_offset),
+            ],
+            ('Riversdale', 'Camberwell'):[
+                (6500 + x_offset, 1050 + y_offset, 7550 + x_offset, 1150 + y_offset),
+                (6450 + x_offset, 1050 + y_offset, 6600 + x_offset, 1300 + y_offset),
+            ],
             },
             
             'northern': {
