@@ -4369,7 +4369,7 @@ async def profile(ctx, user: discord.User = None):
 # map view command
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(map_choice=[
-        app_commands.Choice(name="Victorian Trains (Unfinished)", value="log_train_map.png"),
+        app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
 ])
@@ -4383,7 +4383,7 @@ async def viewMaps(ctx, map_choice: str):
     map_choice2 = "/" + map_choice2
     file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
     if map_choice == "log_train_map.png":
-        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+        embed = discord.Embed(title=f"Map for <{map_choice2}:1289843416628330506>", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
         user = await bot.fetch_user(1002449671224041502)
         pfp = user.avatar.url
         embed.set_author(name="Map by Comeng17", icon_url=pfp)
