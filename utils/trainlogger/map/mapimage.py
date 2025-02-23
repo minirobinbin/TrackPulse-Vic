@@ -506,6 +506,51 @@ class MapImageHandler:
                 (6450 + x_offset, -1200 + y_offset, 6600 + x_offset, -1050 + y_offset),
                 (6450 + x_offset, -1300 + y_offset, 7500 + x_offset, -1200 + y_offset),
             ],
+            # glen waverley branch
+            ('Glen Waverley', 'Syndal'):[
+                (12250 + x_offset, 1900 + y_offset, 12600 + x_offset, 2100 + y_offset),
+            ],
+            ('Syndal', 'Mount Waverley'):[
+                (11700 + x_offset, 2000 + y_offset, 12350 + x_offset, 2100 + y_offset),
+            ],
+            ('Mount Waverley', 'Jordanville'):[
+                (11000 + x_offset, 2000 + y_offset, 11750 + x_offset, 2100 + y_offset),
+            ],
+            ('Jordanville', 'Holmesglen'):[
+                (10400 + x_offset, 2000 + y_offset, 11050 + x_offset, 2100 + y_offset),
+            ],
+            ('Holmesglen', 'East Malvern'):[
+                (9750 + x_offset, 2000 + y_offset, 10450 + x_offset, 2100 + y_offset),
+            ],
+            ('East Malvern', 'Darling'):[
+                (9200 + x_offset, 2000 + y_offset, 9800 + x_offset, 2100 + y_offset),
+            ],
+            ('Darling', 'Glen Iris'):[
+                (8800 + x_offset, 2000 + y_offset, 9250 + x_offset, 2100 + y_offset),
+            ],
+            ('Glen Iris', 'Gardiner'):[
+                (8350 + x_offset, 2000 + y_offset, 8850 + x_offset, 2100 + y_offset),
+            ],
+            ('Gardiner', 'Tooronga'):[
+                (7850 + x_offset, 2000 + y_offset, 8400 + x_offset, 2100 + y_offset)
+            ],
+            ('Tooronga', 'Kooyong'):[
+                (7350 + x_offset, 2000 + y_offset, 7900 + x_offset, 2100 + y_offset),
+            ],
+            ('Kooyong', 'Heyington'):[
+                (6850 + x_offset, 2000 + y_offset, 7400 + x_offset, 2100 + y_offset),
+            ],
+            ('Heyington', 'Burnley'):[
+                (6350 + x_offset, 2000 + y_offset, 6900 + x_offset, 2100 + y_offset),
+                (6200 + x_offset, 1950 + y_offset, 6350 + x_offset, 2100 + y_offset),
+            ],
+            
+            
+            
+            
+            
+            
+            
             
             },
             
