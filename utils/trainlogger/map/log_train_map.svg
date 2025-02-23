@@ -29,7 +29,7 @@
      showgrid="false"
      inkscape:zoom="0.22507243"
      inkscape:cx="13249.068"
-     inkscape:cy="8983.7748"
+     inkscape:cy="9339.2159"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -1541,7 +1541,7 @@
          id="g9282"
          inkscape:label="Metro Tunnel"
          transform="translate(66.145838)"
-         style="display:inline"><g
+         style="display:none"><g
            id="g9278"
            inkscape:label="Metro Tunnel Inner"><rect
              style="fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:147.332;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
