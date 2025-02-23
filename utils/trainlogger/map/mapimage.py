@@ -291,6 +291,38 @@ class MapImageHandler:
         
         self.line_coordinates = {
             'standard_guage': {
+                ('Albury', 'Wodonga'): [
+                    (6000 + x_offset, -5400 + y_offset, 6300 + x_offset, -5200 + y_offset),
+                ],
+                ('Wodonga', 'Chiltern'): [
+                    (5550 + x_offset, -5300 + y_offset, 6050 + x_offset, -5200 + y_offset),
+                ],
+                ('Chiltern', 'Springhurst'): [
+                    (5000 + x_offset, -5350 + y_offset, 5600 + x_offset, -5200 + y_offset),
+                ],
+                ('Springhurst', 'Wangaratta'): [
+                    (4450 + x_offset, -5350 + y_offset, 5100 + x_offset, -5200 + y_offset),
+                ],  
+                ('Wangaratta', 'Benalla'): [
+                    (3950 + x_offset, -5350 + y_offset, 4500 + x_offset, -5200 + y_offset),
+                ],
+                ('Benalla', 'Violet Town'): [
+                    (3450 + x_offset, -5350 + y_offset, 4000 + x_offset, -5200 + y_offset),
+                ],
+                ('Violet Town', 'Euroa'): [
+                    (3000 + x_offset, -5350 + y_offset, 3500 + x_offset, -5200 + y_offset),
+                ],
+                ('Euroa', 'Avenel'): [
+                    (2600 + x_offset, -5350 + y_offset, 3050 + x_offset, -5200 + y_offset),
+                ],
+                ('Avenel', 'Seymour'): [
+                    (1800 + x_offset, -5400 + y_offset, 2650 + x_offset, -5200 + y_offset),
+                    (1600 + x_offset, -5300 + y_offset, 1750 + x_offset, -5200 + y_offset),
+                    (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
+                ],
+                
+                
+                
                 ('Broadmeadows','Seymour'): [
                     (1600 + x_offset, -4900 + y_offset, 1649 + x_offset, -2951 + y_offset),
                     (1550 + x_offset, -5050 + y_offset, 1949 + x_offset, -4901 + y_offset),

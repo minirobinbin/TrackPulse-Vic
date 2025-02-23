@@ -57,6 +57,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train'):
                 group = 'dandenong'
             elif cols[4] in ['Flemington Racecourse']:
                 group = 'flemington'
+            elif cols[4] in ['Albury']:
+                group = 'standard_guage'
                 
             else:
                 group = cols[4]
