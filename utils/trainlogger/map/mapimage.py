@@ -479,6 +479,34 @@ class MapImageHandler:
                 (6500 + x_offset, 1050 + y_offset, 7550 + x_offset, 1150 + y_offset),
                 (6450 + x_offset, 1050 + y_offset, 6600 + x_offset, 1300 + y_offset),
             ],
+            
+            # the beginning of the belgrave line:
+            ('Belgrave', 'Tecoma'):[
+                (11000 + x_offset, -1400 + y_offset, 11300 + x_offset, -1200 + y_offset),
+            ],
+            ('Tecoma', 'Upwey'):[
+                (10600 + x_offset, -1350 + y_offset, 11050 + x_offset, -1200 + y_offset),
+            ],
+            ('Upwey', 'Upper Ferntree Gully'):[
+                (9900 + x_offset, -1300 + y_offset, 10650 + x_offset, -1200 + y_offset),
+            ],
+            ('Upper Ferntree Gully', 'Ferntree Gully'):[
+                (9050 + x_offset, -1350 + y_offset, 9950 + x_offset, -1150 + y_offset),
+            ],
+            ('Ferntree Gully', 'Boronia'):[
+                (8500 + x_offset, -1300 + y_offset, 9100 + x_offset, -1200 + y_offset),
+            ],
+            ('Boronia', 'Bayswater'):[
+                (8000 + x_offset, -1300 + y_offset, 8550 + x_offset, -1200 + y_offset),
+            ],
+            ('Bayswater', 'Heathmont'):[
+                (7400 + x_offset, -1300 + y_offset, 8050 + x_offset, -1200 + y_offset),
+            ],
+            ('Heathmont', 'Ringwood'):[
+                (6450 + x_offset, -1200 + y_offset, 6600 + x_offset, -1050 + y_offset),
+                (6450 + x_offset, -1300 + y_offset, 7500 + x_offset, -1200 + y_offset),
+            ],
+            
             },
             
             'northern': {
