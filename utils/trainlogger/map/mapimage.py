@@ -628,14 +628,128 @@ class MapImageHandler:
                 (6350 + x_offset, 2000 + y_offset, 6900 + x_offset, 2100 + y_offset),
                 (6200 + x_offset, 1950 + y_offset, 6350 + x_offset, 2100 + y_offset),
             ],
-            
-            
-            
-            
-            
-            
-            
-            
+            },
+            'dandenong':{
+                ('East Pakenham','Pakenham'): [
+                    (15700 + x_offset, 4300 + y_offset, 16000 + x_offset, 4450 + y_offset),
+                    (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
+                ],
+                ('Pakenham','Cardinia Road'): [
+                    (15100 + x_offset, 4300 + y_offset, 15600 + x_offset, 4400 + y_offset),
+                    (15050 + x_offset, 4300 + y_offset, 15150 + x_offset, 4400 + y_offset),
+                    (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
+                ],
+                ('Cardinia Road','Officer'): [
+                    (14500 + x_offset, 4300 + y_offset, 15100 + x_offset, 4400 + y_offset),
+                ],
+                ('Officer','Beaconsfield'): [
+                    (13950 + x_offset, 4300 + y_offset, 14550 + x_offset, 4400 + y_offset),
+                ],
+                ('Beaconsfield','Berwick'): [
+                    (13400 + x_offset, 4300 + y_offset, 14000 + x_offset, 4400 + y_offset),
+                ],
+                ('Berwick','Narre Warren'): [
+                    (12850 + x_offset, 4300 + y_offset, 13450 + x_offset, 4400 + y_offset),
+                ],
+                ('Narre Warren','Hallam'): [
+                    (12300 + x_offset, 4300 + y_offset, 12900 + x_offset, 4400 + y_offset),
+                ],
+                ('Hallam','Dandenong'): [
+                    (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
+                    (11900 + x_offset, 4300 + y_offset, 12350 + x_offset, 4400 + y_offset),
+                ],
+                ('Dandenong','Yarraman'): [
+                    (11250 + x_offset, 4300 + y_offset, 11750 + x_offset, 4400 + y_offset),
+                    (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
+                ],
+                ('Yarraman','Noble Park'): [
+                    (10700 + x_offset, 4300 + y_offset, 11300 + x_offset, 4400 + y_offset),
+                ],
+                ('Noble Park','Sandown Park'): [
+                    (10050 + x_offset, 4300 + y_offset, 10750 + x_offset, 4400 + y_offset),
+                ],
+                ('Sandown Park','Springvale'): [
+                    (9400 + x_offset, 4300 + y_offset, 10100 + x_offset, 4400 + y_offset),
+                ],
+                ('Springvale','Westall'): [
+                    (8900 + x_offset, 4300 + y_offset, 9450 + x_offset, 4400 + y_offset),
+                ],
+                ('Westall','Clayton'): [
+                    (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
+                    (8550 + x_offset, 4300 + y_offset, 8950 + x_offset, 4400 + y_offset),
+                ],
+                ('Clayton','Huntingdale'): [
+                    (7950 + x_offset, 4300 + y_offset, 8400 + x_offset, 4400 + y_offset),
+                    (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
+                ],
+                ('Huntingdale','Oakleigh'): [
+                    (7400 + x_offset, 4300 + y_offset, 8000 + x_offset, 4400 + y_offset),
+                ],
+                ('Oakleigh','Hughesdale'): [
+                    (6850 + x_offset, 4300 + y_offset, 7450 + x_offset, 4400 + y_offset),
+                ],
+                ('Hughesdale','Murrumbeena'): [
+                    (6200 + x_offset, 4300 + y_offset, 6900 + x_offset, 4400 + y_offset),
+                ],
+                ('Murrumbeena','Carnegie'): [
+                    (5600 + x_offset, 4300 + y_offset, 6250 + x_offset, 4400 + y_offset),
+                ],
+                ('Carnegie','Caulfield'): [
+                    (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
+                    (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
+                ],
+                ('Caulfield','Malvern'): [
+                    (5250 + x_offset, 4000 + y_offset, 5300 + x_offset, 4150 + y_offset),
+                ],
+                ('Malvern','South Yarra'): [
+                    (5250 + x_offset, 2950 + y_offset, 5300 + x_offset, 4000 + y_offset),
+                    (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+                    (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+                    (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+                ],
+                ('South Yarra','Richmond'): [
+                    (4650 + x_offset, 2100 + y_offset, 5300 + x_offset, 2150 + y_offset),
+                    (5250 + x_offset, 2100 + y_offset, 5300 + x_offset, 2800 + y_offset),
+                    (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+                    (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+                    (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+                    (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+                ],
+                ('Richmond','Flinders Street'): [
+                    (3050 + x_offset, 2100 + y_offset, 4550 + x_offset, 2150 + y_offset),
+                    (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                ],
+                ('Flinders Street','Southern Cross'): [
+                    (1950 + x_offset, 2100 + y_offset, 2900 + x_offset, 2150 + y_offset),
+                    (1950 + x_offset, 1400 + y_offset, 2000 + x_offset, 2150 + y_offset),
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                ],
+                ('Southern Cross','Flagstaff'): [
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                    (1950 + x_offset, 700 + y_offset, 2000 + x_offset, 1250 + y_offset),
+                    (1950 + x_offset, 700 + y_offset, 2350 + x_offset, 750 + y_offset),
+                    (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+                ],
+                ('Flagstaff','Melbourne Central'): [
+                    (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+                    (2500 + x_offset, 650 + y_offset, 2900 + x_offset, 750 + y_offset),
+                    (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+                ],
+                ('Melbourne Central','Parliament'): [
+                    (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+                    (3050 + x_offset, 700 + y_offset, 3550 + x_offset, 750 + y_offset),
+                    (3450 + x_offset, 700 + y_offset, 3600 + x_offset, 1250 + y_offset),
+                    (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
+                ],
+                ('Parliament','Richmond'): [
+                    (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
+                    (3500 + x_offset, 1400 + y_offset, 3550 + x_offset, 2150 + y_offset),
+                    (3500 + x_offset, 2100 + y_offset, 4500 + x_offset, 2150 + y_offset),
+                    (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+                ],
+                     
             },
             
             'northern': {
@@ -801,10 +915,10 @@ class CoordinateFinder:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         
-        # Calculate scaling factor
+        # Calculate scaling factor - increased zoom by using 1.5 instead of 0.8
         width_ratio = screen_width / self.original_image.width
         height_ratio = screen_height / self.original_image.height
-        self.scale = min(width_ratio * 0.8, height_ratio * 0.8)  # 80% of screen size
+        self.scale = min(width_ratio * 1.5, height_ratio * 1.5)  # 150% zoom
         
         # Resize image
         new_width = int(self.original_image.width * self.scale)
@@ -812,9 +926,32 @@ class CoordinateFinder:
         self.image = self.original_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
         self.photo = ImageTk.PhotoImage(self.image)
         
-        self.canvas = tk.Canvas(self.root, width=new_width, height=new_height)
-        self.canvas.pack()
+        # Create frame with scrollbars
+        self.frame = tk.Frame(self.root)
+        self.frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create scrollbars
+        self.h_scrollbar = tk.Scrollbar(self.frame, orient=tk.HORIZONTAL)
+        self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        self.v_scrollbar = tk.Scrollbar(self.frame)
+        self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Create canvas with scrollbars
+        self.canvas = tk.Canvas(self.frame, 
+                              width=min(new_width, screen_width * 0.9),
+                              height=min(new_height, screen_height * 0.9),
+                              xscrollcommand=self.h_scrollbar.set,
+                              yscrollcommand=self.v_scrollbar.set)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        # Configure scrollbars
+        self.h_scrollbar.config(command=self.canvas.xview)
+        self.v_scrollbar.config(command=self.canvas.yview)
+        
+        # Create image on canvas
         self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+        self.canvas.config(scrollregion=self.canvas.bbox(tk.ALL))
         
         self.start_x = None
         self.start_y = None
@@ -824,30 +961,65 @@ class CoordinateFinder:
         self.canvas.bind("<B1-Motion>", self.on_drag)
         self.canvas.bind("<ButtonRelease-1>", self.on_release)
         
+        # Add mouse wheel scrolling
+        self.canvas.bind("<MouseWheel>", self.on_mousewheel_y)  # Windows
+        self.canvas.bind("<Shift-MouseWheel>", self.on_mousewheel_x)  # Windows with Shift
+        self.canvas.bind("<Button-4>", self.on_mousewheel_y)  # Linux
+        self.canvas.bind("<Button-5>", self.on_mousewheel_y)  # Linux
+        self.canvas.bind("<Shift-Button-4>", self.on_mousewheel_x)  # Linux with Shift
+        self.canvas.bind("<Shift-Button-5>", self.on_mousewheel_x)  # Linux with Shift
+        
+    def on_mousewheel_y(self, event):
+        # Handle vertical scrolling
+        if event.num == 4 or event.delta > 0:
+            self.canvas.yview_scroll(-1, "units")
+        else:
+            self.canvas.yview_scroll(1, "units")
+            
+    def on_mousewheel_x(self, event):
+        # Handle horizontal scrolling
+        if event.num == 4 or event.delta > 0:
+            self.canvas.xview_scroll(-1, "units")
+        else:
+            self.canvas.xview_scroll(1, "units")
+        
     def on_click(self, event):
-        self.start_x = event.x
-        self.start_y = event.y
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        self.start_x = canvas_x
+        self.start_y = canvas_y
         
     def on_drag(self, event):
         if self.rect:
             self.canvas.delete(self.rect)
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
         self.rect = self.canvas.create_rectangle(
-            self.start_x, self.start_y, event.x, event.y, outline="red"
+            self.start_x, self.start_y, canvas_x, canvas_y, outline="red"
         )
         
     def on_release(self, event):
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
         # Convert coordinates back to original scale
-        x1 = int(min(self.start_x, event.x) / self.scale)
-        y1 = int(min(self.start_y, event.y) / self.scale)
-        x2 = int(max(self.start_x, event.x) / self.scale) 
-        y2 = int(max(self.start_y, event.y) / self.scale)
-        # Swap y coordinates to ensure y2 is greater than y1
+        x1 = int(min(self.start_x, canvas_x) / self.scale)
+        y1 = int(min(self.start_y, canvas_y) / self.scale)
+        x2 = int(max(self.start_x, canvas_x) / self.scale)
+        y2 = int(max(self.start_y, canvas_y) / self.scale)
+        
+        # Adjust coordinates
         y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
         y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
-        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50  
+        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50
         x2_adj = round(int((x2 / dpi) - x_offset) / 50) * 50
+        
         print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
         print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
+        
     def run(self):
         self.root.mainloop()
 

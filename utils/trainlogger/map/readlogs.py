@@ -46,28 +46,28 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train'):
                     
         affected_lines = []
         for line in data:
-            # convert to group names
-            if cols[4] in ['Werribee', 'Williamstown','Frankston']:
-                group = 'cross_city'
-            elif cols[4] in ['Lilydale','Belgrave','Alamein','Glen Waverley']:
-                group = 'burnley'
-            elif cols[4] in ['Craigieburn','Upfield','Sunbury']:
-                group = 'northern'
-            elif cols[4] in ['Pakenham','Cranbourne']:
-                group = 'dandenong'
-            elif cols[4] in ['Flemington Racecourse']:
-                group = 'flemington'
-            elif cols[4] in ['Albury']:
-                group = 'standard_guage'
-                
-            else:
-                group = cols[4]
-                
             cols = line.strip().split(',')
             if len(cols) >= 6:
+                # convert to group names
+                if cols[4] in ['Werribee', 'Williamstown','Frankston']:
+                    group = 'cross_city'
+                elif cols[4] in ['Lilydale','Belgrave','Alamein','Glen Waverley']:
+                    group = 'burnley'
+                elif cols[4] in ['Craigieburn','Upfield','Sunbury']:
+                    group = 'northern'
+                elif cols[4] in ['Pakenham','Cranbourne']:
+                    group = 'dandenong'
+                elif cols[4] in ['Flemington Racecourse']:
+                    group = 'flemington'
+                elif cols[4] in ['Albury']:
+                    group = 'standard_guage'
+                else:
+                    group = cols[4]
+                    
                 affected_lines.append((cols[5], cols[6], group))
         
         # do the map gen
         map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
+        map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
         print(affected_lines)
-        a = map_handler.highlight_map(affected_lines, "temp/themap.png", stations)
+        map_handler.highlight_map(affected_lines, "temp/themap.png", stations)
