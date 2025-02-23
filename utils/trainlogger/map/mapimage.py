@@ -355,6 +355,91 @@ class MapImageHandler:
             ('Lilydale', 'Mooroolbark'): [
                 (6450 + x_offset, -2100 + y_offset, 6600 + x_offset, -1850 + y_offset),
             ],
+            ('Mooroolbark', 'Croydon'): [
+                (6500 + x_offset, -1950 + y_offset, 6600 + x_offset, -1650 + y_offset),
+            ],
+            ('Croydon', 'Ringwood East'): [
+                (6450 + x_offset, -1750 + y_offset, 6600 + x_offset, -1450 + y_offset),
+            ],
+            ('Ringwood East', 'Ringwood'): [
+                (6450 + x_offset, -1450 + y_offset, 6550 + x_offset, -1200 + y_offset),
+                (6450 + x_offset, -1250 + y_offset, 6600 + x_offset, -1050 + y_offset),
+            ],
+            ('Ringwood', 'Heatherdale'): [
+                (6450 + x_offset, -1200 + y_offset, 6600 + x_offset, -900 + y_offset),
+            ],
+            ('Heatherdale', 'Mitcham'): [
+                (6450 + x_offset, -950 + y_offset, 6600 + x_offset, -700 + y_offset),
+            ],
+            ('Mitcham', 'Nunawading'): [
+                (6450 + x_offset, -750 + y_offset, 6600 + x_offset, -500 + y_offset),
+            ],
+            ('Nunawading', 'Blackburn'): [
+                (6450 + x_offset, -600 + y_offset, 6600 + x_offset, -300 + y_offset),
+            ],
+            ('Blackburn', 'Laburnum'): [
+                (6500 + x_offset, -400 + y_offset, 6600 + x_offset, -100 + y_offset),
+            ],
+            ('Laburnum', 'Box Hill'): [
+                (6500 + x_offset, -200 + y_offset, 6600 + x_offset, 100 + y_offset),
+            ],
+            ('Box Hill', 'Union'): [
+                (6500 + x_offset, 50 + y_offset, 6600 + x_offset, 300 + y_offset),
+            ],
+            ('Union', 'Chatham') : [
+                (6500 + x_offset, 250 + y_offset, 6600 + x_offset, 500 + y_offset),
+            ],
+            ('Chatham', 'Canterbury') : [
+                (6500 + x_offset, 450 + y_offset, 6600 + x_offset, 700 + y_offset),
+            ],
+            ('Canterbury', 'East Camberwell') : [
+                (6500 + x_offset, 600 + y_offset, 6600 + x_offset, 900 + y_offset),
+            ],
+            ('East Camberwell', 'Camberwell') : [
+                (6500 + x_offset, 800 + y_offset, 6600 + x_offset, 950 + y_offset),
+                (6450 + x_offset, 1150 + y_offset, 6600 + x_offset, 1300 + y_offset),
+                (6500 + x_offset, 900 + y_offset, 6550 + x_offset, 1150 + y_offset),
+            ],
+            ('Camberwell', 'Auburn') : [
+                (6400 + x_offset, 1150 + y_offset, 6600 + x_offset, 1450 + y_offset),
+            ],
+            ('Auburn', 'Glenferrie') : [
+                (6450 + x_offset, 1350 + y_offset, 6600 + x_offset, 1650 + y_offset),
+            ],
+            ('Glenferrie', 'Hawthorn') : [
+                (6500 + x_offset, 1600 + y_offset, 6600 + x_offset, 1850 + y_offset),
+            ],
+            ('Hawthorn', 'Burnley') : [
+                (6200 + x_offset, 1950 + y_offset, 6550 + x_offset, 2050 + y_offset),
+                (6200 + x_offset, 2000 + y_offset, 6350 + x_offset, 2100 + y_offset),
+                (6500 + x_offset, 1750 + y_offset, 6600 + x_offset, 2000 + y_offset),
+            ],
+            ('Burnley', 'East Richmond') : [
+                (5650 + x_offset, 1900 + y_offset, 6350 + x_offset, 2100 + y_offset),
+            ],
+            ('East Richmond', 'Richmond') : [
+                (4650 + x_offset, 1950 + y_offset, 5700 + x_offset, 2050 + y_offset),
+                (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            ],
+            ('Richmond','Flinders Street'):[
+                (3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),
+                (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
+                (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+                (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+            ],
+            ('Flinders Street', 'Southern Cross'):[
+                (2050 + x_offset, 1400 + y_offset, 2100 + x_offset, 2050 + y_offset),
+                (2050 + x_offset, 1950 + y_offset, 2900 + x_offset, 2050 + y_offset),
+                (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            ],
+            ('Southern Cross', 'Flagstaff'):[
+                (2050 + x_offset, 800 + y_offset, 2350 + x_offset, 850 + y_offset),
+                (2000 + x_offset, 800 + y_offset, 2100 + x_offset, 1250 + y_offset),
+                (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+                (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+            ],
+            
             ("Flagstaff", "Melbourne Central"):[
                 (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
                 (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
@@ -365,7 +450,6 @@ class MapImageHandler:
                 (3300 + x_offset, 800 + y_offset, 3400 + x_offset, 1250 + y_offset),
                 (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
                 (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
-
             ],
             ('Parliament', 'Richmond'):[
                 (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset),
@@ -375,10 +459,6 @@ class MapImageHandler:
                 (4450 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
             ],
                 
-            ('Richmond','Flinders Street'):[
-                (3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),
-                (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
-            ],
             },
             
             'northern': {
