@@ -4407,7 +4407,7 @@ async def viewMaps(ctx, map_choice: str):
         embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
         await ctx.followup.send(embed=embed, file=file)
     except Exception as e:
-        printlog(e)
+        await printlog(e)
 
 
 # achievement commands
