@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
+import math
 
 x_offset = 10600
 y_offset = 6300
@@ -956,7 +957,8 @@ class MapImageHandler:
                         coord2 = []
                         for coor in coord:
                             coor = coor * dpi
-                            if coor == coord[3] or coor == coord[4]:
+                            coor = math.trunc(coor)
+                            if coor == coord[3] or coor == coord[2]:
                                 coor = coor - 1
                             coord2.append(coor)
                         coord = tuple(coord2)
@@ -965,7 +967,8 @@ class MapImageHandler:
                     coord2 = []
                     for coor in coords:
                         coor = coor * dpi
-                        if coor == coord[3] or coor == coord[4]:
+                        coor = math.trunc(coor)
+                        if coor == coords[3] or coor == coords[2]:
                             coor = coor - 1
                         coord2.append(coor)
                     coord = tuple(coord2)
@@ -982,7 +985,8 @@ class MapImageHandler:
                     coord2 = []
                         for coor in coord:
                             coor = coor * dpi
-                            if coor == coord[3] or coor == coord[4]:
+                            coor = math.trunc(coor)
+                            if coor == coord[3] or coor == coord[2]:
                                 coor = coor - 1
                             coord2.append(coor)
                         coord = tuple(coord2)
@@ -991,7 +995,8 @@ class MapImageHandler:
                 coord2 = []
                 for coor in coords:
                     coor = coor * dpi
-                    if coor == coord[3] or coor == coord[4]:
+                    coor = math.trunc(coor)
+                    if coor == coords[3] or coor == coords[2]:
                         coor = coor - 1
                     coord2.append(coor)
                 coords = tuple(coord2)
@@ -1009,7 +1014,8 @@ class MapImageHandler:
                                 coord2 = []
                                 for coor in coord:
                                     coor = coor * dpi
-                                    if coor == coord[3] or coor == coord[4]:
+                                    coor = math.trunc(coor)
+                                    if coor == coord[3] or coor == coord[2]:
                                         coor = coor - 1
                                     coord2.append(coor)
                                 coord = tuple(coord2)
@@ -1018,7 +1024,8 @@ class MapImageHandler:
                             coord2 = []
                             for coor in coords:
                                 coor = coor * dpi
-                                if coor == coord[3] or coor == coord[4]:
+                                coor = math.trunc(coor)
+                                if coor == coords[3] or coor == coords[2]:
                                     coor = coor - 1
                                 coord2.append(coor)
                             coords = tuple(coord2)
