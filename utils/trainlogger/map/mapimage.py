@@ -5,7 +5,7 @@ from matplotlib.pylab import f
 
 x_offset = 10600
 y_offset = 6300
-dpi = 16/96
+dpi = 32/96
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
