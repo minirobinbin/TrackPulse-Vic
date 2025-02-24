@@ -880,16 +880,21 @@ class MapImageHandler:
                     (17100 + x_offset, 4400 + y_offset, 17650 + x_offset, 4500 + y_offset),
                 ],
                 ('Nar Nar Goon','Pakenham'): [
-                    (15700 + x_offset, 4400 + y_offset, 17150 + x_offset, 4500 + y_offset),
+                    (15700 + x_offset, 4450 + y_offset, 17150 + x_offset, 4500 + y_offset),
                     (17100 + x_offset, 4400 + y_offset, 17150 + x_offset, 4500 + y_offset),
                     (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
                 ],
  
-                ('Pakenham','Dandenong'): [
-                    (12050 + x_offset, 4450 + y_offset, 15600 + x_offset, 4500 + y_offset),
+                ('Pakenham','Berwick'): [
+                    (13400 + x_offset, 4400 + y_offset, 13450 + x_offset, 4500 + y_offset),
+                    (13450 + x_offset, 4450 + y_offset, 15600 + x_offset, 4500 + y_offset),
+                    (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
+                ],
+                ('Berwick','Dandenong'): [
+                    (12050 + x_offset, 4450 + y_offset, 13400 + x_offset, 4500 + y_offset),
+                    (13400 + x_offset, 4400 + y_offset, 13450 + x_offset, 4500 + y_offset),
                     (11900 + x_offset, 4400 + y_offset, 12000 + x_offset, 4500 + y_offset),
                     (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
-                    (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
                 ],
                 ('Dandenong','Clayton'): [
                     (8550 + x_offset, 4400 + y_offset, 11750 + x_offset, 4500 + y_offset),
