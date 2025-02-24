@@ -4380,13 +4380,13 @@ async def viewMaps(ctx, map_choice: str):
     try:
         file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
         if map_choice == "log_train_map.png":
-            embed = discord.Embed(title=f"Map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
+            embed = discord.Embed(title=f"Map for </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
             embed.set_author(name="Map by Comeng17", icon_url=pfp)
             await printlog(f"Retrieved /log train map for {ctx.user.name} in {ctx.channel.mention}")
         elif map_choice == "time_based_variants/log_train_map_post_munnel.png":
-            embed = discord.Embed(title=f"Future map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+            embed = discord.Embed(title=f"Future map for </log train:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
             embed.set_author(name="Map by Comeng17", icon_url=pfp)
