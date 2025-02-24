@@ -4377,34 +4377,37 @@ async def profile(ctx, user: discord.User = None):
 async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
-    file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
-    if map_choice == "log_train_map.png":
-        embed = discord.Embed(title=f"Map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
-        user = await bot.fetch_user(1002449671224041502)
-        pfp = user.avatar.url
-        embed.set_author(name="Map by Comeng17", icon_url=pfp)
-        await printlog(f"Retrieved /log train map for {ctx.user.name} in {ctx.channel.mention}")
-    elif map_choice == "time_based_variants/log_train_map.png":
-        embed = discord.Embed(title=f"Future map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
-        user = await bot.fetch_user(1002449671224041502)
-        pfp = user.avatar.url
-        embed.set_author(name="Map by Comeng17", icon_url=pfp)
-        await printlog(f"Retrieved future /log train map for {ctx.user.name} in {ctx.channel.mention}")
-    elif map_choice == "log_sydney-train_map.png":
-        embed = discord.Embed(title=f"Map for </log sydney-train:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
-        user = await bot.fetch_user(829535993643794482)
-        pfp = user.avatar.url
-        embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
-        await printlog(f"Retrieved Sydney Trains map for {ctx.user.name} in {ctx.channel.mention}")
-    elif map_choice == "log___sydney-train___map.png":
-        embed = discord.Embed(title=f"Map for <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
-        user = await bot.fetch_user(829535993643794482)
-        pfp = user.avatar.url
-        embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
-        await printlog(f"Retrieved NSW Regional map for {ctx.user.name} in {ctx.channel.mention}")
-    embed.set_image(url="attachment://map.png")
-    embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
-    await ctx.followup.send(embed=embed, file=file)
+    try:
+        file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
+        if map_choice == "log_train_map.png":
+            embed = discord.Embed(title=f"Map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(1002449671224041502)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by Comeng17", icon_url=pfp)
+            await printlog(f"Retrieved /log train map for {ctx.user.name} in {ctx.channel.mention}")
+        elif map_choice == "time_based_variants/log_train_map.png":
+            embed = discord.Embed(title=f"Future map for </log_train:1289843416628330506>", color=0xb8b8b8, description="This is a work in progress map that will be used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(1002449671224041502)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by Comeng17", icon_url=pfp)
+            await printlog(f"Retrieved future /log train map for {ctx.user.name} in {ctx.channel.mention}")
+        elif map_choice == "log_sydney-train_map.png":
+            embed = discord.Embed(title=f"Map for </log sydney-train:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved Sydney Trains map for {ctx.user.name} in {ctx.channel.mention}")
+        elif map_choice == "log___sydney-train___map.png":
+            embed = discord.Embed(title=f"Map for <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that will be used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved NSW Regional map for {ctx.user.name} in {ctx.channel.mention}")
+        embed.set_image(url="attachment://map.png")
+        embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+        await ctx.followup.send(embed=embed, file=file)
+    except Exception as e:
+        print(e)
 
 
 # achievement commands
