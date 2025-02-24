@@ -772,6 +772,22 @@ class MapImageHandler:
                     (3500 + x_offset, 2100 + y_offset, 4500 + x_offset, 2150 + y_offset),
                     (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
                 ],
+                # cranbourne branch
+                ('Cranbourne','Merinda Park'): [
+                    (11950 + x_offset, 4950 + y_offset, 12100 + x_offset, 5200 + y_offset),
+                ],
+                ('Merinda Park','Lynbrook'): [
+                    (11950 + x_offset, 4700 + y_offset, 12100 + x_offset, 5000 + y_offset),
+                ],
+                ('Lynbrook','Dandenong'): [
+                    (12000 + x_offset, 4350 + y_offset, 12050 + x_offset, 4800 + y_offset),
+                    (12000 + x_offset, 4700 + y_offset, 12100 + x_offset, 4800 + y_offset),
+                    (11900 + x_offset, 4350 + y_offset, 12050 + x_offset, 4400 + y_offset),
+                    (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
+                ],
+                
+                
+                
                      
             },
             
