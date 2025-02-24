@@ -843,12 +843,82 @@ class MapImageHandler:
             },
             'vline_intercity':{
                 # traralgon line
+                ('Traralgon','Morwell'): [
+                    (21750 + x_offset, 4400 + y_offset, 21900 + x_offset, 4650 + y_offset), # traralgon coords
+                    (21350 + x_offset, 4400 + y_offset, 21750 + x_offset, 4500 + y_offset),
+                ],
+                ('Morwell','Moe'): [
+                    (21000 + x_offset, 4350 + y_offset, 21400 + x_offset, 4500 + y_offset),
+                ],
+                ('Moe','Trafalgar'): [
+                    (20650 + x_offset, 4400 + y_offset, 21050 + x_offset, 4500 + y_offset),
+                ],
+                ('Trafalgar','Yarragon'): [
+                    (20200 + x_offset, 4400 + y_offset, 20700 + x_offset, 4500 + y_offset),
+                ],  
+                ('Yarragon','Warragul'): [
+                    (19700 + x_offset, 4400 + y_offset, 20250 + x_offset, 4500 + y_offset),
+                ],
+                ('Drouin','Warragul'): [
+                    (19300 + x_offset, 4400 + y_offset, 19750 + x_offset, 4500 + y_offset),
+                ],
+
+                ('Drouin','Longwarry'): [
+                    (18850 + x_offset, 4400 + y_offset, 19350 + x_offset, 4500 + y_offset),
+                ],
+                ('Longwarry','Bunyip'): [
+                    (18400 + x_offset, 4400 + y_offset, 18900 + x_offset, 4500 + y_offset),
+                ],
+                ('Bunyip','Garfield'): [
+                    (18000 + x_offset, 4350 + y_offset, 18450 + x_offset, 4500 + y_offset),
+                ],
+                ('Garfield','Tynong'): [
+                    (17600 + x_offset, 4350 + y_offset, 18050 + x_offset, 4500 + y_offset),
+                ],
+                ('Tynong','Nar Nar Goon'): [
+                    (17100 + x_offset, 4400 + y_offset, 17650 + x_offset, 4500 + y_offset),
+                ],
+                ('Nar Nar Goon','Pakenham'): [
+                    (15700 + x_offset, 4400 + y_offset, 17150 + x_offset, 4500 + y_offset),
+                    (17100 + x_offset, 4400 + y_offset, 17150 + x_offset, 4500 + y_offset),
+                    (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
+                ],
+ 
                 ('Pakenham','Dandenong'): [
                     (12050 + x_offset, 4450 + y_offset, 15600 + x_offset, 4500 + y_offset),
                     (11900 + x_offset, 4400 + y_offset, 12000 + x_offset, 4500 + y_offset),
                     (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
                     (15600 + x_offset, 4300 + y_offset, 15750 + x_offset, 4650 + y_offset), # pakenham coords
                 ],
+                ('Dandenong','Clayton'): [
+                    (8550 + x_offset, 4400 + y_offset, 11750 + x_offset, 4500 + y_offset),
+                    (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
+                    (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
+                ],
+                ('Clayton','Caulfield'): [
+                    (5150 + x_offset, 4450 + y_offset, 8400 + x_offset, 4500 + y_offset),
+                    (5150 + x_offset, 4250 + y_offset, 5200 + x_offset, 4500 + y_offset),
+                    (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
+                    (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
+                ],
+                ('Caulfield','Richmond'): [
+                    (5150 + x_offset, 2900 + y_offset, 5200 + x_offset, 4150 + y_offset),
+                    (5100 + x_offset, 2200 + y_offset, 5200 + x_offset, 2850 + y_offset),
+                    (4650 + x_offset, 2150 + y_offset, 5200 + x_offset, 2250 + y_offset),
+                    (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
+                    (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+                ],
+                ('Richmond','Flinders Street'): [
+                    (3050 + x_offset, 2200 + y_offset, 4550 + x_offset, 2250 + y_offset),
+                    (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                ],
+                ('Flinders Street','Southern Cross'): [
+                    (1850 + x_offset, 1350 + y_offset, 1900 + x_offset, 2250 + y_offset),
+                    (1800 + x_offset, 2150 + y_offset, 2900 + x_offset, 2250 + y_offset),
+                    (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                    (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+                ], 
                 
             },
             }
