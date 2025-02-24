@@ -4370,7 +4370,7 @@ async def profile(ctx, user: discord.User = None):
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(map_choice=[
         app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
-        app_commands.Choice(name="Victorian Trains after Metro Tunnel (Unfinished)", value="time_based_variants/log_train_map.png"),
+        app_commands.Choice(name="Victorian Trains after Metro Tunnel (Unfinished)", value="time_based_variants/log_train_map_post_munnel.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
 ])
