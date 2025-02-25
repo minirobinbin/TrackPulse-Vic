@@ -4998,7 +4998,7 @@ async def mapstrips(ctx,user: discord.Member=None):
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
     if user == None:
-        tripMap(ctx.author.name)
+        logMap(ctx.author.name,lines_dictionary_map)
     else:
         try:
             logMap(user,lines_dictionary_map)
