@@ -79,7 +79,7 @@ from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
-from main import tripMap
+from utils.trainlogger.map.readlogs import logMap
 
 
 
@@ -4961,9 +4961,9 @@ async def mapstrips(ctx,user: discord.Member=None):
         tripMap(ctx.author.name)
     else:
         try:
-            tripMap(user)
+            logMap(user,lines_dictionary)
         except:
-            tripMap(ctx.author.name)
+            logMap(ctx.author.name,lines_dictionary)
     file=discord.File('temp/themap.png', filename='map.png')
     embed = discord.Embed(title=f"Map for </log train:1289843416628330506>", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose too.")
     embed.set_image(url="attachment://map.png")
