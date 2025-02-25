@@ -8,7 +8,7 @@ x_offset = 10600
 y_offset = 6300
 dpi = 32/96
 
-def compress(image):
+def compress(image: Image):
     try:
         success = False
         while success == False:
@@ -1052,35 +1052,16 @@ class MapImageHandler:
                     # else:
                     #     print(f'No line coordinates for {station1} to {station2}')
         
-        def trim(image):
-            # Create a background image with the top-left pixel color
-            bg = Image.new(image.mode, image.size, image.getpixel((0, 0)))
-            
-            # Save the background image for debugging
-            bg.save("background_debug.png")
-            
-            # Calculate the difference
-            difference = ImageChops.difference(image, bg)
-            
-            # Save the difference image for debugging
-            difference.save("difference_debug.png")
-            
-            # Print debug information
-            print(f"Image mode: {image.mode}")
-            print(f"Background mode: {bg.mode}")
-            
-            # Get the bounding box
-            bbox = difference.getbbox()
-            print(f"Bounding box: {bbox}")
-            '''bg = Image.new(image.mode, image.size, image.getpixel((0,0)))
-            difference = ImageChops.difference(image, bg)
+        def trim(image: Image):
+            background = Image.new(image.mode, image.size, image.getpixel((0,0)))
+            difference = ImageChops.difference(image, background)
             bbox = difference.getbbox()
             if bbox:
                 print('Image Cropped')
                 return image.crop(bbox)
             else:
                 print('Crop Failure')
-                return image'''
+                return image
         
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
