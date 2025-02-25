@@ -260,3 +260,228 @@ class CoordinateFinder:
     def run(self):
         self.root.mainloop()
 
+class CoordinateCorrector:
+    def __init__(self, image_path):
+        self.root = tk.Tk()
+        self.original_image = Image.open(image_path)
+        
+        # Get screen dimensions
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        
+        # Calculate initial scaling factor
+        width_ratio = screen_width / self.original_image.width
+        height_ratio = screen_height / self.original_image.height
+        self.scale = min(width_ratio * 1.5, height_ratio * 1.5)  # 150% zoom
+        
+        # Resize image
+        self.update_image()
+        
+        # Create frame with scrollbars
+        self.frame = tk.Frame(self.root)
+        self.frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create scrollbars
+        self.h_scrollbar = tk.Scrollbar(self.frame, orient=tk.HORIZONTAL)
+        self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        self.v_scrollbar = tk.Scrollbar(self.frame)
+        self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Create canvas with scrollbars
+        self.canvas = tk.Canvas(self.frame, 
+                              width=min(self.new_width, screen_width * 0.9),
+                              height=min(self.new_height, screen_height * 0.9),
+                              xscrollcommand=self.h_scrollbar.set,
+                              yscrollcommand=self.v_scrollbar.set)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        # Configure scrollbars
+        self.h_scrollbar.config(command=self.canvas.xview)
+        self.v_scrollbar.config(command=self.canvas.yview)
+        
+        # Create image on canvas
+        self.image_on_canvas = self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+        self.canvas.config(scrollregion=self.canvas.bbox(tk.ALL))
+        
+        self.start_x = None
+        self.start_y = None
+        self.rect = None
+        self.rectangles = {}
+        
+        self.canvas.bind("<Button-1>", self.on_click)
+        self.canvas.bind("<B1-Motion>", self.on_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_release)
+        
+        # Add mouse wheel scrolling and zooming
+        self.canvas.bind("<MouseWheel>", self.on_mousewheel)  # Windows
+        self.canvas.bind("<Shift-MouseWheel>", self.on_mousewheel_x)  # Windows with Shift
+        self.canvas.bind("<Button-4>", self.on_mousewheel)  # Linux
+        self.canvas.bind("<Button-5>", self.on_mousewheel)  # Linux
+        self.canvas.bind("<Shift-Button-4>", self.on_mousewheel_x)  # Linux with Shift
+        self.canvas.bind("<Shift-Button-5>", self.on_mousewheel_x)  # Linux with Shift
+        
+        # Create dropdown menus
+        self.create_dropdown_menus()
+        
+        # Draw existing coordinates
+        self.draw_existing_coordinates()
+        
+    def update_image(self):
+        self.new_width = int(self.original_image.width * self.scale)
+        self.new_height = int(self.original_image.height * self.scale)
+        self.image = self.original_image.resize((self.new_width, self.new_height), Image.Resampling.LANCZOS)
+        self.photo = ImageTk.PhotoImage(self.image)
+        
+    def create_dropdown_menus(self):
+        # Create a frame for the dropdown menus
+        self.dropdown_frame = tk.Frame(self.root)
+        self.dropdown_frame.pack(fill=tk.X)
+        
+        # Station dropdown menu
+        self.station_var = tk.StringVar(self.root)
+        self.station_var.set("Select Station")
+        self.station_menu = tk.OptionMenu(self.dropdown_frame, self.station_var, *station_coordinates.keys(), command=self.on_station_select)
+        self.station_menu.pack(side=tk.LEFT)
+        
+        # Line dropdown menu
+        self.line_var = tk.StringVar(self.root)
+        self.line_var.set("Select Line")
+        self.line_menu = tk.OptionMenu(self.dropdown_frame, self.line_var, *line_coordinates.keys(), command=self.on_line_select)
+        self.line_menu.pack(side=tk.LEFT)
+        
+        # Segment dropdown menu (initially empty)
+        self.segment_var = tk.StringVar(self.root)
+        self.segment_var.set("Select Segment")
+        self.segment_menu = tk.OptionMenu(self.dropdown_frame, self.segment_var, "")
+        self.segment_menu.pack(side=tk.LEFT)
+        
+    def on_station_select(self, station):
+        self.draw_existing_coordinates()
+        coords = station_coordinates[station]
+        if isinstance(coords, list):
+            for coord in coords:
+                self.draw_rectangle(coord, outline="blue", tag=station)
+        else:
+            self.draw_rectangle(coords, outline="blue", tag=station)
+        
+    def on_line_select(self, line):
+        self.draw_existing_coordinates()
+        self.segment_var.set("Select Segment")
+        self.segment_menu['menu'].delete(0, 'end')
+        for segment in line_coordinates[line].keys():
+            self.segment_menu['menu'].add_command(label=segment, command=tk._setit(self.segment_var, segment, self.on_segment_select))
+        
+    def on_segment_select(self, segment):
+        self.draw_existing_coordinates()
+        line = self.line_var.get()
+        coords = line_coordinates[line][segment]
+        if isinstance(coords, list):
+            for coord in coords:
+                self.draw_rectangle(coord, outline="green", tag=line)
+        else:
+            self.draw_rectangle(coords, outline="green", tag=line)
+        
+    def draw_existing_coordinates(self):
+        self.canvas.delete("all")
+        self.image_on_canvas = self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+        
+        # Draw station coordinates
+        for station, coords in station_coordinates.items():
+            if isinstance(coords, list):
+                for coord in coords:
+                    self.draw_rectangle(coord, outline="blue", tag=station)
+            else:
+                self.draw_rectangle(coords, outline="blue", tag=station)
+        
+        # Draw line coordinates
+        for line, line_coords in line_coordinates.items():
+            for station_pair, coords in line_coords.items():
+                if isinstance(coords, list):
+                    for coord in coords:
+                        self.draw_rectangle(coord, outline="green", tag=line)
+                else:
+                    self.draw_rectangle(coords, outline="green", tag=line)
+    
+    def draw_rectangle(self, coords, outline="red", tag=None):
+        scaled_coords = [coord * self.scale * dpi for coord in coords]
+        rect = self.canvas.create_rectangle(*scaled_coords, outline=outline, tags=tag)
+        self.rectangles[rect] = coords
+        
+    def on_mousewheel(self, event):
+        # Handle zooming
+        if event.delta > 0:
+            self.scale *= 1.1
+        else:
+            self.scale /= 1.1
+        self.update_image()
+        self.draw_existing_coordinates()
+        
+    def on_mousewheel_y(self, event):
+        # Handle vertical scrolling
+        if event.num == 4 or event.delta > 0:
+            self.canvas.yview_scroll(-1, "units")
+        else:
+            self.canvas.yview_scroll(1, "units")
+            
+    def on_mousewheel_x(self, event):
+        # Handle horizontal scrolling
+        if event.num == 4 or event.delta > 0:
+            self.canvas.xview_scroll(-1, "units")
+        else:
+            self.canvas.xview_scroll(1, "units")
+        
+    def on_click(self, event):
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        self.start_x = canvas_x
+        self.start_y = canvas_y
+        
+        # Check if click is inside an existing rectangle
+        overlapping = self.canvas.find_overlapping(canvas_x, canvas_y, canvas_x, canvas_y)
+        if overlapping:
+            self.rect = overlapping[0]
+        else:
+            self.rect = None
+        
+    def on_drag(self, event):
+        if self.rect:
+            self.canvas.delete(self.rect)
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        self.rect = self.canvas.create_rectangle(
+            self.start_x, self.start_y, canvas_x, canvas_y, outline="red"
+        )
+        
+    def on_release(self, event):
+        # Get canvas coordinates accounting for scroll position
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        # Convert coordinates back to original scale
+        x1 = int(min(self.start_x, canvas_x) / self.scale)
+        y1 = int(min(self.start_y, canvas_y) / self.scale)
+        x2 = int(max(self.start_x, canvas_x) / self.scale)
+        y2 = int(max(self.start_y, canvas_y) / self.scale)
+        
+        # Adjust coordinates
+        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
+        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
+        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50
+        x2_adj = round(int((x2 / dpi) - x_offset) / 50) * 50
+        
+        print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
+        print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
+        
+        # Update the coordinates in the dictionary
+        if self.rect in self.rectangles:
+            tag = self.canvas.gettags(self.rect)[0]
+            if tag in station_coordinates:
+                station_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
+            elif tag in line_coordinates:
+                line_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
+        
+    def run(self):
+        self.root.mainloop()
