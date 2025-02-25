@@ -4972,7 +4972,7 @@ async def mapstrips(ctx,user: discord.Member=None):
         pfp = user.avatar.url
         embed.set_author(name="Map by Comeng17", icon_url=pfp)
         embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
-        await ctx.channel.send(embed=embed file=file)
+        await ctx.channel.send(embed=embed, file=file)
     
 # important
 bot.run(BOT_TOKEN)
