@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageChops
 import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
@@ -1039,9 +1039,23 @@ class MapImageHandler:
                     # else:
                     #     print(f'No line coordinates for {station1} to {station2}')
         
+        def trim(image):
+            bg = Image.new(image.mode, image.size, image.getpixel((0,0)))
+            difference = ImageChops.difference(image, bg)
+            bbox = difference.getbbox()
+            if bbox:
+                print('Image Cropped')
+                return image.crop(bbox)
+            else:
+                print('Crop Failure')
+                return image
+        
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
+        modified_map = trim(modified_map)
+        print('Saving')
         modified_map.save(output_path)
+        print('Done')
         return modified_map
         
         

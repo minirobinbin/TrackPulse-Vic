@@ -35,5 +35,4 @@ lines_dictionary = {
     'Unknown/Other': [[None], ptv_grey],
 }
 
-def tripMap(user):
-    logMap(user,lines_dictionary)
+logMap('comeng17',lines_dictionary)
