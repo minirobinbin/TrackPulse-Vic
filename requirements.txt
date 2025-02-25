@@ -12,3 +12,4 @@ Pillow
 staticmap
 pathlib2
 GitPython
+Wand

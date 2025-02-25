@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageChops
 import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
@@ -7,6 +7,21 @@ import math
 x_offset = 10600
 y_offset = 6300
 dpi = 32/96
+padding = 1.2
+
+def compress(image: Image):
+    print("Compressing Image")
+    try:
+        success = False
+        while success == False:
+            if image.size[0] > 10000 or image.size[1] > 10000:
+                image = image.resize((round(image.size[0] / 2), round(image.size[1] / 2)))
+            else:
+                print("Image Compressed")
+                success = True
+                return image
+    except Exception as e:
+        print(e)
 
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
@@ -1039,9 +1054,29 @@ class MapImageHandler:
                     # else:
                     #     print(f'No line coordinates for {station1} to {station2}')
         
+        def trim(image: Image):
+            print("Cropping Image")
+            image_rgb = image.convert("RGB")
+            background = Image.new(image_rgb.mode, image_rgb.size, image_rgb.getpixel((0,0)))
+            difference = ImageChops.difference(image_rgb, background)
+            bbox = difference.getbbox()
+            if bbox:
+                print('Image Cropped')
+                image_cropped = image.crop(bbox)
+                image_padding = Image.new(image_cropped.mode, (round(image_cropped.size[0] * padding), round(image_cropped.size[1] * padding)), (255,255,255))
+                image_padding.paste(image_cropped, (round(image_cropped.size[0] * (padding - 1) / 2), round(image_cropped.size[1] * (padding - 1) / 2)))
+                return image_padding
+            else:
+                print('Crop Failure')
+                return image
+        
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
+        modified_map = trim(modified_map)
+        modified_map = compress(modified_map)
+        print('Saving')
         modified_map.save(output_path)
+        print('Done')
         return modified_map
         
         
