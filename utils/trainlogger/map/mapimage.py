@@ -9,6 +9,7 @@ y_offset = 6300
 dpi = 32/96
 
 def compress(image: Image):
+    print("Compressing Image")
     try:
         success = False
         while success == False:
@@ -1053,6 +1054,7 @@ class MapImageHandler:
                     #     print(f'No line coordinates for {station1} to {station2}')
         
         def trim(image: Image):
+            print("Cropping Image")
             image_rgb = image.convert("RGB")
             background = Image.new(image_rgb.mode, image_rgb.size, image_rgb.getpixel((0,0)))
             difference = ImageChops.difference(image_rgb, background)
