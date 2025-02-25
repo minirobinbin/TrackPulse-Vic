@@ -4972,13 +4972,19 @@ async def update(ctx):
             await ctx.send("Updating bot")
             await printlog("Updating bot")
         
-            directory = Path(__file__).parents[0]
+            try:
+                directory = Path(__file__).parents[0]
 
-            directory = git.cmd.Git(directory)
-            directory.pull()
+                directory = git.cmd.Git(directory)
+                directory.pull()
 
-            await ctx.send("Update complete")
-            await printlog("Update complete")
+                await ctx.send("Update complete")
+                await printlog("Update complete")
+            except Exception as e:
+                await ctx.send("Update Failed. Error:")
+                await printlog("Update Failed. Error:")
+                await ctx.send(e)
+                await printlog(e)
 
         else:
             await printlog(f'{str(ctx.author.id)} tried to update the bot.')
