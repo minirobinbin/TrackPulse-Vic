@@ -7,6 +7,7 @@ import math
 x_offset = 10600
 y_offset = 6300
 dpi = 32/96
+padding = 1.2
 
 def compress(image: Image):
     print("Compressing Image")
@@ -1062,6 +1063,9 @@ class MapImageHandler:
             if bbox:
                 print('Image Cropped')
                 return image.crop(bbox)
+                image_padding = Image.new(image_cropped.mode, (round(image_cropped.size[0] * padding), round(image_cropped.size[1] * padding)), (255,255,255))
+                image_padding.paste(image_cropped, (round(image_cropped.size[0] * (padding - 1) / 2), round(image_cropped.size[1] * (padding - 1) / 2)))
+                return image_padding
             else:
                 print('Crop Failure')
                 return image
