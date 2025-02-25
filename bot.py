@@ -4954,25 +4954,24 @@ async def update(ctx):
 
 @bot.command()
 async def mapstrips(ctx,user: discord.Member=None):
-    if ctx.author.id in admin_users:
-        log_command(ctx.author.id, 'maps-trips')
-        await printlog(f"Making trip map for {str(ctx.author.id)}")
+    log_command(ctx.author.id, 'maps-trips')
+    await printlog(f"Making trip map for {str(ctx.author.id)}")
 
-        if user == None:
+    if user == None:
+        tripMap(ctx.author.name)
+    else:
+        try:
+            tripMap(user)
+        except:
             tripMap(ctx.author.name)
-        else:
-            try:
-                tripMap(user)
-            except:
-                tripMap(ctx.author.name)
-        file=discord.File('temp/themap.png', filename='map.png')
-        embed = discord.Embed(title=f"Map for </log train:1289843416628330506>", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose too.")
-        embed.set_image(url="attachment://map.png")
-        user = await bot.fetch_user(1002449671224041502)
-        pfp = user.avatar.url
-        embed.set_author(name="Map by Comeng17", icon_url=pfp)
-        embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
-        await ctx.channel.send(embed=embed, file=file)
+    file=discord.File('temp/themap.png', filename='map.png')
+    embed = discord.Embed(title=f"Map for </log train:1289843416628330506>", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose too.")
+    embed.set_image(url="attachment://map.png")
+    user = await bot.fetch_user(1002449671224041502)
+    pfp = user.avatar.url
+    embed.set_author(name="Map by Comeng17", icon_url=pfp)
+    embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+    await ctx.channel.send(embed=embed, file=file)
     
 # important
 bot.run(BOT_TOKEN)
