@@ -59,9 +59,6 @@ class MapImageHandler:
                         coord2 = []
                         for coor in coord:
                             coor = coor * dpi
-                            coor = math.trunc(coor)
-                            if coor == coord[3] or coor == coord[2]:
-                                coor = coor - 1
                             coord2.append(coor)
                         coord = tuple(coord2)
                         draw.rectangle(coord, fill=(255, 255, 255, 0))
@@ -69,9 +66,6 @@ class MapImageHandler:
                     coord2 = []
                     for coor in coords:
                         coor = coor * dpi
-                        coor = math.trunc(coor)
-                        if coor == coords[3] or coor == coords[2]:
-                            coor = coor - 1
                         coord2.append(coor)
                     coord = tuple(coord2)
                     draw.rectangle(coord, fill=(255, 255, 255, 0))
@@ -87,9 +81,6 @@ class MapImageHandler:
                     coord2 = []
                         for coor in coord:
                             coor = coor * dpi
-                            coor = math.trunc(coor)
-                            if coor == coord[3] or coor == coord[2]:
-                                coor = coor - 1
                             coord2.append(coor)
                         coord = tuple(coord2)
                     draw.rectangle(coord, fill=(255, 255, 255, 0))
@@ -97,9 +88,6 @@ class MapImageHandler:
                 coord2 = []
                 for coor in coords:
                     coor = coor * dpi
-                    coor = math.trunc(coor)
-                    if coor == coords[3] or coor == coords[2]:
-                        coor = coor - 1
                     coord2.append(coor)
                 coords = tuple(coord2)
                 draw.rectangle(coords, fill=(255, 255, 255, 0))
@@ -116,9 +104,6 @@ class MapImageHandler:
                                 coord2 = []
                                 for coor in coord:
                                     coor = coor * dpi
-                                    coor = math.trunc(coor)
-                                    if coor == coord[3] or coor == coord[2]:
-                                        coor = coor - 1
                                     coord2.append(coor)
                                 coord = tuple(coord2)
                                 draw.rectangle(coord, fill=(255, 255, 255, 0))
@@ -126,9 +111,6 @@ class MapImageHandler:
                             coord2 = []
                             for coor in coords:
                                 coor = coor * dpi
-                                coor = math.trunc(coor)
-                                if coor == coords[3] or coor == coords[2]:
-                                    coor = coor - 1
                                 coord2.append(coor)
                             coords = tuple(coord2)
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
