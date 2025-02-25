@@ -1053,8 +1053,9 @@ class MapImageHandler:
                     #     print(f'No line coordinates for {station1} to {station2}')
         
         def trim(image: Image):
-            background = Image.new(image.mode, image.size, image.getpixel((0,0)))
-            difference = ImageChops.difference(image, background)
+            image_rgb = image.convert("RGB")
+            background = Image.new(image_rgb.mode, image_rgb.size, image_rgb.getpixel((0,0)))
+            difference = ImageChops.difference(image_rgb, background)
             bbox = difference.getbbox()
             if bbox:
                 print('Image Cropped')
