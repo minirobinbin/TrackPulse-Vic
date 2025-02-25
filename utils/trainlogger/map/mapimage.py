@@ -3,7 +3,7 @@ import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
 import math
-from utils.trainlogger.map.station_coordinates import station_coordinates
+from utils.trainlogger.map.station_coordinates import x_offset, y_offset, station_coordinates
 
 dpi = 32/96
 padding = 1.2
