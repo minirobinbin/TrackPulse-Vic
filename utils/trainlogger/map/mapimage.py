@@ -160,11 +160,6 @@ class MapImageHandler:
         modified_map.save(output_path)
         print('Done')
         return modified_map
-        
-        
-
-        
-
 
 class CoordinateFinder:
     def __init__(self, image_path):
@@ -283,7 +278,3 @@ class CoordinateFinder:
     def run(self):
         self.root.mainloop()
 
-# Run coord finder if this script is run
-if __name__ == "__main__":
-    finder = CoordinateFinder("utils/trainlogger/map/log_train_map.png")
-    finder.run()
