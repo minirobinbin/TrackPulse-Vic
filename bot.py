@@ -80,6 +80,7 @@ from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
+from utils.trainlogger.map.mapimage import compress
 
 
 
@@ -4412,7 +4413,10 @@ async def viewMaps(ctx, map_choice: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
     try:
-        file=discord.File(f'utils/trainlogger/map/{map_choice}', filename='map.png')
+        uncompressed = Image.open(f'utils/trainlogger/map/{map_choice}')
+        compressed = compress(uncompressed)
+        compressed.save('temp/themap.png')
+        file=discord.File('temp/themap.png', filename='map.png')
         if map_choice == "log_train_map.png":
             embed = discord.Embed(title=f"Map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)

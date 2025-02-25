@@ -8,6 +8,19 @@ x_offset = 10600
 y_offset = 6300
 dpi = 32/96
 
+def compress(image):
+    try:
+        success = False
+        while success == False:
+            if image.size[0] > 10000 or image.size[1] > 10000:
+                image = image.resize((round(image.size[0] / 2), round(image.size[1] / 2)))
+            else:
+                print("Image Compressed")
+                success = True
+                return image
+    except Exception as e:
+        print(e)
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary):
         self.station_coordinates = {
@@ -1053,6 +1066,7 @@ class MapImageHandler:
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
         modified_map = trim(modified_map)
+        modified_map = compress(modified_map)
         print('Saving')
         modified_map.save(output_path)
         print('Done')
