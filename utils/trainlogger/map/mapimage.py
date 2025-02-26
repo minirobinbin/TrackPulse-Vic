@@ -469,10 +469,10 @@ class CoordinateCorrector:
         y2 = int(max(self.start_y, canvas_y) / self.scale)
         
         # Adjust coordinates
-        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
-        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
-        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50
-        x2_adj = round(int((x2 / dpi) - x_offset) / 50) * 50
+        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)))
+        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)))
+        x1_adj = round(int((x1 / dpi) - x_offset))
+        x2_adj = round(int((x2 / dpi) - x_offset))
         
         print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
         print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")

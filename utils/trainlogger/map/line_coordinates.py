@@ -9,22 +9,22 @@ line_coordinates = {
             (5550 + x_offset, -5300 + y_offset, 6050 + x_offset, -5200 + y_offset),
         ],
         ('Chiltern', 'Springhurst'): [
-            (5000 + x_offset, -5350 + y_offset, 5600 + x_offset, -5200 + y_offset),
+            (5050 + x_offset, -5350 + y_offset, 5600 + x_offset, -5200 + y_offset),
         ],
         ('Springhurst', 'Wangaratta'): [
-            (4450 + x_offset, -5350 + y_offset, 5100 + x_offset, -5200 + y_offset),
+            (4450 + x_offset, -5350 + y_offset, 5099 + x_offset, -5200 + y_offset),
         ],  
         ('Wangaratta', 'Benalla'): [
-            (3950 + x_offset, -5350 + y_offset, 4500 + x_offset, -5200 + y_offset),
+            (3950 + x_offset, -5350 + y_offset, 4499 + x_offset, -5200 + y_offset),
         ],
         ('Benalla', 'Violet Town'): [
-            (3450 + x_offset, -5350 + y_offset, 4000 + x_offset, -5200 + y_offset),
+            (3449 + x_offset, -5350 + y_offset, 4000 + x_offset, -5200 + y_offset),
         ],
         ('Violet Town', 'Euroa'): [
-            (3000 + x_offset, -5350 + y_offset, 3500 + x_offset, -5200 + y_offset),
+            (3000 + x_offset, -5350 + y_offset, 3499 + x_offset, -5200 + y_offset),
         ],
         ('Euroa', 'Avenel'): [
-            (2600 + x_offset, -5350 + y_offset, 3050 + x_offset, -5200 + y_offset),
+            (2600 + x_offset, -5350 + y_offset, 3049 + x_offset, -5200 + y_offset),
         ],
         ('Avenel', 'Seymour'): [
             (1800 + x_offset, -5400 + y_offset, 2650 + x_offset, -5200 + y_offset),
@@ -35,8 +35,8 @@ line_coordinates = {
         
         
         ('Broadmeadows','Seymour'): [
-            (1600 + x_offset, -4900 + y_offset, 1649 + x_offset, -2951 + y_offset),
-            (1550 + x_offset, -5050 + y_offset, 1949 + x_offset, -4901 + y_offset),
+            (1600 + x_offset, -5050 + y_offset, 1649 + x_offset, -2951 + y_offset),
+            (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset),
             ]
     },
