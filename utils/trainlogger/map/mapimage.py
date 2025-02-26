@@ -332,6 +332,8 @@ class CoordinateCorrector:
         self.new_height = int(self.original_image.height * self.scale)
         self.image = self.original_image.resize((self.new_width, self.new_height), Image.Resampling.LANCZOS)
         self.photo = ImageTk.PhotoImage(self.image)
+        self.canvas.config(scrollregion=self.canvas.bbox(tk.ALL))  # Update scroll region
+        self.canvas.config(width=self.new_width, height=self.new_height)  # Update canvas size
         
     def create_dropdown_menus(self):
         # Create a frame for the dropdown menus
