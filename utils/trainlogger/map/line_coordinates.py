@@ -124,6 +124,100 @@ line_coordinates = {
             (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1750 + y_offset),
         ],
         
+        # frankston line
+        ('Frankston', 'Kananook'):[
+            (4900 + x_offset, 8350 + y_offset, 5150 + x_offset, 8650 + y_offset),
+        ],
+        ('Kananook', 'Seaford'):[
+            (4900 + x_offset, 8150 + y_offset, 5000 + x_offset, 8400 + y_offset),
+        ],
+        ('Seaford', 'Carrum'):[
+            (4900 + x_offset, 7950 + y_offset, 5000 + x_offset, 8200 + y_offset),
+        ],
+        ('Carrum', 'Bonbeach'):[
+            (4900 + x_offset, 7750 + y_offset, 5000 + x_offset, 8000 + y_offset),
+        ],
+        ('Bonbeach', 'Chelsea'):[
+            (4900 + x_offset, 7550 + y_offset, 5000 + x_offset, 7800 + y_offset),
+        ],
+        ('Chelsea', 'Edithvale'):[
+            (4900 + x_offset, 7350 + y_offset, 5000 + x_offset, 7600 + y_offset),
+        ],
+        ('Edithvale', 'Aspendale'):[
+            (4900 + x_offset, 7150 + y_offset, 5000 + x_offset, 7400 + y_offset),
+        ],
+        ('Aspendale', 'Mordialloc'):[
+            (4900 + x_offset, 6950 + y_offset, 5000 + x_offset, 7200 + y_offset),
+        ],
+        ('Mordialloc', 'Parkdale'):[
+            (4900 + x_offset, 6750 + y_offset, 5000 + x_offset, 7000 + y_offset),
+        ],
+        ('Parkdale', 'Mentone'):[
+            (4850 + x_offset, 6550 + y_offset, 5000 + x_offset, 6800 + y_offset),
+        ],
+        ('Mentone', 'Cheltenham'):[
+            (4900 + x_offset, 6350 + y_offset, 5000 + x_offset, 6600 + y_offset),
+        ],
+        ('Cheltenham', 'Southland'):[
+            (4900 + x_offset, 6150 + y_offset, 5050 + x_offset, 6400 + y_offset),
+        ],
+        ('Southland', 'Highett'):[
+            (4900 + x_offset, 5950 + y_offset, 5000 + x_offset, 6200 + y_offset),
+        ],
+        ('Highett', 'Moorabbin'):[
+            (4900 + x_offset, 5700 + y_offset, 5000 + x_offset, 6000 + y_offset),
+        ],
+        ('Moorabbin', 'Patterson'):[
+            (4900 + x_offset, 5550 + y_offset, 5000 + x_offset, 5800 + y_offset),
+        ],
+        ('Patterson', 'Bentleigh'):[
+            (4900 + x_offset, 5350 + y_offset, 5000 + x_offset, 5600 + y_offset),
+        ],
+        ('Bentleigh', 'McKinnon'):[
+            (4900 + x_offset, 5150 + y_offset, 5000 + x_offset, 5400 + y_offset),
+        ],
+        ('McKinnon', 'Ormond'):[
+            (4900 + x_offset, 4950 + y_offset, 5000 + x_offset, 5200 + y_offset),
+        ],
+        ('Ormond', 'Glen Huntly'):[
+            (4900 + x_offset, 4700 + y_offset, 5000 + x_offset, 5000 + y_offset),
+        ],
+        ('Glen Huntly', 'Caulfield'):[
+            (4900 + x_offset, 4300 + y_offset, 5000 + x_offset, 4800 + y_offset),
+            (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
+        ],
+        ('Caulfield', 'Malvern'):[
+            (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
+            (4900 + x_offset, 4000 + y_offset, 5000 + x_offset, 4150 + y_offset),
+        ],
+        ('Malvern', 'Armadale'):[
+            (4850 + x_offset, 3800 + y_offset, 5000 + x_offset, 4050 + y_offset),
+        ],
+        ('Armadale', 'Toorak'):[
+            (4900 + x_offset, 3550 + y_offset, 5000 + x_offset, 3850 + y_offset),
+        ],
+        ('Toorak', 'Hawksburn'):[
+            (4900 + x_offset, 3400 + y_offset, 5000 + x_offset, 3650 + y_offset)
+        ],
+        ('Hawksburn', 'South Yarra'):[
+            (4900 + x_offset, 2900 + y_offset, 5000 + x_offset, 3450 + y_offset),
+            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+        ],
+        ('South Yarra', 'Richmond'):[
+            (4600 + x_offset, 2350 + y_offset, 5000 + x_offset, 2450 + y_offset),
+            (4950 + x_offset, 2350 + y_offset, 5000 + x_offset, 2800 + y_offset),
+            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+        ],
+        ('Richmond', 'Flinders Street'):[
+            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            (3050 + x_offset, 2350 + y_offset, 4500 + x_offset, 2450 + y_offset),
+            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        ],
         
     },
     "burnley": {
