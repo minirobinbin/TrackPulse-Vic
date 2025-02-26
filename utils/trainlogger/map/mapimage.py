@@ -285,8 +285,8 @@ class CoordinateCorrector:
         
         # Create canvas with scrollbars
         self.canvas = tk.Canvas(self.frame, 
-                              width=min(self.original_image.width * self.scale, screen_width * 0.9),
-                              height=min(self.original_image.height * self.scale, screen_height * 0.9),
+                              width=self.original_image.width * self.scale,
+                              height=self.original_image.height * self.scale,
                               xscrollcommand=self.h_scrollbar.set,
                               yscrollcommand=self.v_scrollbar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -294,6 +294,9 @@ class CoordinateCorrector:
         # Configure scrollbars
         self.h_scrollbar.config(command=self.canvas.xview)
         self.v_scrollbar.config(command=self.canvas.yview)
+        
+        # Initialize image_on_canvas
+        self.image_on_canvas = None
         
         # Resize image
         self.update_image()
@@ -330,8 +333,13 @@ class CoordinateCorrector:
         self.new_height = int(self.original_image.height * self.scale)
         self.image = self.original_image.resize((self.new_width, self.new_height), Image.Resampling.LANCZOS)
         self.photo = ImageTk.PhotoImage(self.image)
-        self.canvas.config(scrollregion=self.canvas.bbox(tk.ALL))  # Update scroll region
         self.canvas.config(width=self.new_width, height=self.new_height)  # Update canvas size
+        self.canvas.config(scrollregion=self.canvas.bbox(tk.ALL))  # Update scroll region
+        if self.image_on_canvas:
+            self.canvas.delete(self.image_on_canvas)  # Remove the old image
+        self.image_on_canvas = self.canvas.create_image(0, 0, image=self.photo, anchor="nw")  # Add the new image
+        self.h_scrollbar.config(command=self.canvas.xview)
+        self.v_scrollbar.config(command=self.canvas.yview)
         
     def create_dropdown_menus(self):
         # Create a frame for the dropdown menus
@@ -413,7 +421,7 @@ class CoordinateCorrector:
         if event.delta > 0:
             self.scale *= 1.2  # Increase zoom factor
         else:
-            self.scale /= 1.2  # Increase zoom factor
+            self.scale /= 1.2  # Decrease zoom factor
         self.update_image()
         self.draw_existing_coordinates()
         
