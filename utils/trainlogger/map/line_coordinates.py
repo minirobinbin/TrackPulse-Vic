@@ -187,7 +187,7 @@ line_coordinates = {
         (6500 + x_offset, 1750 + y_offset, 6600 + x_offset, 2000 + y_offset),
     ],
     ('Burnley', 'East Richmond') : [
-        (5650 + x_offset, 1900 + y_offset, 6350 + x_offset, 2100 + y_offset),
+        (5650 + x_offset, 1950 + y_offset, 6350 + x_offset, 2100 + y_offset),
     ],
     ('East Richmond', 'Richmond') : [
         (4650 + x_offset, 1950 + y_offset, 5700 + x_offset, 2050 + y_offset),
