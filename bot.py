@@ -61,6 +61,7 @@ from utils.map.map import *
 from utils.game.lb import *
 from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, getAchievementInfo
 from utils.trainlogger.main import *
+from utils.trainlogger.map.uploadimage import uploadImage
 from utils.trainset import *
 from utils.trainlogger.stats import *
 from utils.trainlogger.ids import *
@@ -5005,6 +5006,7 @@ async def mapstrips(ctx,user: discord.Member=None):
         except:
             logMap(ctx.author.name,lines_dictionary_map)
     file=discord.File('temp/themap.png', filename='map.png')
+    # imageURL = f'https://trackpulse.xm9g.net/logs/map?url={uploadImage("temp/themap.png")}'
     embed = discord.Embed(title=f"Map for </log train:1289843416628330506>", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose too.")
     embed.set_image(url="attachment://map.png")
     user = await bot.fetch_user(1002449671224041502)
