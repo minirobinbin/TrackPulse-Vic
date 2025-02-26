@@ -270,7 +270,7 @@ line_coordinates = {
         (9900 + x_offset, -1300 + y_offset, 10650 + x_offset, -1200 + y_offset),
     ],
     ('Upper Ferntree Gully', 'Ferntree Gully'):[
-        (9050 + x_offset, -1350 + y_offset, 9950 + x_offset, -1150 + y_offset),
+        (9050 + x_offset, -1350 + y_offset, 9950 + x_offset, -1200 + y_offset),
     ],
     ('Ferntree Gully', 'Boronia'):[
         (8500 + x_offset, -1300 + y_offset, 9100 + x_offset, -1200 + y_offset),
