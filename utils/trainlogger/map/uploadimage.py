@@ -11,7 +11,7 @@ def get_imgbb_key():
     
     return imgbb_key
 
-def uploadImage(file):
+def uploadImage(file, name=None):
     imgbb_key = get_imgbb_key()
     url = "https://api.imgbb.com/1/upload"
 
@@ -21,6 +21,9 @@ def uploadImage(file):
     params = {
         "key": imgbb_key
     }
+
+    if name:
+        params["name"] = name
 
     response = requests.post(url, files=files, params=params)
     response.raise_for_status()
