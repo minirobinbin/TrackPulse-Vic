@@ -457,10 +457,60 @@ line_coordinates = {
             (11900 + x_offset, 4350 + y_offset, 12050 + x_offset, 4400 + y_offset),
             (11750 + x_offset, 4300 + y_offset, 11900 + x_offset, 4650 + y_offset), # dandenong coords
         ],
-        
-        
-        
-                
+    },
+    
+    'sandringham': {
+        ('Sandringham', 'Hampton'): [
+            (-1600 + x_offset, 3150 + y_offset, -1300 + x_offset, 3300 + y_offset),
+        ],
+        ('Hampton', 'Brighton Beach'): [
+            (-1350 + x_offset, 3200 + y_offset, -700 + x_offset, 3300 + y_offset),
+        ],
+        ('Brighton Beach', 'Middle Brighton'): [
+            (-750 + x_offset, 3200 + y_offset, 50 + x_offset, 3300 + y_offset),
+        ],
+        ('Middle Brighton', 'North Brighton'): [
+            (0 + x_offset, 3200 + y_offset, 800 + x_offset, 3300 + y_offset),
+        ],
+        ('North Brighton', 'Gardenvale'): [
+            (750 + x_offset, 3200 + y_offset, 1450 + x_offset, 3300 + y_offset),
+        ],
+        ('Gardenvale', 'Elsternwick'): [
+            (1400 + x_offset, 3200 + y_offset, 2050 + x_offset, 3300 + y_offset),
+        ],
+        ('Elsternwick', 'Ripponlea'): [
+            (2000 + x_offset, 3200 + y_offset, 2600 + x_offset, 3300 + y_offset),
+        ],
+        ('Ripponlea', 'Balaclava'): [
+            (2550 + x_offset, 3200 + y_offset, 3150 + x_offset, 3300 + y_offset),
+        ],
+        ('Balaclava', 'Windsor'): [
+            (3100 + x_offset, 3200 + y_offset, 3650 + x_offset, 3300 + y_offset),
+        ],
+        ('Windsor', 'Prahran'): [
+            (3600 + x_offset, 3200 + y_offset, 4100 + x_offset, 3300 + y_offset),
+        ],
+        ('Prahran', 'South Yarra'): [
+            (4050 + x_offset, 3200 + y_offset, 4900 + x_offset, 3300 + y_offset),
+            (4850 + x_offset, 2950 + y_offset, 4900 + x_offset, 3250 + y_offset),
+            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+        ],
+        ('South Yarra', 'Richmond'): [
+            (4650 + x_offset, 2500 + y_offset, 4900 + x_offset, 2550 + y_offset),
+            (4850 + x_offset, 2450 + y_offset, 4900 + x_offset, 2800 + y_offset),
+            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
+            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
+            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+        ],
+        ('Richmond', 'Flinders Street'): [
+            (3050 + x_offset, 2500 + y_offset, 4500 + x_offset, 2550 + y_offset),
+            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+        ],
+
     },
 
     'northern': {
