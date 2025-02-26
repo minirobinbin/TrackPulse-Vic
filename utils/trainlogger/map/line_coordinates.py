@@ -118,7 +118,7 @@ line_coordinates = {
             (-750.0 + x_offset, 1350.0 + y_offset, -601.0 + x_offset, 1499.0 + y_offset),
         ],
         ('Williamstown Beach', 'Williamstown'):[
-            (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1799.0 + y_offset),
+            (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1750 + y_offset),
         ],
         
         
