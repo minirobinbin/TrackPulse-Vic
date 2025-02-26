@@ -566,6 +566,36 @@ line_coordinates = {
             (900 + x_offset, -1050 + y_offset, 1350 + x_offset, -900 + y_offset),
             ],
     },
+    'stony_point':{
+        ('Stony Point','Crib Point'): [
+            (5000 + x_offset, 10150 + y_offset, 5150 + x_offset, 10400 + y_offset),
+        ],
+        ('Crib Point','Morradoo'): [
+            (5050 + x_offset, 9900 + y_offset, 5150 + x_offset, 10200 + y_offset),
+        ],
+        ('Morradoo','Bittern'): [
+            (5050 + x_offset, 9750 + y_offset, 5150 + x_offset, 10000 + y_offset),
+        ],
+        ('Bittern','Hastings'): [
+            (5050 + x_offset, 9500 + y_offset, 5150 + x_offset, 9800 + y_offset),
+        ],
+        ('Hastings','Tyabb'): [
+            (5050 + x_offset, 9350 + y_offset, 5150 + x_offset, 9600 + y_offset),
+        ],
+        ('Tyabb','Somerville'): [
+            (5050 + x_offset, 9150 + y_offset, 5150 + x_offset, 9400 + y_offset),
+        ],
+        ('Somerville','Baxter'): [
+            (5050 + x_offset, 8900 + y_offset, 5150 + x_offset, 9200 + y_offset),
+        ],
+        ('Baxter','Leawarra'): [
+            (5050 + x_offset, 8750 + y_offset, 5150 + x_offset, 9000 + y_offset),
+        ],
+        ('Leawarra','Frankston'): [
+            (4900 + x_offset, 8500 + y_offset, 5150 + x_offset, 8800 + y_offset),
+        ],
+        },
+    
     'vline_intercity':{
         # traralgon line
         ('Traralgon','Morwell'): [
