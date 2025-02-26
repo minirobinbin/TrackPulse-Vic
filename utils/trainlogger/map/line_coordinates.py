@@ -96,19 +96,22 @@ line_coordinates = {
         ],
         ('South Kensington', 'North Melbourne'):[
             (50 + x_offset, 250 + y_offset, 1299 + x_offset, 349 + y_offset),
-            (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
-            (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
         ],
         ('North Melbourne', 'Southern Cross'):[
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
             (1250 + x_offset, 500 + y_offset, 1299 + x_offset, 1249 + y_offset),
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
         ],
         ('Southern Cross', 'Flinders Street'):[
             (1250 + x_offset, 1400 + y_offset, 1299 + x_offset, 2449 + y_offset),
             (1250 + x_offset, 2400 + y_offset, 2899 + x_offset, 2449 + y_offset),
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
         ],
         # Williamstown Branch
         ('Newport', 'North Williamstown'):[
@@ -118,7 +121,7 @@ line_coordinates = {
             (-750.0 + x_offset, 1350.0 + y_offset, -601.0 + x_offset, 1499.0 + y_offset),
         ],
         ('Williamstown Beach', 'Williamstown'):[
-            (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1799.0 + y_offset),
+            (-750.0 + x_offset, 1500.0 + y_offset, -601.0 + x_offset, 1750 + y_offset),
         ],
         
         
@@ -203,12 +206,12 @@ line_coordinates = {
         (2050 + x_offset, 1400 + y_offset, 2100 + x_offset, 2050 + y_offset),
         (2050 + x_offset, 1950 + y_offset, 2900 + x_offset, 2050 + y_offset),
         (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-        (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+        (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
     ],
     ('Southern Cross', 'Flagstaff'):[
         (2050 + x_offset, 800 + y_offset, 2350 + x_offset, 850 + y_offset),
         (2000 + x_offset, 800 + y_offset, 2100 + x_offset, 1250 + y_offset),
-        (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+        (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
         (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
     ],
 
@@ -419,10 +422,10 @@ line_coordinates = {
             (1950 + x_offset, 2100 + y_offset, 2900 + x_offset, 2150 + y_offset),
             (1950 + x_offset, 1400 + y_offset, 2000 + x_offset, 2150 + y_offset),
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
         ],
         ('Southern Cross','Flagstaff'): [
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
             (1950 + x_offset, 700 + y_offset, 2000 + x_offset, 1250 + y_offset),
             (1950 + x_offset, 700 + y_offset, 2350 + x_offset, 750 + y_offset),
             (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
@@ -535,19 +538,19 @@ line_coordinates = {
     'flemington': {
         ('Flinders Street','Southern Cross'): [
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
             (1650 + x_offset, 2550 + y_offset, 2849 + x_offset, 2699 + y_offset),
             (1612 + x_offset, 2451 + y_offset, 1708 + x_offset, 2688 + y_offset),
             (1621 + x_offset, 1398 + y_offset, 1708 + x_offset, 2388 + y_offset),
             ],
         ('Southern Cross','North Melbourne'): [
-            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
             (1633 + x_offset, 909 + y_offset, 1708 + x_offset, 1239 + y_offset),
             (1621 + x_offset, 747 + y_offset, 1696 + x_offset, 834 + y_offset),
             (1621 + x_offset, 492 + y_offset, 1717 + x_offset, 684 + y_offset),
-            (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
-            (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
             
         ],
         ('North Melbourne','Showgrounds'): [
@@ -555,9 +558,9 @@ line_coordinates = {
             (1612 + x_offset, -100 + y_offset, 1708 + x_offset, 345 + y_offset),
             (1633 + x_offset, -1020 + y_offset, 1717 + x_offset, -156 + y_offset),
             (1300 + x_offset, -1050 + y_offset, 1700 + x_offset, -900 + y_offset),
-            (1200 + x_offset, 350 + y_offset, 1349 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
-            (1600 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
         ],
         ('Showgrounds','Flemington Racecourse'): [
             (900 + x_offset, -1050 + y_offset, 1350 + x_offset, -900 + y_offset),
