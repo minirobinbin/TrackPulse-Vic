@@ -413,9 +413,9 @@ class CoordinateCorrector:
     def on_mousewheel(self, event):
         # Handle zooming
         if event.delta > 0:
-            self.scale *= 1.1
+            self.scale *= 1.2  # Increase zoom factor
         else:
-            self.scale /= 1.1
+            self.scale /= 1.2  # Increase zoom factor
         self.update_image()
         self.draw_existing_coordinates()
         
