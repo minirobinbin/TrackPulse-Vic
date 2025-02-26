@@ -1749,9 +1749,16 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 # get live departure time
                 if mode == "0":
                     stoppingPattern=getStoppingPattern(run_ref, mode)
+                    delay = 0
                     for stop in stoppingPattern:
                         if stop[0].strip() == station.title():
-                            scheduled_departure_utc = stop[1]
+                            scheduled_departure_utc = stop[1] 
+                            # Calculate delay in minutes
+                            delay = (convert_times(stop[1]) - convert_times(stop[3])) // 60  # Convert time difference to minutes
+                            if delay > 0:
+                                delaystring = f'{delay} minutes late'
+                            else:
+                                delaystring = ''
                 
                 # get the direction for busses and trams and also the route number
                 if mode in ['1', '2']:
@@ -1780,7 +1787,7 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                     else:
                         platform_number = "1"
                 if mode == '0':
-                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
+                    embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')}) {delaystring}\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 elif mode in ['1', '2']: 
                     embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
                 fields = fields + 1
