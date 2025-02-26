@@ -1,7 +1,7 @@
 from utils.trainlogger.map.readlogs import logMap
 
-ptv_grey = 0x00000
-lines_dictionary = {
+ptv_grey = 0x333434
+lines_dictionary_map = {
     'Alamein': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
     'Belgrave': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
     'Craigieburn': [['Southern Cross', 'Flinders Street', 'Parliament', 'Melbourne Central', 'Flagstaff', 'North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
@@ -35,4 +35,4 @@ lines_dictionary = {
     'Unknown/Other': [[None], ptv_grey],
 }
 
-logMap('comeng17',lines_dictionary)
+logMap('comeng17',lines_dictionary_map)
