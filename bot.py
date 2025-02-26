@@ -5005,21 +5005,23 @@ async def update(ctx):
         await ctx.send("Remote updates are not enabled")
 
 @bot.command()
-async def mapstrips(ctx,user: discord.Member=None):
+async def mapstrips(ctx,user: discord.Member=None, year: int=0):
     log_command(ctx.author.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
     if user == None:
-        logMap(ctx.author.name,lines_dictionary_map)
+        logMap(ctx.author.name,lines_dictionary_map, year=year)
         user = ctx.author.name
     else:
         try:
-            logMap(user,lines_dictionary_map)
+            logMap(user,lines_dictionary_map,year=year)
         except:
-            logMap(ctx.author.name,lines_dictionary_map)
+            logMap(ctx.author.name,lines_dictionary_map,year=year)
     file=discord.File('temp/themap.png', filename='map.png')
+    if year == 0:
+        year = ''
     # imageURL = f'https://trackpulse.xm9g.net/logs/map?url={uploadImage("temp/themap.png", f"{user}-map")}'
-    embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{user}", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose to.")
+    embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{user} {year}", color=0xb8b8b8, description="This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose to.")
     embed.set_image(url="attachment://map.png")
     user_pic = await bot.fetch_user(1002449671224041502)
     pfp = user_pic.avatar.url

@@ -114,9 +114,7 @@ class MapImageHandler:
                                 coord2.append(coor)
                             coords = tuple(coord2)
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
-                        print(f'Created line hole from {station1} to {station2}')
-                    # else:
-                    #     print(f'No line coordinates for {station1} to {station2}')
+                        # print(f'Created line hole from {station1} to {station2}')
         
         def trim(image: Image):
             print("Cropping Image")
