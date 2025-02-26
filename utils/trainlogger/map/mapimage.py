@@ -274,9 +274,6 @@ class CoordinateCorrector:
         height_ratio = screen_height / self.original_image.height
         self.scale = min(width_ratio * 1.5, height_ratio * 1.5)  # 150% zoom
         
-        # Resize image
-        self.update_image()
-        
         # Create frame with scrollbars
         self.frame = tk.Frame(self.root)
         self.frame.pack(fill=tk.BOTH, expand=True)
@@ -290,8 +287,8 @@ class CoordinateCorrector:
         
         # Create canvas with scrollbars
         self.canvas = tk.Canvas(self.frame, 
-                              width=min(self.new_width, screen_width * 0.9),
-                              height=min(self.new_height, screen_height * 0.9),
+                              width=min(self.original_image.width * self.scale, screen_width * 0.9),
+                              height=min(self.original_image.height * self.scale, screen_height * 0.9),
                               xscrollcommand=self.h_scrollbar.set,
                               yscrollcommand=self.v_scrollbar.set)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -299,6 +296,9 @@ class CoordinateCorrector:
         # Configure scrollbars
         self.h_scrollbar.config(command=self.canvas.xview)
         self.v_scrollbar.config(command=self.canvas.yview)
+        
+        # Resize image
+        self.update_image()
         
         # Create image on canvas
         self.image_on_canvas = self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
