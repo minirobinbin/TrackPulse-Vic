@@ -114,6 +114,36 @@ line_coordinates = {
               (3050 + x_offset, 1900 + y_offset, 3350 + x_offset, 1950 + y_offset),
                 (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         ],
+        ('Flinders Street','Southern Cross'): [
+            (2150 + x_offset, 1850 + y_offset, 2900 + x_offset, 1950 + y_offset),
+            (2150 + x_offset, 1400 + y_offset, 2200 + x_offset, 1950 + y_offset),
+            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+        ],
+        ('Southern Cross','Flagstaff'): [
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (2150 + x_offset, 900 + y_offset, 2200 + x_offset, 1250 + y_offset),
+            (2100 + x_offset, 850 + y_offset, 2350 + x_offset, 950 + y_offset),
+            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+        ],
+        ('Flagstaff','Melbourne Central'):[
+            (2500 + x_offset, 900 + y_offset, 2900 + x_offset, 950 + y_offset),
+            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+        ],
+        ('Melbourne Central', 'Parliament'):[
+            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+            (3050 + x_offset, 850 + y_offset, 3250 + x_offset, 950 + y_offset),
+            (3200 + x_offset, 850 + y_offset, 3250 + x_offset, 1250 + y_offset),
+            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+        ],
+        ('Parliament','Jolimont'):[
+            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+            (3200 + x_offset, 1400 + y_offset, 3250 + x_offset, 1950 + y_offset),
+            (3200 + x_offset, 1850 + y_offset, 3350 + x_offset, 1950 + y_offset),
+            (3400 + x_offset, 1850 + y_offset, 3500 + x_offset, 1950 + y_offset),
+            (3550 + x_offset, 1700 + y_offset, 4250 + x_offset, 1950 + y_offset),
+        ]
         
         
         
