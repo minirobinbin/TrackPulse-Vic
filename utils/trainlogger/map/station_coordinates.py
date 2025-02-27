@@ -293,7 +293,7 @@ station_coordinates = {
     "Oak Park": (2083 + x_offset, -2341 + y_offset, 2499 + x_offset, -2202 + y_offset),
     "Glenroy": (2074 + x_offset, -2536 + y_offset, 2453 + x_offset, -2406 + y_offset),
     "Jacana": (2074 + x_offset, -2721 + y_offset, 2435 + x_offset, -2610 + y_offset),
-    "Broadmeadows":(2050 + x_offset, -3000 + y_offset, 2799 + x_offset, -2851 + y_offset),
+    "Broadmeadows":(2050 + x_offset, -3000 + y_offset, 2799 + x_offset, -2831 + y_offset),
     "Coolaroo": (2050 + x_offset, -3150 + y_offset, 2499 + x_offset, -3001 + y_offset),
     "Roxburgh Park": (2050 + x_offset, -3450 + y_offset, 2499 + x_offset, -3151 + y_offset),
     "Craigieburn": (2064 + x_offset, -3593 + y_offset, 2629 + x_offset, -3473 + y_offset),
