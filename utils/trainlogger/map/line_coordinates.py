@@ -779,6 +779,8 @@ line_coordinates = {
 
     'northern': {
     ('North Melbourne', 'Flagstaff'):[
+        (1950 + x_offset, 500 + y_offset, 2300 + x_offset, 700 + y_offset),
+        (2250 + x_offset, 950 + y_offset, 2350 + x_offset, 1100 + y_offset),
         (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
         (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
         (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
@@ -786,25 +788,32 @@ line_coordinates = {
     ],
 
     ("Flagstaff", "Melbourne Central"):[
+        (2500 + x_offset, 1050 + y_offset, 2900 + x_offset, 1100 + y_offset),
         (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
         (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
     ],
     ('Melbourne Central', 'Parliament'):[
+        (3050 + x_offset, 1000 + y_offset, 3150 + x_offset, 1250 + y_offset),
         (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
     ],
 
     ('Parliament', 'Flinders Street'):[
+        (3050 + x_offset, 1400 + y_offset, 3150 + x_offset, 1850 + y_offset),
         (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
     ],
 
     ('Flinders Street', 'Southern Cross'):[
+        (2250 + x_offset, 1400 + y_offset, 2300 + x_offset, 1850 + y_offset),
+        (2300 + x_offset, 1750 + y_offset, 2900 + x_offset, 1850 + y_offset),
         (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
     ],
 
     ('Southern Cross', 'North Melbourne'):[
+        (1950 + x_offset, 500 + y_offset, 2300 + x_offset, 700 + y_offset),
+        (2250 + x_offset, 950 + y_offset, 2300 + x_offset, 1250 + y_offset),
         (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
         (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
         (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
