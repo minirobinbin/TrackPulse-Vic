@@ -113,6 +113,7 @@ line_coordinates = {
               (3600 + x_offset, 1750 + y_offset, 4250 + x_offset, 1950 + y_offset),
               (3050 + x_offset, 1900 + y_offset, 3350 + x_offset, 1950 + y_offset),
                 (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+                (3550 + x_offset, 1800 + y_offset, 3650 + x_offset, 2000 + y_offset),
         ],
         ('Flinders Street','Southern Cross'): [
             (2150 + x_offset, 1850 + y_offset, 2900 + x_offset, 1950 + y_offset),
@@ -143,7 +144,64 @@ line_coordinates = {
             (3200 + x_offset, 1850 + y_offset, 3350 + x_offset, 1950 + y_offset),
             (3400 + x_offset, 1850 + y_offset, 3500 + x_offset, 1950 + y_offset),
             (3550 + x_offset, 1700 + y_offset, 4250 + x_offset, 1950 + y_offset),
-        ]
+        ],
+        
+        # begin the mernda line but it dosn't go to its initial locations
+        ('Mernda', 'Hawkstowe'): [
+            (4100 + x_offset, -3000 + y_offset, 4250 + x_offset, -2750 + y_offset),
+        ],
+        ('Hawkstowe', 'Middle Gorge'):[
+            (4150 + x_offset, -2800 + y_offset, 4250 + x_offset, -2550 + y_offset),
+        ],
+        ('Middle Gorge','South Morang'):[
+            (4150 + x_offset, -2600 + y_offset, 4250 + x_offset, -2350 + y_offset),
+        ],
+        ('South Morang', 'Epping'):[
+            (4150 + x_offset, -2450 + y_offset, 4250 + x_offset, -2150 + y_offset),
+        ],
+        ('Epping','Lalor'):[
+            (4150 + x_offset, -2200 + y_offset, 4250 + x_offset, -1950 + y_offset),
+        ],
+        ('Lalor', 'Thomastown'):[
+            (4150 + x_offset, -2000 + y_offset, 4250 + x_offset, -1750 + y_offset),
+        ],
+        ('Thomastown','Keon Park'):[
+            (4150 + x_offset, -1850 + y_offset, 4250 + x_offset, -1550 + y_offset),
+        ],
+        ('Keon Park','Ruthven'): [
+            (4150 + x_offset, -1600 + y_offset, 4250 + x_offset, -1350 + y_offset),
+        ],
+        ('Ruthven', 'Reservoir'):[
+            (4150 + x_offset, -1450 + y_offset, 4250 + x_offset, -1150 + y_offset),
+        ],
+        ('Reservoir','Regent'):[
+            (4150 + x_offset, -1200 + y_offset, 4250 + x_offset, -950 + y_offset),
+        ],
+        ('Regent','Preston'):[
+            (4150 + x_offset, -1000 + y_offset, 4250 + x_offset, -750 + y_offset),
+        ],
+        ('Preston','Bell'):[
+            (4150 + x_offset, -850 + y_offset, 4250 + x_offset, -550 + y_offset),
+        ],
+        ('Bell','Thornbury'):[
+            (4150 + x_offset, -600 + y_offset, 4250 + x_offset, -350 + y_offset),
+        ],
+        ('Thornbury','Croxton'):[
+            (4150 + x_offset, -400 + y_offset, 4250 + x_offset, -150 + y_offset),
+        ],
+        ('Croxton','Northcote'):[
+            (4150 + x_offset, -200 + y_offset, 4250 + x_offset, 50 + y_offset),
+        ],
+        ('Northcote','Merri'):[
+            (4150 + x_offset, 0 + y_offset, 4250 + x_offset, 250 + y_offset),
+        ],
+        ('Merri','Rushall'):[
+            (4150 + x_offset, 200 + y_offset, 4250 + x_offset, 450 + y_offset),
+        ],
+        ('Rushall','Clifton Hill'):[
+            (4050 + x_offset, 400 + y_offset, 4250 + x_offset, 850 + y_offset),
+        ],
+        
         
         
         
