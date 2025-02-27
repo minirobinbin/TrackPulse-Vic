@@ -4415,6 +4415,7 @@ async def profile(ctx, user: discord.User = None):
         app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
+        app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
 ])
 async def viewMaps(ctx, map_choice: str):
@@ -4443,6 +4444,12 @@ async def viewMaps(ctx, map_choice: str):
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved Sydney Trains map for {ctx.user.name} in {ctx.channel.mention}")
+        elif map_choice == "log__sydney-train__map.png":
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (NSW Intercity Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved NSW Intercity map for {ctx.user.name} in {ctx.channel.mention}")
         elif map_choice == "log___sydney-train___map.png":
             embed = discord.Embed(title=f"Map of the network covered by <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
