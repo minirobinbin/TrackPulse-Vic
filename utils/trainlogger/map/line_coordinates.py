@@ -778,16 +778,17 @@ line_coordinates = {
     },
 
     'northern': {
-    # ('Sunbury', 'Diggers Rest'): [
-    #     (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
-    #     (-3100 + x_offset, -1700 + y_offset, -3000 + x_offset, -1550 + y_offset),
-    # ],
-    # ('Diggers Rest', 'Watergardens'): [
-    #     (2450 + x_offset, 1400 + y_offset, 2550 + x_offset, 1400 + y_offset), # Watergardens Coords
-    # ],
+    ('Sunbury', 'Diggers Rest'): [
+        (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+        (-3100 + x_offset, -1700 + y_offset, -3000 + x_offset, -1550 + y_offset),
+    ],
+    ('Diggers Rest', 'Watergardens'): [
+        (-3100 + x_offset, -1600 + y_offset, -3000 + x_offset, -1450 + y_offset),
+        (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
+    ],
 
-    ('Tottanham', 'West Footscray'): [
-        (2450 + x_offset, 1400 + y_offset, 2550 + x_offset, 1400 + y_offset),
+    ('Tottenham', 'West Footscray'): [
+        (-2350 + x_offset, -200 + y_offset, -1700 + x_offset, -100 + y_offset),
     ],
 
     ('North Melbourne', 'Footscray'): [
