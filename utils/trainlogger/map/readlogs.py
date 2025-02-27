@@ -58,7 +58,6 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                                     expanded_data.append(f"{cols[0]},{cols[1]},{cols[2]},{cols[3]},{cols[4]},{station_sequence[i]},{station_sequence[i+1]}")
                                 break
         data = expanded_data
-        print(data)
                     
         affected_lines = []
         for line in data:
