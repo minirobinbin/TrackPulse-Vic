@@ -75,6 +75,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                     group = 'sandringham'
                 elif cols[4] in ['Stony Point']:
                     group = 'stony_point'
+                elif cols[4] in ['Hurstbridge', 'Mernda', 'City Circle']:
+                    group = 'clifton_hill'
                 elif cols[4] in ['Flemington Racecourse']:
                     group = 'flemington'
                 elif cols[4] in ['Albury']:

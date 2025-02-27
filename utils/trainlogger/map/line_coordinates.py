@@ -40,6 +40,85 @@ line_coordinates = {
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset),
             ]
     },
+    'clifton_hill': {
+        ('Hurstbridge', 'Wattle Glen'):[
+            (5200 + x_offset, -2700 + y_offset, 5350 + x_offset, -2450 + y_offset),
+        ],
+        ('Wattle Glen', 'Diamond Creek'):[
+            (5250 + x_offset, -2500 + y_offset, 5350 + x_offset, -2250 + y_offset),
+        ],
+        ('Diamond Creek', 'Eltham'):[
+            (5250 + x_offset, -2300 + y_offset, 5350 + x_offset, -2050 + y_offset),
+        ],
+        ('Eltham', 'Montmorency'): [
+            (5250 + x_offset, -2100 + y_offset, 5350 + x_offset, -1850 + y_offset),
+        ],
+        ('Montmorency', 'Greensborough'):[
+            (5250 + x_offset, -1900 + y_offset, 5350 + x_offset, -1650 + y_offset),
+        ],
+        ('Greensborough', 'Watsonia'): [
+            (5250 + x_offset, -1700 + y_offset, 5350 + x_offset, -1450 + y_offset),
+        ],
+        ('Watsonia', 'Macleod'):[
+            (5250 + x_offset, -1500 + y_offset, 5350 + x_offset, -1250 + y_offset),
+        ],
+        ('Macleod', 'Rosanna'): [
+            (5250 + x_offset, -1300 + y_offset, 5350 + x_offset, -1050 + y_offset),
+        ],
+        ('Rosanna', 'Heidelberg'):[
+              (5250 + x_offset, -1100 + y_offset, 5350 + x_offset, -850 + y_offset),
+        ],
+        ('Heidelberg','Eaglemont'): [
+            (5250 + x_offset, -900 + y_offset, 5350 + x_offset, -700 + y_offset),
+        ],
+        ('Eaglemont', 'Ivanhoe'):[
+              (5250 + x_offset, -700 + y_offset, 5350 + x_offset, -450 + y_offset),
+        ],
+        ('Ivanhoe', 'Darebin'):[
+            (5250 + x_offset, -500 + y_offset, 5400 + x_offset, -250 + y_offset),
+        ],
+        ('Darebin', 'Alphington'):[
+            (5250 + x_offset, -300 + y_offset, 5350 + x_offset, -50 + y_offset),
+        ],
+        ('Alphington', 'Fairfield'):[
+            (5250 + x_offset, -100 + y_offset, 5400 + x_offset, 150 + y_offset),
+        ],
+        ('Fairfield', 'Dennis'):[
+            (5250 + x_offset, 100 + y_offset, 5350 + x_offset, 350 + y_offset),
+        ],
+        ('Dennis', "Westgarth"):[
+            (5250 + x_offset, 300 + y_offset, 5400 + x_offset, 550 + y_offset),
+        ],
+        ('Westgarth', 'Clifton Hill'):[
+            (5250 + x_offset, 450 + y_offset, 5400 + x_offset, 650 + y_offset),
+            (4150 + x_offset, 600 + y_offset, 5300 + x_offset, 700 + y_offset),
+            (4100 + x_offset, 700 + y_offset, 4250 + x_offset, 850 + y_offset), # clifton hill coords
+        ],
+        ('Clifton Hill', 'Victoria Park'):[
+            (4100 + x_offset, 700 + y_offset, 4250 + x_offset, 1000 + y_offset),
+        ],
+        ('Victoria Park', 'Collingwood'):[
+            (4150 + x_offset, 950 + y_offset, 4250 + x_offset, 1200 + y_offset),
+        ],
+        ('Collingwood', 'North Richmond'):[
+              (4150 + x_offset, 1150 + y_offset, 4250 + x_offset, 1400 + y_offset),
+        ],
+        ('North Richmond', 'West Richmond'):[
+            (4150 + x_offset, 1350 + y_offset, 4250 + x_offset, 1600 + y_offset),
+        ],
+        ('West Richmond','Jolimont'):[
+            (4150 + x_offset, 1550 + y_offset, 4250 + x_offset, 1800 + y_offset),
+        ],
+        ('Jolimont','Flinders Street'):[
+              (3600 + x_offset, 1750 + y_offset, 4250 + x_offset, 1950 + y_offset),
+              (3050 + x_offset, 1900 + y_offset, 3350 + x_offset, 1950 + y_offset),
+                (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        ],
+        
+        
+        
+    },
+    
     'cross_city': {
         ('Werribee', 'Hoppers Crossing'):[
             (-4450 + x_offset, 1050 + y_offset, -3951 + x_offset, 1199 + y_offset),
