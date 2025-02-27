@@ -829,8 +829,52 @@ line_coordinates = {
         (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
     ],
 
+    ('Watergardens', 'Keilor Plains'): [
+        (-3100 + x_offset, -1300 + y_offset, -3000 + x_offset, -1150 + y_offset),
+        (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
+    ],
+
+    ('Keilor Plains', 'St Albans'): [
+        (-3100 + x_offset, -1250 + y_offset, -3000 + x_offset, -950 + y_offset),
+    ],
+
+    ('St Albans', 'Ginifer'): [
+        (-3100 + x_offset, -1000 + y_offset, -3000 + x_offset, -750 + y_offset),
+    ],
+
+    ('Ginifer', 'Albion'): [
+        (-3100 + x_offset, -800 + y_offset, -3000 + x_offset, -700 + y_offset),
+        (-3100 + x_offset, -700 + y_offset, -3050 + x_offset, -450 + y_offset),
+        (-3100 + x_offset, -500 + y_offset, -3000 + x_offset, -450 + y_offset),
+    ],
+
+    ('Albion', 'Sunshine'): [
+        (-3100 + x_offset, -500 + y_offset, -3000 + x_offset, -100 + y_offset),
+        (-3050 + x_offset, -200 + y_offset, -2850 + x_offset, -80 + y_offset), # Sunshine Coords
+        (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+        (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords
+    ],
+
+    ('Sunshine', 'Tottenham'): [
+        (-2850 + x_offset, -200 + y_offset, -2300 + x_offset, -100 + y_offset),
+        (-3050 + x_offset, -200 + y_offset, -2850 + x_offset, -80 + y_offset), # Sunshine Coords
+        (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+        (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords
+    ],
+
     ('Tottenham', 'West Footscray'): [
         (-2350 + x_offset, -200 + y_offset, -1700 + x_offset, -100 + y_offset),
+    ],
+
+    ('West Footscray', 'Middle Footscray'): [
+        (-1750 + x_offset, -200 + y_offset, -1100 + x_offset, -100 + y_offset),
+    ],
+
+    ('Middle Footscray', 'Footscray'): [
+        (-1150 + x_offset, -200 + y_offset, -600 + x_offset, -100 + y_offset),
+        (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+        (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+        (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
     ],
 
     ('North Melbourne', 'Footscray'): [
