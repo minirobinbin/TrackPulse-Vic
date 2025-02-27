@@ -778,6 +778,39 @@ line_coordinates = {
     },
 
     'northern': {
+    ('North Melbourne', 'Flagstaff'):[
+        (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+        (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+        (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+    ],
+
+    ("Flagstaff", "Melbourne Central"):[
+        (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+        (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+    ],
+    ('Melbourne Central', 'Parliament'):[
+        (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+        (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+    ],
+
+    ('Parliament', 'Flinders Street'):[
+        (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+    ],
+
+    ('Flinders Street', 'Southern Cross'):[
+        (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+    ],
+
+    ('Southern Cross', 'North Melbourne'):[
+        (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+        (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+    ],
+
     ('Sunbury', 'Diggers Rest'): [
         (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
         (-3100 + x_offset, -1700 + y_offset, -3000 + x_offset, -1550 + y_offset),
@@ -794,6 +827,12 @@ line_coordinates = {
     ('North Melbourne', 'Footscray'): [
         (1916 + x_offset, -147 + y_offset, 2027 + x_offset, 344 + y_offset),
         (-450 + x_offset, -157 + y_offset, 1949 + x_offset, -99 + y_offset),
+        (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+        (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+        (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+        (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+        (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
     ],
     },
         
