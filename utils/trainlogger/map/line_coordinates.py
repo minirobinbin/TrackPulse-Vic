@@ -37,7 +37,7 @@ line_coordinates = {
         ('Broadmeadows','Seymour'): [
             (1600 + x_offset, -5050 + y_offset, 1649 + x_offset, -2951 + y_offset),
             (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
-            (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset),
+            (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
             ]
     },
     'clifton_hill': {
@@ -778,6 +778,7 @@ line_coordinates = {
     },
 
     'northern': {
+    # Loop
     ('North Melbourne', 'Flagstaff'):[
         (1950 + x_offset, 500 + y_offset, 2300 + x_offset, 700 + y_offset),
         (2250 + x_offset, 950 + y_offset, 2350 + x_offset, 1100 + y_offset),
@@ -820,6 +821,7 @@ line_coordinates = {
         (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
     ],
 
+    # Sunbury Line
     ('Sunbury', 'Diggers Rest'): [
         (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
         (-3100 + x_offset, -1700 + y_offset, -3000 + x_offset, -1550 + y_offset),
@@ -886,6 +888,60 @@ line_coordinates = {
         (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
         (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
         (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+    ],
+
+    ('North Melbourne', 'Kensington'): [
+        (1950 + x_offset, -700 + y_offset, 2000 + x_offset, 300 + y_offset),
+        (1950 + x_offset, -700 + y_offset, 2050 + x_offset, -650 + y_offset),
+        (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+        (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+    ],
+
+    # Craigieburn Line
+    ('Kensington', 'Newmarket'): [
+        (1950 + x_offset, -900 + y_offset, 2050 + x_offset, -650 + y_offset),
+    ],
+
+    ('Newmarket', 'Ascot Vale'): [
+        (1950 + x_offset, -1100 + y_offset, 2050 + x_offset, -850 + y_offset),
+    ],
+
+    ('Ascot Vale', 'Moonee Ponds'): [
+        (1950 + x_offset, -1300 + y_offset, 2050 + x_offset, -1050 + y_offset),
+    ],
+
+    ('Moonee Ponds', 'Essendon'): [
+        (1950 + x_offset, -1500 + y_offset, 2050 + x_offset, -1250 + y_offset),
+    ],
+
+    ('Essendon', 'Glenbervie'): [
+        (1950 + x_offset, -1700 + y_offset, 2050 + x_offset, -1450 + y_offset),
+    ],
+
+    ('Glenbervie', 'Strathmore'): [
+        (1950 + x_offset, -1900 + y_offset, 2050 + x_offset, -1650 + y_offset),
+    ],
+
+    ('Strathmore', 'Pascoe Vale'): [
+        (1950 + x_offset, -2100 + y_offset, 2050 + x_offset, -1850 + y_offset),
+    ],
+
+    ('Pascoe Vale', 'Oak Park'): [
+        (1950 + x_offset, -2300 + y_offset, 2050 + x_offset, -2050 + y_offset),
+    ],
+
+    ('Oak Park', 'Glenroy'): [
+        (1950 + x_offset, -2500 + y_offset, 2050 + x_offset, -2250 + y_offset),
+    ],
+
+    ('Glenroy', 'Jacana'): [
+        (1950 + x_offset, -2700 + y_offset, 2050 + x_offset, -2450 + y_offset),
+    ],
+
+    ('Jacana', 'Broadmeadows'): [
+        (1950 + x_offset, -2800 + y_offset, 2050 + x_offset, -2650 + y_offset),
+        (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
     ],
     },
         
