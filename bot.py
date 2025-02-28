@@ -5017,13 +5017,21 @@ async def mapstrips(ctx,user: discord.Member=None, year: int=0):
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
     if user == None:
-        logMap(ctx.author.name,lines_dictionary_map, year=year)
+        try:
+            logMap(ctx.author.name,lines_dictionary_map, year=year)
+        except FileNotFoundError:
+            await ctx.channel.send('You have no logs!')
+        except Exception as e:
+            await ctx.channel.send(f'Error:\n```{e}```')
         user = ctx.author.name
     else:
         try:
             logMap(user,lines_dictionary_map,year=year)
-        except:
-            logMap(ctx.author.name,lines_dictionary_map,year=year)
+        except FileNotFoundError:
+            await ctx.channel.send(f'{user} has no logs!')
+        except Exception as e:
+            await ctx.channel.send(f'Error:\n```{e}```')
+            
     file=discord.File(f'temp/{user}.png', filename='map.png')
     if year == 0:
         year = ''
