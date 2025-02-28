@@ -394,10 +394,10 @@ line_coordinates = {
             (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
             (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
         ],
         ('Richmond', 'Flinders Street'):[
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
             (3050 + x_offset, 2350 + y_offset, 4500 + x_offset, 2450 + y_offset),
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         ],
@@ -471,12 +471,12 @@ line_coordinates = {
     ],
     ('East Richmond', 'Richmond') : [
         (4650 + x_offset, 1950 + y_offset, 5700 + x_offset, 2050 + y_offset),
-        (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+        (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
     ],
     ('Richmond','Flinders Street'):[
         (3550 + x_offset, 2000 + y_offset, 4499 + x_offset, 2049 + y_offset),
         (3050 + x_offset, 2000 + y_offset, 3499 + x_offset, 2059 + y_offset),
-        (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+        (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
         (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
     ],
     ('Flinders Street', 'Southern Cross'):[
@@ -688,11 +688,11 @@ line_coordinates = {
             (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
             (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
         ],
         ('Richmond','Flinders Street'): [
             (3050 + x_offset, 2100 + y_offset, 4550 + x_offset, 2150 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # richmond coords
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         ],
         ('Flinders Street','Southern Cross'): [
@@ -722,7 +722,7 @@ line_coordinates = {
             (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
             (3500 + x_offset, 1400 + y_offset, 3550 + x_offset, 2150 + y_offset),
             (3500 + x_offset, 2100 + y_offset, 4500 + x_offset, 2150 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
         # cranbourne branch
         ('Cranbourne','Merinda Park'): [
@@ -783,12 +783,12 @@ line_coordinates = {
             (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
             (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
         ('Richmond', 'Flinders Street'): [
             (3050 + x_offset, 2500 + y_offset, 4500 + x_offset, 2550 + y_offset),
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
 
     },
@@ -1155,11 +1155,11 @@ line_coordinates = {
             (5100 + x_offset, 2200 + y_offset, 5200 + x_offset, 2850 + y_offset),
             (4650 + x_offset, 2150 + y_offset, 5200 + x_offset, 2250 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
         ('Richmond','Flinders Street'): [
             (3050 + x_offset, 2200 + y_offset, 4550 + x_offset, 2250 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         ],
         ('Flinders Street','Southern Cross'): [
@@ -1322,11 +1322,11 @@ line_coordinates = {
             (5050 + x_offset, 2300 + y_offset, 5100 + x_offset, 2850 + y_offset),
             (4650 + x_offset, 2250 + y_offset, 5100 + x_offset, 2350 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
         ('Richmond','Flinders Street'): [
             (3050 + x_offset, 2300 + y_offset, 4550 + x_offset, 2350 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+            (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         ],
         ('Flinders Street','Southern Cross'): [
