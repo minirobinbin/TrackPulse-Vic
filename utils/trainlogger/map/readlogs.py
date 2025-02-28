@@ -95,4 +95,4 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
         map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
         map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
         print(affected_lines)
-        map_handler.highlight_map(affected_lines, "temp/themap.png", stations)
+        map_handler.highlight_map(affected_lines, f"temp/{user}.png", stations)

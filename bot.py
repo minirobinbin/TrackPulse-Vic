@@ -5024,10 +5024,10 @@ async def mapstrips(ctx,user: discord.Member=None, year: int=0):
             logMap(user,lines_dictionary_map,year=year)
         except:
             logMap(ctx.author.name,lines_dictionary_map,year=year)
-    file=discord.File('temp/themap.png', filename='map.png')
+    file=discord.File(f'temp/{user}.png', filename='map.png')
     if year == 0:
         year = ''
-    imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage("temp/themap.png", f"{user}-map")}&name={user}\'s%20Victorian%20train%20map'
+    imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{user}].png", f"{user}-map")}&name={user}\'s%20Victorian%20train%20map'
     embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{user} {year}", color=0xb8b8b8, description=f"This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose to.\n[Click here to view in your browser]({imageURL})")
     embed.set_image(url="attachment://map.png")
     user_pic = await bot.fetch_user(1002449671224041502)
