@@ -891,7 +891,7 @@ line_coordinates = {
     ],
 
     ('North Melbourne', 'Kensington'): [
-        (1950 + x_offset, -700 + y_offset, 2000 + x_offset, 300 + y_offset),
+        (1950 + x_offset, -700 + y_offset, 2000 + x_offset, 350 + y_offset),
         (1950 + x_offset, -700 + y_offset, 2050 + x_offset, -650 + y_offset),
         (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
         (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
@@ -942,6 +942,20 @@ line_coordinates = {
     ('Jacana', 'Broadmeadows'): [
         (1950 + x_offset, -2800 + y_offset, 2050 + x_offset, -2650 + y_offset),
         (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
+    ],
+
+    ('Broadmeadows', 'Coolaroo'): [
+        (1950 + x_offset, -3100 + y_offset, 2050 + x_offset, -2950 + y_offset),
+        (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
+    ],
+
+    ('Coolaroo', 'Roxburgh Park'): [
+        (1950 + x_offset, -3300 + y_offset, 2050 + x_offset, -3050 + y_offset),
+    ],
+
+    ('Roxburgh Park', 'Craigieburn'): [
+        (1950 + x_offset, -3450 + y_offset, 2050 + x_offset, -3250 + y_offset),
+        (1650 + x_offset, -3600 + y_offset, 2050 + x_offset, -3450 + y_offset), # craigieburn coords
     ],
     },
         
