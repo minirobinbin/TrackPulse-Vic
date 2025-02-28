@@ -868,14 +868,14 @@ line_coordinates = {
 
     ('Albion', 'Sunshine'): [
         (-3100 + x_offset, -500 + y_offset, -3000 + x_offset, -100 + y_offset),
-        (-3050 + x_offset, -200 + y_offset, -2850 + x_offset, -80 + y_offset), # Sunshine Coords
+        (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
         (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
         (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords
     ],
 
     ('Sunshine', 'Tottenham'): [
         (-2850 + x_offset, -200 + y_offset, -2300 + x_offset, -100 + y_offset),
-        (-3050 + x_offset, -200 + y_offset, -2850 + x_offset, -80 + y_offset), # Sunshine Coords
+        (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
         (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
         (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords
     ],
@@ -1169,6 +1169,75 @@ line_coordinates = {
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
         ], 
         
+        # geelong line
+        ('Waurn Ponds','Marshall'):[
+            (-5200 + x_offset, 2550 + y_offset, -4950 + x_offset, 2700 + y_offset), # waurn ponds coords
+            (-5200 + x_offset, 2400 + y_offset, -5100 + x_offset, 2550 + y_offset),
+        ],
+        ('Marshall','South Geelong'):[
+            (-5200 + x_offset, 2150 + y_offset, -4950 + x_offset, 2300 + y_offset), # south geelong coords
+            (-5200 + x_offset, 2300 + y_offset, -5100 + x_offset, 2450 + y_offset),
+        ],
+        ('South Geelong', 'Geelong'):[
+            (-5200 + x_offset, 1950 + y_offset, -4950 + x_offset, 2100 + y_offset), # Geelong coords
+            (-5200 + x_offset, 2150 + y_offset, -4950 + x_offset, 2300 + y_offset), # south geelong coords
+            (-5200 + x_offset, 2050 + y_offset, -5100 + x_offset, 2200 + y_offset),
+        ],
+        ('Geelong','North Geelong'):[
+            (-5200 + x_offset, 1800 + y_offset, -5100 + x_offset, 1950 + y_offset),
+            (-5200 + x_offset, 1950 + y_offset, -4950 + x_offset, 2100 + y_offset), # Geelong coords
+        ],
+        ('North Geelong', 'North Shore'):[
+            (-5200 + x_offset, 1600 + y_offset, -5100 + x_offset, 1850 + y_offset),
+        ],
+        ('North Shore','Corio'):[
+            (-5200 + x_offset, 1400 + y_offset, -5100 + x_offset, 1650 + y_offset),
+        ],
+        ('Corio', 'Lara'):[
+            (-5200 + x_offset, 1200 + y_offset, -5100 + x_offset, 1450 + y_offset),
+        ],
+        ('Lara', 'Little River'):[
+            (-5200 + x_offset, 1000 + y_offset, -5100 + x_offset, 1250 + y_offset),
+        ],
+        ('Little River','Wyndham Vale'):[
+            (-5200 + x_offset, 800 + y_offset, -5100 + x_offset, 1050 + y_offset),
+        ],
+        ('Wyndham Vale','Tarneit'):[
+            (-5200 + x_offset, 600 + y_offset, -5100 + x_offset, 850 + y_offset),
+        ],
+        ('Tarneit','Deer Park'): [
+            (-5250 + x_offset, 450 + y_offset, -5100 + x_offset, 650 + y_offset),
+            (-5150 + x_offset, 450 + y_offset, -4950 + x_offset, 500 + y_offset),
+            (-4950 + x_offset, 200 + y_offset, -4800 + x_offset, 650 + y_offset), # deer park coords
+        ],
+        ('Deer Park','Sunshine'):[
+            (-4800 + x_offset, 450 + y_offset, -3000 + x_offset, 500 + y_offset),
+            (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
+            (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+            (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords 
+        ],
+        ('Sunshine','Footscray'):[
+            (-2850 + x_offset, 450 + y_offset, -2600 + x_offset, 500 + y_offset),
+            (-2650 + x_offset, -100 + y_offset, -2600 + x_offset, 500 + y_offset),
+            (-2650 + x_offset, -50 + y_offset, -600 + x_offset, 0 + y_offset),
+            (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
+            (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+            (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords 
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+        ],
+        ('Footscray', 'Southern Cross'):[
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+            (-450 + x_offset, -50 + y_offset, 1600 + x_offset, 0 + y_offset),
+            (1550 + x_offset, -50 + y_offset, 1600 + x_offset, 400 + y_offset),
+            (1550 + x_offset, 450 + y_offset, 1600 + x_offset, 750 + y_offset),
+            (1550 + x_offset, 700 + y_offset, 1900 + x_offset, 750 + y_offset),
+            (1850 + x_offset, 750 + y_offset, 1900 + x_offset, 1250 + y_offset),
+            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+        ]
     },
 
     'vline_long_distance':{
