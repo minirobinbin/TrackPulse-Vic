@@ -199,7 +199,9 @@ line_coordinates = {
             (4150 + x_offset, 200 + y_offset, 4250 + x_offset, 450 + y_offset),
         ],
         ('Rushall','Clifton Hill'):[
-            (4050 + x_offset, 400 + y_offset, 4250 + x_offset, 850 + y_offset),
+            (4150 + x_offset, 400 + y_offset, 4250 + x_offset, 450 + y_offset),
+            (4150 + x_offset, 400 + y_offset, 4200 + x_offset, 700 + y_offset),
+            (4100 + x_offset, 700 + y_offset, 4250 + x_offset, 850 + y_offset), # clifton hill coords
         ],
         
         
