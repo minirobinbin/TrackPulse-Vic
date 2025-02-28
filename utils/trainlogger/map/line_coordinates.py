@@ -1237,7 +1237,16 @@ line_coordinates = {
             (1550 + x_offset, 700 + y_offset, 1900 + x_offset, 750 + y_offset),
             (1850 + x_offset, 750 + y_offset, 1900 + x_offset, 1250 + y_offset),
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+        ],
+        # ballarat line
+        ('Wendouree','Ballarat'):[
+            (-9550 + x_offset, 200 + y_offset, -9400 + x_offset, 450 + y_offset), # wendouree coords
+            (-9400 + x_offset, 200 + y_offset, -9100 + x_offset, 300 + y_offset),
+            (-9050 + x_offset, 200 + y_offset, -8800 + x_offset, 300 + y_offset),
+            (-8900 + x_offset, 200 + y_offset, -8750 + x_offset, 500 + y_offset),
         ]
+        
+        
     },
 
     'vline_long_distance':{
