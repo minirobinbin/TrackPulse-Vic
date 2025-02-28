@@ -25,6 +25,7 @@ def uploadImage(file, name=None):
     if name:
         params["name"] = name
 
+    print('Uploading image to Imgbb')
     response = requests.post(url, files=files, params=params)
     response.raise_for_status()
 
