@@ -957,6 +957,55 @@ line_coordinates = {
         (1950 + x_offset, -3450 + y_offset, 2050 + x_offset, -3250 + y_offset),
         (1650 + x_offset, -3600 + y_offset, 2050 + x_offset, -3450 + y_offset), # craigieburn coords
     ],
+    
+    # upfield line
+    ('Upfield', 'Gowrie'):[
+        (2900 + x_offset, -3050 + y_offset, 3050 + x_offset, -2750 + y_offset),
+    ],
+    ('Gowrie','Fawkner'): [
+        (2950 + x_offset, -2850 + y_offset, 3050 + x_offset, -2550 + y_offset),
+    ],
+    ('Fawkner', 'Merlynston'):[
+        (2900 + x_offset, -2600 + y_offset, 3050 + x_offset, -2350 + y_offset),
+    ],
+    ('Merlynston','Batman'):[
+        (2900 + x_offset, -2450 + y_offset, 3050 + x_offset, -2150 + y_offset),
+    ],
+    ('Batman', 'Coburg'):[
+        (2900 + x_offset, -2200 + y_offset, 3050 + x_offset, -1950 + y_offset),
+    ],
+    ('Coburg', 'Moreland'):[
+        (2950 + x_offset, -2000 + y_offset, 3050 + x_offset, -1750 + y_offset),
+    ],
+    ('Moreland','Anstey'):[
+        (2900 + x_offset, -1850 + y_offset, 3050 + x_offset, -1550 + y_offset),
+    ],
+    ('Anstey','Brunswick'):[
+        (2900 + x_offset, -1600 + y_offset, 3050 + x_offset, -1400 + y_offset),
+        (2900 + x_offset, -1400 + y_offset, 3050 + x_offset, -1350 + y_offset),
+    ],
+    ('Brunswick',"Jewell"):[
+        (2950 + x_offset, -1400 + y_offset, 3050 + x_offset, -1150 + y_offset),
+    ],
+    ('Jewell', 'Royal Park'):[
+        (2950 + x_offset, -1200 + y_offset, 3050 + x_offset, -950 + y_offset),
+    ],
+    ('Royal Park', 'Flemington Bridge'):[
+        (2900 + x_offset, -1000 + y_offset, 3050 + x_offset, -750 + y_offset),
+    ],
+    ('Flemington Bridge','Macaulay'):[
+        (2900 + x_offset, -800 + y_offset, 3050 + x_offset, -550 + y_offset),
+    ],
+    ('Macaulay', 'North Melbourne'):[
+        (2950 + x_offset, -600 + y_offset, 3050 + x_offset, -500 + y_offset),
+        (1950 + x_offset, -500 + y_offset, 3000 + x_offset, -400 + y_offset),
+        (1950 + x_offset, -500 + y_offset, 2000 + x_offset, 350 + y_offset),
+        (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+        (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+        (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+    ],
+    
+    
     },
         
     'flemington': {
