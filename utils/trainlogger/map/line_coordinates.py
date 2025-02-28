@@ -32,13 +32,27 @@ line_coordinates = {
             (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
         ],
         
-        
-        
         ('Broadmeadows','Seymour'): [
             (1600 + x_offset, -5050 + y_offset, 1649 + x_offset, -2951 + y_offset),
             (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
-            ]
+            ],
+
+        ('Southern Cross', 'Broadmeadows'): [
+            (200 + x_offset, -2800 + y_offset, 1650 + x_offset, -1250 + y_offset),
+            (-2300 + x_offset, -1400 + y_offset, 250 + x_offset, -600 + y_offset),
+            (-3050 + x_offset, -700 + y_offset, 200 + x_offset, -600 + y_offset),
+            (-3500 + x_offset, -650 + y_offset, -3300 + x_offset, 200 + y_offset),
+            (-3500 + x_offset, 150 + y_offset, -2950 + x_offset, 200 + y_offset),
+            (-2900 + x_offset, 150 + y_offset, -2650 + x_offset, 200 + y_offset),
+            (-2600 + x_offset, 100 + y_offset, -2500 + x_offset, 200 + y_offset),
+            (-2450 + x_offset, 150 + y_offset, -550 + x_offset, 200 + y_offset),
+            (-500 + x_offset, 150 + y_offset, 1400 + x_offset, 200 + y_offset),
+            (1350 + x_offset, 150 + y_offset, 1400 + x_offset, 400 + y_offset),
+            (1350 + x_offset, 450 + y_offset, 1400 + x_offset, 1250 + y_offset),
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
+        ],
     },
     'clifton_hill': {
         ('Hurstbridge', 'Wattle Glen'):[
