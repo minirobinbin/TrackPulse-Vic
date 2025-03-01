@@ -5019,26 +5019,20 @@ async def mapstrips(ctx,user: discord.Member=None, year: int=0):
     async def generate_map():
         if user == None:
             username = ctx.author.name
-            try:
-                await asyncio.to_thread(logMap, ctx.author.name, lines_dictionary_map, year=year)
-            except FileNotFoundError:
-                await ctx.channel.send('You have no logs!')
-                return
-            except Exception as e:
-                await ctx.channel.send(f'Error:\n```{e}```')
-                return
+            target_user = ctx.author.name
         else:
-            try:
-                await asyncio.to_thread(logMap, user, lines_dictionary_map, year=year)
-            except FileNotFoundError:
-                await ctx.channel.send(f'{user} has no logs!')
-                return
-            except Exception as e:
-                await ctx.channel.send(f'Error:\n```{e}```')
-                return
-            username = user
+            username = user.name
+            target_user = user.name
 
-        # Send the map once generated
+        try:
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, year=year)
+        except FileNotFoundError:
+            await ctx.channel.send(f'{"You have" if user == None else username + " has"} no logs!')
+            return
+        except Exception as e:
+            await ctx.channel.send(f'Error:\n```{e}```')
+            return
+       # Send the map once generated
         try:
             file = discord.File(f'temp/{username}.png', filename='map.png')
             year_str = '' if year == 0 else str(year)
