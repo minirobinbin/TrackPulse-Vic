@@ -1496,6 +1496,21 @@ line_coordinates = {
         ], 
     },
     'ararat/maryborough_seperate':{
+        #maryborough line
+        ('Maryborough','Talbot'): [
+            (-9150 + x_offset, -750 + y_offset, -9000 + x_offset, -500 + y_offset),
+        ],
+        ('Talbot','Clunes'): [
+            (-9200 + x_offset, -550 + y_offset, -9000 + x_offset, -300 + y_offset),
+        ],
+        ('Clunes','Creswick'): [
+            (-9100 + x_offset, -350 + y_offset, -9000 + x_offset, -100 + y_offset),
+        ],
+        ('Creswick','Ballarat'): [
+            (-9100 + x_offset, -150 + y_offset, -9000 + x_offset, -100 + y_offset),
+            (-9100 + x_offset, -150 + y_offset, -9050 + x_offset, 350 + y_offset),
+            (-9100 + x_offset, 350 + y_offset, -8900 + x_offset, 400 + y_offset),
+        ],
         # ararat line
         ('Ararat', 'Beaufort'):[
             (-10250 + x_offset, 300 + y_offset, -9950 + x_offset, 450 + y_offset),
