@@ -352,7 +352,7 @@ lines_dictionary_map = {
     'Shepparton': [['Southern Cross', 'Essendon', 'Broadmeadows', 'Craigieburn', 'Donnybrook', 'Wallan', 'Heathcote Junction', 'Wandong', 'Kilmore East', 'Broadford', 'Tallarook', 'Seymour', 'Nagambie', 'Murchison East', 'Mooroopna', 'Shepparton'],0x782f9a],
     'Swan Hill': [['Southern Cross', 'Footscray', 'Watergardens', 'Gisborne', 'Woodend', 'Kyneton', 'Malmsbury', 'Castlemaine', 'Kangaroo Flat', 'Bendigo', 'Eaglehawk', 'Raywood', 'Dingee', 'Pyramid', 'Kerang', 'Swan Hill'],0x782f9a],
     'Traralgon': [['Southern Cross', 'Flinders Street', 'Richmond', 'Caulfield', 'Clayton', 'Dandenong', 'Berwick', 'Pakenham', 'Nar Nar Goon', 'Tynong', 'Garfield', 'Bunyip', 'Longwarry', 'Drouin', 'Warragul', 'Yarragon', 'Trafalgar', 'Moe', 'Morwell', 'Traralgon'],0x782f9a],
-    'Warrnambool': [['Southern Cross', 'Footscray', 'Deer Park', 'Tarneit', 'Wyndham Vale', 'Little River', 'Lara', 'Corio', 'North Shore', 'North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds', 'Winchelsea', 'Birregurra', 'Colac', 'Camperdown', 'Terang', 'Sherwood', 'Warrnambool'],0x782f9a],
+    'Warrnambool': [['Southern Cross', 'Footscray', 'Sunshine', 'Deer Park', 'Tarneit', 'Wyndham Vale', 'Little River', 'Lara', 'Corio', 'North Shore', 'North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds', 'Winchelsea', 'Birregurra', 'Colac', 'Camperdown', 'Terang', 'Sherwood', 'Warrnambool'],0x782f9a],
     'Unknown/Other': [[None], ptv_grey],
 }
 
