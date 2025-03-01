@@ -5016,21 +5016,47 @@ async def mapstrips(ctx,user: discord.Member=None, year: int=0):
     log_command(ctx.author.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.author.id)}")
 
-    if user == None:
+    async def generate_map():
+        if user == None:
+            try:
+                await asyncio.to_thread(logMap, ctx.author.name, lines_dictionary_map, year=year)
+            except FileNotFoundError:
+                await ctx.channel.send('You have no logs!')
+                return
+            except Exception as e:
+                await ctx.channel.send(f'Error:\n```{e}```')
+                return
+            username = ctx.author.name
+        else:
+            try:
+                await asyncio.to_thread(logMap, user, lines_dictionary_map, year=year)
+            except FileNotFoundError:
+                await ctx.channel.send(f'{user} has no logs!')
+                return
+            except Exception as e:
+                await ctx.channel.send(f'Error:\n```{e}```')
+                return
+            username = user
+
+        # Send the map once generated
         try:
-            logMap(ctx.author.name,lines_dictionary_map, year=year)
-        except FileNotFoundError:
-            await ctx.channel.send('You have no logs!')
+            file = discord.File(f'temp/{username}.png', filename='map.png')
+            year_str = '' if year == 0 else str(year)
+            imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+            embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                                color=0xb8b8b8, 
+                                description=f"This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose to.\n[Click here to view in your browser]({imageURL})")
+            embed.set_image(url="attachment://map.png")
+            user_pic = await bot.fetch_user(1002449671224041502)
+            pfp = user_pic.avatar.url
+            embed.set_author(name="Map by Comeng17", icon_url=pfp)
+            embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+            await ctx.channel.send(embed=embed, file=file)
         except Exception as e:
-            await ctx.channel.send(f'Error:\n```{e}```')
-        user = ctx.author.name
-    else:
-        try:
-            logMap(user,lines_dictionary_map,year=year)
-        except FileNotFoundError:
-            await ctx.channel.send(f'{user} has no logs!')
-        except Exception as e:
-            await ctx.channel.send(f'Error:\n```{e}```')
+            await ctx.channel.send(f'Error sending map:\n```{e}```')
+
+    # Start the async map generation
+    asyncio.create_task(generate_map())
             
     file=discord.File(f'temp/{user}.png', filename='map.png')
     if year == 0:
