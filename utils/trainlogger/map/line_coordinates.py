@@ -1251,6 +1251,7 @@ line_coordinates = {
         ],
         ('Ballarat','Ballan'):[
             (-8750 + x_offset, 200 + y_offset, -8400 + x_offset, 300 + y_offset),
+            (-8900 + x_offset, 200 + y_offset, -8750 + x_offset, 450 + y_offset), # ballarat coords
         ],
         ('Ballan','Bacchus Marsh'):[
             (-8450 + x_offset, 200 + y_offset, -7850 + x_offset, 300 + y_offset),
@@ -1401,6 +1402,13 @@ line_coordinates = {
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
         ], 
-        
+        # ararat line
+        ('Ararat', 'Beaufort'):[
+            (-10250 + x_offset, 300 + y_offset, -9950 + x_offset, 450 + y_offset),
+        ],
+        ('Beaufort','Wendouree'):[
+            (-10000 + x_offset, 300 + y_offset, -9550 + x_offset, 400 + y_offset),
+            (-9550 + x_offset, 200 + y_offset, -9400 + x_offset, 450 + y_offset), # wendouree coords
+        ]
     },
     }
