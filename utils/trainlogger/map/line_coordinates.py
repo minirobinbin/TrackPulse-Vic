@@ -1494,6 +1494,8 @@ line_coordinates = {
             (1750 + x_offset, 900 + y_offset, 1800 + x_offset, 1250 + y_offset),
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
         ], 
+    },
+    'ararat/maryborough_seperate':{
         # ararat line
         ('Ararat', 'Beaufort'):[
             (-10250 + x_offset, 300 + y_offset, -9950 + x_offset, 450 + y_offset),
@@ -1501,6 +1503,68 @@ line_coordinates = {
         ('Beaufort','Wendouree'):[
             (-10000 + x_offset, 300 + y_offset, -9550 + x_offset, 400 + y_offset),
             (-9550 + x_offset, 200 + y_offset, -9400 + x_offset, 450 + y_offset), # wendouree coords
-        ]
+        ],
+        ('Wendouree','Ballarat'):[
+            (-9550 + x_offset, 200 + y_offset, -9400 + x_offset, 450 + y_offset), # wendouree coords
+            (-9400 + x_offset, 350 + y_offset, -8900 + x_offset, 400 + y_offset),
+            (-8900 + x_offset, 200 + y_offset, -8750 + x_offset, 450 + y_offset), # ballarat coords
+        ],
+        ('Ballarat','Ballan'):[
+            (-8750 + x_offset, 300 + y_offset, -8400 + x_offset, 400 + y_offset),
+            (-8900 + x_offset, 200 + y_offset, -8750 + x_offset, 450 + y_offset), # ballarat coords
+        ],
+        ('Ballan','Bacchus Marsh'):[
+            (-8450 + x_offset, 300 + y_offset, -7850 + x_offset, 400 + y_offset),
+        ],
+        ('Bacchus Marsh', 'Melton'):[
+            (-7900 + x_offset, 300 + y_offset, -7300 + x_offset, 400 + y_offset),
+        ],
+        ('Melton', 'Cobblebank'):[
+            (-7350 + x_offset, 300 + y_offset, -6800 + x_offset, 400 + y_offset),
+        ],
+        ('Cobblebank','Rockbank'):[
+            (-6850 + x_offset, 300 + y_offset, -6250 + x_offset, 400 + y_offset),
+        ],
+        ('Rockbank', 'Caroline Springs'):[
+            (-6300 + x_offset, 300 + y_offset, -5600 + x_offset, 400 + y_offset),
+        ],
+        ('Caroline Springs', 'Deer Park'):[
+            (-5650 + x_offset, 300 + y_offset, -4950 + x_offset, 400 + y_offset),
+            (-4950 + x_offset, 200 + y_offset, -4800 + x_offset, 650 + y_offset), # deer park coords
+        ],
+        ('Deer Park','Ardeer'):[
+            (-4800 + x_offset, 300 + y_offset, -3900 + x_offset, 400 + y_offset),
+            (-3950 + x_offset, 300 + y_offset, -3550 + x_offset, 400 + y_offset),
+        ],
+        ('Ardeer', 'Sunshine'):[
+            (-3950 + x_offset, 300 + y_offset, -3550 + x_offset, 400 + y_offset),
+            (-3550 + x_offset, 300 + y_offset, -3000 + x_offset, 400 + y_offset),
+             (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
+            (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+            (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords
+        ],
+        ('Sunshine','Footscray'):[
+            (-2850 + x_offset, 350 + y_offset, -2650 + x_offset, 400 + y_offset),
+            (-2600 + x_offset, 350 + y_offset, -2450 + x_offset, 400 + y_offset),
+            (-2500 + x_offset, 50 + y_offset, -2450 + x_offset, 400 + y_offset),
+            (-2500 + x_offset, 50 + y_offset, -600 + x_offset, 100 + y_offset),
+            (-3000 + x_offset, -200 + y_offset, -2850 + x_offset, -50 + y_offset), # Sunshine Coords
+            (-2950 + x_offset, -80 + y_offset, -2900 + x_offset, 220 + y_offset), # Sunshine Coords
+            (-3000 + x_offset, 220 + y_offset, -2850 + x_offset, 650 + y_offset), # Sunshine Coords 
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+        ],
+        ('Footscray', 'Southern Cross'):[
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+            (-450 + x_offset, 50 + y_offset, 1500 + x_offset, 100 + y_offset),
+            (1450 + x_offset, 50 + y_offset, 1500 + x_offset, 400 + y_offset),
+            (1450 + x_offset, 450 + y_offset, 1500 + x_offset, 900 + y_offset),
+            (1450 + x_offset, 850 + y_offset, 1800 + x_offset, 900 + y_offset),
+            (1750 + x_offset, 900 + y_offset, 1800 + x_offset, 1250 + y_offset),
+            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+        ],
     },
-    }
+}

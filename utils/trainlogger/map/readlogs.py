@@ -84,10 +84,12 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                     group = 'standard_guage'
                 elif cols[4] in ['Traralgon', 'Geelong','Bendigo','Seymour',]:
                     group = 'vline_intercity'
-                elif cols[4] in ['Shepparton', 'Swan Hill', 'Echuca', 'Ararat', 'Maryborough', 'Warrnambool', 'Bairnsdale']:
+                elif cols[4] in ['Shepparton', 'Swan Hill', 'Echuca', 'Warrnambool', 'Bairnsdale']:
                     group = 'vline_long_distance'
                 elif cols[4] in ['Ballarat']:
                     group = 'ballarat_seperate'
+                elif cols[4] in ['Ararat', 'Maryborough']:
+                    group = 'ararat/maryborough_seperate'
                 else:
                     group = cols[4]
                     
