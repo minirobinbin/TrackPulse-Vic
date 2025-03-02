@@ -43,7 +43,8 @@ async def helpCommand(ctx,category,command):
             "</completion stations:1304404972229623829> - View which stations you have been to.",
             "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
             "</achievements view:1327085604789551134> - View the achievements you've unlocked by logging Victorian Trains.",
-            "</maps view:1340254752461819934> - View the maps this bot will use to display your trips.",
+            "</maps trips:1340254752461819934> - View a map of the trips you've logged.",
+            "</maps view:1340254752461819934> - View the maps this bot uses to display your trips.",
         ],
         "myki":
         [
@@ -232,12 +233,20 @@ Optional:
 
 Required:
     Line: choose the line you want to view the distruption status for. You must choose from the list.''',
-        '/maps view': '''</maps view:1340254752461819934> is a command that allows you to the maps this bot will use to display your logs (when it's finished).
+        '/maps view': '''</maps view:1340254752461819934> is a command that allows you to the maps this bot uses to display your logs.
 
 **Options:**
 
 Required:
     Map_choice: the map you wish to view. You must choose from the list.''',
+'/maps trips': '''</maps trips:1340254752461819934> generates a map of the trips you've logged. This is currently only for Victorian Train logs.
+
+**Options:**
+
+Optional:
+    Map_choice: the map you wish to view. You must choose from the list.
+    User: pick a user who's logs you wish to view. By default it's set to you.
+    Year: the year you wish to view the trips for. By default it is set to the current year.''',
         '/myki calculate-fare': '''</myki calculate-fare:1289843416628330507> is a command that allows you to calculate the cost of trip in Victoria to your myki.
 
 **Options:**

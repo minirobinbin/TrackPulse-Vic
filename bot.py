@@ -557,7 +557,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -4411,46 +4411,46 @@ async def profile(ctx, user: discord.User = None):
 
 # map view command
 @maps.command(name='view', description='View the maps the bot uses')
-@app_commands.choices(map_choice=[
+@app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
 ])
-async def viewMaps(ctx, map_choice: str):
+async def viewMaps(ctx, mode: str):
     await ctx.response.defer()
     log_command(ctx.user.id,'map-view')
     try:
-        uncompressed = Image.open(f'utils/trainlogger/map/{map_choice}')
+        uncompressed = Image.open(f'utils/trainlogger/map/{mode}')
         compressed = compress(uncompressed)
         compressed.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
-        if map_choice == "log_train_map.png":
+        if mode == "log_train_map.png":
             embed = discord.Embed(title=f"Map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
             embed.set_author(name="Map by Comeng17", icon_url=pfp)
             await printlog(f"Retrieved /log train map for {ctx.user.name} in {ctx.channel.mention}")
-        elif map_choice == "time_based_variants/log_train_map_post_munnel.png":
+        elif mode == "time_based_variants/log_train_map_post_munnel.png":
             embed = discord.Embed(title=f"Future map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network. This is the map that will be used once the Metro Tunnel opens.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
             embed.set_author(name="Map by Comeng17", icon_url=pfp)
             await printlog(f"Retrieved future /log train map for {ctx.user.name} in {ctx.channel.mention}")
-        elif map_choice == "log_sydney-train_map.png":
+        elif mode == "log_sydney-train_map.png":
             embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (Sydney Metropolitan Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved Sydney Trains map for {ctx.user.name} in {ctx.channel.mention}")
-        elif map_choice == "log__sydney-train__map.png":
+        elif mode == "log__sydney-train__map.png":
             embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (NSW Intercity Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Intercity map for {ctx.user.name} in {ctx.channel.mention}")
-        elif map_choice == "log___sydney-train___map.png":
+        elif mode == "log___sydney-train___map.png":
             embed = discord.Embed(title=f"Map of the network covered by <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
@@ -4462,6 +4462,51 @@ async def viewMaps(ctx, map_choice: str):
     except Exception as e:
         await printlog(e)
 
+# map trip command
+@maps.command(name='trips', description="View a map of all the trips you've logged")
+@app_commands.choices(mode=[
+        app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
+])
+async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None, year: int=0):
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'maps-trips')
+    await printlog(f"Making trip map for {str(ctx.user.id)}")
+
+    async def generate_map():
+        if user == None:
+            username = ctx.user.name
+            target_user = ctx.user.name
+        else:
+            username = user.name
+            target_user = user.name
+
+        try:
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, year=year)
+        except FileNotFoundError:
+            await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
+            return
+        except Exception as e:
+            await ctx.followup.send(f'Error:\n```{e}```')
+            return
+       # Send the map once generated
+        try:
+            file = discord.File(f'temp/{username}.png', filename='map.png')
+            year_str = '' if year == 0 else f'in {str(year)}'
+            imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+            embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                                color=0xb8b8b8, 
+                                description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+            embed.set_image(url="attachment://map.png")
+            user_pic = await bot.fetch_user(1002449671224041502)
+            pfp = user_pic.avatar.url
+            embed.set_author(name="Map by Comeng17", icon_url=pfp)
+            embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+            await ctx.followup.send(embed=embed, file=file)
+        except Exception as e:
+            await ctx.followup.send(f'Error sending map:\n```{e}```')
+
+    # Start the async map generation
+    asyncio.create_task(generate_map())
 
 # achievement commands
 @bot.command()
@@ -5011,7 +5056,7 @@ async def update(ctx):
     else:
         await ctx.send("Remote updates are not enabled")
 
-@bot.command()
+'''@bot.command()
 async def mapstrips(ctx,user: discord.Member=None, year: int=0):
     log_command(ctx.author.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.author.id)}")
@@ -5050,7 +5095,7 @@ async def mapstrips(ctx,user: discord.Member=None, year: int=0):
             await ctx.channel.send(f'Error sending map:\n```{e}```')
 
     # Start the async map generation
-    asyncio.create_task(generate_map())
+    asyncio.create_task(generate_map())'''
         
     
 # important
