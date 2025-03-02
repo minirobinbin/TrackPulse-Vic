@@ -298,7 +298,8 @@ line_coordinates = {
         ],
         # Williamstown Branch
         ('Newport', 'North Williamstown'):[
-            (-750.0 + x_offset, 1050.0 + y_offset, -601.0 + x_offset, 1349.0 + y_offset),
+            (-700.0 + x_offset, 1050.0 + y_offset, -601.0 + x_offset, 1349.0 + y_offset),
+            (-750 + x_offset, 900 + y_offset, -601 + x_offset, 1049 + y_offset),
         ],
         ('North Williamstown', 'Williamstown Beach'):[
             (-750.0 + x_offset, 1350.0 + y_offset, -601.0 + x_offset, 1499.0 + y_offset),
@@ -504,9 +505,9 @@ line_coordinates = {
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
     ],
     ('Parliament', 'Richmond'):[
-        (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset),
-        (3300 + x_offset, 1950 + y_offset, 3500 + x_offset, 2050 + y_offset),
-        (3550 + x_offset, 2000 + y_offset, 4450 + x_offset, 2050 + y_offset),
+        (3350 + x_offset, 2000 + y_offset, 3500 + x_offset, 2050 + y_offset),
+        (3350 + x_offset, 1400 + y_offset, 3400 + x_offset, 2050 + y_offset),
+        (3550 + x_offset, 2000 + y_offset, 4500 + x_offset, 2050 + y_offset),
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
         (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
     ],

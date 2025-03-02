@@ -39,8 +39,23 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                     start, end, group = cols[5], cols[6], cols[4]
                     
                     # Find the line that contains these stations
+                    if group in ['Alamein', 'Belgrave', 'Craigieburn', 'Cranbourne', 'Glen Waverley', 'Hurstbridge', 'Lilydale', 'Pakenham', 'Sunbury', 'Upfield'] and cols[5] in ['Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        group = group + " Loop"
+                    elif group == 'Frankston' and cols[5] in ['North Williamstown', 'Williamstown Beach', 'Williamstown']:
+                        group = 'Williamstown'
+                    elif group == 'Frankston' and cols[6] in ['North Williamstown', 'Williamstown Beach', 'Williamstown']:
+                        group = 'Williamstown'
+                    elif group == 'Frankston' and cols[5] in ['Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee']:
+                        group = 'Werribee'
+                    elif group == 'Frankston' and cols[6] in ['Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee']:
+                        group = 'Werribee'
+                    elif group == 'Bendigo' and 'Epsom' in [str(cols[5]), str(cols[6])]:
+                        group = 'Epsom'
+                    elif group == 'Bendigo' and 'Eaglehawk' in [str(cols[5]), str(cols[6])]:
+                        group = 'Eaglehawk'
+                    print(group)
                     for line_name, line_info in lines_dictionary.items():
-                        if line_name == cols[4]:
+                        if line_name == group:
                             station_list = line_info[0]
                             if start in station_list and end in station_list:
                                 # Get indices of start and end stations
