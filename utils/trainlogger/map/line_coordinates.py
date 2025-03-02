@@ -1288,6 +1288,64 @@ line_coordinates = {
             (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
         ],
+        #bendigo line
+        ('Eaglehawk','Bendigo'):[
+            (-3350 + x_offset, -4300 + y_offset, -3050 + x_offset, -4150 + y_offset), # eaglehawk coords
+            (-3350 + x_offset, -3850 + y_offset, -3100 + x_offset, -3700 + y_offset), # bendigo coords
+            (-3150 + x_offset, -4150 + y_offset, -3100 + x_offset, -3900 + y_offset),
+            (-3200 + x_offset, -3950 + y_offset, -3100 + x_offset, -3850 + y_offset),
+        ],
+        ('Epsom','Bendigo'):[
+            (-2100 + x_offset, -4100 + y_offset, -1950 + x_offset, -3850 + y_offset), # epsom coords
+            (-3350 + x_offset, -3850 + y_offset, -3100 + x_offset, -3700 + y_offset), # bendigo coords
+            (-3200 + x_offset, -3950 + y_offset, -2100 + x_offset, -3850 + y_offset),
+        ],
+        ('Bendigo','Kangaroo Flat'):[
+            (-3350 + x_offset, -3850 + y_offset, -3100 + x_offset, -3700 + y_offset), # bendigo coords
+            (-3200 + x_offset, -3700 + y_offset, -3100 + x_offset, -3550 + y_offset),
+        ],
+        ('Kangaroo Flat','Castlemaine'):[
+            (-3200 + x_offset, -3600 + y_offset, -3100 + x_offset, -3350 + y_offset),
+        ],
+        ('Castlemaine','Malmsbury'):[
+            (-3200 + x_offset, -3400 + y_offset, -3100 + x_offset, -3150 + y_offset),
+        ],
+        ('Malmsbury','Kyneton'):[
+            (-3200 + x_offset, -3200 + y_offset, -3100 + x_offset, -2950 + y_offset),
+        ],
+        ('Kyneton','Woodend'):[
+            (-3200 + x_offset, -3000 + y_offset, -3100 + x_offset, -2750 + y_offset),
+        ],
+        ('Woodend','Macedon'):[
+            (-3200 + x_offset, -2800 + y_offset, -3100 + x_offset, -2550 + y_offset),
+        ],
+        ('Macedon','Gisborne'):[
+            (-3200 + x_offset, -2600 + y_offset, -3100 + x_offset, -2350 + y_offset),
+        ],
+        ('Gisborne','Riddells Creek'):[
+            (-3200 + x_offset, -2400 + y_offset, -3100 + x_offset, -2150 + y_offset),
+        ],
+        ('Riddells Creek','Clarkefield'):[
+            (-3200 + x_offset, -2200 + y_offset, -3100 + x_offset, -1950 + y_offset),
+        ],
+        ('Clarkefield','Sunbury'):[
+            (-3200 + x_offset, -2000 + y_offset, -3100 + x_offset, -1850 + y_offset),
+            (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+        ],
+        ('Sunbury','Watergardens'):[
+            (-3200 + x_offset, -1700 + y_offset, -3150 + x_offset, -1450 + y_offset),
+            (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+            (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
+        ],
+        ('Watergardens','Footscray'):[
+            (-3200 + x_offset, -1300 + y_offset, -3150 + x_offset, 0 + y_offset),
+            (-3200 + x_offset, -50 + y_offset, -2950 + x_offset, 0 + y_offset),
+            (-2900 + x_offset, -50 + y_offset, -600 + x_offset, 0 + y_offset),
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
+            (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
+        ],
     },
     
     'ballarat_seperate':{
