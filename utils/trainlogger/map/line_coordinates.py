@@ -1238,7 +1238,56 @@ line_coordinates = {
             (1850 + x_offset, 750 + y_offset, 1900 + x_offset, 1250 + y_offset),
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
         ], 
-        
+        # seymour line
+        ('Seymour','Tallarook'):[
+            (1850 + x_offset, -5050 + y_offset, 1950 + x_offset, -4900 + y_offset),
+            (1550 + x_offset, -5200 + y_offset, 1950 + x_offset, -5050 + y_offset), # seymour station icon
+        ],
+        ('Tallarook','Broadford'):[
+            (1850 + x_offset, -4950 + y_offset, 1950 + x_offset, -4700 + y_offset),
+        ],
+        ('Broadford','Kilmore East'):[
+            (1850 + x_offset, -4750 + y_offset, 1950 + x_offset, -4500 + y_offset),
+        ],
+        ('Kilmore East','Wandong'):[
+            (1850 + x_offset, -4550 + y_offset, 1950 + x_offset, -4300 + y_offset),
+        ],
+        ('Wandong','Heathcote Junction'):[
+            (1850 + x_offset, -4350 + y_offset, 1950 + x_offset, -4100 + y_offset),
+        ],
+        ('Heathcote Junction','Wallan'):[
+            (1850 + x_offset, -4150 + y_offset, 1950 + x_offset, -3900 + y_offset),
+        ],
+        ('Wallan','Donnybrook'):[
+            (1850 + x_offset, -4000 + y_offset, 1950 + x_offset, -3700 + y_offset),
+        ],
+        ('Donnybrook','Craigieburn'):[
+            (1650 + x_offset, -3600 + y_offset, 2050 + x_offset, -3450 + y_offset), # craigieburn coords
+            (1850 + x_offset, -3750 + y_offset, 1950 + x_offset, -3600 + y_offset),
+        ],
+        ('Craigieburn','Broadmeadows'):[
+            (1850 + x_offset, -3450 + y_offset, 1900 + x_offset, -2950 + y_offset),
+            (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
+            (1650 + x_offset, -3600 + y_offset, 2050 + x_offset, -3450 + y_offset), # craigieburn coords
+        ],
+        ('Broadmeadows','Essendon'):[
+            (1850 + x_offset, -2800 + y_offset, 1950 + x_offset, -1450 + y_offset),
+            (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
+        ],
+        ('Essendon','North Melbourne'):[
+            (1850 + x_offset, -1500 + y_offset, 1950 + x_offset, -150 + y_offset),
+            (1850 + x_offset, -100 + y_offset, 1900 + x_offset, 350 + y_offset),
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+        ],
+        ('North Melbourne','Southern Cross'):[
+            (1850 + x_offset, 500 + y_offset, 1900 + x_offset, 1250 + y_offset),
+            (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
+            (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
+            (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+        ],
     },
     
     'ballarat_seperate':{
