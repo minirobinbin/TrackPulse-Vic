@@ -235,7 +235,7 @@ station_coordinates = {
     "Swan Hill": (-3600 + x_offset, -5400 + y_offset, -3001 + x_offset, -5251 + y_offset),
     "Ardeer": (-4100 + x_offset, 0 + y_offset, -3701 + x_offset, 149 + y_offset),
     "Deer Park": (-5150 + x_offset, 0 + y_offset, -4601 + x_offset, 149 + y_offset),
-    "Tarneit": (-5650 + x_offset, 550 + y_offset, -5200 + x_offset, 650 + y_offset),
+    "Tarneit": (-5650 + x_offset, 550 + y_offset, -5200 + x_offset, 700 + y_offset),
     "Wyndham Vale": (-5950 + x_offset, 750 + y_offset, -5250 + x_offset, 900 + y_offset),
     "Little River": (-5800 + x_offset, 900 + y_offset, -5250 + x_offset, 1100 + y_offset),
     "Lara": (-5550 + x_offset, 1100 + y_offset, -5200 + x_offset, 1300 + y_offset),
