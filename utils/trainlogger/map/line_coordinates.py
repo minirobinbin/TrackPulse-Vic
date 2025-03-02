@@ -508,13 +508,13 @@ line_coordinates = {
         (3300 + x_offset, 1950 + y_offset, 3500 + x_offset, 2050 + y_offset),
         (3550 + x_offset, 2000 + y_offset, 4450 + x_offset, 2050 + y_offset),
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
-        (4450 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+        (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
     ],
     ('Flinders Street', 'Richmond'):[
         (3050 + x_offset, 2000 + y_offset, 3500 + x_offset, 2050 + y_offset),
         (3550 + x_offset, 2000 + y_offset, 4500 + x_offset, 2050 + y_offset),
         (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-        (4450 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
+        (4500 + x_offset, 1950 + y_offset, 4600 + x_offset, 2600 + y_offset), # Richmond Coords
         
     ],
 
