@@ -42,7 +42,7 @@ line_coordinates = {
             (200 + x_offset, -2800 + y_offset, 1650 + x_offset, -1250 + y_offset),
             (-2300 + x_offset, -1400 + y_offset, 250 + x_offset, -600 + y_offset),
             (-3050 + x_offset, -700 + y_offset, 200 + x_offset, -600 + y_offset),
-            (-3500 + x_offset, -650 + y_offset, -3300 + x_offset, 200 + y_offset),
+            (-3500 + x_offset, -650 + y_offset, -3310 + x_offset, 200 + y_offset),
             (-3500 + x_offset, 150 + y_offset, -2950 + x_offset, 200 + y_offset),
             (-2900 + x_offset, 150 + y_offset, -2650 + x_offset, 200 + y_offset),
             (-2600 + x_offset, 100 + y_offset, -2500 + x_offset, 200 + y_offset),
@@ -1275,7 +1275,7 @@ line_coordinates = {
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
         ],
         ('Essendon','North Melbourne'):[
-            (1850 + x_offset, -1500 + y_offset, 1950 + x_offset, -150 + y_offset),
+            (1850 + x_offset, -1500 + y_offset, 1950 + x_offset, -160 + y_offset),
             (1850 + x_offset, -100 + y_offset, 1900 + x_offset, 350 + y_offset),
             (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
@@ -1352,8 +1352,8 @@ line_coordinates = {
         # ballarat line
         ('Wendouree','Ballarat'):[
             (-9550 + x_offset, 200 + y_offset, -9400 + x_offset, 450 + y_offset), # wendouree coords
-            (-9400 + x_offset, 200 + y_offset, -9100 + x_offset, 300 + y_offset),
-            (-9050 + x_offset, 200 + y_offset, -8800 + x_offset, 300 + y_offset),
+            (-9400 + x_offset, 200 + y_offset, -9110 + x_offset, 300 + y_offset),
+            (-9040 + x_offset, 200 + y_offset, -8800 + x_offset, 300 + y_offset),
             (-8900 + x_offset, 200 + y_offset, -8750 + x_offset, 500 + y_offset),
         ],
         ('Ballarat','Ballan'):[
@@ -1652,7 +1652,7 @@ line_coordinates = {
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
         ],
         ('Essendon','North Melbourne'):[
-            (1750 + x_offset, -1500 + y_offset, 1850 + x_offset, -150 + y_offset),
+            (1750 + x_offset, -1500 + y_offset, 1850 + x_offset, -160 + y_offset),
             (1750 + x_offset, -100 + y_offset, 1850 + x_offset, 350 + y_offset),
             (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon

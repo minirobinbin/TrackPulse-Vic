@@ -244,7 +244,7 @@ Required:
 **Options:**
 
 Optional:
-    Map_choice: the map you wish to view. You must choose from the list.
+    Mode: the map you wish to view. You must choose from the list.
     User: pick a user who's logs you wish to view. By default it's set to you.
     Year: the year you wish to view the trips for. By default it is set to the current year.''',
         '/myki calculate-fare': '''</myki calculate-fare:1289843416628330507> is a command that allows you to calculate the cost of trip in Victoria to your myki.
