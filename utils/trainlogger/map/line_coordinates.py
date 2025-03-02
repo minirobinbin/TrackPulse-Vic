@@ -1725,6 +1725,51 @@ line_coordinates = {
             (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
             (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
         ],
+        # echuca line
+        ('Echuca','Rochester'):[
+            (-350 + x_offset, -4100 + y_offset, -50 + x_offset, -3950 + y_offset),
+        ],
+        ('Rochester','Elmore'):[
+            (-800 + x_offset, -4050 + y_offset, -300 + x_offset, -3950 + y_offset),
+        ],
+        ('Elmore','Goornong'):[
+            (-1250 + x_offset, -4050 + y_offset, -750 + x_offset, -3950 + y_offset),
+        ],
+        ('Goornong','Huntly'):[
+            (-1700 + x_offset, -4050 + y_offset, -1200 + x_offset, -3950 + y_offset),
+        ],
+        ('Huntly','Epsom'):[
+            (-1950 + x_offset, -4050 + y_offset, -1650 + x_offset, -3950 + y_offset),
+            (-2100 + x_offset, -4100 + y_offset, -1950 + x_offset, -3850 + y_offset), # epsom coords
+        ],
+        ('Epsom','Bendigo'):[
+            (-2100 + x_offset, -4100 + y_offset, -1950 + x_offset, -3850 + y_offset), # epsom coords
+            (-3350 + x_offset, -3850 + y_offset, -3100 + x_offset, -3700 + y_offset), # bendigo coords
+            (-3100 + x_offset, -4050 + y_offset, -2100 + x_offset, -4000 + y_offset),
+            (-3300 + x_offset, -4050 + y_offset, -3150 + x_offset, -4000 + y_offset),
+            (-3300 + x_offset, -4050 + y_offset, -3250 + x_offset, -3850 + y_offset),
+        ],
+        ('Woodend','Macedon'):[
+            (-3300 + x_offset, -2800 + y_offset, -3200 + x_offset, -2550 + y_offset),
+        ],
+        ('Macedon','Gisborne'):[
+            (-3300 + x_offset, -2600 + y_offset, -3200 + x_offset, -2350 + y_offset),
+        ],
+        ('Gisborne','Riddells Creek'):[
+            (-3300 + x_offset, -2400 + y_offset, -3200 + x_offset, -2150 + y_offset),
+        ],
+        ('Riddells Creek','Clarkefield'):[
+            (-3300 + x_offset, -2200 + y_offset, -3200 + x_offset, -1950 + y_offset),
+        ],
+        ('Clarkefield','Sunbury'):[
+            (-3300 + x_offset, -2000 + y_offset, -3200 + x_offset, -1850 + y_offset),
+            (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+        ],
+        ('Sunbury','Watergardens'):[
+            (-3300 + x_offset, -1700 + y_offset, -3250 + x_offset, -1450 + y_offset),
+            (-3350 + x_offset, -1850 + y_offset, -3000 + x_offset, -1700 + y_offset), # Sunbury Coords
+            (-3350 + x_offset, -1450 + y_offset, -3000 + x_offset, -1300 + y_offset), # Watergardens Coords
+        ],
     },
     'ararat/maryborough_seperate':{
         #maryborough line
