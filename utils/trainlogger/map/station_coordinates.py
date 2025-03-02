@@ -44,7 +44,7 @@ station_coordinates = {
     "Heatherdale": (6610 + x_offset, -1000 + y_offset, 7250 + x_offset, -850 + y_offset),
     "Ringwood": (6630 + x_offset, -1200 + y_offset, 7150 + x_offset, -1050 + y_offset),
     "Heathmont": (7150 + x_offset, -1200 + y_offset, 7750 + x_offset, -1050 + y_offset),
-    "Bayswater": (7700 + x_offset, -1200 + y_offset, 8250 + x_offset, -1000 + y_offset),
+    "Bayswater": (7750 + x_offset, -1200 + y_offset, 8300 + x_offset, -1000 + y_offset),
     "Boronia": (8300 + x_offset, -1200 + y_offset, 8700 + x_offset, -1050 + y_offset),
     "Ferntree Gully": (8700 + x_offset, -1200 + y_offset, 9400 + x_offset, -1050 + y_offset),
     "Upper Ferntree Gully": (9400 + x_offset, -1200 + y_offset, 10400 + x_offset, -1000 + y_offset),
