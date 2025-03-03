@@ -41,6 +41,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                     # Find the line that contains these stations
                     if group in ['Alamein', 'Belgrave', 'Craigieburn', 'Cranbourne', 'Glen Waverley', 'Hurstbridge', 'Lilydale', 'Pakenham', 'Sunbury', 'Upfield'] and cols[5] in ['Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = group + " Loop"
+                    elif group == 'City Circle' and cols[5] in ['Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        group = group + " Loop"
                     elif group == 'Frankston' and cols[5] in ['North Williamstown', 'Williamstown Beach', 'Williamstown']:
                         group = 'Williamstown'
                     elif group == 'Frankston' and cols[6] in ['North Williamstown', 'Williamstown Beach', 'Williamstown']:
