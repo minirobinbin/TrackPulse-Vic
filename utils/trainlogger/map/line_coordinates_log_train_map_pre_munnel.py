@@ -1,4 +1,4 @@
-from utils.trainlogger.map.station_coordinates_log_train_map import x_offset, y_offset
+from utils.trainlogger.map.station_coordinates_log_train_map_pre_munnel import x_offset, y_offset
 
 line_coordinates = {
     'standard_guage': {

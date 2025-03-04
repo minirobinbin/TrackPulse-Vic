@@ -1,7 +1,7 @@
 from matplotlib.pylab import f
 from utils.trainlogger.map.mapimage import MapImageHandler
-from utils.trainlogger.map.station_coordinates_log_train_map import x_offset as x_offset_log_train_map, y_offset as y_offset_log_train_map, station_coordinates as station_coordinates_log_train_map
-from utils.trainlogger.map.line_coordinates_log_train_map import line_coordinates as lines_coordinates_log_train_map
+from utils.trainlogger.map.station_coordinates_log_train_map_pre_munnel import x_offset as x_offset_log_train_map_pre_munnel, y_offset as y_offset_log_train_map_pre_munnel, station_coordinates as station_coordinates_log_train_map_pre_munnel
+from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import line_coordinates as lines_coordinates_log_train_map_pre_munnel
 
 metro_date = '2025-12-31' # this is just a placeholder date, replace when the metro tunnel date is confirmed
 
@@ -187,10 +187,10 @@ def logMap(user:str, lines_dictionary:dict, mode:str='log_train_map.png', year:i
                     
                 affected_lines.append((cols[5], cols[6], group))
 
-        x_offset = x_offset_log_train_map
-        y_offset = y_offset_log_train_map
-        station_coordinates = station_coordinates_log_train_map
-        line_coordinates = lines_coordinates_log_train_map
+        x_offset = x_offset_log_train_map_pre_munnel
+        y_offset = y_offset_log_train_map_pre_munnel
+        station_coordinates = station_coordinates_log_train_map_pre_munnel
+        line_coordinates = lines_coordinates_log_train_map_pre_munnel
         
     # do the map gen
     map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)
