@@ -55,6 +55,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                         group = 'Epsom'
                     elif group == 'Bendigo' and 'Eaglehawk' in [str(cols[5]), str(cols[6])]:
                         group = 'Eaglehawk'
+                    if group == 'Werribee' and cols[5] not in ['Seaholme', 'Altona', 'Westona'] and cols[6] not in ['Seaholme', 'Altona', 'Westona']:
+                        group = 'Werribee Express'
                     print(group)
                     for line_name, line_info in lines_dictionary.items():
                         if line_name == group:
