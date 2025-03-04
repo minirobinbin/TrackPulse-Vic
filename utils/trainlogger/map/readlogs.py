@@ -71,8 +71,8 @@ def postprecompat(data:list, lines_dictionary:dict):
 
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='log_train_map.png', year:int=0):
-    if mode == 'log_train_map.png':
+def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', year:int=0):
+    if mode == 'time_based_variants/log_train_map_pre_munnel.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
         file.close()

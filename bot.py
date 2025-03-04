@@ -322,7 +322,7 @@ lines_dictionary_main = {
     'Unknown/Other':[[None], ptv_grey],
 }
 
-lines_dictionary_log_train_map = {
+lines_dictionary_log_train_map_pre_munnel = {
     'Alamein': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
     'Alamein Loop': [['Flinders Street', 'Southern Cross', 'Flagstaff', 'Melbourne Central', 'Parliament', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
     'Belgrave': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
@@ -4428,7 +4428,7 @@ async def profile(ctx, user: discord.User = None):
 # map view command
 @maps.command(name='view', description='View the maps the bot uses')
 @app_commands.choices(mode=[
-        app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
+        app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
@@ -4442,7 +4442,7 @@ async def viewMaps(ctx, mode: str):
         compressed = compress(uncompressed)
         compressed.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
-        if mode == "log_train_map.png":
+        if mode == "time_based_variants/log_train_map_pre_munnel.png":
             embed = discord.Embed(title=f"Map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
@@ -4481,9 +4481,9 @@ async def viewMaps(ctx, mode: str):
 # map trip command
 @maps.command(name='trips', description="View a map of all the trips you've logged")
 @app_commands.choices(mode=[
-        app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
+        app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
 ])
-async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None, year: int=0):
+async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
@@ -4497,7 +4497,7 @@ async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None,
             target_user = user.name
 
         try:
-            await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map, mode, year)
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, year)
         except FileNotFoundError:
             await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
             return
