@@ -1,4 +1,4 @@
 from utils.trainlogger.map.readlogs import logMap
-from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel
+from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel, lines_dictionary_log_train_map_post_munnel
 
-logMap('comeng17',lines_dictionary_log_train_map_pre_munnel,"time_based_variants/log_train_map_pre_munnel.png")
+logMap('comeng17',lines_dictionary_log_train_map_pre_munnel,"time_based_variants/log_train_map_post_munnel.png")
