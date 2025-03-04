@@ -5,7 +5,7 @@ from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import line
 
 metro_date = '2025-12-31' # this is just a placeholder date, replace when the metro tunnel date is confirmed
 
-def postprecompat(data:list, lines_dictionary:dict):
+def precompat(data:list, lines_dictionary:dict):
     newdata = []
     for line in data:
         cols = line.strip().split(',')
@@ -22,12 +22,12 @@ def postprecompat(data:list, lines_dictionary:dict):
             metro_day = int(metro_date.split('-')[2])
             if trip_year >= metro_year + 1 or (trip_year == metro_year and trip_month >= metro_month + 1) or (trip_year == metro_year and trip_month == metro_month and trip_day >= metro_day):
                 if group == 'Frankston':
-                    if station1 in ['Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    if station1 in ['Flagstaff','Parliament','Melbourne Central'] and station2 in ['Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
-                    elif station1 in ['Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station1 in ['Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station1 = '*Flinders Street'
-                    elif station2 in ['Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        station1 = '*Southern Cross'
+                    elif station2 in ['Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Richmond'
                 elif group == 'Sandringham':
@@ -152,6 +152,95 @@ def postprecompat(data:list, lines_dictionary:dict):
         newdata.append(line)
     return newdata
 
+def postcompat(data:list, lines_dictionary:dict):
+    newdata = []
+    for line in data:
+        cols = line.strip().split(',')
+        if len(cols) >= 6:
+            trip_date = cols[3]
+            group = cols[4]
+            station1=cols[5]
+            station2=cols[6]
+            trip_year = int(trip_date.split('-')[0])
+            trip_month = int(trip_date.split('-')[1])
+            trip_day = int(trip_date.split('-')[2])
+            metro_year = int(metro_date.split('-')[0])
+            metro_month = int(metro_date.split('-')[1])
+            metro_day = int(metro_date.split('-')[2])
+            if trip_year <= metro_year - 1 or (trip_year == metro_year and trip_month <= metro_month - 1) or (trip_year == metro_year and trip_month == metro_month and trip_day <= metro_day - 1):
+                if group == 'Frankston':
+                    if station1 in lines_dictionary['Werribee'][0] and station2 in lines_dictionary['Werribee'][0]:
+                        group = 'Werribee'
+                    elif station1 in lines_dictionary['Williamstown'][0] and station2 in lines_dictionary['Williamstown'][0]:
+                        group = 'Williamstown'
+                    elif station1 in lines_dictionary['Werribee'][0] and station1 not in lines_dictionary['Frankston'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Werribee,{station1},*South Yarra,')
+                        station1 = '*Southern Cross'
+                    elif station1 in lines_dictionary['Williamstown'][0] and station1 not in lines_dictionary['Frankston'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Williamstown,{station1},*South Yarra,')
+                        station1 = '*Southern Cross'
+                    elif station2 in lines_dictionary['Werribee'][0] and station2 not in lines_dictionary['Frankston'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Werribee,*South Yarra,{station2},')
+                        station2 = '*Southern Cross'
+                    elif station2 in lines_dictionary['Williamstown'][0] and station2 not in lines_dictionary['Frankston'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Williamstown,*South Yarra,{station2},')
+                        station2 = '*Southern Cross'
+                    if station2 in ['Flinders Street','Southern Cross']:
+                        group = 'Frankston Loop'
+                if group == 'Werribee':
+                    if station1 in lines_dictionary['Frankston'][0] and station2 in lines_dictionary['Frankston'][0]:
+                        if station2 in ['Flinders Street','Southern Cross']:
+                            group = 'Frankston Loop'
+                        else:
+                            group = 'Frankston'
+                    elif station1 in lines_dictionary['Frankston'][0] and station1 not in lines_dictionary['Werribee'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston Loop,{station1},*Southern Cross,')
+                        station1 = '*South Yarra'
+                    elif station2 in lines_dictionary['Frankston'][0] and station2 not in lines_dictionary['Werribee'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston,*Southern Cross,{station2},')
+                        station2 = '*South Yarra'
+                if group == 'Williamstown':
+                    if station1 in lines_dictionary['Frankston'][0] and station2 in lines_dictionary['Frankston'][0]:
+                        if station2 in ['Flinders Street','Southern Cross']:
+                            group = 'Frankston Loop'
+                        else:
+                            group = 'Frankston'
+                    elif station1 in lines_dictionary['Frankston'][0] and station1 not in lines_dictionary['Williamstown'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston Loop,{station1},*Southern Cross,')
+                        station1 = '*South Yarra'
+                    elif station2 in lines_dictionary['Frankston'][0] and station2 not in lines_dictionary['Williamstown'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston,*Southern Cross,{station2},')
+                        station2 = '*South Yarra'
+                if group == 'Pakenham':
+                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        group = 'Unknown'
+                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station1 = '*Caulfield'
+                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station2 = '*Caulfield'
+                if group == 'Cranbourne':
+                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        group = 'Unknown'
+                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station1 = '*Caulfield'
+                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station2 = '*Caulfield'
+                if group == 'Sunbury':
+                    if station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        group = 'Unknown'
+                    elif station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station1 = '*Caulfield'
+                    elif station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
+                        station2 = '*Caulfield'
+            line = f"{cols[0]},{cols[1]},{cols[2]},{trip_date},{group},{station1},{station2},"
+        newdata.append(line)
+    return newdata
 
 
 def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', year:int=0):
@@ -160,7 +249,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
         data = file.readlines()
         file.close()
 
-        data = postprecompat(data, lines_dictionary)
+        data = precompat(data, lines_dictionary)
 
         stations = []
         for line in data:
