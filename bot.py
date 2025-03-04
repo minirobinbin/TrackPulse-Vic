@@ -82,6 +82,7 @@ from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress
+from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel, lines_dictionary_log_train_map_post_munnel
 
 
 
@@ -320,40 +321,6 @@ lines_dictionary_main = {
     'Werribee': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
     'Williamstown': [['Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
     'Unknown/Other':[[None], ptv_grey],
-}
-
-lines_dictionary_map = {
-    'Alamein': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
-    'Belgrave': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
-    'Craigieburn': [['Southern Cross', 'Flinders Street', 'Parliament', 'Melbourne Central', 'Flagstaff', 'North Melbourne', 'Kensington', 'Newmarket', 'Ascot Vale', 'Moonee Ponds', 'Essendon', 'Glenbervie', 'Strathmore', 'Pascoe Vale', 'Oak Park', 'Glenroy', 'Jacana', 'Broadmeadows', 'Coolaroo', 'Roxburgh Park', 'Craigieburn'],0xfcb818],
-    'Cranbourne': [['Flinders Street', 'Southern Cross', 'Flagstaff', 'Melbourne Central', 'Parliament', 'Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Lynbrook', 'Merinda Park', 'Cranbourne'],0x00a8e4],
-    'Flemington Racecourse': [['Flemington Racecourse', 'Showgrounds', 'North Melbourne', 'Southern Cross', 'Flinders Street'],0x8a8c8f],
-    'Frankston': [['Flinders Street', 'Richmond', 'South Yarra', 'Hawksburn', 'Toorak', 'Armadale', 'Malvern', 'Caulfield', 'Glen Huntly', 'Ormond', 'McKinnon', 'Bentleigh', 'Patterson', 'Moorabbin', 'Highett', 'Southland', 'Cheltenham', 'Mentone', 'Parkdale', 'Mordialloc', 'Aspendale', 'Edithvale', 'Chelsea', 'Bonbeach', 'Carrum', 'Seaford', 'Kananook', 'Frankston'],0x009645],
-    'Glen Waverley': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Heyington', 'Kooyong', 'Tooronga', 'Gardiner', 'Glen Iris', 'Darling', 'East Malvern', 'Holmesglen', 'Jordanville', 'Mount Waverley', 'Syndal', 'Glen Waverley'],0x01518a],
-    'Hurstbridge': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Westgarth', 'Dennis', 'Fairfield', 'Alphington', 'Darebin', 'Ivanhoe', 'Eaglemont', 'Heidelberg', 'Rosanna', 'Macleod', 'Watsonia', 'Greensborough', 'Montmorency', 'Eltham', 'Diamond Creek', 'Wattle Glen', 'Hurstbridge'],0xd0202e],
-    'Lilydale': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Ringwood East', 'Croydon', 'Mooroolbark', 'Lilydale'],0x01518a],
-    'Mernda': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Jolimont', 'West Richmond', 'North Richmond', 'Collingwood', 'Victoria Park', 'Clifton Hill', 'Rushall', 'Merri', 'Northcote', 'Croxton', 'Thornbury', 'Bell', 'Preston', 'Regent', 'Reservoir', 'Ruthven', 'Keon Park', 'Thomastown', 'Lalor', 'Epping', 'South Morang', 'Middle Gorge', 'Hawkstowe', 'Mernda'],0xd0202e],
-    'Pakenham': [['Flinders Street', 'Southern Cross', 'Flagstaff', 'Melbourne Central', 'Parliament', 'Richmond', 'South Yarra', 'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Oakleigh', 'Huntingdale', 'Clayton', 'Westall', 'Springvale', 'Sandown Park', 'Noble Park', 'Yarraman', 'Dandenong', 'Hallam', 'Narre Warren', 'Berwick', 'Beaconsfield', 'Officer', 'Cardinia Road', 'Pakenham','East Pakenham'],0x00a8e4],
-    'Sandringham': [['Flinders Street', 'Richmond', 'South Yarra', 'Prahran', 'Windsor', 'Balaclava', 'Ripponlea', 'Elsternwick', 'Gardenvale', 'North Brighton', 'Middle Brighton', 'Brighton Beach', 'Hampton', 'Sandringham'],0xf17fb1],
-    'Stony Point': [['Stony Point', 'Crib Point', 'Morradoo', 'Bittern', 'Hastings', 'Tyabb', 'Somerville', 'Baxter', 'Leawarra', 'Frankston'],0x009645],
-    'Sunbury': [['Southern Cross', 'Flinders Street', 'Parliament', 'Melbourne Central', 'Flagstaff', 'North Melbourne', 'Footscray', 'Middle Footscray', 'West Footscray', 'Tottenham', 'Sunshine', 'Albion', 'Ginifer', 'St Albans', 'Keilor Plains', 'Watergardens', 'Diggers Rest', 'Sunbury'],0xfcb818],
-    'Upfield': [['Southern Cross', 'Flinders Street', 'Parliament', 'Melbourne Central', 'Flagstaff', 'North Melbourne', 'Macaulay', 'Flemington Bridge', 'Royal Park', 'Jewell', 'Brunswick', 'Anstey', 'Moreland', 'Coburg', 'Batman', 'Merlynston', 'Fawkner', 'Gowrie', 'Upfield'],0xfcb818],
-    'Werribee': [['Frankston', 'Kananook', 'Seaford', 'Carrum', 'Bonbeach', 'Chelsea', 'Edithvale', 'Aspendale', 'Mordialloc', 'Parkdale', 'Mentone', 'Cheltenham', 'Southland', 'Highett', 'Moorabbin', 'Patterson', 'Bentleigh', 'McKinnon', 'Ormond', 'Glen Huntly', 'Caulfield', 'Malvern', 'Armadale', 'Toorak', 'Hawksburn', 'South Yarra', 'Richmond', 'Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'Seaholme', 'Altona', 'Westona', 'Laverton', 'Aircraft', 'Williams Landing', 'Hoppers Crossing', 'Werribee'],0x009645],
-    'Williamstown': [['Frankston', 'Kananook', 'Seaford', 'Carrum', 'Bonbeach', 'Chelsea', 'Edithvale', 'Aspendale', 'Mordialloc', 'Parkdale', 'Mentone', 'Cheltenham', 'Southland', 'Highett', 'Moorabbin', 'Patterson', 'Bentleigh', 'McKinnon', 'Ormond', 'Glen Huntly', 'Caulfield', 'Malvern', 'Armadale', 'Toorak', 'Hawksburn', 'South Yarra', 'Richmond', 'Flinders Street', 'Southern Cross', 'North Melbourne', 'South Kensington', 'Footscray', 'Seddon', 'Yarraville', 'Spotswood', 'Newport', 'North Williamstown', 'Williamstown Beach', 'Williamstown'],0x009645],
-    'Albury': [['Southern Cross', 'Broadmeadows', 'Seymour', 'Avenel', 'Euroa', 'Violet Town', 'Benalla', 'Wangaratta', 'Springhurst', 'Chiltern', 'Wodonga', 'Albury'],0x782f9a],
-    'Ararat': [['Southern Cross', 'Footscray', 'Sunshine', 'Ardeer', 'Deer Park', 'Caroline Springs', 'Rockbank', 'Cobblebank', 'Melton', 'Bacchus Marsh', 'Ballan', 'Ballarat', 'Wendouree', 'Beaufort', 'Ararat'],0x782f9a],
-    'Bairnsdale': [['Southern Cross', 'Flinders Street', 'Richmond', 'Caulfield', 'Clayton', 'Dandenong', 'Pakenham', 'Nar Nar Goon', 'Tynong', 'Garfield', 'Bunyip', 'Longwarry', 'Drouin', 'Warragul', 'Yarragon', 'Trafalgar', 'Moe', 'Morwell', 'Traralgon', 'Rosedale', 'Sale', 'Stratford', 'Bairnsdale'],0x782f9a],
-    'Ballarat': [['Southern Cross', 'Footscray', 'Sunshine', 'Ardeer', 'Deer Park', 'Caroline Springs', 'Rockbank', 'Cobblebank', 'Melton', 'Bacchus Marsh', 'Ballan', 'Ballarat', 'Wendouree'],0x782f9a],
-    'Bendigo': [['Southern Cross', 'Footscray', 'Watergardens', 'Sunbury', 'Clarkefield', 'Riddells Creek', 'Gisborne', 'Macedon', 'Woodend', 'Kyneton', 'Malmsbury', 'Castlemaine', 'Kangaroo Flat', 'Bendigo'],0x782f9a],
-    'Echuca': [['Southern Cross', 'Footscray', 'Watergardens', 'Sunbury', 'Clarkefield', 'Riddells Creek', 'Gisborne', 'Macedon', 'Woodend', 'Kyneton', 'Malmsbury', 'Castlemaine', 'Kangaroo Flat', 'Bendigo', 'Epsom', 'Huntly', 'Goornong', 'Elmore', 'Rochester', 'Echuca'],0x782f9a],
-    'Geelong': [['Southern Cross', 'Footscray', 'Sunshine', 'Deer Park', 'Tarneit', 'Wyndham Vale', 'Little River', 'Lara', 'Corio', 'North Shore', 'North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds'],0x782f9a],
-    'Maryborough':[['Southern Cross', 'Footscray', 'Sunshine', 'Ardeer', 'Deer Park', 'Caroline Springs', 'Rockbank', 'Cobblebank', 'Melton', 'Bacchus Marsh', 'Ballan', 'Ballarat', 'Creswick', 'Clunes', 'Talbot', 'Maryborough'],0x782f9a],
-    'Seymour': [['Southern Cross', 'Essendon', 'Broadmeadows', 'Craigieburn', 'Donnybrook', 'Wallan', 'Heathcote Junction', 'Wandong', 'Kilmore East', 'Broadford', 'Tallarook', 'Seymour'],0x782f9a],
-    'Shepparton': [['Southern Cross', 'Essendon', 'Broadmeadows', 'Craigieburn', 'Donnybrook', 'Wallan', 'Heathcote Junction', 'Wandong', 'Kilmore East', 'Broadford', 'Tallarook', 'Seymour', 'Nagambie', 'Murchison East', 'Mooroopna', 'Shepparton'],0x782f9a],
-    'Swan Hill': [['Southern Cross', 'Footscray', 'Watergardens', 'Gisborne', 'Woodend', 'Kyneton', 'Malmsbury', 'Castlemaine', 'Kangaroo Flat', 'Bendigo', 'Eaglehawk', 'Raywood', 'Dingee', 'Pyramid', 'Kerang', 'Swan Hill'],0x782f9a],
-    'Traralgon': [['Southern Cross', 'Flinders Street', 'Richmond', 'Caulfield', 'Clayton', 'Dandenong', 'Berwick', 'Pakenham', 'Nar Nar Goon', 'Tynong', 'Garfield', 'Bunyip', 'Longwarry', 'Drouin', 'Warragul', 'Yarragon', 'Trafalgar', 'Moe', 'Morwell', 'Traralgon'],0x782f9a],
-    'Warrnambool': [['Southern Cross', 'Footscray', 'Deer Park', 'Tarneit', 'Wyndham Vale', 'Little River', 'Lara', 'Corio', 'North Shore', 'North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds', 'Winchelsea', 'Birregurra', 'Colac', 'Camperdown', 'Terang', 'Sherwood', 'Warrnambool'],0x782f9a],
-    'Unknown/Other': [[None], ptv_grey],
 }
 
 # Group commands
@@ -4444,7 +4411,7 @@ async def profile(ctx, user: discord.User = None):
 
 # map view command
 @maps.command(name='view', description='View the maps the bot uses')
-@app_commands.choices(map_choice=[
+@app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
@@ -4459,7 +4426,7 @@ async def viewMaps(ctx, map_choice: str):
         compressed = compress(uncompressed)
         compressed.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
-        if map_choice == "log_train_map.png":
+        if mode == "log_train_map.png":
             embed = discord.Embed(title=f"Map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(1002449671224041502)
             pfp = user.avatar.url
@@ -4495,6 +4462,51 @@ async def viewMaps(ctx, map_choice: str):
     except Exception as e:
         await printlog(e)
 
+# map trip command
+@maps.command(name='trips', description="View a map of all the trips you've logged")
+@app_commands.choices(mode=[
+        app_commands.Choice(name="Victorian Trains", value="log_train_map.png"),
+])
+async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None, year: int=0):
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'maps-trips')
+    await printlog(f"Making trip map for {str(ctx.user.id)}")
+
+    async def generate_map():
+        if user == None:
+            username = ctx.user.name
+            target_user = ctx.user.name
+        else:
+            username = user.name
+            target_user = user.name
+
+        try:
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, year=year)
+        except FileNotFoundError:
+            await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
+            return
+        except Exception as e:
+            await ctx.followup.send(f'Error:\n```{e}```')
+            return
+       # Send the map once generated
+        try:
+            file = discord.File(f'temp/{username}.png', filename='map.png')
+            year_str = '' if year == 0 else f'in {str(year)}'
+            imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+            embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                                color=0xb8b8b8, 
+                                description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+            embed.set_image(url="attachment://map.png")
+            user_pic = await bot.fetch_user(1002449671224041502)
+            pfp = user_pic.avatar.url
+            embed.set_author(name="Map by Comeng17", icon_url=pfp)
+            embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+            await ctx.followup.send(embed=embed, file=file)
+        except Exception as e:
+            await ctx.followup.send(f'Error sending map:\n```{e}```')
+
+    # Start the async map generation
+    asyncio.create_task(generate_map())
 
 # achievement commands
 @bot.command()
