@@ -159,6 +159,13 @@ line_coordinates = {
             (3400 + x_offset, 1850 + y_offset, 3500 + x_offset, 1950 + y_offset),
             (3550 + x_offset, 1700 + y_offset, 4250 + x_offset, 1950 + y_offset),
         ],
+
+        ('Parliament','Flinders Street'):[
+            (3200 + x_offset, 1400 + y_offset, 3250 + x_offset, 1950 + y_offset),
+            (3000 + x_offset, 1900 + y_offset, 3250 + x_offset, 1950 + y_offset),
+            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
+            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        ],
         
         # begin the mernda line but it dosn't go to its initial locations
         ('Mernda', 'Hawkstowe'): [
