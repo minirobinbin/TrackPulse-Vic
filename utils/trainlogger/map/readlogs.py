@@ -371,7 +371,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
         data = file.readlines()
         file.close()
 
-        data = precompat(data, lines_dictionary)
+        data = postcompat(data, lines_dictionary)
 
         stations = []
         for line in data:
