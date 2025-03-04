@@ -72,21 +72,21 @@ def precompat(data:list, lines_dictionary:dict):
                         group = 'Sunbury'
                     elif station1 in lines_dictionary['Sunbury'][0] and station1 not in lines_dictionary['Pakenham'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Sunbury,{station1},*Footscray,')
-                        station1 = '*Caulfield'
+                        station1 = '*Malvern'
                     elif station2 in lines_dictionary['Sunbury'][0] and station2 not in lines_dictionary['Pakenham'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Sunbury,*Footscray,{station2},')
-                        station2 = '*Caulfield'
+                        station2 = '*Malvern'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden'] and station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         group = 'Unknown'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         if station2 in lines_dictionary['Pakenham'][0]:
-                            station1 = '*Caulfield'
+                            station1 = '*Malvern'
                         else:
                             group = 'Sunbury'
                             station1 = '*Footscray'
                     elif station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         if station1 in lines_dictionary['Pakenham'][0]:
-                            station2 = '*Caulfield'
+                            station2 = '*Malvern'
                         else:
                             group = 'Sunbury'
                             station2 = '*Footscray'
@@ -95,21 +95,21 @@ def precompat(data:list, lines_dictionary:dict):
                         group = 'Sunbury'
                     elif station1 in lines_dictionary['Sunbury'][0] and station1 not in lines_dictionary['Cranbourne'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Sunbury,{station1},*Footscray,')
-                        station1 = '*Caulfield'
+                        station1 = '*Malvern'
                     elif station2 in lines_dictionary['Sunbury'][0] and station2 not in lines_dictionary['Cranbourne'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Sunbury,*Footscray,{station2},')
-                        station2 = '*Caulfield'
+                        station2 = '*Malvern'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden'] and station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         group = 'Unknown'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         if station2 in lines_dictionary['Cranbourne'][0]:
-                            station1 = '*Caulfield'
+                            station1 = '*Malvern'
                         else:
                             group = 'Sunbury'
                             station1 = '*Footscray'
                     elif station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         if station1 in lines_dictionary['Cranbourne'][0]:
-                            station2 = '*Caulfield'
+                            station2 = '*Malvern'
                         else:
                             group = 'Sunbury'
                             station2 = '*Footscray'
@@ -119,16 +119,16 @@ def precompat(data:list, lines_dictionary:dict):
                     elif station1 in lines_dictionary['Cranbourne'][0] and station2 in lines_dictionary['Cranbourne'][0]:
                         group = 'Cranbourne'
                     elif station1 in lines_dictionary['Pakenham'][0] and station1 not in lines_dictionary['Sunbury'][0]:
-                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,{station1},*Caulfield,')
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,{station1},*Malvern,')
                         station1 = '*Footscray'
                     elif station1 in lines_dictionary['Cranbourne'][0] and station1 not in lines_dictionary['Sunbury'][0]:
-                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,{station1},*Caulfield,')
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,{station1},*Malvern,')
                         station1 = '*Footscray'
                     elif station2 in lines_dictionary['Pakenham'][0] and station2 not in lines_dictionary['Sunbury'][0]:
-                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,*Caulfield,{station2},')
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,*Malvern,{station2},')
                         station2 = '*Footscray'
                     elif station2 in lines_dictionary['Cranbourne'][0] and station2 not in lines_dictionary['Sunbury'][0]:
-                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,*Caulfield,{station2},')
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,*Malvern,{station2},')
                         station2 = '*Footscray'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden'] and station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         group = 'Unknown'
@@ -137,19 +137,19 @@ def precompat(data:list, lines_dictionary:dict):
                             station1 = '*Footscray'
                         elif station2 in lines_dictionary['Pakenham'][0]:
                             group = 'Pakenham'
-                            station1 = '*Caulfield'
+                            station1 = '*Malvern'
                         else:
                             group = 'Cranbourne'
-                            station1 = '*Caulfield'
+                            station1 = '*Malvern'
                     elif station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
                         if station1 in lines_dictionary['Sunbury'][0]:
                             station2 = '*Footscray'
                         elif station1 in lines_dictionary['Pakenham'][0]:
                             group = 'Pakenham'
-                            station2 = '*Caulfield'
+                            station2 = '*Malvern'
                         else:
                             group = 'Cranbourne'
-                            station2 = '*Caulfield'
+                            station2 = '*Malvern'
             line = f"{cols[0]},{cols[1]},{cols[2]},{trip_date},{group},{station1},{station2},"
         newdata.append(line)
     return newdata
@@ -218,28 +218,28 @@ def postcompat(data:list, lines_dictionary:dict):
                         group = 'Unknown'
                     elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station1 = '*Caulfield'
+                        station1 = '*Malvern'
                     elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station2 = '*Caulfield'
+                        station2 = '*Malvern'
                 if group == 'Cranbourne':
                     if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
                     elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station1 = '*Caulfield'
+                        station1 = '*Malvern'
                     elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station2 = '*Caulfield'
+                        station2 = '*Malvern'
                 if group == 'Sunbury':
                     if station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
                     elif station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station1 = '*Caulfield'
+                        station1 = '*Malvern'
                     elif station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station2 = '*Caulfield'
+                        station2 = '*Malvern'
             line = f"{cols[0]},{cols[1]},{cols[2]},{trip_date},{group},{station1},{station2},"
         newdata.append(line)
     return newdata
@@ -458,7 +458,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             cols = line.strip().split(',')
             if len(cols) >= 6:
                 # convert to group names
-                if cols[4] in ['Werribee', 'Williamstown','Frankston']:
+                if cols[4] in ['Werribee', 'Williamstown', 'Sandringham']:
                     group = 'cross_city'
                 elif cols[4] in ['Lilydale','Belgrave','Alamein','Glen Waverley']:
                     group = 'burnley'

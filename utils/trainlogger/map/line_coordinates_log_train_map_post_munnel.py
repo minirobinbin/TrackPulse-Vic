@@ -270,7 +270,7 @@ line_coordinates = {
         ],
         ('South Yarra', 'Richmond'):[
             (4600 + x_offset, 2350 + y_offset, 5000 + x_offset, 2450 + y_offset),
-            (4950 + x_offset, 2350 + y_offset, 5000 + x_offset, 2800 + y_offset),
+            (5150 + x_offset, 2350 + y_offset, 5200 + x_offset, 2800 + y_offset),
             (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
             (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
@@ -714,40 +714,6 @@ line_coordinates = {
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
         ],
-        ('Richmond','Flinders Street'): [
-            (3050 + x_offset, 2100 + y_offset, 4550 + x_offset, 2150 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
-            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-        ],
-        ('Flinders Street','Southern Cross'): [
-            (1950 + x_offset, 2100 + y_offset, 2900 + x_offset, 2150 + y_offset),
-            (1950 + x_offset, 1400 + y_offset, 2000 + x_offset, 2150 + y_offset),
-            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
-            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
-        ],
-        ('Southern Cross','Flagstaff'): [
-            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
-            (1950 + x_offset, 700 + y_offset, 2000 + x_offset, 1250 + y_offset),
-            (1950 + x_offset, 700 + y_offset, 2350 + x_offset, 750 + y_offset),
-            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
-        ],
-        ('Flagstaff','Melbourne Central'): [
-            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
-            (2500 + x_offset, 650 + y_offset, 2900 + x_offset, 750 + y_offset),
-            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
-        ],
-        ('Melbourne Central','Parliament'): [
-            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
-            (3050 + x_offset, 700 + y_offset, 3550 + x_offset, 750 + y_offset),
-            (3450 + x_offset, 700 + y_offset, 3600 + x_offset, 1250 + y_offset),
-            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
-        ],
-        ('Parliament','Richmond'): [
-            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
-            (3500 + x_offset, 1400 + y_offset, 3550 + x_offset, 2150 + y_offset),
-            (3500 + x_offset, 2100 + y_offset, 4500 + x_offset, 2150 + y_offset),
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
-        ],
         # cranbourne branch
         ('Cranbourne','Merinda Park'): [
             (11950 + x_offset, 4950 + y_offset, 12100 + x_offset, 5200 + y_offset),
@@ -853,10 +819,39 @@ line_coordinates = {
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
         ],
-        ('Richmond', 'Flinders Street'):[
+        ('Richmond','Flinders Street'): [
+            (3050 + x_offset, 2100 + y_offset, 4550 + x_offset, 2150 + y_offset),
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
-            (3050 + x_offset, 2350 + y_offset, 4500 + x_offset, 2450 + y_offset),
             (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        ],
+        ('Flinders Street','Southern Cross'): [
+            (1950 + x_offset, 2100 + y_offset, 2900 + x_offset, 2150 + y_offset),
+            (1950 + x_offset, 1400 + y_offset, 2000 + x_offset, 2150 + y_offset),
+            (2900 + x_offset, 1750 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+        ],
+        ('Southern Cross','Flagstaff'): [
+            (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
+            (1950 + x_offset, 700 + y_offset, 2000 + x_offset, 1250 + y_offset),
+            (1950 + x_offset, 700 + y_offset, 2350 + x_offset, 750 + y_offset),
+            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+        ],
+        ('Flagstaff','Melbourne Central'): [
+            (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+            (2500 + x_offset, 650 + y_offset, 2900 + x_offset, 750 + y_offset),
+            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+        ],
+        ('Melbourne Central','Parliament'): [
+            (2900 + x_offset, 650 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+            (3050 + x_offset, 700 + y_offset, 3550 + x_offset, 750 + y_offset),
+            (3450 + x_offset, 700 + y_offset, 3600 + x_offset, 1250 + y_offset),
+            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
+        ],
+        ('Parliament','Richmond'): [
+            (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coord
+            (3500 + x_offset, 1400 + y_offset, 3550 + x_offset, 2150 + y_offset),
+            (3500 + x_offset, 2100 + y_offset, 4500 + x_offset, 2150 + y_offset),
+            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
 
     },
@@ -1044,7 +1039,7 @@ line_coordinates = {
         ('North Melbourne','Showgrounds'): [
             (1621 + x_offset, 492 + y_offset, 1717 + x_offset, 684 + y_offset),
             (1612 + x_offset, -100 + y_offset, 1708 + x_offset, 345 + y_offset),
-            (1633 + x_offset, -1020 + y_offset, 1717 + x_offset, -156 + y_offset),
+            (1633 + x_offset, -1020 + y_offset, 1717 + x_offset, 350 + y_offset),
             (1300 + x_offset, -1050 + y_offset, 1700 + x_offset, -900 + y_offset),
             (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
@@ -1274,8 +1269,7 @@ line_coordinates = {
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
         ],
         ('Essendon','North Melbourne'):[
-            (1850 + x_offset, -1500 + y_offset, 1950 + x_offset, -160 + y_offset),
-            (1850 + x_offset, -100 + y_offset, 1900 + x_offset, 350 + y_offset),
+            (1850 + x_offset, -1500 + y_offset, 1950 + x_offset, 350 + y_offset),
             (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
             (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
@@ -1485,15 +1479,15 @@ line_coordinates = {
             (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
         ],
         ('Clayton','Caulfield'): [
-            (5050 + x_offset, 4550 + y_offset, 8400 + x_offset, 4600 + y_offset),
-            (5050 + x_offset, 4250 + y_offset, 5100 + x_offset, 4600 + y_offset),
+            (5100 + x_offset, 4550 + y_offset, 8400 + x_offset, 4600 + y_offset),
+            (5100 + x_offset, 4250 + y_offset, 5150 + x_offset, 4600 + y_offset),
             (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5050 + x_offset, 2900 + y_offset, 5100 + x_offset, 4150 + y_offset),
-            (5050 + x_offset, 2300 + y_offset, 5100 + x_offset, 2850 + y_offset),
-            (4650 + x_offset, 2250 + y_offset, 5100 + x_offset, 2350 + y_offset),
+            (5100 + x_offset, 2900 + y_offset, 5150 + x_offset, 4150 + y_offset),
+            (5100 + x_offset, 2300 + y_offset, 5150 + x_offset, 2850 + y_offset),
+            (4650 + x_offset, 2250 + y_offset, 5150 + x_offset, 2350 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
@@ -1651,8 +1645,7 @@ line_coordinates = {
             (1550 + x_offset, -2950 + y_offset, 2049 + x_offset, -2801 + y_offset), # broadmeadows station icon
         ],
         ('Essendon','North Melbourne'):[
-            (1750 + x_offset, -1500 + y_offset, 1850 + x_offset, -160 + y_offset),
-            (1750 + x_offset, -100 + y_offset, 1850 + x_offset, 350 + y_offset),
+            (1750 + x_offset, -1500 + y_offset, 1850 + x_offset, 350 + y_offset),
             (1200 + x_offset, 350 + y_offset, 1339 + x_offset, 499 + y_offset), # North Melbourne icon
             (1300 + x_offset, 400 + y_offset, 1649 + x_offset, 449 + y_offset), # North Melbourne icon
             (1602 + x_offset, 350 + y_offset, 2049 + x_offset, 499 + y_offset), # North Melbourne icon
