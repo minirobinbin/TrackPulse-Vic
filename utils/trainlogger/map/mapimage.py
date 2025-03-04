@@ -3,8 +3,6 @@ import tkinter as tk
 from PIL import ImageTk
 from matplotlib.pylab import f
 import math
-from utils.trainlogger.map.station_coordinates import x_offset, y_offset, station_coordinates
-from utils.trainlogger.map.line_coordinates import x_offset, y_offset, line_coordinates
 
 dpi = 32/96
 padding = 1.2
@@ -24,9 +22,13 @@ def compress(image: Image):
         print(e)
 
 class MapImageHandler:
-    def __init__(self, map_image_path, station_order_dictionary):
+    def __init__(self, map_image_path, station_order_dictionary, x_offset, y_offset, station_coordinates, line_coordinates):
         self.station_order = station_order_dictionary
         self.map_image = Image.open(map_image_path)
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.station_coordinates = station_coordinates
+        self.line_coordinates = line_coordinates
         print('Initalised the map maker')
         
     def highlight_map(self, station_pairs, output_path, stations):
@@ -52,8 +54,8 @@ class MapImageHandler:
         
         # Create holes for stations
         for station in stations:
-            if station in station_coordinates:
-                coords = station_coordinates[station]
+            if station in self.station_coordinates:
+                coords = self.station_coordinates[station]
                 if isinstance(coords, list):
                     for coord in coords:
                         coord2 = []
@@ -74,8 +76,8 @@ class MapImageHandler:
                 print(f'No coordinates for {station}')
 
         # for testing only, comment out when finished
-        '''for station in station_coordinates:
-            coords = station_coordinates[station]
+        '''for station in self.station_coordinates:
+            coords = self.station_coordinates[station]
             if isinstance(coords, list):
                 for coord in coords:
                     coord2 = []
@@ -95,8 +97,8 @@ class MapImageHandler:
         
         # Create holes for lines
         for station1, station2, line in station_pairs:
-            if line in line_coordinates:
-                for station_pair, coords in line_coordinates[line].items():
+            if line in self.line_coordinates:
+                for station_pair, coords in self.line_coordinates[line].items():
                     if (station_pair[0] == station1 and station_pair[1] == station2) or \
                        (station_pair[0] == station2 and station_pair[1] == station1):
                         if isinstance(coords, list):
@@ -166,9 +168,13 @@ class MapImageHandler:
         return modified_map
 
 class CoordinateFinder:
-    def __init__(self, image_path):
+    def __init__(self, image_path, x_offset, y_offset, station_coordinates, line_coordinates):
         self.root = tk.Tk()
         self.original_image = Image.open(image_path)
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.station_coordinates = station_coordinates
+        self.line_coordinates = line_coordinates
         
         # Get screen dimensions
         screen_width = self.root.winfo_screenwidth()
@@ -271,10 +277,10 @@ class CoordinateFinder:
         y2 = int(max(self.start_y, canvas_y) / self.scale)
         
         # Adjust coordinates
-        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
-        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)) / 50) * 50
-        x1_adj = round(int((x1 / dpi) - x_offset) / 50) * 50
-        x2_adj = round(int((x2 / dpi) - x_offset) / 50) * 50
+        y1_adj = round(int(max((y1 / dpi) - self.y_offset, (y2 / dpi) - self.y_offset)) / 50) * 50
+        y2_adj = round(int(min((y1 / dpi) - self.y_offset, (y2 / dpi) - self.y_offset)) / 50) * 50
+        x1_adj = round(int((x1 / dpi) - self.x_offset) / 50) * 50
+        x2_adj = round(int((x2 / dpi) - self.x_offset) / 50) * 50
         
         print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
         print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
@@ -283,9 +289,13 @@ class CoordinateFinder:
         self.root.mainloop()
 
 class CoordinateCorrector:
-    def __init__(self, image_path):
+    def __init__(self, image_path, x_offset, y_offset, station_coordinates, line_coordinates):
         self.root = tk.Tk()
         self.original_image = Image.open(image_path)
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.station_coordinates = station_coordinates
+        self.line_coordinates = line_coordinates
         
         # Get screen dimensions
         screen_width = self.root.winfo_screenwidth()
@@ -373,13 +383,13 @@ class CoordinateCorrector:
         # Station dropdown menu
         self.station_var = tk.StringVar(self.root)
         self.station_var.set("Select Station")
-        self.station_menu = tk.OptionMenu(self.dropdown_frame, self.station_var, *station_coordinates.keys(), command=self.on_station_select)
+        self.station_menu = tk.OptionMenu(self.dropdown_frame, self.station_var, *self.station_coordinates.keys(), command=self.on_station_select)
         self.station_menu.pack(side=tk.LEFT)
         
         # Line dropdown menu
         self.line_var = tk.StringVar(self.root)
         self.line_var.set("Select Line")
-        self.line_menu = tk.OptionMenu(self.dropdown_frame, self.line_var, *line_coordinates.keys(), command=self.on_line_select)
+        self.line_menu = tk.OptionMenu(self.dropdown_frame, self.line_var, *self.line_coordinates.keys(), command=self.on_line_select)
         self.line_menu.pack(side=tk.LEFT)
         
         # Segment dropdown menu (initially empty)
@@ -390,7 +400,7 @@ class CoordinateCorrector:
         
     def on_station_select(self, station):
         self.draw_existing_coordinates()
-        coords = station_coordinates[station]
+        coords = self.station_coordinates[station]
         if isinstance(coords, list):
             for coord in coords:
                 self.draw_rectangle(coord, outline="blue", tag=station)
@@ -401,13 +411,13 @@ class CoordinateCorrector:
         self.draw_existing_coordinates()
         self.segment_var.set("Select Segment")
         self.segment_menu['menu'].delete(0, 'end')
-        for segment in line_coordinates[line].keys():
+        for segment in self.line_coordinates[line].keys():
             self.segment_menu['menu'].add_command(label=segment, command=tk._setit(self.segment_var, segment, self.on_segment_select))
         
     def on_segment_select(self, segment):
         self.draw_existing_coordinates()
         line = self.line_var.get()
-        coords = line_coordinates[line][segment]
+        coords = self.line_coordinates[line][segment]
         if isinstance(coords, list):
             for coord in coords:
                 self.draw_rectangle(coord, outline="green", tag=line)
@@ -419,7 +429,7 @@ class CoordinateCorrector:
         self.image_on_canvas = self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
         
         # Draw station coordinates
-        for station, coords in station_coordinates.items():
+        for station, coords in self.station_coordinates.items():
             if isinstance(coords, list):
                 for coord in coords:
                     self.draw_rectangle(coord, outline="blue", tag=station)
@@ -427,7 +437,7 @@ class CoordinateCorrector:
                 self.draw_rectangle(coords, outline="blue", tag=station)
         
         # Draw line coordinates
-        for line, line_coords in line_coordinates.items():
+        for line, line_coords in self.line_coordinates.items():
             for station_pair, coords in line_coords.items():
                 if isinstance(coords, list):
                     for coord in coords:
@@ -499,10 +509,10 @@ class CoordinateCorrector:
         y2 = int(max(self.start_y, canvas_y) / self.scale)
         
         # Adjust coordinates
-        y1_adj = round(int(max((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)))
-        y2_adj = round(int(min((y1 / dpi) - y_offset, (y2 / dpi) - y_offset)))
-        x1_adj = round(int((x1 / dpi) - x_offset))
-        x2_adj = round(int((x2 / dpi) - x_offset))
+        y1_adj = round(int(max((y1 / dpi) - self.y_offset, (y2 / dpi) - self.y_offset)))
+        y2_adj = round(int(min((y1 / dpi) - self.y_offset, (y2 / dpi) - self.y_offset)))
+        x1_adj = round(int((x1 / dpi) - self.x_offset))
+        x2_adj = round(int((x2 / dpi) - self.x_offset))
         
         print(f"Coordinates: ({x1_adj}, {y2_adj}, {x2_adj}, {y1_adj})")
         print(f"Copyable: ({x1_adj} + x_offset, {y2_adj} + y_offset, {x2_adj} + x_offset, {y1_adj} + y_offset),")
@@ -510,10 +520,10 @@ class CoordinateCorrector:
         # Update the coordinates in the dictionary
         if self.rect in self.rectangles:
             tag = self.canvas.gettags(self.rect)[0]
-            if tag in station_coordinates:
-                station_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
-            elif tag in line_coordinates:
-                line_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
+            if tag in self.station_coordinates:
+                self.station_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
+            elif tag in self.line_coordinates:
+                self.line_coordinates[tag] = (x1_adj, y1_adj, x2_adj, y2_adj)
         
     def run(self):
         self.root.mainloop()

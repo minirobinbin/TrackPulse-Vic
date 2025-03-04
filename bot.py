@@ -4497,7 +4497,7 @@ async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None,
             target_user = user.name
 
         try:
-            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, year=year)
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, mode, year)
         except FileNotFoundError:
             await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
             return

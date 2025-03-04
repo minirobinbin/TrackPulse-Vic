@@ -51,4 +51,4 @@ lines_dictionary_map = {
     'Unknown/Other': [[None], ptv_grey],
 }
 
-logMap('comeng17',lines_dictionary_map)
+logMap('comeng17',lines_dictionary_map,"log_train_map.png")

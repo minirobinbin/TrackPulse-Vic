@@ -1,9 +1,11 @@
 from matplotlib.pylab import f
 from utils.trainlogger.map.mapimage import MapImageHandler
+from utils.trainlogger.map.station_coordinates_log_train_map import x_offset as x_offset_log_train_map, y_offset as y_offset_log_train_map, station_coordinates as station_coordinates_log_train_map
+from utils.trainlogger.map.line_coordinates_log_train_map import line_coordinates as lines_dictionary_log_train_map
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
-    if mode == 'train':
+def logMap(user:str, lines_dictionary:dict, mode:str='log_train_map.png', year:int=0):
+    if mode == 'log_train_map.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
         file.close()
@@ -113,9 +115,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='train', year:int=0):
                     group = cols[4]
                     
                 affected_lines.append((cols[5], cols[6], group))
+
+        x_offset = x_offset_log_train_map
+        y_offset = y_offset_log_train_map
+        station_coordinates = station_coordinates_log_train_map
+        line_coordinates = lines_dictionary_log_train_map
         
-        # do the map gen
-        map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-        map_handler = MapImageHandler("utils/trainlogger/map/log_train_map.png", lines_dictionary)
-        print(affected_lines)
-        map_handler.highlight_map(affected_lines, f"temp/{user}.png", stations)
+    # do the map gen
+    map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)
+    print(affected_lines)
+    map_handler.highlight_map(affected_lines, f"temp/{user}.png", stations)
