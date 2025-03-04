@@ -322,7 +322,7 @@ lines_dictionary_main = {
     'Unknown/Other':[[None], ptv_grey],
 }
 
-lines_dictionary_map = {
+lines_dictionary_log_train_map = {
     'Alamein': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
     'Alamein Loop': [['Flinders Street', 'Southern Cross', 'Flagstaff', 'Melbourne Central', 'Parliament', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'Riversdale', 'Willison', 'Hartwell', 'Burwood', 'Ashburton', 'Alamein'],0x01518a],
     'Belgrave': [['Parliament', 'Melbourne Central', 'Flagstaff', 'Southern Cross', 'Flinders Street', 'Richmond', 'East Richmond', 'Burnley', 'Hawthorn', 'Glenferrie', 'Auburn', 'Camberwell', 'East Camberwell', 'Canterbury', 'Chatham', 'Union', 'Box Hill', 'Laburnum', 'Blackburn', 'Nunawading', 'Mitcham', 'Heatherdale', 'Ringwood', 'Heathmont', 'Bayswater', 'Boronia', 'Ferntree Gully', 'Upper Ferntree Gully', 'Upwey', 'Tecoma', 'Belgrave'],0x01518a],
@@ -4497,7 +4497,7 @@ async def mapstrips(ctx,mode: str="log_train_map.png",user: discord.Member=None,
             target_user = user.name
 
         try:
-            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, mode, year)
+            await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map, mode, year)
         except FileNotFoundError:
             await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
             return
