@@ -263,17 +263,13 @@ line_coordinates = {
         ],
         ('Prahran', 'South Yarra'): [
             (4050 + x_offset, 3200 + y_offset, 4900 + x_offset, 3300 + y_offset),
-            (4850 + x_offset, 2950 + y_offset, 4900 + x_offset, 3250 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4850 + x_offset, 2850 + y_offset, 4900 + x_offset, 3250 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
         ],
         ('South Yarra', 'Richmond'):[
-            (4600 + x_offset, 2350 + y_offset, 5000 + x_offset, 2450 + y_offset),
-            (5150 + x_offset, 2350 + y_offset, 5200 + x_offset, 2800 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4600 + x_offset, 2350 + y_offset, 4900 + x_offset, 2450 + y_offset),
+            (4850 + x_offset, 2350 + y_offset, 4900 + x_offset, 2800 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
         ],
         ('Richmond', 'Flinders Street'):[
@@ -701,17 +697,13 @@ line_coordinates = {
             (5250 + x_offset, 4000 + y_offset, 5300 + x_offset, 4150 + y_offset),
         ],
         ('Malvern','South Yarra'): [
-            (5250 + x_offset, 2950 + y_offset, 5300 + x_offset, 4000 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (5250 + x_offset, 2850 + y_offset, 5300 + x_offset, 4000 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
         ],
         ('South Yarra','Richmond'): [
             (4650 + x_offset, 2100 + y_offset, 5300 + x_offset, 2150 + y_offset),
-            (5250 + x_offset, 2100 + y_offset, 5300 + x_offset, 2800 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (5250 + x_offset, 2100 + y_offset, 5300 + x_offset, 2700 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
         ],
         # cranbourne branch
@@ -806,17 +798,13 @@ line_coordinates = {
             (4900 + x_offset, 3400 + y_offset, 5000 + x_offset, 3650 + y_offset)
         ],
         ('Hawksburn', 'South Yarra'):[
-            (4900 + x_offset, 2900 + y_offset, 5000 + x_offset, 3450 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4900 + x_offset, 2850 + y_offset, 5000 + x_offset, 3450 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
         ],
         ('South Yarra', 'Richmond'):[
             (4600 + x_offset, 2350 + y_offset, 5000 + x_offset, 2450 + y_offset),
-            (4950 + x_offset, 2350 + y_offset, 5000 + x_offset, 2800 + y_offset),
-            (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
-            (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
-            (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
+            (4950 + x_offset, 2350 + y_offset, 5000 + x_offset, 2700 + y_offset),
+            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # richmond coords
         ],
         ('Richmond','Flinders Street'): [
@@ -1139,15 +1127,15 @@ line_coordinates = {
             (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
         ],
         ('Clayton','Caulfield'): [
-            (5150 + x_offset, 4450 + y_offset, 8400 + x_offset, 4500 + y_offset),
-            (5150 + x_offset, 4250 + y_offset, 5200 + x_offset, 4500 + y_offset),
+            (5200 + x_offset, 4450 + y_offset, 8400 + x_offset, 4500 + y_offset),
+            (5200 + x_offset, 4250 + y_offset, 5250 + x_offset, 4500 + y_offset),
             (8400 + x_offset, 4300 + y_offset, 8550 + x_offset, 4650 + y_offset), # clayton coords
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5150 + x_offset, 2900 + y_offset, 5200 + x_offset, 4150 + y_offset),
-            (5100 + x_offset, 2200 + y_offset, 5200 + x_offset, 2850 + y_offset),
-            (4650 + x_offset, 2150 + y_offset, 5200 + x_offset, 2250 + y_offset),
+            (5200 + x_offset, 2900 + y_offset, 5250 + x_offset, 4150 + y_offset),
+            (5200 + x_offset, 2200 + y_offset, 5250 + x_offset, 2850 + y_offset),
+            (4650 + x_offset, 2150 + y_offset, 5250 + x_offset, 2250 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2600 + y_offset), # Richmond Coords
         ],
