@@ -2612,7 +2612,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
 @app_commands.describe(id = "The ID of the log that you want to delete.", mode='What mode of log to delete?')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
-    app_commands.Choice(name="Melbourne Tram", value="tram"),
+    app_commands.Choice(name="Melbourne Tram", value="tram"), 
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
@@ -2620,9 +2620,43 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     app_commands.Choice(name="Bus", value="bus"),
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
-    
+    class DeleteConfirmation(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=30)
+            
+        @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
+        async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your log!", ephemeral=True)
+                return
+            
+            # Delete the log
+            idformatted1 = deleteRow(ctx.user.name, idformatted, mode)
+            
+            # Update message
+            if idformatted == 'LAST':
+                await interaction.response.edit_message(content=f'Most recent log (`#{idformatted1}`) deleted. The data was:\n`{dataToDelete}`', view=None)
+            else:
+                await interaction.response.edit_message(content=f'Log `#{idformatted}` deleted. The data was:\n`{dataToDelete}`', view=None)
+                
+            for child in self.children:
+                child.disabled = True
+                
+        @discord.ui.button(label="Cancel", style=discord.ButtonStyle.gray)
+        async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your log!", ephemeral=True)
+                return
+            
+            await interaction.response.edit_message(content="Deletion cancelled.", view=None)
+            for child in self.children:
+                child.disabled = True
+
     async def deleteLogFunction():
         log_command(ctx.user.id, 'log-delete')
+        
+        nonlocal idformatted, dataToDelete  # Make these accessible in button callbacks
+        
         if id[0] == '#':
             idformatted = id[1:].upper()
         else:
@@ -2630,33 +2664,68 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 
         if idformatted != 'LAST':
             if not is_hex(idformatted):
-                cmds = await bot.tree.fetch_commands()
-                for cmd in cmds:
-                    if cmd.name == 'train-logs':
-                        cmdid = cmd.id
-                        await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </train-logs view:{cmdid}>.',ephemeral=True)
-                        return
+                await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </log view:1289843416628330506>.', ephemeral=True)
+                return
                 
-            
         dataToDelete = universalReadRow(ctx.user.name, idformatted, mode)
-        if dataToDelete in ['no data at all','no data for user']:
-            await ctx.response.send_message(f'You have no logs you can delete!',ephemeral=True)
+        if dataToDelete in ['no data at all', 'no data for user']:
+            await ctx.response.send_message(f'You have no logs you can delete!', ephemeral=True)
             return
         elif dataToDelete == 'invalid id did not show up':
-            cmds = await bot.tree.fetch_commands()
-            for cmd in cmds:
-                if cmd.name == 'train-logs':
-                    cmdid = cmd.id
-                    await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </train-logs view:{cmdid}>.',ephemeral=True)
-                    return
+            await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </log view:1289843416628330506>.', ephemeral=True)
+            return
+        
         else:
-            idformatted1 = deleteRow(ctx.user.name, idformatted, mode)
+            # Create confirmation message with buttons
+            view = DeleteConfirmation()
             if idformatted == 'LAST':
-                await ctx.response.send_message(f'Most recent log (`#{idformatted1}`) deleted. The data was:\n`{dataToDelete}`',ephemeral=True)
+                await ctx.response.send_message(f'Are you sure you want to delete your most recent log?\nData to be deleted:\n`{dataToDelete}`', view=view, ephemeral=True)
             else:
-                await ctx.response.send_message(f'Log `#{idformatted}` deleted. The data was:\n`{dataToDelete}`',ephemeral=True)
+                await ctx.response.send_message(f'Are you sure you want to delete log `#{idformatted}`?\nData to be deleted:\n`{dataToDelete}`', view=view, ephemeral=True)
             
+    # Initialize variables for button callbacks
+    idformatted = None  
+    dataToDelete = None
+    
     asyncio.create_task(deleteLogFunction())
+    
+# log editor
+@trainlogs.command(name='edit',description='Edit a logged trip')
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Victorian Train", value="train"),
+    app_commands.Choice(name="Melbourne Tram", value="tram"),
+    app_commands.Choice(name="NSW Train", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Train", value="perth-trains"),
+    app_commands.Choice(name="Bus", value="bus"),
+])
+@app_commands.autocomplete(start=station_autocompletion)
+@app_commands.autocomplete(end=station_autocompletion)
+@app_commands.autocomplete(line=line_autocompletion)
+@app_commands.autocomplete(traintype=type_autocompletion)
+async def editrow(ctx, id:str, mode:str, line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'edit-row')
+    
+    username = ctx.user.name
+    logid = id
+    if logid[0] == '#':
+        idformatted = logid[1:].upper()
+    else:
+        idformatted = logid.upper()
+    
+    # Find old data for the edited row
+    dataToDelete = universalReadRow(username, idformatted, mode)
+    
+    result = editRow(username, idformatted, mode,line,number,start,end,date,traintype,notes)
+    
+    if result == 'invalid id did not show up':
+        await ctx.edit_original_response(content=f'Invalid log ID entered: `{idformatted}`')
+        return
+    
+    
+    await ctx.edit_original_response(content=f'**Successfully edited log `#{idformatted}`**\nOld data:\n`{dataToDelete}`\nNew data:\n`{result}`')
 
     
   # tram logger goes here
@@ -3179,7 +3248,7 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
-@app_commands.describe(user = "Who do you want to see the data of?", mode = 'Train or tram logs?')
+@app_commands.describe(user = "Who do you want to see the data of?", mode = 'Train or tram logs?',id='Leave blank to show all logs')
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="train"),
         app_commands.Choice(name="Melbourne Trams", value="tram"),

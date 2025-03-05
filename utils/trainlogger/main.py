@@ -644,17 +644,17 @@ def editRow(username, logid, mode, line:str='nochange', number:str='nochange', s
 
             # Update fields that aren't 'nochange'
             if line != 'nochange':
-                fields[2] = line
+                fields[4] = line
             if number != 'nochange':
                 fields[1] = number
             if start != 'nochange':
-                fields[3] = start
+                fields[5] = start
             if end != 'nochange':
-                fields[4] = end
+                fields[6] = end
             if date != 'nochange':
-                fields[5] = date
+                fields[3] = date
             if traintype != 'auto':
-                fields[6] = traintype
+                fields[2] = traintype
             if notes != 'nochange':
                 fields[7] = notes
 
