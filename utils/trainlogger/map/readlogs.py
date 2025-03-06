@@ -177,8 +177,16 @@ def postcompat(data:list, lines_dictionary:dict):
                         group = 'Williamstown'
                     elif station1 in lines_dictionary['Werribee'][0] and station2 in lines_dictionary['Werribee'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Werribee,{station1},{station2}')
+                        if station1 in lines_dictionary['Werribee'][0] and station1 not in lines_dictionary['Frankston'][0]:
+                            station1 = '*Southern Cross'
+                        elif station2 in lines_dictionary['Werribee'][0] and station2 not in lines_dictionary['Frankston'][0]:
+                            station2 = '*Southern Cross'
                     elif station1 in lines_dictionary['Williamstown'][0] and station2 in lines_dictionary['Williamstown'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Williamstown,{station1},{station2}')
+                        if station1 in lines_dictionary['Williamstown'][0] and station1 not in lines_dictionary['Frankston'][0]:
+                            station1 = '*Southern Cross'
+                        elif station2 in lines_dictionary['Williamstown'][0] and station2 not in lines_dictionary['Frankston'][0]:
+                            station2 = '*Southern Cross'
                     elif station1 in lines_dictionary['Werribee'][0] and station1 not in lines_dictionary['Frankston'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Werribee,{station1},*South Yarra,')
                         station1 = '*Southern Cross'

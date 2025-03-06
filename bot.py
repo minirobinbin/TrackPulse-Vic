@@ -2704,7 +2704,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
 @app_commands.autocomplete(traintype=type_autocompletion)
-async def editrow(ctx, id:str, mode:str, line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
+async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'edit-row')
     

@@ -155,7 +155,7 @@ Required:
     
 Optional:
     Id: the ID of the log you want to delete. You can find this ID in the log view command. By default it's set to your most recent log.''',     
-        '/log edit': '''</log edit:1289843416628330506> is a command that allows you to edit a log you've made. You can only edit logs you've made, and you can only edit one log at a time.
+        '/log edit': '''</log edit:1289843416628330506> is a command that allows you to edit a log you've made. You can only edit logs you've made, and you can only edit one log at a time. This is currently only for Victorian Trains.
 
 **Options:**
 
