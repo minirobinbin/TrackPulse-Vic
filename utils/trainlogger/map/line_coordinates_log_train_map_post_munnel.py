@@ -146,9 +146,11 @@ line_coordinates = {
         ('Flagstaff','Melbourne Central'):[
             (2500 + x_offset, 900 + y_offset, 2900 + x_offset, 950 + y_offset),
             (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
             (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         ],
         ('Melbourne Central', 'Parliament'):[
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
             (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
             (3050 + x_offset, 850 + y_offset, 3250 + x_offset, 950 + y_offset),
             (3200 + x_offset, 850 + y_offset, 3250 + x_offset, 1250 + y_offset),
@@ -463,11 +465,13 @@ line_coordinates = {
     ("Flagstaff", "Melbourne Central"):[
         (2500 + x_offset, 800 + y_offset, 2901 + x_offset, 852 + y_offset),
         (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+        (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
         (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
     ],
     ('Melbourne Central', 'Parliament'):[
         (3050 + x_offset, 800 + y_offset, 3400 + x_offset, 850 + y_offset),
         (3300 + x_offset, 800 + y_offset, 3400 + x_offset, 1250 + y_offset),
+        (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
         (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
     ],
@@ -837,9 +841,11 @@ line_coordinates = {
         ('Flagstaff','Melbourne Central'): [
             (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
             (2500 + x_offset, 650 + y_offset, 2900 + x_offset, 750 + y_offset),
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
             (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         ],
         ('Melbourne Central','Parliament'): [
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
             (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
             (3050 + x_offset, 700 + y_offset, 3550 + x_offset, 750 + y_offset),
             (3450 + x_offset, 700 + y_offset, 3600 + x_offset, 1250 + y_offset),
@@ -868,10 +874,12 @@ line_coordinates = {
     ("Flagstaff", "Melbourne Central"):[
         (2500 + x_offset, 1050 + y_offset, 2900 + x_offset, 1100 + y_offset),
         (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
+        (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
         (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
     ],
     ('Melbourne Central', 'Parliament'):[
         (3050 + x_offset, 1000 + y_offset, 3150 + x_offset, 1250 + y_offset),
+        (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 500 + y_offset), # State Library part
         (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         (3050 + x_offset, 1250 + y_offset, 3600 + x_offset, 1400 + y_offset), # Parliament Coords
     ],
