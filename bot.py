@@ -4502,6 +4502,7 @@ async def viewMaps(ctx, mode: str):
 @maps.command(name='trips', description="View a map of all the trips you've logged")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
+        app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
 ])
 async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
@@ -4558,7 +4559,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"THIS MAP IS NOT FINISHED!!! Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
