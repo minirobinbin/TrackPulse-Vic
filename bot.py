@@ -524,7 +524,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -2693,12 +2693,12 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @trainlogs.command(name='edit',description='Edit a logged trip')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
-    app_commands.Choice(name="Melbourne Tram", value="tram"),
-    app_commands.Choice(name="NSW Train", value="sydney-trains"),
-    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
-    app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
-    app_commands.Choice(name="Perth Train", value="perth-trains"),
-    app_commands.Choice(name="Bus", value="bus"),
+    # app_commands.Choice(name="Melbourne Tram", value="tram"),
+    # app_commands.Choice(name="NSW Train", value="sydney-trains"),
+    # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    # app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    # app_commands.Choice(name="Perth Train", value="perth-trains"),
+    # app_commands.Choice(name="Bus", value="bus"),
 ])
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)

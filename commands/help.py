@@ -39,6 +39,8 @@ async def helpCommand(ctx,category,command):
             'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
             "</log view:1289843416628330506> - View your logs",
+            "</log delete:1289843416628330506> - Delete a log you've made.",
+            "</log edit:1289843416628330506> - Edit a log you've made.",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
             "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
@@ -144,6 +146,31 @@ Optional:
     End: the ending stop of your trip. You can choose from the list or type your own.
     Type: if there are multiple buses with the same number, or you didn't input a number, specify which bus type you rode on. You generally don't need this if you know the bus number.
     Number: which bus you rode.''',
+        '/log delete': '''</log delete:1289843416628330506> is a command that allows you to delete a log you've made. You can only delete logs you've made, and you can only delete one log at a time.
+
+**Options:**
+
+Required:
+    Mode: choose the mode of transport you want to view the distruption status for. You must choose from the list.
+    
+Optional:
+    Id: the ID of the log you want to delete. You can find this ID in the log view command. By default it's set to your most recent log.''',     
+        '/log edit': '''</log edit:1289843416628330506> is a command that allows you to edit a log you've made. You can only edit logs you've made, and you can only edit one log at a time.
+
+**Options:**
+
+Required:
+    Id: the ID of the log you want to delete. You can find this ID in the log view command.
+    Mode: choose the mode of transport you want to view the distruption status for. You must choose from the list.
+    
+Optional:
+    Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown".
+    Number: which carriage you rode. Examples include "1M", "2111", "N452", "9026". If you don't know, type "Unknown".
+    Start: the starting station of your trip. You can choose from the list or type your own.
+    End: the ending station of your trip. You can choose from the list or type your own.
+    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
+    Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
+    Notes: add any notes you want to add to your log.''',        
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
 
 **Options:**
