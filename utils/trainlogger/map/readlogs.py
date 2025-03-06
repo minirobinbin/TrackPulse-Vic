@@ -189,7 +189,7 @@ def postcompat(data:list, lines_dictionary:dict):
                         station2 = '*Southern Cross'
                     if station2 in ['Flinders Street','Southern Cross']:
                         group = 'Frankston Loop'
-                if group == 'Werribee':
+                elif group == 'Werribee':
                     if station1 in lines_dictionary['Frankston'][0] and station2 in lines_dictionary['Frankston'][0]:
                         if station2 in ['Flinders Street','Southern Cross']:
                             group = 'Frankston Loop'
@@ -201,7 +201,7 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in lines_dictionary['Frankston'][0] and station2 not in lines_dictionary['Werribee'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston,*Southern Cross,{station2},')
                         station2 = '*South Yarra'
-                if group == 'Williamstown':
+                elif group == 'Williamstown':
                     if station1 in lines_dictionary['Frankston'][0] and station2 in lines_dictionary['Frankston'][0]:
                         if station2 in ['Flinders Street','Southern Cross']:
                             group = 'Frankston Loop'
@@ -213,7 +213,7 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in lines_dictionary['Frankston'][0] and station2 not in lines_dictionary['Williamstown'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston,*Southern Cross,{station2},')
                         station2 = '*South Yarra'
-                if group == 'Pakenham':
+                elif group == 'Pakenham':
                     if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
                     elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
@@ -222,7 +222,7 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
-                if group == 'Cranbourne':
+                elif group == 'Cranbourne':
                     if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
                     elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
@@ -231,7 +231,7 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
-                if group == 'Sunbury':
+                elif group == 'Sunbury':
                     if station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
                     elif station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
