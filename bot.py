@@ -4490,7 +4490,7 @@ async def viewMaps(ctx, mode: str):
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Intercity map for {ctx.user.name} in {ctx.channel.mention}")
         elif mode == "log___sydney-train___map.png":
-            embed = discord.Embed(title=f"Map of the network covered by <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
