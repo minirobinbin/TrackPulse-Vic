@@ -3118,6 +3118,8 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
         app_commands.Choice(name="L3 Kingsford Line", value="L3"),
+        app_commands.Choice(name="L4 Westmead and Carlingford Line", value="L4"),
+        app_commands.Choice(name="NLR Newcastle Light Rail", value="NLR"),
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="Urbos 3", value="Urbos 3"),
