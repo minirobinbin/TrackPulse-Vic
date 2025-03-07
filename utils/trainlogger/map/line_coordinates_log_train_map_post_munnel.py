@@ -706,17 +706,44 @@ line_coordinates = {
             (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
         ],
         ('Caulfield','Malvern'): [
-            (5250 + x_offset, 4000 + y_offset, 5300 + x_offset, 4150 + y_offset),
+            (5300 + x_offset, 4000 + y_offset, 5400 + x_offset, 4150 + y_offset),
         ],
-        ('Malvern','South Yarra'): [
-            (5250 + x_offset, 2850 + y_offset, 5300 + x_offset, 4000 + y_offset),
-            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
+        ('Malvern','Anzac'): [
+            (5250 + x_offset, 2950 + y_offset, 5400 + x_offset, 4050 + y_offset),
+            (3900 + x_offset, 2950 + y_offset, 4850 + x_offset, 3050 + y_offset),
         ],
-        ('South Yarra','Richmond'): [
-            (4650 + x_offset, 2100 + y_offset, 5300 + x_offset, 2150 + y_offset),
-            (5250 + x_offset, 2100 + y_offset, 5300 + x_offset, 2700 + y_offset),
-            (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
-            (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
+        ('Anzac','Town Hall'): [
+            (2750 + x_offset, 3000 + y_offset, 3950 + x_offset, 3050 + y_offset),
+            (3900 + x_offset, 2950 + y_offset, 3950 + x_offset, 3050 + y_offset),
+            (2750 + x_offset, 2650 + y_offset, 2850 + x_offset, 3050 + y_offset),
+            (2800 + x_offset, 2450 + y_offset, 2850 + x_offset, 2600 + y_offset),
+            (2750 + x_offset, 1600 + y_offset, 2850 + x_offset, 1800 + y_offset),
+            (2750 + x_offset, 1500 + y_offset, 3050 + x_offset, 1650 + y_offset), # Town hall part
+            (2900 + x_offset, 1650 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+        ],
+        ('Town Hall','State Library'): [
+            (2750 + x_offset, 1100 + y_offset, 2850 + x_offset, 1500 + y_offset),
+            (2750 + x_offset, 950 + y_offset, 2850 + x_offset, 1050 + y_offset),
+            (2800 + x_offset, 550 + y_offset, 2850 + x_offset, 700 + y_offset),
+            (2750 + x_offset, 1500 + y_offset, 3050 + x_offset, 1650 + y_offset), # Town hall part
+            (2900 + x_offset, 1650 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 550 + y_offset), # State Library part
+            (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+        ],
+        ('State Library', 'Parkville'): [
+            (2600 + x_offset, -250 + y_offset, 2850 + x_offset, 400 + y_offset),
+            (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 550 + y_offset), # State Library part
+            (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
+        ],
+        ('Parkville', 'Arden'): [
+            (2150 + x_offset, -200 + y_offset, 2650 + x_offset, -100 + y_offset),
+        ],
+        ('Arden', 'Footscray'): [
+            (2000 + x_offset, -200 + y_offset, 2250 + x_offset, -100 + y_offset),
+            (-450 + x_offset, -200 + y_offset, 1650 + x_offset, -50 + y_offset),
+            (-600 + x_offset, -200 + y_offset, -451 + x_offset, 149 + y_offset), # footscray station icon
+            (-550 + x_offset, 100 + y_offset, -501 + x_offset, 249 + y_offset), # footscray station icon
+            (-600 + x_offset, 200 + y_offset, -451 + x_offset, 349 + y_offset), # footscray station icon
         ],
         # cranbourne branch
         ('Cranbourne','Merinda Park'): [
