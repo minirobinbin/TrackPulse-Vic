@@ -4453,6 +4453,7 @@ async def profile(ctx, user: discord.User = None):
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
+        app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
 async def viewMaps(ctx, mode: str):
     await ctx.response.defer()
@@ -4492,6 +4493,12 @@ async def viewMaps(ctx, mode: str):
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Regional map for {ctx.user.name} in {ctx.channel.mention}")
+        elif mode == "log_sydney-tram_map.png":
+            embed = discord.Embed(title=f"Map of the network covered by <log sydney-tram:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved NSW Light Rail for {ctx.user.name} in {ctx.channel.mention}")
         embed.set_image(url="attachment://map.png")
         embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
         await ctx.followup.send(embed=embed, file=file)
