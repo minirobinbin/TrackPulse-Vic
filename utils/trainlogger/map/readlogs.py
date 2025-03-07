@@ -174,10 +174,30 @@ def precompat(data:list, lines_dictionary:dict):
                             group = 'Sunbury'
                             station2 = '*Footscray'
                 elif group == 'Sunbury':
-                    if station1 in lines_dictionary['Pakenham'][0] and station2 in lines_dictionary['Pakenham'][0]:
+                    if station1 in lines_dictionary['Pakenham'][0] and station1 not in lines_dictionary['Sunbury'][0] and station2 in lines_dictionary['Pakenham'][0] and station2 not in lines_dictionary['Sunbury'][0]:
                         group = 'Pakenham'
-                    elif station1 in lines_dictionary['Cranbourne'][0] and station2 in lines_dictionary['Cranbourne'][0]:
+                    elif station1 in lines_dictionary['Cranbourne'][0] and station1 not in lines_dictionary['Sunbury'][0] and station2 in lines_dictionary['Cranbourne'][0] and station2 not in lines_dictionary['Sunbury'][0]:
                         group = 'Cranbourne'
+                    elif station1 in lines_dictionary['Pakenham'][0] and station2 in lines_dictionary['Pakenham'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,{station1},{station2},')
+                        if station1 in lines_dictionary['Pakenham'][0] and station1 not in lines_dictionary['Sunbury'][0]:
+                            station1 = '*Footscray'
+                        elif station1 in lines_dictionary['Cranbourne'][0] and station1 not in lines_dictionary['Sunbury'][0]:
+                            station1 = '*Footscray'
+                        elif station2 in lines_dictionary['Pakenham'][0] and station2 not in lines_dictionary['Sunbury'][0]:
+                            station2 = '*Footscray'
+                        elif station2 in lines_dictionary['Cranbourne'][0] and station2 not in lines_dictionary['Sunbury'][0]:
+                            station2 = '*Footscray'
+                    elif station1 in lines_dictionary['Cranbourne'][0] and station2 in lines_dictionary['Cranbourne'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,{station1},{station2},')
+                        if station1 in lines_dictionary['Pakenham'][0] and station1 not in lines_dictionary['Sunbury'][0]:
+                            station1 = '*Footscray'
+                        elif station1 in lines_dictionary['Cranbourne'][0] and station1 not in lines_dictionary['Sunbury'][0]:
+                            station1 = '*Footscray'
+                        elif station2 in lines_dictionary['Pakenham'][0] and station2 not in lines_dictionary['Sunbury'][0]:
+                            station2 = '*Footscray'
+                        elif station2 in lines_dictionary['Cranbourne'][0] and station2 not in lines_dictionary['Sunbury'][0]:
+                            station2 = '*Footscray'
                     elif station1 in lines_dictionary['Pakenham'][0] and station1 not in lines_dictionary['Sunbury'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,{station1},*Malvern,')
                         station1 = '*Footscray'
@@ -188,6 +208,14 @@ def precompat(data:list, lines_dictionary:dict):
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,*Malvern,{station2},')
                         station2 = '*Footscray'
                     elif station2 in lines_dictionary['Cranbourne'][0] and station2 not in lines_dictionary['Sunbury'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,*Malvern,{station2},')
+                    elif station1 in lines_dictionary['Pakenham'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,{station1},*Malvern,')
+                    elif station1 in lines_dictionary['Cranbourne'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,{station1},*Malvern,')
+                    elif station2 in lines_dictionary['Pakenham'][0]:
+                        newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Pakenham,*Malvern,{station2},')
+                    elif station2 in lines_dictionary['Cranbourne'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Cranbourne,*Malvern,{station2},')
                         station2 = '*Footscray'
                     elif station1 in ['Anzac','Town Hall','State Library','Parkville','Arden'] and station2 in ['Anzac','Town Hall','State Library','Parkville','Arden']:
