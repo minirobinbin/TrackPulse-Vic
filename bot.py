@@ -114,6 +114,13 @@ for line in file:
     NSWstations_list.append(line)
 file.close()
 
+file = open('utils\\datalists\\nswstops.txt','r')
+NSWstops_list = []
+for line in file:
+    line = line.strip()
+    NSWstops_list.append(line)
+file.close()
+
 file = open('utils\\datalists\\adelaidestations.txt','r')
 Adelaidestations_list = []
 for line in file:
@@ -3109,10 +3116,20 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     asyncio.create_task(log())
 
 
+async def NSWstop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = NSWstops_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=NSWstation_autocompletion)
-@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.autocomplete(start=NSWstop_autocompletion)
+@app_commands.autocomplete(end=NSWstop_autocompletion)
 
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
