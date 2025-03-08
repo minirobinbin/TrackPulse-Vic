@@ -4,6 +4,8 @@ from utils.trainlogger.map.station_coordinates_log_train_map_pre_munnel import x
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import line_coordinates as lines_coordinates_log_train_map_pre_munnel
 from utils.trainlogger.map.station_coordinates_log_train_map_post_munnel import x_offset as x_offset_log_train_map_post_munnel, y_offset as y_offset_log_train_map_post_munnel, station_coordinates as station_coordinates_log_train_map_post_munnel
 from utils.trainlogger.map.line_coordinates_log_train_map_post_munnel import line_coordinates as lines_coordinates_log_train_map_post_munnel
+from utils.trainlogger.map.station_coordinates_log_sydney_tram_map import x_offset as x_offset_log_sydney_tram, y_offset as y_offset_log_sydney_tram, station_coordinates as station_coordinates_log_sydney_tram
+from utils.trainlogger.map.line_coordinates_log_sydney_tram_map import line_coordinates as lines_coordinates_log_sydney_tram
 
 metro_date = '2025-12-31' # this is just a placeholder date, replace when the metro tunnel date is confirmed
 
@@ -621,6 +623,77 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
         y_offset = y_offset_log_train_map_post_munnel
         station_coordinates = station_coordinates_log_train_map_post_munnel
         line_coordinates = lines_coordinates_log_train_map_post_munnel
+
+    if mode == 'log_sydney-tram_map.png':
+        file = open(f'utils/trainlogger/userdata/sydney-trams/{user}.csv', 'r')
+        data = file.readlines()
+        file.close()
+
+        stations = []
+        for line in data:
+            cols = line.strip().split(',')
+            
+            if len(cols) >= 6:
+                # Extract year from the date in column 3 (index 2)
+                trip_year = int(cols[3].split('-')[0])
+                print(f"Trip year: {trip_year}")
+                print(f"Year: {year}")
+            
+            # Only process if year is 0 (all years) or matches the specified year
+            if year == 0 or trip_year == year:
+                station1, station2 = cols[5], cols[6]
+                if station1 not in stations:
+                    stations.append(station1)
+                if station2 not in stations:
+                    stations.append(station2)
+                    
+        # split trips into individual segments
+        expanded_data = []
+        for line in data:
+            cols = line.strip().split(',')
+            if len(cols) >= 6:
+                # Extract year from the date in column 3 (index 2)
+                trip_year = int(cols[3].split('-')[0])
+                
+                # Only process if year is 0 (all years) or matches the specified year
+                if year == 0 or trip_year == year:
+                    start, end, group = cols[5], cols[6], cols[4]
+                    start = start.replace('*','')
+                    end = end.replace('*','')
+
+                    # Find the line that contains these stations
+                    print(group)
+                    for line_name, line_info in lines_dictionary.items():
+                        if line_name == group:
+                            station_list = line_info[0]
+                            if start in station_list and end in station_list:
+                                # Get indices of start and end stations
+                                start_idx = station_list.index(start)
+                                end_idx = station_list.index(end)
+                                
+                                # Determine direction (forward or reverse through station list)
+                                if start_idx < end_idx:
+                                    station_sequence = station_list[start_idx:end_idx + 1]
+                                else:
+                                    station_sequence = station_list[end_idx:start_idx + 1][::-1]
+                                
+                                # Create individual segments
+                                for i in range(len(station_sequence) - 1):
+                                    expanded_data.append(f"{cols[0]},{cols[1]},{cols[2]},{cols[3]},{cols[4]},{station_sequence[i]},{station_sequence[i+1]}")
+                                break
+        data = expanded_data
+                    
+        affected_lines = []
+        for line in data:
+            cols = line.strip().split(',')
+            if len(cols) >= 6:
+                # convert to group names
+                affected_lines.append((cols[5], cols[6], group))
+
+        x_offset = x_offset_log_sydney_tram
+        y_offset = y_offset_log_sydney_tram
+        station_coordinates = station_coordinates_log_sydney_tram
+        line_coordinates = lines_coordinates_log_sydney_tram
         
     # do the map gen
     map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)

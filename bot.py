@@ -82,7 +82,7 @@ from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress
-from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel, lines_dictionary_log_train_map_post_munnel
+from utils.trainlogger.map.lines_dictionaries import *
 
 
 
@@ -4559,7 +4559,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
@@ -4585,11 +4585,37 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
                 embed.set_author(name="Map by Comeng17", icon_url=pfp)
+                embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+                await ctx.followup.send(embed=embed, file=file)
+            except Exception as e:
+                await ctx.followup.send(f'Error sending map:\n```{e}```')
+        
+        if mode == "log_sydney-tram_map.png":
+            try:
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, year)
+            except FileNotFoundError:
+                await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
+                return
+            except Exception as e:
+                await ctx.followup.send(f'Error:\n```{e}```')
+                return
+            # Send the map once generated
+            try:
+                file = discord.File(f'temp/{username}.png', filename='map.png')
+                year_str = '' if year == 0 else f'in {str(year)}'
+                imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username} {year_str}", 
+                                    color=0xb8b8b8, 
+                                    description=f"THIS MAP IS NOT FINISHED [Click here to view in your browser]({imageURL})")
+                embed.set_image(url="attachment://map.png")
+                user_pic = await bot.fetch_user(829535993643794482)
+                pfp = user_pic.avatar.url
+                embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
                 embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
                 await ctx.followup.send(embed=embed, file=file)
             except Exception as e:
