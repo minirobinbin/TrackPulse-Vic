@@ -1132,7 +1132,7 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
             mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
         
         async def addmap():
-
+            try:
                 # Generate the map asynchronously
                 # After map generation, send it
                 if type == "HCMT": # because ptv api lists hcmts like "9005M-9905M" for some fucking reason
@@ -1244,7 +1244,9 @@ async def train_search(ctx, train: str, hide_run_info:bool=False):
                     await mapEmbedUpdate.delete()
                     await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")
                     await printlog(f"Error: Map file '{file_path}' not found.")
-                    
+            except Exception as e:
+                await embed_update.reply(f'There was an error generating the map:\n```{e}```')
+                printlog(f'Error:\n```{e}```')  
         # Run transportVicSearch in a separate thread
         
         if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
