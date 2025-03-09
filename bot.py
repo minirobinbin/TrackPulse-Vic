@@ -43,6 +43,7 @@ import git
 import pandas as pd
 
 from commands.help import helpCommand
+from commands.logexport import logExport
 from utils import trainset
 from utils.directions import getDirectionName
 from utils.downloader import downloader_function
@@ -279,8 +280,9 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 async def printlog(text):
     print(text)
-    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    await log_channel.send(text)
+    if len(text) < 1000:
+        log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+        await log_channel.send(text)
 
 # check if these things are on in the .env
 rareCheckerOn = False
@@ -3808,6 +3810,33 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         time.sleep(0.5)  
     asyncio.create_task(sendLogs())
 
+# log export
+@trainlogs.command(name='export', description='Export your logs in various formats')
+@app_commands.choices(format=[
+    app_commands.Choice(name="CSV file (Excel)", value="csv"),
+    app_commands.Choice(name="Markdown file", value="md"),
+    app_commands.Choice(name="XML file", value="xml"),
+    app_commands.Choice(name='HTML file',value='html')
+])
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Victorian Trains", value="train"),
+    app_commands.Choice(name="Melbourne Trams", value="tram"),
+    app_commands.Choice(name="Bus", value="bus"),
+    app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Trains", value="perth-trains"),
+])
+async def export(ctx, format:str, mode:str, hidemessage:bool=False):
+    try:
+        await logExport(ctx, format, mode, hidemessage)
+    except FileNotFoundError as e:
+        await ctx.response.send_message(f'You have no logs for that mode!')
+    except Exception as e:
+        await ctx.response.send_message(f"Error: `{e}`")
+        
+
+
 # train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
@@ -3890,7 +3919,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     )
                 except Exception as e:
                     await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
-                    
+
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
@@ -3941,7 +3970,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
             try:
                 await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
             except:
-                ctx.response.send_message('You have no logs!')
+                await ctx.response.send_message('You have no logs!')
             
         elif format == 'l&g':
             # create thread
@@ -4158,14 +4187,14 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
+                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file) # type: ignore
                     
                     # publically send embed
                     embed = discord.Embed(title='Photo Submission', 
                       description=f'Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}')
                     file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
                     embed.set_image(url=f"attachment://{photo.filename}")
-                    await public_channel.send(embed=embed, file=file)
+                    await public_channel.send(embed=embed, file=file) # type: ignore
                     await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
                 else:
                     await ctx.edit_original_response(content="Please upload a valid image file.")

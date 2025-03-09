@@ -4,8 +4,8 @@ from xml.dom import minidom
 
 root = ET.Element('trainlogs')
 
-def convertLogsToXML(user):
-    for line in open(f"utils/trainlogger/userdata/{user}.csv", 'r'):
+def convertLogsToXML(filepath, name):
+    for line in open(filepath, 'r'):
         parts = line.strip().split(',')
         
         logid = ET.SubElement(root, 'log')
@@ -33,8 +33,9 @@ def convertLogsToXML(user):
 
 
     xmlStr = minidom.parseString(ET.tostring(root)).toprettyxml()
-    with open(f'temp/{user}.xml', 'w') as file:
+    with open(f'temp/{name}.xml', 'w') as file:
         file.write(xmlStr)
+    return f'temp/{name}.xml'
     
 def readXML(user, sid):
     tree = ET.parse(f'temp/{user}.xml')
@@ -51,5 +52,5 @@ def readXML(user, sid):
             notes = log.find('Notes').text
             print(f'Log ID: {logid}\nDate: {date}\nTrain Set: {trainset}\nTrain Type: {traintype}\nLine: {line}\nStart: {start}\nEnd: {end}\nNotes: {notes}\n\n')
 
-convertLogsToXML('xm9g')
-readXML('xm9g', "#100")
+# convertLogsToXML('xm9g')
+# readXML('xm9g', "#100")
