@@ -287,7 +287,7 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 async def printlog(text):
     print(text)
-    if len(text) < 1000:
+    if len(str(text)) < 1000:
         log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
         await log_channel.send(text)
 
