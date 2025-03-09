@@ -83,7 +83,7 @@ from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress
-from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel, lines_dictionary_log_train_map_post_munnel
+from utils.trainlogger.map.lines_dictionaries import *
 
 
 
@@ -113,6 +113,13 @@ NSWstations_list = []
 for line in file:
     line = line.strip()
     NSWstations_list.append(line)
+file.close()
+
+file = open('utils\\datalists\\nswstops.txt','r')
+NSWstops_list = []
+for line in file:
+    line = line.strip()
+    NSWstops_list.append(line)
 file.close()
 
 file = open('utils\\datalists\\adelaidestations.txt','r')
@@ -526,7 +533,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -2697,18 +2704,18 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @trainlogs.command(name='edit',description='Edit a logged trip')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
-    app_commands.Choice(name="Melbourne Tram", value="tram"),
-    app_commands.Choice(name="NSW Train", value="sydney-trains"),
-    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
-    app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
-    app_commands.Choice(name="Perth Train", value="perth-trains"),
-    app_commands.Choice(name="Bus", value="bus"),
+    # app_commands.Choice(name="Melbourne Tram", value="tram"),
+    # app_commands.Choice(name="NSW Train", value="sydney-trains"),
+    # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    # app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    # app_commands.Choice(name="Perth Train", value="perth-trains"),
+    # app_commands.Choice(name="Bus", value="bus"),
 ])
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
 @app_commands.autocomplete(traintype=type_autocompletion)
-async def editrow(ctx, id:str, mode:str, line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
+async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'edit-row')
     
@@ -3113,15 +3120,27 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     asyncio.create_task(log())
 
 
+async def NSWstop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = NSWstops_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=NSWstation_autocompletion)
-@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.autocomplete(start=NSWstop_autocompletion)
+@app_commands.autocomplete(end=NSWstop_autocompletion)
 
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
         app_commands.Choice(name="L3 Kingsford Line", value="L3"),
+        app_commands.Choice(name="L4 Westmead and Carlingford Line", value="L4"),
+        app_commands.Choice(name="NLR Newcastle Light Rail", value="NLR"),
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="Urbos 3", value="Urbos 3"),
@@ -4484,6 +4503,7 @@ async def profile(ctx, user: discord.User = None):
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
+        app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
 async def viewMaps(ctx, mode: str):
     await ctx.response.defer()
@@ -4518,11 +4538,17 @@ async def viewMaps(ctx, mode: str):
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Intercity map for {ctx.user.name} in {ctx.channel.mention}")
         elif mode == "log___sydney-train___map.png":
-            embed = discord.Embed(title=f"Map of the network covered by <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Regional map for {ctx.user.name} in {ctx.channel.mention}")
+        elif mode == "log_sydney-tram_map.png":
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-tram:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved NSW Light Rail for {ctx.user.name} in {ctx.channel.mention}")
         embed.set_image(url="attachment://map.png")
         embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
         await ctx.followup.send(embed=embed, file=file)
@@ -4533,6 +4559,7 @@ async def viewMaps(ctx, mode: str):
 @maps.command(name='trips', description="View a map of all the trips you've logged")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
+        app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
 ])
 async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
@@ -4563,7 +4590,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
@@ -4589,11 +4616,37 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"THIS MAP IS NOT FINISHED!!! Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
                 embed.set_author(name="Map by Comeng17", icon_url=pfp)
+                embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+                await ctx.followup.send(embed=embed, file=file)
+            except Exception as e:
+                await ctx.followup.send(f'Error sending map:\n```{e}```')
+        
+        if mode == "log_sydney-tram_map.png":
+            try:
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, year)
+            except FileNotFoundError:
+                await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
+                return
+            except Exception as e:
+                await ctx.followup.send(f'Error:\n```{e}```')
+                return
+            # Send the map once generated
+            try:
+                file = discord.File(f'temp/{username}.png', filename='map.png')
+                year_str = '' if year == 0 else f'in {str(year)}'
+                imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username} {year_str}", 
+                                    color=0xb8b8b8, 
+                                    description=f"THIS MAP IS NOT FINISHED [Click here to view in your browser]({imageURL})")
+                embed.set_image(url="attachment://map.png")
+                user_pic = await bot.fetch_user(829535993643794482)
+                pfp = user_pic.avatar.url
+                embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
                 embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
                 await ctx.followup.send(embed=embed, file=file)
             except Exception as e:
