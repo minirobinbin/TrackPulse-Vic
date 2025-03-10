@@ -57,7 +57,7 @@ def custom_mkdir(path, mode=0o777):
         fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
     else:  # Assume it's a Path object or similar
         fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
-    print(f"Creating dir: {fixed_path}", flush=True)  # Debug
+    # print(f"Creating dir: {fixed_path}", flush=True)  # Debug
     return original_mkdir(fixed_path, mode)
 os.mkdir = custom_mkdir
 
@@ -66,7 +66,7 @@ original_open = builtins.open
 def custom_open(file, *args, **kwargs):
     if isinstance(file, str):
         fixed_path = file.replace('\\', os.sep).replace('/', os.sep)
-        print(f"Opening: {fixed_path}", flush=True)
+        # print(f"Opening: {fixed_path}", flush=True)
     else:
         fixed_path = file
     try:
