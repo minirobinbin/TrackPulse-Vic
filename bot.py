@@ -2781,6 +2781,7 @@ async def station_autocompletion(
 ])
 
 async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+    await ctx.response.defer()
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2796,15 +2797,15 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nMake sure to use a possible date.')
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`')
                 return
 
         # checking if train number is valid
         if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            await ctx.edit_original_response(f'Invalid tram number: {number.upper()}')
             return
         type = tramType(number.upper())
         if type == None or type == 'Tram type not found for UNKNOWN':
@@ -2823,11 +2824,11 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        image = getTramImage(f'{type.replace("-Class","")}.{number}')
+        image = getTramImage(number)
         if image != None:
             embed.set_thumbnail(url=image)
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.edit_original_response(embed=embed)
         
                 
     # Run in a separate task
