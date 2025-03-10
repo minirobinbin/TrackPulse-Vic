@@ -49,12 +49,24 @@ sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
 
-# Fix for open()
+# Fix for os.mkdir()
+original_mkdir = os.mkdir
+def custom_mkdir(path, mode=0o777):
+    # Handle string paths and Path objects
+    if isinstance(path, str):
+        fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    else:  # Assume it's a Path object or similar
+        fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
+    print(f"Creating dir: {fixed_path}", flush=True)  # Debug
+    return original_mkdir(fixed_path, mode)
+os.mkdir = custom_mkdir
+
+# Your existing custom_open and custom_listdir...
 original_open = builtins.open
 def custom_open(file, *args, **kwargs):
     if isinstance(file, str):
         fixed_path = file.replace('\\', os.sep).replace('/', os.sep)
-        print(f"Opening: {fixed_path}", flush=True)  # Debug
+        print(f"Opening: {fixed_path}", flush=True)
     else:
         fixed_path = file
     try:
@@ -69,21 +81,15 @@ def custom_open(file, *args, **kwargs):
             raise e
 builtins.open = custom_open
 
-# Fix for os.listdir()
 original_listdir = os.listdir
 def custom_listdir(path='.'):
-    fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
-    print(f"Listing dir: {fixed_path}", flush=True)  # Debug
+    if isinstance(path, str):
+        fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    else:
+        fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
+    print(f"Listing dir: {fixed_path}", flush=True)
     return original_listdir(fixed_path)
 os.listdir = custom_listdir
-
-# Fix for os.mkdir()
-original_mkdir = os.mkdir
-def custom_mkdir(path, mode=0o777):
-    fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
-    print(f"Creating dir: {fixed_path}", flush=True)  # Debug
-    return original_mkdir(fixed_path, mode)
-os.mkdir = custom_mkdir
 
 
 from commands.help import helpCommand
