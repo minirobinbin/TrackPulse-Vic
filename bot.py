@@ -5239,8 +5239,8 @@ async def update(ctx):
             except Exception as e:
                 await ctx.send("Update Failed. Error:")
                 await printlog("Update Failed. Error:")
-                await ctx.send(e)
-                await printlog(e)
+                await ctx.send(f'```{e}```')
+                await printlog(f'```{e}```')
 
         else:
             await printlog(f'{str(ctx.author.id)} tried to update the bot.')
