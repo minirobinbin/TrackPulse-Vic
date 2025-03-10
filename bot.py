@@ -41,6 +41,50 @@ import os
 from pathlib import Path
 import git
 import pandas as pd
+import builtins
+
+# thing to make it work on all oses
+import sys
+sys.stdout = sys.__stdout__  # Reset stdout if needed
+
+original_open = builtins.open
+
+# Fix for open()
+original_open = builtins.open
+def custom_open(file, *args, **kwargs):
+    if isinstance(file, str):
+        fixed_path = file.replace('\\', os.sep).replace('/', os.sep)
+        print(f"Opening: {fixed_path}", flush=True)  # Debug
+    else:
+        fixed_path = file
+    try:
+        return original_open(fixed_path, *args, **kwargs)
+    except FileNotFoundError as e:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        alt_path = os.path.join(script_dir, fixed_path)
+        print(f"Trying alt path: {alt_path}", flush=True)
+        try:
+            return original_open(alt_path, *args, **kwargs)
+        except:
+            raise e
+builtins.open = custom_open
+
+# Fix for os.listdir()
+original_listdir = os.listdir
+def custom_listdir(path='.'):
+    fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    print(f"Listing dir: {fixed_path}", flush=True)  # Debug
+    return original_listdir(fixed_path)
+os.listdir = custom_listdir
+
+# Fix for os.mkdir()
+original_mkdir = os.mkdir
+def custom_mkdir(path, mode=0o777):
+    fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    print(f"Creating dir: {fixed_path}", flush=True)  # Debug
+    return original_mkdir(fixed_path, mode)
+os.mkdir = custom_mkdir
+
 
 from commands.help import helpCommand
 from commands.logexport import logExport
