@@ -4632,7 +4632,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
             except Exception as e:
-                await ctx.followup.send(f'An error occurred while generating the map:\n```{str(e)}\n\n{traceback.format_exc()}```')
+                await ctx.followup.send(f'An error occurred while generating the map:\n```{e}```')
                 print(f'Error generating map for {username}:\n```{str(e)}\n\n{traceback.format_exc()}```\n<@{USER_ID}>')
                 return
             # Send the map once generated
