@@ -121,6 +121,22 @@ class MapImageHandler:
                             draw.rectangle(coords, fill=(255, 255, 255, 0))
                         # print(f'Created line hole from {station1} to {station2}')
         
+        def crop(image: Image):
+            print("Cropping Image")
+            image_rgb = image.convert("RGB")
+            background = Image.new(image_rgb.mode, image_rgb.size, image_rgb.getpixel((0,0)))
+            difference = ImageChops.difference(image_rgb, background)
+            bbox = difference.getbbox()
+            if bbox:
+                print('Image Cropped')
+                image_cropped = image.crop(bbox)
+                image_padding = Image.new(image_cropped.mode, (round(image_cropped.size[0] * padding), round(image_cropped.size[1] * ((padding - 1) / 1.9 + 1))), (255,255,255))
+                image_padding.paste(image_cropped, (round(image_cropped.size[0] * (padding - 1) / 2), round(image_cropped.size[1] * (padding - 1) / 2)))
+                return image_padding
+            else:
+                print('Crop Failure')
+                return image
+
         def trim(image: Image):
             print("Cropping Image")
             image_rgb = image.convert("RGB")
@@ -163,6 +179,7 @@ class MapImageHandler:
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
         modified_map = trim(modified_map)
         modified_map = watermark(modified_map)
+        modified_map = crop(modified_map)
         modified_map = compress(modified_map)
         print('Saving')
         modified_map.save(output_path)
