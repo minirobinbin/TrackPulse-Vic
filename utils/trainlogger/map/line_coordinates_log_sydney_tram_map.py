@@ -44,31 +44,32 @@ line_coordinates = {
             (3550 + x_offset, 3750 + y_offset, 4050 + x_offset, 3850 + y_offset),
         ],
         ('Leichhardt North', 'Lilyfield'): [
-
+            (3050 + x_offset, 3750 + y_offset, 3600 + x_offset, 3850 + y_offset),
         ],
         ('Hawthorne', 'Leichhardt North'): [
-
+            (2850 + x_offset, 3800 + y_offset, 2900 + x_offset, 4000 + y_offset),
+            (2850 + x_offset, 3750 + y_offset, 3100 + x_offset, 3850 + y_offset),
         ],
         ('Marion', 'Hawthorne'): [
-
+            (2850 + x_offset, 3950 + y_offset, 2900 + x_offset, 4250 + y_offset),
         ],
         ('Taveners Hill', 'Marion'): [
-
+            (2850 + x_offset, 4200 + y_offset, 2950 + x_offset, 4500 + y_offset),
         ],
         ('Lewisham West', 'Taveners Hill'): [
-
+            (2850 + x_offset, 4450 + y_offset, 2950 + x_offset, 4800 + y_offset),
         ],
         ('Waratah Mills', 'Lewisham West'): [
-
+            (2800 + x_offset, 4750 + y_offset, 2950 + x_offset, 5100 + y_offset),
         ],
         ('Arlington', 'Waratah Mills'): [
-
+            (2800 + x_offset, 5050 + y_offset, 2900 + x_offset, 5400 + y_offset),
         ],
         ('Dulwich Grove', 'Arlington'): [
-
+            (2800 + x_offset, 5350 + y_offset, 2950 + x_offset, 5700 + y_offset),
         ],
         ('Dulwich Hill', 'Dulwich Grove'): [
-
+            (2750 + x_offset, 5650 + y_offset, 2950 + x_offset, 5900 + y_offset),
         ],
     }
 }
