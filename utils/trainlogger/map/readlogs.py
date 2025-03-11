@@ -687,6 +687,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
         for line in data:
             cols = line.strip().split(',')
             if len(cols) >= 6:
+                group = cols[4]
                 # convert to group names
                 affected_lines.append((cols[5], cols[6], group))
 
