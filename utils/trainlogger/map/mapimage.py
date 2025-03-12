@@ -6,7 +6,7 @@ import math
 
 dpi = 32/96
 padding = 1.1
-vertical_padding = 1.3
+vertical_padding = 1.5
 margin_watermark = (1 - (1 / vertical_padding)) / 2
 text_ratio = 20
 
