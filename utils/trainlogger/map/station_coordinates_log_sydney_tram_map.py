@@ -1,5 +1,5 @@
-x_offset = -10
-y_offset = -20
+x_offset = 10
+y_offset = -5
 
 station_coordinates = {
     "Circular Quay": (9050 + x_offset, 2000 + y_offset, 9800 + x_offset, 2200 + y_offset),

@@ -71,5 +71,61 @@ line_coordinates = {
         ('Dulwich Hill', 'Dulwich Grove'): [
             (2750 + x_offset, 5650 + y_offset, 2950 + x_offset, 5900 + y_offset),
         ],
-    }
+    },
+    'L2': {
+        ('UNSW High Street', 'Randwick'): [
+            (10450 + x_offset, 6550 + y_offset, 10600 + x_offset, 7000 + y_offset),
+        ],
+        ('Wansey Road', 'UNSW High Street'): [
+            (10500 + x_offset, 6150 + y_offset, 10600 + x_offset, 6600 + y_offset),
+        ],
+        ('Royal Randwick', 'Wansey Road'): [
+            (10500 + x_offset, 5800 + y_offset, 10600 + x_offset, 6200 + y_offset),
+        ],
+        ('Moore Park', 'Royal Randwick'): [
+            (9400 + x_offset, 5550 + y_offset, 10600 + x_offset, 5850 + y_offset),
+        ],
+        ('Surrey Hills', 'Moore Park'): [
+            (9400 + x_offset, 5250 + y_offset, 9500 + x_offset, 5600 + y_offset),
+        ],
+        ('Central', 'Surrey Hills'): [
+            (9400 + x_offset, 4650 + y_offset, 9500 + x_offset, 5300 + y_offset),
+            (9650 + x_offset, 4350 + y_offset, 9800 + x_offset, 4500 + y_offset), # Central Coords
+            (9550 + x_offset, 4500 + y_offset, 9750 + x_offset, 4600 + y_offset), # Central Coords
+            (9300 + x_offset, 4500 + y_offset, 9550 + x_offset, 4650 + y_offset), # Central Coords
+        ],
+        ('Haymarket', 'Central'): [
+            (9450 + x_offset, 4150 + y_offset, 9500 + x_offset, 4500 + y_offset),
+            (9300 + x_offset, 4000 + y_offset, 9550 + x_offset, 4150 + y_offset), # Haymarket Coords
+            (9650 + x_offset, 4350 + y_offset, 9800 + x_offset, 4500 + y_offset), # Central Coords
+            (9550 + x_offset, 4500 + y_offset, 9750 + x_offset, 4600 + y_offset), # Central Coords
+            (9300 + x_offset, 4500 + y_offset, 9550 + x_offset, 4650 + y_offset), # Central Coords
+        ],
+        ('Chinatown', 'Haymarket'): [
+            (9450 + x_offset, 3500 + y_offset, 9550 + x_offset, 3800 + y_offset),
+            (9450 + x_offset, 3900 + y_offset, 9500 + x_offset, 4000 + y_offset),
+            (9300 + x_offset, 4000 + y_offset, 9550 + x_offset, 4150 + y_offset), # Haymarket Coords
+        ],
+        ('Town Hall', 'Chinatown'): [
+            (9450 + x_offset, 3250 + y_offset, 9550 + x_offset, 3550 + y_offset),
+        ],
+        ('QVB', 'Town Hall'): [
+            (9450 + x_offset, 3000 + y_offset, 9550 + x_offset, 3300 + y_offset),
+        ],
+        ('Wynyard', 'QVB'): [
+            (9450 + x_offset, 2750 + y_offset, 9550 + x_offset, 3050 + y_offset),
+        ],
+        ('Bridge Street', 'Wynyard'): [
+            (9450 + x_offset, 2500 + y_offset, 9550 + x_offset, 2800 + y_offset),
+        ],
+        ('Circular Quay', 'Bridge Street'): [
+            (9450 + x_offset, 2350 + y_offset, 9550 + x_offset, 2550 + y_offset),
+            (9300 + x_offset, 2200 + y_offset, 9550 + x_offset, 2350 + y_offset), # Circular Quay Coords
+        ],
+    },
+    'L3': {
+        ('Kingsford', 'Juniors Kingsford'): [
+
+        ],
+    },
 }
