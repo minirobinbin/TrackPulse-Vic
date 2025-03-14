@@ -41,8 +41,61 @@ import os
 from pathlib import Path
 import git
 import pandas as pd
+import builtins
+
+# thing to make it work on all oses
+import sys
+
+from commands.searchtrain import searchTrainCommand
+sys.stdout = sys.__stdout__  # Reset stdout if needed
+
+original_open = builtins.open
+
+# Fix for os.mkdir()
+original_mkdir = os.mkdir
+def custom_mkdir(path, mode=0o777):
+    # Handle string paths and Path objects
+    if isinstance(path, str):
+        fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    else:  # Assume it's a Path object or similar
+        fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
+    # print(f"Creating dir: {fixed_path}", flush=True)  # Debug
+    return original_mkdir(fixed_path, mode)
+os.mkdir = custom_mkdir
+
+# Your existing custom_open and custom_listdir...
+original_open = builtins.open
+def custom_open(file, *args, **kwargs):
+    if isinstance(file, str):
+        fixed_path = file.replace('\\', os.sep).replace('/', os.sep)
+        # print(f"Opening: {fixed_path}", flush=True)
+    else:
+        fixed_path = file
+    try:
+        return original_open(fixed_path, *args, **kwargs)
+    except FileNotFoundError as e:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        alt_path = os.path.join(script_dir, fixed_path)
+        print(f"Trying alt path: {alt_path}", flush=True)
+        try:
+            return original_open(alt_path, *args, **kwargs)
+        except:
+            raise e
+builtins.open = custom_open
+
+original_listdir = os.listdir
+def custom_listdir(path='.'):
+    if isinstance(path, str):
+        fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
+    else:
+        fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
+    print(f"Listing dir: {fixed_path}", flush=True)
+    return original_listdir(fixed_path)
+os.listdir = custom_listdir
+
 
 from commands.help import helpCommand
+from commands.logexport import logExport
 from utils import trainset
 from utils.directions import getDirectionName
 from utils.downloader import downloader_function
@@ -82,7 +135,7 @@ from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress
-from utils.trainlogger.map.lines_dictionaries import lines_dictionary_log_train_map_pre_munnel, lines_dictionary_log_train_map_post_munnel
+from utils.trainlogger.map.lines_dictionaries import *
 
 
 
@@ -112,6 +165,13 @@ NSWstations_list = []
 for line in file:
     line = line.strip()
     NSWstations_list.append(line)
+file.close()
+
+file = open('utils\\datalists\\nswstops.txt','r')
+NSWstops_list = []
+for line in file:
+    line = line.strip()
+    NSWstops_list.append(line)
 file.close()
 
 file = open('utils\\datalists\\adelaidestations.txt','r')
@@ -279,8 +339,9 @@ log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
 async def printlog(text):
     print(text)
-    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    await log_channel.send(text)
+    if len(str(text)) < 1000:
+        log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+        await log_channel.send(text)
 
 # check if these things are on in the .env
 rareCheckerOn = False
@@ -524,7 +585,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -1015,241 +1076,8 @@ async def line_info(ctx, search: str):
 # Train search train
 @search.command(name="train", description="Search for a specific Train")
 async def train_search(ctx, train: str, hide_run_info:bool=False):
-    await ctx.response.defer()
-    log_command(ctx.user.id, 'train-search')
-    # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
-    channel = ctx.channel
-    type = trainType(train)
-    set = setNumber(train.upper())
+    await searchTrainCommand(ctx, train, hide_run_info, metro_colour, vline_colour, ptv_grey,interchange_stations,lines_dictionary_main)
     
-    metroTrains = ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
-    vlineTrains = ['VLocity', 'Sprinter', 'N Class']
-   
-    await printlog(f'set: {set}')
-    await printlog(f"TRAINTYPE {type}")
-    
-    # get colour for the embed
-    if type in metroTrains:
-        colour = metro_colour
-    elif type in vlineTrains:
-        colour = vline_colour
-    else:
-        colour = ptv_grey
-    
-    if type is None:
-       await ctx.edit_original_response(content="Train not found")
-    else:
-        embed = discord.Embed(title=f"{train.upper()}:", color=colour)
-        # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
-        try:
-            if set.endswith('-'):
-                embed.add_field(name=type, value=set[:-1])
-            else:
-                embed.add_field(name=type, value=f'{set}')
-        except:
-            await ctx.edit_original_response(content="Train not found")
-            return
-        
-        if train.upper() == "7005":  # Only old livery sprinter
-            embed.set_thumbnail(url="https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
-        else:
-            embed.set_thumbnail(url=getIcon(type))
-        
-        if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
-            information = trainData(set)
-            await printlog(information)
-            infoData=''
-            if information[5]:
-                infoData+=f'\n- **Name:** {information[5]}\n'
-                
-            if information[2]:
-                infoData+=f'- **Entered Service:** {information[2]}\n'
-                
-            if information[3]:
-                infoData+=f'- **Status:** {information[3]}\n'
-            
-            if information[4]:
-                infoData+=f'- **Notes:** {information[4]}\n'
-            if information[7]:
-                infoData+=f'- **Interior:** {information[7]}\n'
-            
-            if information[9]:
-                infoData+=f'- **Operator:** {information[9]}\n'
-            
-            if information[8]:
-                infoData+=f'- **Gauge:** {information[8]}\n'
-            
-            if information[1]:
-                embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
-                
-                
-            # thing if the user has been on
-            async def checkTrainRidden(variable, file_path):
-                if not os.path.exists(file_path):
-                    await printlog(f"The file {file_path} does not exist.")
-                    return False, []
-
-                log_ids = []
-                with open(file_path, mode='r') as file:
-                    csv_reader = csv.reader(file)
-                    for row in csv_reader:
-                        if row[1] == variable:
-                            log_ids.append(row[0])
-                
-                return bool(log_ids), log_ids
-        
-            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
-            trainridden = checkTrainRidden(set, fPath)
-            if trainridden:
-                result, log_ids = await trainridden
-                if result:
-                    log_ids_str = ', '.join([f'`{id}`' for id in log_ids])
-                    infoData += f'\n\n✅ You have been on this train before (Log IDs: {log_ids_str})'
-                
-            embed.add_field(name='Information', value=infoData)
-        else:
-            embed.add_field(name='Information', value='None available')
-        
-        image = getImage(train.upper())
-        if image != None:
-            embed.set_image(url=image)            
-            embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net#:~:text={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        else:
-            embed.add_field(name="Source:", value='[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        """
-        if type in metroTrains:
-            embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
-            """
-        # send it 
-        embed_update = await ctx.edit_original_response(embed=embed)
-        
-        if type in metroTrains and not hide_run_info:
-            # map thing
-            mapEmbed = discord.Embed(title=f"Trip Information for {train.upper()}:", color=metro_colour)
-            mapEmbed.add_field(name='<a:botloading2:1261102206468362381> Loading Trip Data', value='⠀')
-            mapEmbedUpdate = await ctx.channel.send(file=None, embed=mapEmbed)
-        
-        async def addmap():
-
-                # Generate the map asynchronously
-                # After map generation, send it
-                if type == "HCMT": # because ptv api lists hcmts like "9005M-9905M" for some fucking reason
-                    hcmtcar1 = set.split('-')
-                    location = getTrainLocation(hcmtcar1[0]+'M')
-                else:
-                    location = getTrainLocation(set)
-                line = ""
-                await printlog(f"Location: {location}")
-                url = convertTrainLocationToGoogle(location)
-                try:
-                    stoppingPattern = getStoppingPatternFromCar(location)
-                except Exception as e:
-                    await embed_update.reply(content=f'An error has occurred while searching for this trains run.')
-                await printlog(f"STOPPING PATTERN: {stoppingPattern}")
-                try:
-                    if location is not None:
-                        for item in location:
-                            latitude = item['vehicle_position']['latitude']
-                            longitude = item['vehicle_position']['longitude']
-                            line = get_route_name(item['route_id'])
-                            geopath=''
-                            # geopath = getGeopath(item["run_ref"])
-                            # await printlog(f'geopath: {geopath}')
-
-                        await makeMapv2(latitude,longitude, train, geopath) 
-                except Exception as e:
-                    await mapEmbedUpdate.edit(content='No trip data available.', embed=None)
-                    await printlog(f'ErROR: {e}')
-                    return
-                file_path = f"temp/{train}-map.png"
-                if os.path.exists(file_path):
-                    file = discord.File(file_path, filename=f"{train}-map.png")
-                    
-                    embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary_main[line][1], timestamp=discord.utils.utcnow())
-                    embed.remove_field(0)
-
-                    # Add the stops to the embed.
-                    stopsString = ''
-                    fieldCounter = 0
-                    currentFieldLength = 0
-
-                    first_stop = True
-
-                    for stop_name, stop_time, status, schedule in stoppingPattern:
-                        if status == 'Skipped':
-                            # For skipped stops
-                            stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'
-                        else:
-                            # Calculate delay in minutes
-                            delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
-                            delay_str = f"+{delay}m" if delay > 0 else ""
-
-                            if first_stop:
-                                if stop_name in interchange_stations:
-                                    emoji_type = "interchange_first"
-                                else:
-                                    emoji_type = "terminus"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
-                                first_stop = False
-                            else:
-                                # Check if it's the last stop in the list
-                                if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
-                                    if stop_name in interchange_stations:
-                                        emoji_type = "interchange_last"
-                                    else:
-                                        emoji_type = "terminus2"
-                                else:
-                                    # Check stop_name in interchange_stations
-                                    if stop_name in interchange_stations:
-                                        emoji_type = "interchange"
-                                    else:
-                                        emoji_type = "stop"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
-
-                        
-                        # Add newline for formatting
-                        stopEntry += '\n'
-
-                        if currentFieldLength + len(stopEntry) > 1000:
-                            # Add the current field and start a new one
-                            if fieldCounter == 0:  # First field
-                                stopsString += f'{getMapEmoji(line, "cont1")}\n'
-                            else:
-                                stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                            stopsString = stopEntry
-                            fieldCounter += 1
-                            currentFieldLength = len(stopEntry)
-                        else:
-                            stopsString += stopEntry
-                            currentFieldLength += len(stopEntry)
-
-                    # Add the last field if there's any content left
-                    if stopsString:
-                        if fieldCounter > 0:  # Not the first field
-                            stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                    
-                    embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
-
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
-                    # Send a new message with the file and embed
-                    await embed_update.reply(file=file, embed=embed)
-                else:
-                    await mapEmbedUpdate.delete()
-                    await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")
-                    await printlog(f"Error: Map file '{file_path}' not found.")
-                    
-        # Run transportVicSearch in a separate thread
-        
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
-            asyncio.create_task(addmap())
-            # loop = asyncio.get_event_loop()
-            # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
-            # await task
             
 # search run id   
 @search.command(name="run", description="Shows the run for a specific TDN, found in the departures command")
@@ -2693,18 +2521,18 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @trainlogs.command(name='edit',description='Edit a logged trip')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
-    app_commands.Choice(name="Melbourne Tram", value="tram"),
-    app_commands.Choice(name="NSW Train", value="sydney-trains"),
-    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
-    app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
-    app_commands.Choice(name="Perth Train", value="perth-trains"),
-    app_commands.Choice(name="Bus", value="bus"),
+    # app_commands.Choice(name="Melbourne Tram", value="tram"),
+    # app_commands.Choice(name="NSW Train", value="sydney-trains"),
+    # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    # app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    # app_commands.Choice(name="Perth Train", value="perth-trains"),
+    # app_commands.Choice(name="Bus", value="bus"),
 ])
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
 @app_commands.autocomplete(traintype=type_autocompletion)
-async def editrow(ctx, id:str, mode:str, line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
+async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'edit-row')
     
@@ -2770,6 +2598,7 @@ async def station_autocompletion(
 ])
 
 async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+    await ctx.response.defer()
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2785,15 +2614,15 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nMake sure to use a possible date.')
                 return
             except TypeError:
-                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                await ctx.edit_original_response(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`')
                 return
 
         # checking if train number is valid
         if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            await ctx.edit_original_response(f'Invalid tram number: {number.upper()}')
             return
         type = tramType(number.upper())
         if type == None or type == 'Tram type not found for UNKNOWN':
@@ -2812,11 +2641,11 @@ async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        image = getTramImage(f'{type.replace("-Class","")}.{number}')
+        image = getTramImage(number)
         if image != None:
             embed.set_thumbnail(url=image)
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.edit_original_response(embed=embed)
         
                 
     # Run in a separate task
@@ -3109,15 +2938,27 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     asyncio.create_task(log())
 
 
+async def NSWstop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = NSWstops_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
 @app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
-@app_commands.autocomplete(start=NSWstation_autocompletion)
-@app_commands.autocomplete(end=NSWstation_autocompletion)
+@app_commands.autocomplete(start=NSWstop_autocompletion)
+@app_commands.autocomplete(end=NSWstop_autocompletion)
 
 @app_commands.choices(line=[
         app_commands.Choice(name="L1 Dulwich Hill Line", value="L1"),
         app_commands.Choice(name="L2 Randwick", value="L2"),
         app_commands.Choice(name="L3 Kingsford Line", value="L3"),
+        app_commands.Choice(name="L4 Westmead and Carlingford Line", value="L4"),
+        app_commands.Choice(name="NLR Newcastle Light Rail", value="NLR"),
 ])
 @app_commands.choices(type=[
         app_commands.Choice(name="Urbos 3", value="Urbos 3"),
@@ -3808,6 +3649,33 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         time.sleep(0.5)  
     asyncio.create_task(sendLogs())
 
+# log export
+@trainlogs.command(name='export', description='Export your logs in various formats')
+@app_commands.choices(format=[
+    app_commands.Choice(name="CSV file (Excel)", value="csv"),
+    app_commands.Choice(name="Markdown file", value="md"),
+    app_commands.Choice(name="XML file", value="xml"),
+    app_commands.Choice(name='HTML file',value='html')
+])
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Victorian Trains", value="train"),
+    app_commands.Choice(name="Melbourne Trams", value="tram"),
+    app_commands.Choice(name="Bus", value="bus"),
+    app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Trains", value="perth-trains"),
+])
+async def export(ctx, format:str, mode:str, hidemessage:bool=False):
+    try:
+        await logExport(ctx, format, mode, hidemessage)
+    except FileNotFoundError as e:
+        await ctx.response.send_message(f'You have no logs for that mode!')
+    except Exception as e:
+        await ctx.response.send_message(f"Error: `{e}`")
+        
+
+
 # train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
 @app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
@@ -3890,7 +3758,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     )
                 except Exception as e:
                     await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
-                    
+
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
@@ -3941,7 +3809,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
             try:
                 await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
             except:
-                ctx.response.send_message('You have no logs!')
+                await ctx.response.send_message('You have no logs!')
             
         elif format == 'l&g':
             # create thread
@@ -4158,14 +4026,14 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file)
+                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file) # type: ignore
                     
                     # publically send embed
                     embed = discord.Embed(title='Photo Submission', 
                       description=f'Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}')
                     file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
                     embed.set_image(url=f"attachment://{photo.filename}")
-                    await public_channel.send(embed=embed, file=file)
+                    await public_channel.send(embed=embed, file=file) # type: ignore
                     await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
                 else:
                     await ctx.edit_original_response(content="Please upload a valid image file.")
@@ -4453,6 +4321,7 @@ async def profile(ctx, user: discord.User = None):
         app_commands.Choice(name="Sydney Trains", value="log_sydney-train_map.png"),
         app_commands.Choice(name="NSW Intercity Trains", value="log__sydney-train__map.png"),
         app_commands.Choice(name="NSW Regional and Interstate Trains", value="log___sydney-train___map.png"),
+        app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
 async def viewMaps(ctx, mode: str):
     await ctx.response.defer()
@@ -4487,11 +4356,17 @@ async def viewMaps(ctx, mode: str):
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Intercity map for {ctx.user.name} in {ctx.channel.mention}")
         elif mode == "log___sydney-train___map.png":
-            embed = discord.Embed(title=f"Map of the network covered by <log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-train:1289843416628330506> (NSW Regional and Interstate Network only)", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
             user = await bot.fetch_user(829535993643794482)
             pfp = user.avatar.url
             embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
             await printlog(f"Retrieved NSW Regional map for {ctx.user.name} in {ctx.channel.mention}")
+        elif mode == "log_sydney-tram_map.png":
+            embed = discord.Embed(title=f"Map of the network covered by </log sydney-tram:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")
+            user = await bot.fetch_user(829535993643794482)
+            pfp = user.avatar.url
+            embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
+            await printlog(f"Retrieved NSW Light Rail for {ctx.user.name} in {ctx.channel.mention}")
         embed.set_image(url="attachment://map.png")
         embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
         await ctx.followup.send(embed=embed, file=file)
@@ -4502,6 +4377,7 @@ async def viewMaps(ctx, mode: str):
 @maps.command(name='trips', description="View a map of all the trips you've logged")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
+        app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
 ])
 async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
@@ -4523,7 +4399,8 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
             except Exception as e:
-                await ctx.followup.send(f'Error:\n```{e}```')
+                await ctx.followup.send(f'An error occurred while generating the map:\n```{e}```')
+                print(f'Error generating map for {username}:\n```{str(e)}\n\n{traceback.format_exc()}```\n<@{USER_ID}>')
                 return
             # Send the map once generated
             try:
@@ -4532,7 +4409,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
@@ -4558,11 +4435,37 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
                 embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
                                     color=0xb8b8b8, 
-                                    description=f"THIS MAP IS NOT FINISHED!!! Warning: this command isn't quite finished yet so do beware it may be buggy.\n[Click here to view in your browser]({imageURL})")
+                                    description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
                 user_pic = await bot.fetch_user(1002449671224041502)
                 pfp = user_pic.avatar.url
                 embed.set_author(name="Map by Comeng17", icon_url=pfp)
+                embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
+                await ctx.followup.send(embed=embed, file=file)
+            except Exception as e:
+                await ctx.followup.send(f'Error sending map:\n```{e}```')
+        
+        if mode == "log_sydney-tram_map.png":
+            try:
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, year)
+            except FileNotFoundError:
+                await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
+                return
+            except Exception as e:
+                await ctx.followup.send(f'Error:\n```{e}```')
+                return
+            # Send the map once generated
+            try:
+                file = discord.File(f'temp/{username}.png', filename='map.png')
+                year_str = '' if year == 0 else f'in {str(year)}'
+                imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
+                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username} {year_str}", 
+                                    color=0xb8b8b8, 
+                                    description=f"THIS MAP IS NOT FINISHED [Click here to view in your browser]({imageURL})")
+                embed.set_image(url="attachment://map.png")
+                user_pic = await bot.fetch_user(829535993643794482)
+                pfp = user_pic.avatar.url
+                embed.set_author(name="Map by aperturethefloof", icon_url=pfp)
                 embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
                 await ctx.followup.send(embed=embed, file=file)
             except Exception as e:
@@ -5110,8 +5013,8 @@ async def update(ctx):
             except Exception as e:
                 await ctx.send("Update Failed. Error:")
                 await printlog("Update Failed. Error:")
-                await ctx.send(e)
-                await printlog(e)
+                await ctx.send(f'```{e}```')
+                await printlog(f'```{e}```')
 
         else:
             await printlog(f'{str(ctx.author.id)} tried to update the bot.')
