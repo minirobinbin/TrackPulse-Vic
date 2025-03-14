@@ -4899,18 +4899,18 @@ async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], s
 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
-# sends a message to a specific channel
-@bot.command()
-async def send(ctx, user: discord.Member, *, message: str):
-    if ctx.author.id in admin_users:
-        log_command(ctx.author.id, 'send')
-        try:
-            await user.send(message)
-            await ctx.send(f"Sent message to {user.mention}.")
-        except discord.errors.Forbidden:
-            await ctx.send("Couldn't send a message to that user.")
-    else:
-        await ctx.send("You are not authorized to use this command.")
+# # sends a message to a specific channel
+# @bot.command()
+# async def send(ctx, user: discord.Member, *, message: str):
+#     if ctx.author.id in admin_users:
+#         log_command(ctx.author.id, 'send')
+#         try:
+#             await user.send(message)
+#             await ctx.send(f"Sent message to {user.mention}.")
+#         except discord.errors.Forbidden:
+#             await ctx.send("Couldn't send a message to that user.")
+#     else:
+#         await ctx.send("You are not authorized to use this command.")
 
 # analytics viewer
 @bot.command()
