@@ -366,10 +366,10 @@ def postcompat(data:list, lines_dictionary:dict):
                         group = 'Unknown'
                     elif station1 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station1 = '*Malvern'
+                        station1 = '*Footscray'
                     elif station2 in ['North Melbourne','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
-                        station2 = '*Malvern'
+                        station2 = '*Footscray'
             line = f"{cols[0]},{cols[1]},{cols[2]},{trip_date},{group},{station1},{station2},"
         newdata.append(line)
     return newdata
