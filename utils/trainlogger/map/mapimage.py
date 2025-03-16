@@ -173,7 +173,7 @@ class MapImageHandler:
             fill=(128, 128, 128, 255), 
             font=font
             )
-            print('watermarked')
+            print('Watermarked')
             return Image.alpha_composite(image, watermark)
         
         # Composite and save
