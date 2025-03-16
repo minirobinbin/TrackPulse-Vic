@@ -2374,6 +2374,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             notes = re.sub(r'[^\x00-\x7F]+', '', notes)
             # Remove newlines
             notes = notes.replace('\n', ' ')
+            #add quotes so the csv dosn't break when u use a comma
+            notes = f'"{notes}"'
                 
             
         # Add train to the list
@@ -2398,7 +2400,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         else:
             embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         if notes:
-            embed.add_field(name="Notes", value=notes)
+            embed.add_field(name="Notes", value=notes.strip('"'))
+
         # thing to find image:
         await printlog(f"Finding image for {number}")
         if type == 'Tait':
@@ -3187,7 +3190,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                                 embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), row[5], row[6]))}km')
                         try:
                             if row[7]:
-                                embed.add_field(name='Notes:', value=row[7])
+                                embed.add_field(name='Notes:', value=row[7].strip('"'))
+                                
                         except:
                             pass
                         try:
@@ -3195,6 +3199,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         except:
                             await printlog('no image')
                         await ctx.response.send_message(embed=embed)
+                        return
+                # if there is no row with the id:
                 await ctx.response.send_message(f'Cannot find log `{id}`')
                 
         else:
@@ -3284,7 +3290,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                             if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]) != 'N/A':
                                 embed.add_field(name='Distance:', value=f'{round(getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), sublist[5], sublist[6]))}km')
                         if sublist[7]:
-                            embed.add_field(name='Notes:', value=sublist[7])
+                            embed.add_field(name='Notes:', value=sublist[7].strip('"'))
                         try:
                             embed.set_thumbnail(url=image)
                         except:
