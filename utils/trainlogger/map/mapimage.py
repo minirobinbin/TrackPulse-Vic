@@ -6,7 +6,7 @@ import math
 
 dpi = 32/96
 padding = 1.1
-vertical_padding = 1.5
+vertical_padding = 1.1
 margin_watermark = (1 - (1 / vertical_padding)) / 2
 text_ratio = 20
 
@@ -161,18 +161,19 @@ class MapImageHandler:
 
             # Calculate font size with min and max bounds
             font_size = min(image.size[0] / text_ratio, round(image.size[1] * margin_watermark))
-            
+
             # Use calculated font size
             font = ImageFont.truetype("arial.ttf", font_size)
             
             # Position text proportionally to image size
             margin = int(font_size * 0.8)  # Bottom margin
             watermark_draw.text(
-            (margin, image.size[1] - margin - round(image.size[1] * margin_watermark * 1.5)), 
+            (margin, image.size[1] - margin - round(2 * image.size[1] * margin_watermark - font_size)), 
             watermark_text, 
             fill=(128, 128, 128, 255), 
             font=font
             )
+            print('watermarked')
             return Image.alpha_composite(image, watermark)
         
         # Composite and save
