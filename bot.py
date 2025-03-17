@@ -1554,6 +1554,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                                 delaystring = f'{delay} minutes late'
                             else:
                                 delaystring = ''
+                        else:
+                            delaystring = ''
+                else:
+                    delaystring = ''
                 
                 # get the direction for busses and trams and also the route number
                 if mode in ['1', '2']:
