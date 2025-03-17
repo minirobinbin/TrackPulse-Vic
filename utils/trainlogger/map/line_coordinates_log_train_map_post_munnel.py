@@ -868,7 +868,7 @@ line_coordinates = {
         ],
         ('Flagstaff','Melbourne Central'): [
             (2350 + x_offset, 650 + y_offset, 2500 + x_offset, 1150 + y_offset), # Flagstaff Coords
-            (2500 + x_offset, 650 + y_offset, 2900 + x_offset, 750 + y_offset),
+            (2500 + x_offset, 700 + y_offset, 2900 + x_offset, 750 + y_offset),
             (2750 + x_offset, 400 + y_offset, 3050 + x_offset, 550 + y_offset), # State Library part
             (2900 + x_offset, 550 + y_offset, 3050 + x_offset, 1150 + y_offset), # Melbourne Central Coords
         ],
@@ -921,7 +921,7 @@ line_coordinates = {
 
     ('Flinders Street', 'Southern Cross'):[
         (2250 + x_offset, 1400 + y_offset, 2300 + x_offset, 1850 + y_offset),
-        (2300 + x_offset, 1750 + y_offset, 2900 + x_offset, 1850 + y_offset), 
+        (2300 + x_offset, 1800 + y_offset, 2900 + x_offset, 1850 + y_offset), 
         (2750 + x_offset, 1500 + y_offset, 3050 + x_offset, 1650 + y_offset), # Town hall part
         (2900 + x_offset, 1650 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
         (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
@@ -1059,7 +1059,7 @@ line_coordinates = {
             (2750 + x_offset, 1500 + y_offset, 3050 + x_offset, 1650 + y_offset), # Town hall part
             (2900 + x_offset, 1650 + y_offset, 3049 + x_offset, 2699 + y_offset), # Flinders Street icon
             (1200 + x_offset, 1251 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern Cross icon
-            (1650 + x_offset, 2550 + y_offset, 2899 + x_offset, 2699 + y_offset),
+            (1650 + x_offset, 2600 + y_offset, 2899 + x_offset, 2649 + y_offset),
             (1612 + x_offset, 2451 + y_offset, 1708 + x_offset, 2688 + y_offset),
             (1621 + x_offset, 1398 + y_offset, 1708 + x_offset, 2388 + y_offset),
             ],
