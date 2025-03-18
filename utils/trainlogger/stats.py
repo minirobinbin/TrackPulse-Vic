@@ -410,6 +410,12 @@ def topOperators(user):
     sydney_trains_count=0
     nsw_trainlink_count=0
     sydney_metro_count=0
+    
+    jbr_count=0
+    adelaideMetro_count=0
+    
+    transperth_count = 0
+    
     other_count = 0
     try:
         with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
@@ -459,7 +465,28 @@ def topOperators(user):
                 yarra_trams_count +=1    
     except:
         pass   
-    
+    # adelaide train
+    try:
+        with open(f'utils/trainlogger/userdata/adelaide-trains/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                train_type = row[2]
+                if train_type == 'NR Class':
+                    jbr_count +=1
+                elif train_type in ['3000 Class', '3100 Class','4000 Class']:
+                    adelaideMetro_count +=1
+                else:
+                    other_count += 1
+    except:
+        pass 
+     # perth train
+    try:
+        with open(f'utils/trainlogger/userdata/perth-trains/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                transperth_count +=1    
+    except:
+        pass
       
     # Write the results to a new CSV file
     output = f'temp/{user}TopOperators.csv'
@@ -482,6 +509,12 @@ def topOperators(user):
             writer.writerow(['Sydney Light Rail', sydney_trams_count])
         if heritage_count > 0:
             writer.writerow(['Heritage', heritage_count])
+        if jbr_count > 0:
+            writer.writerow(['Journey Beyond', jbr_count])
+        if adelaideMetro_count > 0:
+            writer.writerow(['Adelaide Metro', adelaideMetro_count])
+        if transperth_count > 0:
+            writer.writerow(['Transperth', transperth_count])
         if other_count > 0:
             writer.writerow(['Other', other_count])
                 

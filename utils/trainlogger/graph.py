@@ -82,7 +82,9 @@ label_colors = {
     'Sydney Light Rail': '#ed2438',
     'Sydney Metro': '#04959e',
     'Heritage': '#b30303',
-
+    'Adelaide Metro': '#1e3056',
+    'Journey Beyond': '#405664',
+    'Transperth': '#088a3b',
             
     'Blue Mountains Line': '#f99d1c', 
     'Central Coast & Newcastle Line': '#d11f2f',
@@ -159,6 +161,7 @@ label_colors = {
     'Mandurah': '#d25f15',
     'Airport': '#44c2b2',
     'Ellenbrook': '#d2222c',
+    
     }
 
 
