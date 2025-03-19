@@ -197,8 +197,8 @@ class MapImageHandler:
         # Composite and save
         modified_map = Image.alpha_composite(modified_map.convert('RGBA'), overlay)
         modified_map = trim(modified_map)
-        modified_map = watermark(modified_map)
-        modified_map = crop(modified_map)
+        # modified_map = watermark(modified_map)
+        # modified_map = crop(modified_map)
         legend_path = self.path.replace("/map/","/map/legends/")
         modified_map = legend(modified_map, legend_path)
         modified_map = compress(modified_map)
