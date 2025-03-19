@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="7650"
-   height="2800"
-   viewBox="0 0 2024.0627 740.83331"
+   width="7649.9995"
+   height="2600"
+   viewBox="0 0 2024.0626 687.91665"
    version="1.1"
    id="svg5"
    sodipodi:docname="log_train_map_pre_munnel.svg"
@@ -28,8 +28,8 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="0.066245342"
-     inkscape:cx="4475.7864"
-     inkscape:cy="890.62866"
+     inkscape:cx="2981.3417"
+     inkscape:cy="694.38844"
      inkscape:window-width="1366"
      inkscape:window-height="705"
      inkscape:window-x="-8"
@@ -42,7 +42,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(3333.75,2010.8335)"><g
+     transform="translate(3333.75,1957.9169)"><g
        id="g411"
        inkscape:label="Centrers"><rect
          style="display:inline;fill:#000000;fill-opacity:1;stroke-width:578.053;stroke-linecap:square"
@@ -59,12 +59,12 @@
          x="-1971.1458"
          y="-1944.6876"
          inkscape:label="Right" /></g><rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:2121.66;stroke-linecap:square"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:2044.48;stroke-linecap:square"
        id="rect593"
        width="2024.0625"
-       height="740.83337"
+       height="687.91669"
        x="-3333.75"
-       y="-2010.8335"
+       y="-1957.9169"
        inkscape:label="Background" /><g
        id="g2342"
        inkscape:label="General"
@@ -84,19 +84,7 @@
          y="-91.661072" /><g
          id="g9906"
          inkscape:label="Title"
-         transform="matrix(1,0,0,0.81996439,198.43785,0)"><text
-           xml:space="preserve"
-           style="font-size:243.215px;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';text-align:center;text-anchor:middle;fill:#00a8e4;fill-opacity:1;stroke:none;stroke-width:164.781;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
-           x="8997.7539"
-           y="-296.72278"
-           id="text9904"
-           inkscape:label="Legend"
-           transform="scale(1.0878559,0.91923939)"><tspan
-             sodipodi:role="line"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:243.215px;font-family:'Network Sans 2019';-inkscape-font-specification:'Network Sans 2019, ';fill:#000000;fill-opacity:1;stroke-width:164.781"
-             x="8997.7539"
-             y="-296.72278"
-             id="tspan9902">Legend</tspan></text></g></g><g
+         transform="matrix(1,0,0,0.81996439,198.43785,0)" /></g><g
        id="g7930"
        inkscape:label="Lines"
        transform="matrix(0.1,0,0,0.11834319,-2394.2143,-1944.6876)"><g
