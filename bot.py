@@ -3722,6 +3722,7 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
 ])
 async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all', year:int=0):
     async def sendLogs():
+        await ctx.response.defer()
         log_command(ctx.user.id, 'log-stats')
         statSearch = stat
         userid = user if user else ctx.user
@@ -3747,7 +3748,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     data = topStats(userid.name, statSearch, year, mode)
                 
             except:
-                await ctx.response.send_message('You have no logged trips!')
+                await ctx.followup.send('You have no logged trips!')
         count = 1
         message = ''
         
@@ -3755,9 +3756,9 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         if stat == 'operators':
             try:
                 pieChart(data, f'Top Operators ― {name}', ctx.user.name)
-                await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                await ctx.followup.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
-                await ctx.response.send_message('User has no logs!')  
+                await ctx.followup.send('User has no logs!')  
                 
         # length
         if stat == 'length':
@@ -3770,14 +3771,14 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                         type=discord.ChannelType.public_thread
                     )
                 except Exception as e:
-                    await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                    await ctx.followup.send(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
 
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
-                await ctx.response.send_message(embed=embed)
+                await ctx.followup.send(embed=embed)
                 
                 lines = data.splitlines()
                 chunks = []
@@ -3804,7 +3805,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     time.sleep(0.7)
                 
             except Exception as e:
-                await ctx.response.send_message(f"Error: `{e}`")
+                await ctx.followup.send(f"Error: `{e}`")
                 await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
             finally:
                 return
@@ -3812,7 +3813,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         # distance over time
         if stat == 'distanceovertime':
             distanceChart(data, name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
@@ -3824,9 +3825,9 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         
         if format == 'csv':
             try:
-                await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+                await ctx.followup.send("Here is your file:", file=discord.File(csv_filename))
             except:
-                await ctx.response.send_message('You have no logs!')
+                await ctx.followup.send('You have no logs!')
             
         elif format == 'l&g':
             # create thread
@@ -3837,14 +3838,14 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     type=discord.ChannelType.public_thread
                 )
             except Exception as e:
-                await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                await ctx.followup.send(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
                 
             # send reponse message
             pfp = userid.avatar.url
             embed=discord.Embed(title=stat.title(), colour=metro_colour)
             embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
             embed.add_field(name='Click here to view your stats:', value=f'<#{logsthread.id}>')
-            await ctx.response.send_message(embed=embed)
+            await ctx.followup.send(embed=embed)
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
@@ -3867,17 +3868,17 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 else:
                     pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
 
-                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
-                await ctx.response.send_message('You have no logs!')
+                await ctx.followup.send('You have no logs!')
         elif format == 'daily':
             if stat != 'dates':
-                await ctx.response.send_message('Daily chart can only be used with the stat set to Top Dates')
+                await ctx.followup.send('Daily chart can only be used with the stat set to Top Dates')
             try:
                 dayChart(csv_filename, ctx.user.name)
-                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
-                ctx.response.send_message('User has no logs!')
+                ctx.followup.send('User has no logs!')
     await sendLogs()
 
 @stats.command(name='termini', description='View which line termini you have been to')
@@ -3889,7 +3890,7 @@ async def termini(ctx):
         data = 'No logs found'
     
     if len(data) <= 2000:
-        await ctx.response.send_message(data)
+        await ctx.followup.send(data)
     else:
         await ctx.response.send_message(f"Termini you have visited:")
         split_strings = []
