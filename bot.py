@@ -20,6 +20,7 @@ from math import e
 from numbers import Number
 import operator
 from shutil import ExecError
+import shutil
 from tracemalloc import stop
 from cycler import V
 from discord.ext import commands, tasks
@@ -3119,7 +3120,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
             await ctx.response.send_message('You cannot view other users logs.', ephemeral=True)
             return
             
-            
+
         if id != None:
             
             if mode == 'train':
@@ -3688,7 +3689,79 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
     except Exception as e:
         await ctx.response.send_message(f"Error: `{e}`")
         
+# log import
+@trainlogs.command(name='import', description='Import your logs from a CSV file')
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Victorian Trains", value="train"),
+    app_commands.Choice(name="Melbourne Trams", value="tram"), 
+    app_commands.Choice(name="Bus", value="bus"),
+    app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Trains", value="perth-trains"),
+])
+async def importlogs(ctx, mode:str, file:discord.Attachment):
+    await ctx.response.defer(ephemeral=True)
+    log_command(ctx.user.id, 'import-log')
 
+    class ImportConfirmation(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=30)
+            
+        @discord.ui.button(label="Confirm Import", style=discord.ButtonStyle.danger)
+        async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your commend!", ephemeral=True)
+                return
+            
+            try:
+                # Download the file
+                await file.save(f'temp/{file.filename}')
+                if not file.filename.endswith('.csv'):
+                    await interaction.response.edit_message(content="Invalid file format! Make sure you're uploading a CSV file.", view=None)
+                    return
+                
+                # Validate CSV format
+                with open(f'temp/{file.filename}', 'r') as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        if len(row) < 7:  # Basic validation - ensure minimum columns
+                            await interaction.response.edit_message(content="Invalid CSV format! Make sure you're uploading a valid log file.", view=None)
+                            return
+                
+                # Copy to user's log file
+                if mode == 'train':
+                    save_path = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+                else:
+                    save_path = f'utils/trainlogger/userdata/{mode}/{ctx.user.name}.csv'
+                    
+                shutil.copy(f'temp/{file.filename}', save_path)
+                
+                await interaction.response.edit_message(content=f"Successfully imported logs for {mode} from `{file.filename}`", view=None)
+                
+            except Exception as e:
+                await interaction.response.edit_message(content=f"Error importing logs: {str(e)}", view=None)
+            finally:
+                # Cleanup temp file
+                try:
+                    os.remove(f'temp/{file.filename}') 
+                except:
+                    pass
+                
+        @discord.ui.button(label="Cancel", style=discord.ButtonStyle.gray)
+        async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your import!", ephemeral=True)
+                return
+            
+            await interaction.response.edit_message(content="Import cancelled.", view=None)
+
+    # Create confirmation message with buttons
+    view = ImportConfirmation()
+    await ctx.edit_original_response(
+        content=f"Are you sure you want to import logs for **{mode}** from `{file.filename}`?\n⚠️ This will overwrite any existing logs you have for this mode.", 
+        view=view
+    )
 
 # train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
