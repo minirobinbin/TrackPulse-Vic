@@ -2317,16 +2317,16 @@ async def type_autocompletion(
     
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)', notes='Any notes you want to add to the log', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
 @app_commands.autocomplete(traintype=type_autocompletion)
 
 # Train logger
-async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
+async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None, hidemessage:bool=False):
     channel = ctx.channel
-    await ctx.response.defer()
+    await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
     async def log(notes):
@@ -2574,7 +2574,7 @@ async def station_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
 @trainlogs.command(name="tram", description="Log a Melbourne tram you have been on")
-@app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(route=[
@@ -2604,8 +2604,8 @@ async def station_autocompletion(
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
-    await ctx.response.defer()
+async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+    await ctx.response.defer(ephemeral=hidemessage)
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2672,7 +2672,7 @@ async def NSWstation_autocompletion(
     ][:25]
     
 @trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
 
@@ -2721,7 +2721,7 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
-async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2760,7 +2760,7 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, emphemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -2789,13 +2789,13 @@ async def Adelaideline_autocompletion(
     ][:25]
     
 @trainlogs.command(name="adelaide-train", description="Log an Adelaide Metro or Journey Beyond train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=Adelaidestation_autocompletion)
 @app_commands.autocomplete(end=Adelaidestation_autocompletion)
 @app_commands.autocomplete(line=Adelaideline_autocompletion)
 
 # Adelaide train logger journey beyond too
-async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     await printlog(date)
@@ -2875,13 +2875,13 @@ async def Perthline_autocompletion(
     ][:25]
     
 @trainlogs.command(name="perth-train", description="Log a Perth train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=Perthstation_autocompletion)
 @app_commands.autocomplete(end=Perthstation_autocompletion)
 @app_commands.autocomplete(line=Perthline_autocompletion)
 
 # Perth logger
-async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today'):
+async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-perth-train')
     await printlog(date)
@@ -2938,7 +2938,7 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -2956,7 +2956,7 @@ async def NSWstop_autocompletion(
     ][:25]
 
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstop_autocompletion)
 @app_commands.autocomplete(end=NSWstop_autocompletion)
 
@@ -2972,7 +2972,7 @@ async def NSWstop_autocompletion(
         app_commands.Choice(name="Citadis 305", value="Citadis 305"),
 ])
 # SYdney tram logger nsw tram
-async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3011,7 +3011,7 @@ async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='t
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -3040,14 +3040,12 @@ async def station_autocompletion(
     ][:25]
     
 @trainlogs.command(name="bus", description="Log a Bus you have been on")
-@app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(operator=busOpsautocompletion)
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 
-# @app_commands.autocomplete(end=NSWstation_autocompletion)
-
-async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
+async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3083,7 +3081,7 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
