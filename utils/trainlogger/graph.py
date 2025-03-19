@@ -82,7 +82,9 @@ label_colors = {
     'Sydney Light Rail': '#ed2438',
     'Sydney Metro': '#04959e',
     'Heritage': '#b30303',
-
+    'Adelaide Metro': '#1e3056',
+    'Journey Beyond': '#405664',
+    'Transperth': '#088a3b',
             
     'Blue Mountains Line': '#f99d1c', 
     'Central Coast & Newcastle Line': '#d11f2f',
@@ -159,6 +161,7 @@ label_colors = {
     'Mandurah': '#d25f15',
     'Airport': '#44c2b2',
     'Ellenbrook': '#d2222c',
+    
     }
 
 
@@ -260,4 +263,25 @@ def dayChart(csv_file, uname):
     
     plt.savefig(f'temp/Graph{uname}.png')
 
+def distanceChart(csv_file, uname):
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(csv_file, names=['Date', 'Distance'])
 
+    # Convert the 'Date' column to datetime format
+    df['Date'] = pd.to_datetime(df['Date'])
+
+    # Set the 'Date' column as the index
+    df.set_index('Date', inplace=True)
+
+    # Plotting
+    plt.style.use('dark_background')
+    plt.figure(figsize=(10, 6))
+    plt.plot(df.index, df['Distance'], color='cyan', linewidth=2)
+    plt.xlabel('Date', color='white')
+    plt.ylabel('Distance (km)', color='white')
+    plt.title(f'Cumulative Distance', color='white')
+    plt.grid(True, color='gray', alpha=0.3)
+    plt.xticks(rotation=45, color='white')
+    plt.tight_layout()
+    
+    plt.savefig(f'temp/Graph{uname}.png')

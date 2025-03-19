@@ -392,6 +392,51 @@ def getLongestTrips(user):
         count +=1
     return formatted_trips
 
+def distanceOverTime(user, year):
+    filename = f'utils/trainlogger/userdata/{user}.csv'
+    distance_data = []
+    cumulative_distance = 0
+    
+    # Open and read the CSV file
+    with open(filename, newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        # Convert to list and sort by date
+        trips = list(csv_reader)
+        trips.sort(key=lambda x: x[3])  # Sort by date field
+        
+        for row in trips:
+            # Check if trip is in specified year
+            if year == 0 or row[3].startswith(str(year)):
+                try:
+                    trip_distance = getStationDistance(load_station_data('utils/trainlogger/stationDistances.csv'), row[5], row[6])
+                    if trip_distance is not None:
+                        cumulative_distance += trip_distance
+                        # Store date and cumulative distance
+                        distance_data.append([row[3], round(cumulative_distance, 2)])
+                    else:
+                        print(f'Distance for {row[5]} to {row[6]} is None')
+                except Exception as e:
+                    print(f'Error calculating distance from {row[5]} to {row[6]}: {str(e)}')
+    
+    # Create a dictionary to aggregate distances by date
+    daily_distances = {}
+    for date, distance in distance_data:
+        if date in daily_distances:
+            daily_distances[date] = distance  # Use the cumulative distance
+        else:
+            daily_distances[date] = distance
+
+    # Convert aggregated data back to list format
+    aggregated_data = [[date, distance] for date, distance in daily_distances.items()]
+    
+    # Write to temporary CSV file
+    output_file = f'temp/{user}DistanceOverTime.csv'
+    with open(output_file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerows(sorted(aggregated_data))
+    
+    return output_file
+
 def topOperators(user):
     metroTrains = ["X'Trapolis 100", "HCMT", 'EDI Comeng', 'Alstom Comeng', 'Siemens Nexas', "X'Trapolis 2.0"]
     vlineTrains = ['VLocity', 'N Class', 'Sprinter']
@@ -410,6 +455,12 @@ def topOperators(user):
     sydney_trains_count=0
     nsw_trainlink_count=0
     sydney_metro_count=0
+    
+    jbr_count=0
+    adelaideMetro_count=0
+    
+    transperth_count = 0
+    
     other_count = 0
     try:
         with open(f'utils/trainlogger/userdata/{user}.csv', newline='') as csvfile:
@@ -459,7 +510,28 @@ def topOperators(user):
                 yarra_trams_count +=1    
     except:
         pass   
-    
+    # adelaide train
+    try:
+        with open(f'utils/trainlogger/userdata/adelaide-trains/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                train_type = row[2]
+                if train_type == 'NR Class':
+                    jbr_count +=1
+                elif train_type in ['3000 Class', '3100 Class','4000 Class']:
+                    adelaideMetro_count +=1
+                else:
+                    other_count += 1
+    except:
+        pass 
+     # perth train
+    try:
+        with open(f'utils/trainlogger/userdata/perth-trains/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                transperth_count +=1    
+    except:
+        pass
       
     # Write the results to a new CSV file
     output = f'temp/{user}TopOperators.csv'
@@ -482,6 +554,12 @@ def topOperators(user):
             writer.writerow(['Sydney Light Rail', sydney_trams_count])
         if heritage_count > 0:
             writer.writerow(['Heritage', heritage_count])
+        if jbr_count > 0:
+            writer.writerow(['Journey Beyond', jbr_count])
+        if adelaideMetro_count > 0:
+            writer.writerow(['Adelaide Metro', adelaideMetro_count])
+        if transperth_count > 0:
+            writer.writerow(['Transperth', transperth_count])
         if other_count > 0:
             writer.writerow(['Other', other_count])
                 

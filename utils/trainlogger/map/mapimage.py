@@ -6,7 +6,7 @@ import math
 
 dpi = 32/96
 padding = 1.1
-vertical_padding = 1.5
+vertical_padding = 1.1
 margin_watermark = (1 - (1 / vertical_padding)) / 2
 text_ratio = 20
 
@@ -24,6 +24,23 @@ def compress(image: Image):
     except Exception as e:
         print(e)
 
+def legend(image: Image, legend_path):
+    print('Adding Legend')
+    try:
+        legend = Image.open(legend_path)
+        image_ratio = legend.size[0] / image.size[0]
+        new_y = round(legend.size[1] + image.size[1] * image_ratio)
+        new_size = [legend.size[0], new_y]
+        final_image = Image.new(image.mode, new_size, image.getpixel((0,0)))
+        new_image = image.resize((round(image.size[0] * image_ratio), round(image.size[1] * image_ratio)))
+        final_image.paste(new_image)
+        final_image.paste(legend, (0, new_image.size[1] + 1))
+        print('Legend Added')
+        return final_image
+    except:
+        print('Legend Failed')
+        return image
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary, x_offset, y_offset, station_coordinates, line_coordinates):
         self.station_order = station_order_dictionary
@@ -32,6 +49,7 @@ class MapImageHandler:
         self.y_offset = y_offset
         self.station_coordinates = station_coordinates
         self.line_coordinates = line_coordinates
+        self.path = map_image_path
         print('Initalised the map maker')
         
     def highlight_map(self, station_pairs, output_path, stations):
@@ -130,8 +148,8 @@ class MapImageHandler:
             if bbox:
                 print('Image Cropped')
                 image_cropped = image.crop(bbox)
-                image_padding = Image.new(image_cropped.mode, (round(image_cropped.size[0] * padding), round(image_cropped.size[1] * ((padding - 1) / 1.9 + 1))), (255,255,255))
-                image_padding.paste(image_cropped, (round(image_cropped.size[0] * (padding - 1) / 2), round(image_cropped.size[1] * (padding - 1) / 2)))
+                image_padding = Image.new(image_cropped.mode, (round(image_cropped.size[0] * ((padding - 1) / 1.9 + 1)), round(image_cropped.size[1] * ((padding - 1) / 1.9 + 1))), (255,255,255))
+                image_padding.paste(image_cropped, (round(image_cropped.size[0] * (padding - 1) / 5), round(image_cropped.size[1] * (padding - 1) / 2)))
                 return image_padding
             else:
                 print('Crop Failure')
@@ -161,18 +179,19 @@ class MapImageHandler:
 
             # Calculate font size with min and max bounds
             font_size = min(image.size[0] / text_ratio, round(image.size[1] * margin_watermark))
-            
+
             # Use calculated font size
             font = ImageFont.truetype("arial.ttf", font_size)
             
             # Position text proportionally to image size
             margin = int(font_size * 0.8)  # Bottom margin
             watermark_draw.text(
-            (margin, image.size[1] - margin - round(image.size[1] * margin_watermark * 1.5)), 
+            (margin, image.size[1] - margin - round(2 * image.size[1] * margin_watermark - font_size)), 
             watermark_text, 
             fill=(128, 128, 128, 255), 
             font=font
             )
+            print('Watermarked')
             return Image.alpha_composite(image, watermark)
         
         # Composite and save
@@ -180,6 +199,8 @@ class MapImageHandler:
         modified_map = trim(modified_map)
         modified_map = watermark(modified_map)
         modified_map = crop(modified_map)
+        legend_path = self.path.replace("/map/","/map/legends/")
+        modified_map = legend(modified_map, legend_path)
         modified_map = compress(modified_map)
         print('Saving')
         modified_map.save(output_path)

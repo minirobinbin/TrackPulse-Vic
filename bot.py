@@ -134,7 +134,7 @@ from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
-from utils.trainlogger.map.mapimage import compress
+from utils.trainlogger.map.mapimage import compress, legend
 from utils.trainlogger.map.lines_dictionaries import *
 
 
@@ -1554,6 +1554,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                                 delaystring = f'{delay} minutes late'
                             else:
                                 delaystring = ''
+                        else:
+                            delaystring = ''
+                else:
+                    delaystring = ''
                 
                 # get the direction for busses and trams and also the route number
                 if mode in ['1', '2']:
@@ -3684,12 +3688,13 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
 
 # train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
-@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?')
+@app_commands.describe(stat='Type of stats to view', user='Who do you want to see the data of?', format='Diffrent ways and graphs for showing the data.', mode='Train or Tram logs?', year='Filter by year', global_stats='View global stats?')
 @app_commands.choices(stat=[
     app_commands.Choice(name="Lines", value="lines"),
     app_commands.Choice(name="Stations", value="stations"),
     app_commands.Choice(name="Trips", value="pairs"),
     app_commands.Choice(name="Trip Length (VIC train only)", value="length"),
+    app_commands.Choice(name='Distance over time (VIC train only)', value='distanceovertime'),
     app_commands.Choice(name="Sets", value="sets"),
     app_commands.Choice(name="Dates", value="dates"),
     app_commands.Choice(name="Types", value="types"),
@@ -3734,6 +3739,8 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     data = topOperators(userid.name)
                 elif stat == 'length':
                     data = getLongestTrips(userid.name)  
+                elif stat == 'distanceovertime':
+                    data = distanceOverTime(userid.name, year)
                 elif mode == 'all':
                     data = allTopStats(userid.name, statSearch, year)
                 else:
@@ -3785,7 +3792,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     else:
                         if current_chunk:
                             current_chunk += "\n" + line
-                        else:
+                        else: 
                             current_chunk = line
 
                 # Add the last chunk
@@ -3801,7 +3808,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
             finally:
                 return
-
+        
+        # distance over time
+        if stat == 'distanceovertime':
+            distanceChart(data, name)
+            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
@@ -4334,7 +4345,8 @@ async def viewMaps(ctx, mode: str):
     log_command(ctx.user.id,'map-view')
     try:
         uncompressed = Image.open(f'utils/trainlogger/map/{mode}')
-        compressed = compress(uncompressed)
+        legended = legend(uncompressed,f'utils/trainlogger/map/legends/{mode}')
+        compressed = compress(legended)
         compressed.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
