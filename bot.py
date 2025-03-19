@@ -134,7 +134,7 @@ from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
-from utils.trainlogger.map.mapimage import compress
+from utils.trainlogger.map.mapimage import compress, legend
 from utils.trainlogger.map.lines_dictionaries import *
 
 
@@ -4339,7 +4339,8 @@ async def viewMaps(ctx, mode: str):
     try:
         uncompressed = Image.open(f'utils/trainlogger/map/{mode}')
         compressed = compress(uncompressed)
-        compressed.save('temp/themap.png')
+        legended = legend(compressed,f'utils/trainlogger/map/legends/{mode}')
+        legended.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             embed = discord.Embed(title=f"Map of the network covered by </log train:1289843416628330506>", color=0xb8b8b8, description="This is a map that is used by a seperate command to show where you have been on the railway network.")

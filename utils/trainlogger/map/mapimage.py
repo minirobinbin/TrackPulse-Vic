@@ -24,6 +24,14 @@ def compress(image: Image):
     except Exception as e:
         print(e)
 
+def legend(image: Image, legend_path):
+    try:
+        legend = Image.open(legend_path)
+        return image
+        # unfinished
+    except:
+        return image
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary, x_offset, y_offset, station_coordinates, line_coordinates):
         self.station_order = station_order_dictionary
@@ -32,6 +40,7 @@ class MapImageHandler:
         self.y_offset = y_offset
         self.station_coordinates = station_coordinates
         self.line_coordinates = line_coordinates
+        self.path = map_image_path
         print('Initalised the map maker')
         
     def highlight_map(self, station_pairs, output_path, stations):
@@ -182,6 +191,8 @@ class MapImageHandler:
         modified_map = watermark(modified_map)
         modified_map = crop(modified_map)
         modified_map = compress(modified_map)
+        legend_path = self.path.replace("/map/","/map/legends/")
+        modified_map = legend(modified_map,legend_path)
         print('Saving')
         modified_map.save(output_path)
         print('Done')
