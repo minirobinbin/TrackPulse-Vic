@@ -24,6 +24,23 @@ def compress(image: Image):
     except Exception as e:
         print(e)
 
+def legend(image: Image, legend_path):
+    print('Adding Legend')
+    try:
+        legend = Image.open(legend_path)
+        image_ratio = legend.size[0] / image.size[0]
+        new_y = round(legend.size[1] + image.size[1] * image_ratio)
+        new_size = [legend.size[0], new_y]
+        final_image = Image.new(image.mode, new_size, image.getpixel((0,0)))
+        new_image = image.resize((round(image.size[0] * image_ratio), round(image.size[1] * image_ratio)))
+        final_image.paste(new_image)
+        final_image.paste(legend, (0, new_image.size[1] + 1))
+        print('Legend Added')
+        return final_image
+    except:
+        print('Legend Failed')
+        return image
+
 class MapImageHandler:
     def __init__(self, map_image_path, station_order_dictionary, x_offset, y_offset, station_coordinates, line_coordinates):
         self.station_order = station_order_dictionary
@@ -32,6 +49,7 @@ class MapImageHandler:
         self.y_offset = y_offset
         self.station_coordinates = station_coordinates
         self.line_coordinates = line_coordinates
+        self.path = map_image_path
         print('Initalised the map maker')
         
     def highlight_map(self, station_pairs, output_path, stations):
@@ -181,6 +199,8 @@ class MapImageHandler:
         modified_map = trim(modified_map)
         modified_map = watermark(modified_map)
         modified_map = crop(modified_map)
+        legend_path = self.path.replace("/map/","/map/legends/")
+        modified_map = legend(modified_map, legend_path)
         modified_map = compress(modified_map)
         print('Saving')
         modified_map.save(output_path)

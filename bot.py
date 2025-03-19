@@ -134,7 +134,7 @@ from utils.stats.stats import *
 from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
 from utils.trainlogger.map.readlogs import logMap
-from utils.trainlogger.map.mapimage import compress
+from utils.trainlogger.map.mapimage import compress, legend
 from utils.trainlogger.map.lines_dictionaries import *
 
 
@@ -4345,7 +4345,8 @@ async def viewMaps(ctx, mode: str):
     log_command(ctx.user.id,'map-view')
     try:
         uncompressed = Image.open(f'utils/trainlogger/map/{mode}')
-        compressed = compress(uncompressed)
+        legended = legend(uncompressed,f'utils/trainlogger/map/legends/{mode}')
+        compressed = compress(legended)
         compressed.save('temp/themap.png')
         file=discord.File('temp/themap.png', filename='map.png')
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
