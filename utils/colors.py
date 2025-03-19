@@ -23,6 +23,10 @@ def statusEmoji(status):
         return('<:suspended:1267414594272362537>')
     if status == "Planned Works":
         return('<:Plannedworks:1267414592187924532>')
+    if status == 'Planned Closure':
+        return('🚫')
+    if status == 'Timetable/Route Changes':
+        return('')
     else:
         return('')
 
