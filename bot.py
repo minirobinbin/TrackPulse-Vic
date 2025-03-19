@@ -3109,10 +3109,16 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
 async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
     async def sendLogs():
         log_command(ctx.user.id, 'view-log')
+        
         if user == None:
                 userid = ctx.user
         else:
             userid = user
+            
+        if userid != ctx.user and ctx.user.id not in admin_users:
+            await ctx.response.send_message('You cannot view other users logs.', ephemeral=True)
+            return
+            
             
         if id != None:
             
