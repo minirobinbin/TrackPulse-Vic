@@ -25,11 +25,20 @@ def compress(image: Image):
         print(e)
 
 def legend(image: Image, legend_path):
+    print('Adding Legend')
     try:
         legend = Image.open(legend_path)
-        return image
-        # unfinished
+        image_ratio = legend.size[0] / image.size[0]
+        new_y = round(legend.size[1] + image.size[1] * image_ratio)
+        new_size = [legend.size[0], new_y]
+        final_image = Image.new(image.mode, new_size, image.getpixel((0,0)))
+        new_image = image.resize((round(image.size[0] * image_ratio), round(image.size[1] * image_ratio)))
+        final_image.paste(new_image)
+        final_image.paste(legend, (0, new_image.size[1] + 1))
+        print('Legend Added')
+        return final_image
     except:
+        print('Legend Failed')
         return image
 
 class MapImageHandler:
@@ -192,7 +201,7 @@ class MapImageHandler:
         modified_map = crop(modified_map)
         modified_map = compress(modified_map)
         legend_path = self.path.replace("/map/","/map/legends/")
-        modified_map = legend(modified_map,legend_path)
+        modified_map = legend(modified_map, legend_path)
         print('Saving')
         modified_map.save(output_path)
         print('Done')
