@@ -3936,8 +3936,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 else:
                     barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name)
                 await logsthread.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
-                await logsthread.send('User has no logs!')
+            except FileNotFoundError:
+                await logsthread.send(f'User has no logs! {e}')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
+                
         elif format == 'pie':
             try:
                 if global_stats:
@@ -3946,16 +3949,21 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
 
                 await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
+            except FileNotFoundError:
                 await ctx.followup.send('You have no logs!')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
+                
         elif format == 'daily':
             if stat != 'dates':
                 await ctx.followup.send('Daily chart can only be used with the stat set to Top Dates')
             try:
                 dayChart(csv_filename, ctx.user.name)
                 await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
+            except FileNotFoundError:
                 ctx.followup.send('User has no logs!')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
     await sendLogs()
 
 @stats.command(name='termini', description='View which line termini you have been to')
