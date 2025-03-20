@@ -3797,7 +3797,7 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all', year:int=0):
+async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str, year:int=0):
     async def sendLogs():
         await ctx.response.defer()
         log_command(ctx.user.id, 'log-stats')
