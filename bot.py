@@ -20,6 +20,7 @@ from math import e
 from numbers import Number
 import operator
 from shutil import ExecError
+import shutil
 from tracemalloc import stop
 from cycler import V
 from discord.ext import commands, tasks
@@ -244,6 +245,13 @@ for line in file:
     vline_stops.append(line)
 file.close()
 
+file = open('utils\\datalists\\heritagestations.txt','r')
+heritage_stations = []
+for line in file:
+    line = line.strip()
+    heritage_stations.append(line)
+file.close()
+
 
 # Create lists of stops
 
@@ -256,7 +264,7 @@ for stop in vline_stops:
         vline_stations.append(stop.replace(' Railway Station',''))
 
 metro_tunnel_stations = ['Town Hall','Arden','Anzac','Parkville','State Library']
-stations_list = metro_stations + vline_stations + metro_tunnel_stations
+stations_list = metro_stations + vline_stations + metro_tunnel_stations + heritage_stations
 stations_list = sorted(set(stations_list))
 
 vline_coach_stops = []
@@ -2317,16 +2325,16 @@ async def type_autocompletion(
     
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)', notes='Any notes you want to add to the log', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
 @app_commands.autocomplete(traintype=type_autocompletion)
 
 # Train logger
-async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None):
+async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None, hidemessage:bool=False):
     channel = ctx.channel
-    await ctx.response.defer()
+    await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
     async def log(notes):
@@ -2574,7 +2582,7 @@ async def station_autocompletion(
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
 @trainlogs.command(name="tram", description="Log a Melbourne tram you have been on")
-@app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Tram Number", date = "Date in DD/MM/YYYY format", route = 'Tram Line', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.choices(route=[
@@ -2604,8 +2612,8 @@ async def station_autocompletion(
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
-    await ctx.response.defer()
+async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+    await ctx.response.defer(ephemeral=hidemessage)
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2672,7 +2680,7 @@ async def NSWstation_autocompletion(
     ][:25]
     
 @trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
 
@@ -2721,7 +2729,7 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
-async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -2760,7 +2768,7 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, emphemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -2789,13 +2797,13 @@ async def Adelaideline_autocompletion(
     ][:25]
     
 @trainlogs.command(name="adelaide-train", description="Log an Adelaide Metro or Journey Beyond train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=Adelaidestation_autocompletion)
 @app_commands.autocomplete(end=Adelaidestation_autocompletion)
 @app_commands.autocomplete(line=Adelaideline_autocompletion)
 
 # Adelaide train logger journey beyond too
-async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A'):
+async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     await printlog(date)
@@ -2875,13 +2883,13 @@ async def Perthline_autocompletion(
     ][:25]
     
 @trainlogs.command(name="perth-train", description="Log a Perth train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=Perthstation_autocompletion)
 @app_commands.autocomplete(end=Perthstation_autocompletion)
 @app_commands.autocomplete(line=Perthline_autocompletion)
 
 # Perth logger
-async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today'):
+async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-perth-train')
     await printlog(date)
@@ -2938,7 +2946,7 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -2956,7 +2964,7 @@ async def NSWstop_autocompletion(
     ][:25]
 
 @trainlogs.command(name="sydney-tram", description="Log a Sydney Tram/Light Rail you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Light Rail Line', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstop_autocompletion)
 @app_commands.autocomplete(end=NSWstop_autocompletion)
 
@@ -2972,7 +2980,7 @@ async def NSWstop_autocompletion(
         app_commands.Choice(name="Citadis 305", value="Citadis 305"),
 ])
 # SYdney tram logger nsw tram
-async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A'):
+async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3011,7 +3019,7 @@ async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='t
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -3040,14 +3048,12 @@ async def station_autocompletion(
     ][:25]
     
 @trainlogs.command(name="bus", description="Log a Bus you have been on")
-@app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop')
+@app_commands.describe(number = "Bus number", type = 'Type of bus', date = "Date in DD/MM/YYYY format", line = 'bus route', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(operator=busOpsautocompletion)
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 
-# @app_commands.autocomplete(end=NSWstation_autocompletion)
-
-async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown',):
+async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3083,7 +3089,7 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -3111,11 +3117,17 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
 async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
     async def sendLogs():
         log_command(ctx.user.id, 'view-log')
+        
         if user == None:
                 userid = ctx.user
         else:
             userid = user
             
+        if userid != ctx.user and ctx.user.id not in admin_users:
+            await ctx.response.send_message('You cannot view other users logs.', ephemeral=True)
+            return
+            
+
         if id != None:
             
             if mode == 'train':
@@ -3684,7 +3696,79 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
     except Exception as e:
         await ctx.response.send_message(f"Error: `{e}`")
         
+# log import
+@trainlogs.command(name='import', description='Import your logs from a CSV file')
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Victorian Trains", value="train"),
+    app_commands.Choice(name="Melbourne Trams", value="tram"), 
+    app_commands.Choice(name="Bus", value="bus"),
+    app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
+    app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
+    app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Perth Trains", value="perth-trains"),
+])
+async def importlogs(ctx, mode:str, file:discord.Attachment):
+    await ctx.response.defer(ephemeral=True)
+    log_command(ctx.user.id, 'import-log')
 
+    class ImportConfirmation(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=30)
+            
+        @discord.ui.button(label="Confirm Import", style=discord.ButtonStyle.danger)
+        async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your commend!", ephemeral=True)
+                return
+            
+            try:
+                # Download the file
+                await file.save(f'temp/{file.filename}')
+                if not file.filename.endswith('.csv'):
+                    await interaction.response.edit_message(content="Invalid file format! Make sure you're uploading a CSV file.", view=None)
+                    return
+                
+                # Validate CSV format
+                with open(f'temp/{file.filename}', 'r') as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        if len(row) < 7:  # Basic validation - ensure minimum columns
+                            await interaction.response.edit_message(content="Invalid CSV format! Make sure you're uploading a valid log file.", view=None)
+                            return
+                
+                # Copy to user's log file
+                if mode == 'train':
+                    save_path = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+                else:
+                    save_path = f'utils/trainlogger/userdata/{mode}/{ctx.user.name}.csv'
+                    
+                shutil.copy(f'temp/{file.filename}', save_path)
+                
+                await interaction.response.edit_message(content=f"Successfully imported logs for {mode} from `{file.filename}`", view=None)
+                
+            except Exception as e:
+                await interaction.response.edit_message(content=f"Error importing logs: {str(e)}", view=None)
+            finally:
+                # Cleanup temp file
+                try:
+                    os.remove(f'temp/{file.filename}') 
+                except:
+                    pass
+                
+        @discord.ui.button(label="Cancel", style=discord.ButtonStyle.gray)
+        async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user != ctx.user:
+                await interaction.response.send_message("This isn't your import!", ephemeral=True)
+                return
+            
+            await interaction.response.edit_message(content="Import cancelled.", view=None)
+
+    # Create confirmation message with buttons
+    view = ImportConfirmation()
+    await ctx.edit_original_response(
+        content=f"Are you sure you want to import logs for **{mode}** from `{file.filename}`?\n⚠️ This will overwrite any existing logs you have for this mode.", 
+        view=view
+    )
 
 # train log stats
 @trainlogs.command(name="stats", description="View stats for a logged user's trips.")
@@ -3720,8 +3804,9 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
-async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global_stats:bool=False, user: discord.User = None, mode:str = 'all', year:int=0):
+async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&g', global_stats:bool=False, user: discord.User = None, year:int=0):
     async def sendLogs():
+        await ctx.response.defer()
         log_command(ctx.user.id, 'log-stats')
         statSearch = stat
         userid = user if user else ctx.user
@@ -3730,6 +3815,10 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
             name = 'comeng17'
         else:
             name = userid
+            
+        if user != ctx.user and ctx.user.id not in admin_users:
+            await ctx.followup.send('You can only view your own stats!')
+            return
             
         if global_stats:
             data = globalTopStats(statSearch)
@@ -3747,7 +3836,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     data = topStats(userid.name, statSearch, year, mode)
                 
             except:
-                await ctx.response.send_message('You have no logged trips!')
+                await ctx.followup.send('You have no logged trips!')
         count = 1
         message = ''
         
@@ -3755,9 +3844,9 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         if stat == 'operators':
             try:
                 pieChart(data, f'Top Operators ― {name}', ctx.user.name)
-                await ctx.response.send_message(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+                await ctx.followup.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except:
-                await ctx.response.send_message('User has no logs!')  
+                await ctx.followup.send('User has no logs!')  
                 
         # length
         if stat == 'length':
@@ -3770,14 +3859,14 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                         type=discord.ChannelType.public_thread
                     )
                 except Exception as e:
-                    await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                    await ctx.followup.send(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
 
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
-                await ctx.response.send_message(embed=embed)
+                await ctx.followup.send(embed=embed)
                 
                 lines = data.splitlines()
                 chunks = []
@@ -3804,7 +3893,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     time.sleep(0.7)
                 
             except Exception as e:
-                await ctx.response.send_message(f"Error: `{e}`")
+                await ctx.followup.send(f"Error: `{e}`")
                 await log_channel.send(f'Error: ```{e}```\n with trip length run ran by {ctx.user.mention}\n<@{USER_ID}>')
             finally:
                 return
@@ -3812,7 +3901,7 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         # distance over time
         if stat == 'distanceovertime':
             distanceChart(data, name)
-            await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
@@ -3824,9 +3913,9 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
         
         if format == 'csv':
             try:
-                await ctx.response.send_message("Here is your file:", file=discord.File(csv_filename))
+                await ctx.followup.send("Here is your file:", file=discord.File(csv_filename))
             except:
-                await ctx.response.send_message('You have no logs!')
+                await ctx.followup.send('You have no logs!')
             
         elif format == 'l&g':
             # create thread
@@ -3837,14 +3926,14 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                     type=discord.ChannelType.public_thread
                 )
             except Exception as e:
-                await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+                await ctx.followup.send(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
                 
             # send reponse message
             pfp = userid.avatar.url
             embed=discord.Embed(title=stat.title(), colour=metro_colour)
             embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
             embed.add_field(name='Click here to view your stats:', value=f'<#{logsthread.id}>')
-            await ctx.response.send_message(embed=embed)
+            await ctx.followup.send(embed=embed)
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
@@ -3858,8 +3947,11 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 else:
                     barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name)
                 await logsthread.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
-                await logsthread.send('User has no logs!')
+            except FileNotFoundError:
+                await logsthread.send(f'User has no logs! {e}')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
+                
         elif format == 'pie':
             try:
                 if global_stats:
@@ -3867,17 +3959,22 @@ async def statTop(ctx: discord.Interaction, stat: str, format: str='l&g', global
                 else:
                     pieChart(csv_filename, f'Top {stat.title()} ― Global', ctx.user.name)
 
-                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
-                await ctx.response.send_message('You have no logs!')
+                await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except FileNotFoundError:
+                await ctx.followup.send('You have no logs!')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
+                
         elif format == 'daily':
             if stat != 'dates':
-                await ctx.response.send_message('Daily chart can only be used with the stat set to Top Dates')
+                await ctx.followup.send('Daily chart can only be used with the stat set to Top Dates')
             try:
                 dayChart(csv_filename, ctx.user.name)
-                await ctx.response.send_message(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
-            except:
-                ctx.response.send_message('User has no logs!')
+                await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            except FileNotFoundError:
+                ctx.followup.send('User has no logs!')
+            except Exception as e:
+                await ctx.followup.send(f"Error: `{e}`")
     await sendLogs()
 
 @stats.command(name='termini', description='View which line termini you have been to')
@@ -3889,7 +3986,7 @@ async def termini(ctx):
         data = 'No logs found'
     
     if len(data) <= 2000:
-        await ctx.response.send_message(data)
+        await ctx.followup.send(data)
     else:
         await ctx.response.send_message(f"Termini you have visited:")
         split_strings = []
