@@ -5022,8 +5022,8 @@ async def update(ctx):
         
             try:
                 directory = Path(__file__).parents[0]
-
                 directory = git.cmd.Git(directory)
+                directory.checkout('.')  # Discard local changes
                 directory.pull()
 
                 await ctx.send("Update complete")
