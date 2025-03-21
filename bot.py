@@ -245,6 +245,13 @@ for line in file:
     vline_stops.append(line)
 file.close()
 
+file = open('utils\\datalists\\heritagestations.txt','r')
+heritage_stations = []
+for line in file:
+    line = line.strip()
+    heritage_stations.append(line)
+file.close()
+
 
 # Create lists of stops
 
@@ -257,7 +264,7 @@ for stop in vline_stops:
         vline_stations.append(stop.replace(' Railway Station',''))
 
 metro_tunnel_stations = ['Town Hall','Arden','Anzac','Parkville','State Library']
-stations_list = metro_stations + vline_stations + metro_tunnel_stations
+stations_list = metro_stations + vline_stations + metro_tunnel_stations + heritage_stations
 stations_list = sorted(set(stations_list))
 
 vline_coach_stops = []
@@ -2385,7 +2392,6 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
-        # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
         if line in vLineLines:
             embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
@@ -2529,6 +2535,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @trainlogs.command(name='edit',description='Edit a logged trip')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
+    # coming soon:
     # app_commands.Choice(name="Melbourne Tram", value="tram"),
     # app_commands.Choice(name="NSW Train", value="sydney-trains"),
     # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
@@ -2553,6 +2560,14 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
     
     # Find old data for the edited row
     dataToDelete = universalReadRow(username, idformatted, mode)
+    
+    if notes != 'nochange':
+            # Remove emojis using regex
+            notes = re.sub(r'[^\x00-\x7F]+', '', notes)
+            # Remove newlines
+            notes = notes.replace('\n', ' ')
+            #add quotes so the csv dosn't break when u use a comma
+            notes = f'"{notes}"'
     
     result = editRow(username, idformatted, mode,line,number,start,end,date,traintype,notes)
     
@@ -2904,7 +2919,6 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
                 await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
 
-        # idk how to get nsw train set numbers i cant find a list of all sets pls help
         set = number
         if set == None:
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
@@ -3091,7 +3105,6 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 
 
 # train logger reader log view
-
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
@@ -3538,9 +3551,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
-                        # embed.add_field(name=f'Operator', value="{}".format(sublist[7]))
                         embed.add_field(name=f'Number', value="{} ({})".format(sublist[1], sublist[2]))
-                        # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
                         time.sleep(0.7)
@@ -4798,10 +4809,10 @@ async def yearinreview(ctx, year: int=2024):
         current_year = datetime.now().year
         unix_time = int(time.time())
         if current_year == year:
-            if unix_time < 1732971600:
-                # await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
-                # return
-                pass
+            if unix_time < 1764507600:
+                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                return
+                # pass
         try:
         
             embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
@@ -4837,40 +4848,6 @@ async def yearinreview(ctx, year: int=2024):
             await ctx.edit_original_response(embed=discord.Embed(title="Error", description=f"An error occurred while fetching data: {e}"))
         
     asyncio.create_task(yir())
-    
-    
-# THING TO UPDATE CSV
-
-# Disabled to not fuck up the data by accident
-'''@bot.command()
-async def ids(ctx: commands.Context) -> None:
-    if ctx.author.id in admin_users:
-        checkaddids = addids()
-        if checkaddids == 'no userdata folder':
-            await ctx.send('Error: No userdata folder found.')
-        else:
-            await ctx.send('Hexadecimal IDs have been added to all CSV files in the userdata folder.\n**Do not run this command again.**')'''
-
-# @bot.tree.command(name='train-emoji', description='Sends emojis of the train (Art by MPTG)')
-# # @app_commands.allowed_installs(guilds=True, users=True)
-# # @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
-# @app_commands.choices(train=[
-#     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
-#     app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
-#     app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
-#     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
-#     # app_commands.Choice(name="HCMT", value="HCMT"),
-#     app_commands.Choice(name='VLocity', value='VLocity'),
-#     app_commands.Choice(name='Sprinter', value='Sprinter'),
-#     # app_commands.Choice(name='N Class', value='N Class'),
-# ])
-# async def trainemoji(ctx, train:str):
-#     async def sendemojis():
-#         await ctx.response.send_message(setEmoji(train))
-        
-#     asyncio.create_task(sendemojis())
-    
-# HERE ARE THE INTERNAL USE COMMANDS
 
 @bot.command()
 @commands.guild_only()
@@ -5103,22 +5080,21 @@ async def update(ctx):
     if automatic_updates == True:
         if ctx.author.id in admin_users:
             log_command(ctx.author.id, 'update')
-            await ctx.send("Updating bot")
-            await printlog("Updating bot")
+            await ctx.send("Updating bot...")
+            await printlog("Pulling from git...")
         
             try:
                 directory = Path(__file__).parents[0]
-
                 directory = git.cmd.Git(directory)
+                directory.stash('save')  # Stash local changes
                 directory.pull()
+                directory.stash('pop')  # Restore stashed changes
 
-                await ctx.send("Update complete")
-                await printlog("Update complete")
+                await ctx.send("The bot has successfully been updated, restart to apply changes.")
+                await printlog('Successfully updated bot')
             except Exception as e:
-                await ctx.send("Update Failed. Error:")
-                await printlog("Update Failed. Error:")
-                await ctx.send(f'```{e}```')
-                await printlog(f'```{e}```')
+                await ctx.send(f"Update Failed. Error:\n```{e}```")
+                await printlog(f"Update Failed. Error:\n```{e}```")
 
         else:
             await printlog(f'{str(ctx.author.id)} tried to update the bot.')
