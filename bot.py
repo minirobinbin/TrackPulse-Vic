@@ -5120,8 +5120,9 @@ async def update(ctx):
             try:
                 directory = Path(__file__).parents[0]
                 directory = git.cmd.Git(directory)
-                directory.checkout('.')  # Discard local changes
+                directory.stash('save')  # Stash local changes
                 directory.pull()
+                directory.stash('pop')  # Restore stashed changes
 
                 await ctx.send("Update complete")
                 await printlog("Update complete")
