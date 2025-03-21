@@ -486,6 +486,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Yarra Valley Railway', 'Puffing Billy Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
                     
@@ -614,6 +616,8 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Yarra Valley Railway', 'Puffing Billy Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
                     
