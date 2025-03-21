@@ -3348,11 +3348,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
                         image = None
-                        
-                        # thing to find image:
-                        await printlog(f"Finding image for {number}")
-                        image = getTramImage(f'{row[2].replace("-Class","")}.{row[1]}')
-                                        
+                                                                
                         #send in thread to reduce spam!
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                             # Make the embed
