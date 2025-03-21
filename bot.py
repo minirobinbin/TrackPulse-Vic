@@ -245,6 +245,13 @@ for line in file:
     vline_stops.append(line)
 file.close()
 
+file = open('utils\\datalists\\heritagestations.txt','r')
+heritage_stations = []
+for line in file:
+    line = line.strip()
+    heritage_stations.append(line)
+file.close()
+
 
 # Create lists of stops
 
@@ -257,7 +264,7 @@ for stop in vline_stops:
         vline_stations.append(stop.replace(' Railway Station',''))
 
 metro_tunnel_stations = ['Town Hall','Arden','Anzac','Parkville','State Library']
-stations_list = metro_stations + vline_stations + metro_tunnel_stations
+stations_list = metro_stations + vline_stations + metro_tunnel_stations + heritage_stations
 stations_list = sorted(set(stations_list))
 
 vline_coach_stops = []
