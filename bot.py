@@ -2561,6 +2561,14 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
     # Find old data for the edited row
     dataToDelete = universalReadRow(username, idformatted, mode)
     
+    if notes != 'nochange':
+            # Remove emojis using regex
+            notes = re.sub(r'[^\x00-\x7F]+', '', notes)
+            # Remove newlines
+            notes = notes.replace('\n', ' ')
+            #add quotes so the csv dosn't break when u use a comma
+            notes = f'"{notes}"'
+    
     result = editRow(username, idformatted, mode,line,number,start,end,date,traintype,notes)
     
     if result == 'invalid id did not show up':
