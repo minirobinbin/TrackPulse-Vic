@@ -4809,10 +4809,10 @@ async def yearinreview(ctx, year: int=2024):
         current_year = datetime.now().year
         unix_time = int(time.time())
         if current_year == year:
-            if unix_time < 1732971600:
-                # await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
-                # return
-                pass
+            if unix_time < 1764507600:
+                await ctx.edit_original_response(content=f"Your {current_year} year in review will be available <t:1732971600:R>.")
+                return
+                # pass
         try:
         
             embed = discord.Embed(title=f":bar_chart: {ctx.user.name}'s Victorian Trains Year in Review: {year}", color=discord.Color.blue())
