@@ -2392,7 +2392,6 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             
         # Add train to the list
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
-        # await ctx.response.send_message(f"Added {set} ({type}) on the {line} line on {savedate} from {start.title()} to {end.title()} to your file. (Log ID `#{id}`)")
         
         if line in vLineLines:
             embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
@@ -2536,6 +2535,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @trainlogs.command(name='edit',description='Edit a logged trip')
 @app_commands.choices(mode=[
     app_commands.Choice(name="Victorian Train", value="train"),
+    # coming soon:
     # app_commands.Choice(name="Melbourne Tram", value="tram"),
     # app_commands.Choice(name="NSW Train", value="sydney-trains"),
     # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
@@ -2911,7 +2911,6 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
                 await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
 
-        # idk how to get nsw train set numbers i cant find a list of all sets pls help
         set = number
         if set == None:
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
@@ -3098,7 +3097,6 @@ async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:
 
 
 # train logger reader log view
-
 vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Bendigo','Echuca', 'Swan Hill','Albury', 'Seymour', 'Shepparton', 'Traralgon', 'Bairnsdale']
 
 @trainlogs.command(name="view", description="View logged trips for a user")
@@ -3549,9 +3547,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
-                        # embed.add_field(name=f'Operator', value="{}".format(sublist[7]))
                         embed.add_field(name=f'Number', value="{} ({})".format(sublist[1], sublist[2]))
-                        # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
                         time.sleep(0.7)
