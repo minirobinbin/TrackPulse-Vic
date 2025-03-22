@@ -486,12 +486,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
-                elif cols[4] in ['Yarra Valley Railway', 'Puffing Billy Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
                     group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_pre_munnel
         y_offset = y_offset_log_train_map_pre_munnel
@@ -616,12 +619,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
-                elif cols[4] in ['Yarra Valley Railway', 'Puffing Billy Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
                     group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_post_munnel
         y_offset = y_offset_log_train_map_post_munnel

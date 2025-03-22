@@ -46,7 +46,7 @@ lines_dictionary_log_train_map_pre_munnel = {
     'Swan Hill': [['Southern Cross', 'Footscray', 'Watergardens', 'Gisborne', 'Woodend', 'Kyneton', 'Malmsbury', 'Castlemaine', 'Kangaroo Flat', 'Bendigo', 'Eaglehawk', 'Raywood', 'Dingee', 'Pyramid', 'Kerang', 'Swan Hill'],0x782f9a],
     'Traralgon': [['Southern Cross', 'Flinders Street', 'Richmond', 'Caulfield', 'Clayton', 'Dandenong', 'Berwick', 'Pakenham', 'Nar Nar Goon', 'Tynong', 'Garfield', 'Bunyip', 'Longwarry', 'Drouin', 'Warragul', 'Yarragon', 'Trafalgar', 'Moe', 'Morwell', 'Traralgon'],0x782f9a],
     'Warrnambool': [['Southern Cross', 'Footscray', 'Sunshine', 'Deer Park', 'Tarneit', 'Wyndham Vale', 'Little River', 'Lara', 'Corio', 'North Shore', 'North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds', 'Winchelsea', 'Birregurra', 'Colac', 'Camperdown', 'Terang', 'Sherwood Park', 'Warrnambool'],0x782f9a],
-    'Yarra Valley Railway': [['Healesville', 'Healseville'], ptv_grey],
+    'Yarra Valley Railway': [['Healesville', 'Tunnel Hill'], ptv_grey],
     'Puffing Billy Railway': [['Belgrave', 'Selby', 'Menzies Creek', 'Clematis', 'Emerald', 'Nobelius', 'Nobelius Siding', 'Lakeside', 'Wright', 'Cockatoo', 'Fielder', 'Gembrook'], ptv_grey],
     'Daylesford Spa Country Railway': [['Bullarto', 'Passing Clouds', 'Musk', 'Daylesford'], ptv_grey],
     'Mornington Tourist Railway': [['Moorooduc', 'Tanti Park', 'Narambi Road', 'Stopping Place 16', 'Mornington'], ptv_grey],
