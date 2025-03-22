@@ -55,7 +55,7 @@ station_coordinates = {
     "Upper Ferntree Gully": (9400 + x_offset, -1200 + y_offset, 10400 + x_offset, -1000 + y_offset),
     "Upwey": (10400 + x_offset, -1200 + y_offset, 10800 + x_offset, -1050 + y_offset),
     "Tecoma": (10800 + x_offset, -1200 + y_offset, 11250 + x_offset, -1000 + y_offset),
-    "Belgrave": (11310 + x_offset, -1400 + y_offset, 11750 + x_offset, -1200 + y_offset),
+    "Belgrave": (11250 + x_offset, -1200 + y_offset, 11700 + x_offset, -1000 + y_offset),
     "Ringwood East": (6610 + x_offset, -1550 + y_offset, 7400 + x_offset, -1400 + y_offset),
     "Croydon": (6610 + x_offset, -1800 + y_offset, 7050 + x_offset, -1600 + y_offset),
     "Mooroolbark": (6610 + x_offset, -2000 + y_offset, 7250 + x_offset, -1750 + y_offset),

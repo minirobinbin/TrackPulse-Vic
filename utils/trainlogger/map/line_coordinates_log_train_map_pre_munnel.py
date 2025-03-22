@@ -549,7 +549,8 @@ line_coordinates = {
 
     # the beginning of the belgrave line:
     ('Belgrave', 'Tecoma'):[
-        (11000 + x_offset, -1400 + y_offset, 11300 + x_offset, -1200 + y_offset),
+        (11000 + x_offset, -1450 + y_offset, 11400 + x_offset, -1200 + y_offset),
+        (11400 + x_offset, -1450 + y_offset, 11550 + x_offset, -1200 + y_offset), #belgrave coords
     ],
     ('Tecoma', 'Upwey'):[
         (10600 + x_offset, -1350 + y_offset, 11050 + x_offset, -1200 + y_offset),
@@ -1314,9 +1315,11 @@ line_coordinates = {
         ],
         ('Kangaroo Flat','Castlemaine'):[
             (-3200 + x_offset, -3600 + y_offset, -3100 + x_offset, -3350 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Castlemaine','Malmsbury'):[
             (-3200 + x_offset, -3400 + y_offset, -3100 + x_offset, -3150 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Malmsbury','Kyneton'):[
             (-3200 + x_offset, -3200 + y_offset, -3100 + x_offset, -2950 + y_offset),
@@ -1702,9 +1705,11 @@ line_coordinates = {
         ],
         ('Kangaroo Flat','Castlemaine'):[
             (-3300 + x_offset, -3600 + y_offset, -3200 + x_offset, -3350 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Castlemaine','Malmsbury'):[
             (-3300 + x_offset, -3400 + y_offset, -3200 + x_offset, -3150 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Malmsbury','Kyneton'):[
             (-3300 + x_offset, -3200 + y_offset, -3200 + x_offset, -2950 + y_offset),
