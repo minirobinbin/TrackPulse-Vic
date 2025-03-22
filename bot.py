@@ -4493,9 +4493,9 @@ async def viewMaps(ctx, mode: str):
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
-        app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
+        # app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
-async def mapstrips(ctx,mode: str,user: discord.Member=None, year: int=0):
+async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
