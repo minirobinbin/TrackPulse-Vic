@@ -182,7 +182,7 @@ Format: the format you want the exported file to be.
 Mode: what set of logs are you accessing.
 
 Optional:
-Hidemessage: True or False. False by default. If you choose true, it will make the response message containing your file only visible to you.'''
+Hidemessage: True or False. False by default. If you choose true, it will make the response message containing your file only visible to you.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
 
 **Options:**
