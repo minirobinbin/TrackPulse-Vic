@@ -183,6 +183,13 @@ Mode: what set of logs are you accessing.
 
 Optional:
 Hidemessage: True or False. False by default. If you choose true, it will make the response message containing your file only visible to you.''',
+        '/log import': '''</log import:1289843416628330506> is a command that allows you to import a file containing all the logs you've made for a specific mode. You can only import to your own logs. NOTE THAT THIS WILL OVERRIDE YOUR EXISTING LOGS FOR THIS MODE UNRECOVERABLY!
+
+**Options:**
+
+Required:
+Mode: what set of logs are you accessing
+File: attach the file you would like to import.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
 
 **Options:**
