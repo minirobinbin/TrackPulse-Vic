@@ -189,7 +189,7 @@ Hidemessage: True or False. False by default. If you choose true, it will make t
 
 Required:
 Mode: what set of logs are you accessing
-File: attach the file you would like to import.''',
+File: attach the file you would like to import. It has to be a CSV in the same format as the ones you can export with </log export:1289843416628330506>.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
 
 **Options:**
