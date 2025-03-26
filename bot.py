@@ -3265,6 +3265,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 embed=discord.Embed(title='Train Logs', colour=vline_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
+                embed.add_field(name='Click here to view on the website:', value=f'[Trackpulse VIC Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
                 await logsthread.send(f'# {userid.name}\'s Train Logs')
