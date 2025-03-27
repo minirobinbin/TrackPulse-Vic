@@ -265,7 +265,7 @@ Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Start: the starting stop of your trip. You can choose from the list or type your own.
     End: the ending stop of your trip. You can choose from the list or type your own.''',
-        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
+        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user. [It has an equivalent in the website]https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify).
 
 **Options:**
 
