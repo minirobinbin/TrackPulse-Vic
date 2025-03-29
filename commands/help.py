@@ -41,6 +41,8 @@ async def helpCommand(ctx,category,command):
             "</log view:1289843416628330506> - View your logs",
             "</log delete:1289843416628330506> - Delete a log you've made.",
             "</log edit:1289843416628330506> - Edit a log you've made.",
+            "</log export:1289843416628330506> - Export a file containing all your logs for a specific mode.",
+            "</log import:1289843416628330506> - Import a file containing all your logs for a specific mode. Note that this will override existing logs!",
             "</completion sets:1304404972229623829> - View which sets you have been on for a specific train.",
             "</completion stations:1304404972229623829> - View which stations you have been to.",
             "</stats termini:1240101357847838815> - View which Victorian ail termini you've been to.",
@@ -171,6 +173,23 @@ Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
     Notes: add any notes you want to add to your log.''',        
+        '/log export': '''</log export:1289843416628330506> is a command that allows you to export a file containing all the logs you've made for a specific mode. You can only export your own logs.
+
+**Options:**
+
+Required:
+Format: the format you want the exported file to be.
+Mode: what set of logs are you accessing.
+
+Optional:
+Hidemessage: True or False. False by default. If you choose true, it will make the response message containing your file only visible to you.''',
+        '/log import': '''</log import:1289843416628330506> is a command that allows you to import a file containing all the logs you've made for a specific mode. You can only import to your own logs. NOTE THAT THIS WILL OVERRIDE YOUR EXISTING LOGS FOR THIS MODE UNRECOVERABLY!
+
+**Options:**
+
+Required:
+Mode: what set of logs are you accessing
+File: attach the file you would like to import. It has to be a CSV in the same format as the ones you can export with </log export:1289843416628330506>.''',
         '/log perth-train': '''</log perth-train:1289843416628330506> is a command to log any Transperth and Transwa train trips. Make sure to log each different leg of your trip seperately.
 
 **Options:**
@@ -246,12 +265,12 @@ Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Start: the starting stop of your trip. You can choose from the list or type your own.
     End: the ending stop of your trip. You can choose from the list or type your own.''',
-        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user.
+        '/log view': '''</log view:1289843416628330506> is a command allows you to view all the logs recorded by a user. [It has an equivalent in the website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify).
 
 **Options:**
 
 Optional:
-    Mode: which set of logs you want to few. By default it is set to "Victorian Trains"
+    Mode: which set of logs you want to view. By default it is set to "Victorian Trains"
     User: pick a user who's logs you wish to view. By default it's set to you.
     Id: if you wish to view a specific log instead of all of your logs, input that log's ID. Examples include "#18A", "#1", "#F"''',        
         '/disruptions': '''</disruptions:1331565431965745186> is a command that allows you to view the current distruption status of a rail line. This is currently only for Metro.

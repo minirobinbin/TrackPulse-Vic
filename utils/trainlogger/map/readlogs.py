@@ -344,21 +344,21 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in lines_dictionary['Frankston'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston Loop,*Southern Cross,{station2},')
                 elif group == 'Pakenham':
-                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    if station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
-                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station1 = '*Malvern'
-                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
                 elif group == 'Cranbourne':
-                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    if station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
-                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station1 = '*Malvern'
-                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
                 elif group == 'Sunbury':
@@ -486,10 +486,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_pre_munnel
         y_offset = y_offset_log_train_map_pre_munnel
@@ -614,10 +619,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_post_munnel
         y_offset = y_offset_log_train_map_post_munnel

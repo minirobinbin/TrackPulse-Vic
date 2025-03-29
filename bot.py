@@ -593,7 +593,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -3268,6 +3268,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 embed=discord.Embed(title='Train Logs', colour=vline_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
+                embed.add_field(name='Click here to view your own logs on the website:', value=f'[Trackpulse VIC Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
                 await logsthread.send(f'# {userid.name}\'s Train Logs')
@@ -4496,6 +4497,7 @@ async def viewMaps(ctx, mode: str):
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
+        # app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
 async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
     await ctx.response.defer()
@@ -4796,6 +4798,7 @@ async def about(ctx):
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
+    embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
     embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/Track-Pulse-VIC/TrackPulse-Vic/issues)')
     await ctx.edit_original_response(embed=embed)

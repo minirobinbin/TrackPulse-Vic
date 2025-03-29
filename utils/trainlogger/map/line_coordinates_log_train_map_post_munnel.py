@@ -514,7 +514,8 @@ line_coordinates = {
 
     # the beginning of the belgrave line:
     ('Belgrave', 'Tecoma'):[
-        (11000 + x_offset, -1400 + y_offset, 11300 + x_offset, -1200 + y_offset),
+        (11000 + x_offset, -1450 + y_offset, 11400 + x_offset, -1200 + y_offset),
+        (11400 + x_offset, -1450 + y_offset, 11550 + x_offset, -1200 + y_offset), #belgrave coords
     ],
     ('Tecoma', 'Upwey'):[
         (10600 + x_offset, -1350 + y_offset, 11050 + x_offset, -1200 + y_offset),
@@ -706,9 +707,16 @@ line_coordinates = {
             (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
         ],
         ('Caulfield','Malvern'): [
+            (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (5300 + x_offset, 4000 + y_offset, 5400 + x_offset, 4150 + y_offset),
         ],
         ('Malvern','Anzac'): [
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (5250 + x_offset, 2950 + y_offset, 5400 + x_offset, 4050 + y_offset),
             (3900 + x_offset, 2950 + y_offset, 4850 + x_offset, 3050 + y_offset),
         ],
@@ -825,9 +833,15 @@ line_coordinates = {
         ],
         ('Caulfield', 'Malvern'):[
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (4900 + x_offset, 4000 + y_offset, 5000 + x_offset, 4150 + y_offset),
         ],
         ('Malvern', 'Armadale'):[
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (4850 + x_offset, 3800 + y_offset, 5000 + x_offset, 4050 + y_offset),
         ],
         ('Armadale', 'Toorak'):[
@@ -841,9 +855,8 @@ line_coordinates = {
             (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
         ],
         ('South Yarra', 'Richmond'):[
-            (4600 + x_offset, 2100 + y_offset, 5250 + x_offset, 2150 + y_offset),
-            (5250 + x_offset, 2100 + y_offset, 5400 + x_offset, 2450 + y_offset),
-            (4950 + x_offset, 2350 + y_offset, 5100 + x_offset, 2700 + y_offset),
+            (4600 + x_offset, 2100 + y_offset, 5000 + x_offset, 2150 + y_offset),
+            (4950 + x_offset, 2150 + y_offset, 5100 + x_offset, 2700 + y_offset),
             (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
@@ -1182,8 +1195,10 @@ line_coordinates = {
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5200 + x_offset, 2200 + y_offset, 5250 + x_offset, 4150 + y_offset),
-            (4650 + x_offset, 2150 + y_offset, 5250 + x_offset, 2250 + y_offset),
+            (5200 + x_offset, 2200 + y_offset, 5250 + x_offset, 4000 + y_offset),
+            (5200 + x_offset, 4050 + y_offset, 5250 + x_offset, 4150 + y_offset),
+            (4650 + x_offset, 2150 + y_offset, 4950 + x_offset, 2250 + y_offset),
+            (5000 + x_offset, 2150 + y_offset, 5250 + x_offset, 2250 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
@@ -1337,9 +1352,11 @@ line_coordinates = {
         ],
         ('Kangaroo Flat','Castlemaine'):[
             (-3200 + x_offset, -3600 + y_offset, -3100 + x_offset, -3350 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Castlemaine','Malmsbury'):[
             (-3200 + x_offset, -3400 + y_offset, -3100 + x_offset, -3150 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Malmsbury','Kyneton'):[
             (-3200 + x_offset, -3200 + y_offset, -3100 + x_offset, -2950 + y_offset),
@@ -1523,8 +1540,10 @@ line_coordinates = {
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5100 + x_offset, 2300 + y_offset, 5150 + x_offset, 4150 + y_offset),
-            (4650 + x_offset, 2250 + y_offset, 5150 + x_offset, 2350 + y_offset),
+            (5100 + x_offset, 2300 + y_offset, 5150 + x_offset, 4000 + y_offset),
+            (5100 + x_offset, 4050 + y_offset, 5150 + x_offset, 4150 + y_offset),
+            (4650 + x_offset, 2250 + y_offset, 4950 + x_offset, 2350 + y_offset),
+            (5000 + x_offset, 2250 + y_offset, 5150 + x_offset, 2350 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
@@ -1725,9 +1744,11 @@ line_coordinates = {
         ],
         ('Kangaroo Flat','Castlemaine'):[
             (-3300 + x_offset, -3600 + y_offset, -3200 + x_offset, -3350 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Castlemaine','Malmsbury'):[
             (-3300 + x_offset, -3400 + y_offset, -3200 + x_offset, -3150 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
         ],
         ('Malmsbury','Kyneton'):[
             (-3300 + x_offset, -3200 + y_offset, -3200 + x_offset, -2950 + y_offset),
@@ -1887,6 +1908,85 @@ line_coordinates = {
             (1450 + x_offset, 850 + y_offset, 1800 + x_offset, 900 + y_offset),
             (1750 + x_offset, 900 + y_offset, 1800 + x_offset, 1250 + y_offset),
             (1200 + x_offset, 1250 + y_offset, 2349 + x_offset, 1399 + y_offset), # Southern 
+        ],
+    },
+    'heritage':{
+        ('Belgrave', 'Selby'):[
+            (11550 + x_offset, -1450 + y_offset, 11750 + x_offset, -1350 + y_offset),
+            (11400 + x_offset, -1450 + y_offset, 11550 + x_offset, -1200 + y_offset), #belgrave coords
+        ],
+        ('Selby', 'Menzies Creek'):[
+            (11700 + x_offset, -1450 + y_offset, 12250 + x_offset, -1350 + y_offset),
+        ],
+        ('Menzies Creek', 'Clematis'):[
+            (12200 + x_offset, -1450 + y_offset, 12850 + x_offset, -1350 + y_offset),
+        ],
+        ('Clematis', 'Emerald'):[
+            (12800 + x_offset, -1450 + y_offset, 13300 + x_offset, -1350 + y_offset),
+        ],
+        ('Emerald', 'Nobelius'):[
+            (13250 + x_offset, -1450 + y_offset, 13750 + x_offset, -1350 + y_offset),
+        ],
+        ('Nobelius', 'Nobelius Siding'):[
+            (13700 + x_offset, -1450 + y_offset, 14350 + x_offset, -1350 + y_offset),
+        ],
+        ('Nobelius Siding', 'Lakeside'):[
+            (14300 + x_offset, -1450 + y_offset, 14950 + x_offset, -1350 + y_offset), 
+        ],
+        ('Lakeside', 'Wright'):[
+            (14900 + x_offset, -1450 + y_offset, 15350 + x_offset, -1350 + y_offset),
+        ],
+        ('Wright', 'Cockatoo'):[
+            (15300 + x_offset, -1450 + y_offset, 15800 + x_offset, -1350 + y_offset),
+        ],
+        ('Cockatoo', 'Fielder'):[
+            (15750 + x_offset, -1450 + y_offset, 16250 + x_offset, -1350 + y_offset),
+        ],
+        ('Fielder', 'Gembrook'):[
+            (16200 + x_offset, -1450 + y_offset, 16450 + x_offset, -1300 + y_offset), 
+        ],
+        ('Healesville', 'Tunnel Hill'):[
+            (6450 + x_offset, -3350 + y_offset, 6600 + x_offset, -3150 + y_offset),
+        ],
+        ('Bullarto', 'Passing Clouds'):[
+            (-6950 + x_offset, -3000 + y_offset, -6500 + x_offset, -2800 + y_offset),
+        ],
+        ('Passing Clouds', 'Musk'):[
+            (-7450 + x_offset, -2950 + y_offset, -6900 + x_offset, -2850 + y_offset),
+        ],
+        ('Musk', 'Daylesford'):[
+            (-7650 + x_offset, -2950 + y_offset, -7400 + x_offset, -2800 + y_offset),
+        ],
+        ('Moorooduc', 'Tanti Park'):[
+            (4100 + x_offset, 9000 + y_offset, 4450 + x_offset, 9150 + y_offset),
+        ],
+        ('Tanti Park', 'Narambi Road'):[
+            (3500 + x_offset, 9000 + y_offset, 4150 + x_offset, 9100 + y_offset), 
+        ],
+        ('Narambi Road', 'Stopping Place 16'):[
+            (2750 + x_offset, 9000 + y_offset, 3550 + x_offset, 9100 + y_offset),
+        ],
+        ('Stopping Place 16', 'Mornington'):[
+            (2300 + x_offset, 9000 + y_offset, 2800 + x_offset, 9150 + y_offset),
+        ],
+        ('Castlemaine', 'Muckleford'):[
+            (-3650 + x_offset, -3300 + y_offset, -3350 + x_offset, -3150 + y_offset),
+            (-3450 + x_offset, -3450 + y_offset, -3100 + x_offset, -3300 + y_offset), # castlemaine coords
+        ],
+        ('Muckleford', 'Maldon'):[
+            (-4000 + x_offset, -3300 + y_offset, -3600 + x_offset, -3150 + y_offset),
+        ],
+        ('Thomson', 'Winter Platform'):[
+            (20950 + x_offset, 3650 + y_offset, 21100 + x_offset, 3900 + y_offset),
+        ],
+        ('Winter Platform', 'Cascade Bridge Halt'):[
+            (20950 + x_offset, 3450 + y_offset, 21050 + x_offset, 3700 + y_offset),
+        ],
+        ('Cascade Bridge Halt', 'Happy Creek'):[
+            (20950 + x_offset, 3250 + y_offset, 21050 + x_offset, 3500 + y_offset),
+        ],
+        ('Happy Creek', 'Walhalla'):[
+            (20950 + x_offset, 3050 + y_offset, 21100 + x_offset, 3300 + y_offset),
         ],
     },
 }
