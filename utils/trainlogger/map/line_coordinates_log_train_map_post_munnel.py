@@ -707,6 +707,7 @@ line_coordinates = {
             (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
         ],
         ('Caulfield','Malvern'): [
+            (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
             (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
             (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
             (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords

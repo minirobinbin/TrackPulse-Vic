@@ -683,10 +683,20 @@ line_coordinates = {
             (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
         ],
         ('Caulfield','Malvern'): [
+            (4900 + x_offset, 4150 + y_offset, 5350 + x_offset, 4300 + y_offset), # caulfield coords
             (5200 + x_offset, 4000 + y_offset, 5300 + x_offset, 4150 + y_offset),
         ],
-        ('Malvern','South Yarra'): [
-            (5200 + x_offset, 2950 + y_offset, 5300 + x_offset, 4050 + y_offset),
+        ('Malvern','Armadale'): [
+            (5200 + x_offset, 3800 + y_offset, 5300 + x_offset, 4050 + y_offset),
+        ],
+        ('Armadale','Toorak'): [
+            (5200 + x_offset, 3600 + y_offset, 5300 + x_offset, 3850 + y_offset),
+        ],
+        ('Toorak','Hawksburn'): [
+            (5200 + x_offset, 3400 + y_offset, 5300 + x_offset, 3650 + y_offset),
+        ],
+        ('Hawksburn','South Yarra'): [
+            (5200 + x_offset, 2950 + y_offset, 5300 + x_offset, 3650 + y_offset),
             (4800 + x_offset, 2800 + y_offset, 5000 + x_offset, 2950 + y_offset), # south yarra coords
             (5000 + x_offset, 2850 + y_offset, 5250 + x_offset, 2900 + y_offset), # south yarra coords
             (5200 + x_offset, 2800 + y_offset, 5350 + x_offset, 2950 + y_offset), # south yarra coords
