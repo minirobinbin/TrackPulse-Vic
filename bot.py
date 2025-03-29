@@ -4617,13 +4617,31 @@ async def viewAchievements(ctx, user: discord.User = None):
         user = ctx.user
 
     # Get user's achievements
+    user_achievements = {}  # Change to dict to store dates
     filepath = f'utils/trainlogger/achievements/data/{user.name}.csv'
-    user_achievements = []
     if os.path.exists(filepath):
         with open(filepath, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                user_achievements.extend(row)
+                # Process achievements in pairs (id, date)
+                for i in range(0, len(row), 2):
+                    if i+1 < len(row):
+                        achievement_id = row[i]
+                        achievement_date = row[i+1]
+                        user_achievements[achievement_id] = achievement_date
+
+    # Get all achievements from master list with dates
+    all_achievements = []
+    with open('utils/trainlogger/achievements/achievements.csv', 'r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row:  # Skip empty rows
+                achievement_id = row[0]
+                name = row[1] 
+                description = row[2]
+                has_achievement = achievement_id in user_achievements
+                date = user_achievements.get(achievement_id, None) if has_achievement else None
+                all_achievements.append((achievement_id, name, description, has_achievement, date))
 
     # Get all achievements from master list
     all_achievements = []
@@ -4653,10 +4671,14 @@ async def viewAchievements(ctx, user: discord.User = None):
         for achievement in pages[page_num]:
             achievement_id, name, description, has_achievement = achievement
             emoji = "✅" if has_achievement else "🔒"
-            embed.add_field(name=f"{emoji} {name}", value=description, inline=False)
-            
+            value = description
+            if has_achievement:
+                date = user_achievements.get(achievement_id)
+                if date != 'unknown':
+                    value += f"\nDate earned: {date}"
+            embed.add_field(name=f"{emoji} {name}", value=value, inline=False)
+        
         return embed
-
        # Create buttons
     class NavButtons(discord.ui.View):
         def __init__(self):

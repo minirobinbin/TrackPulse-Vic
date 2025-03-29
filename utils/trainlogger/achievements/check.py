@@ -534,25 +534,38 @@ def checkAchievements(user):
     else:
         print('No adelaide logs')
     
-    # check which achievements are actually new
+    # Check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
-    existing_achievements = []
+    existing_achievements = {}  # Dictionary to store achievement ID: date
     
+    # Read existing achievements with dates
     if os.path.exists(userCSV):
         with open(userCSV, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                existing_achievements.extend(row)
+                for i in range(0, len(row), 2):  # Assuming format: [id, date, id, date, ...]
+                    if i + 1 < len(row):
+                        existing_achievements[row[i]] = row[i + 1]
     
+    # Determine truly new achievements with current date
+    current_date = datetime.now().strftime('%Y-%m-%d')
     truly_new = [ach for ach in new_achievements if ach not in existing_achievements]
+    new_with_dates = {ach: current_date for ach in truly_new}
     
-    # update the user's achievements file
-    if truly_new:
-        all_achievements = existing_achievements + truly_new
+    # Combine existing and new achievements
+    all_achievements = existing_achievements.copy()
+    all_achievements.update(new_with_dates)
+    
+    # Write all achievements with dates to CSV
+    if all_achievements:
         with open(userCSV, 'w', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(all_achievements)
-        print(f"Added the following achievements: {truly_new}")
+            # Flatten dictionary into list: [id1, date1, id2, date2, ...]
+            flat_list = [item for pair in all_achievements.items() for item in pair]
+            csv_writer.writerow(flat_list)
+    
+    if truly_new:
+        print(f"Added the following achievements on {current_date}: {truly_new}")
     else:
         print("No new achievements to add.")
     
@@ -650,23 +663,36 @@ def checkGameAchievements(user):
 
     # Check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
-    existing_achievements = []
+    existing_achievements = {}  # Dictionary to store achievement ID: date
     
+    # Read existing achievements with dates
     if os.path.exists(userCSV):
         with open(userCSV, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                existing_achievements.extend(row)
+                for i in range(0, len(row), 2):  # Assuming format: [id, date, id, date, ...]
+                    if i + 1 < len(row):
+                        existing_achievements[row[i]] = row[i + 1]
     
+    # Determine truly new achievements with current date
+    current_date = datetime.now().strftime('%Y-%m-%d')
     truly_new = [ach for ach in new_achievements if ach not in existing_achievements]
+    new_with_dates = {ach: current_date for ach in truly_new}
     
-    # Update the user's achievements file
-    if truly_new:
-        all_achievements = existing_achievements + truly_new
+    # Combine existing and new achievements
+    all_achievements = existing_achievements.copy()
+    all_achievements.update(new_with_dates)
+    
+    # Write all achievements with dates to CSV
+    if all_achievements:
         with open(userCSV, 'w', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(all_achievements)
-        print(f"Added the following game achievements: {truly_new}")
+            # Flatten dictionary into list: [id1, date1, id2, date2, ...]
+            flat_list = [item for pair in all_achievements.items() for item in pair]
+            csv_writer.writerow(flat_list)
+    
+    if truly_new:
+        print(f"Added the following game achievements on {current_date}: {truly_new}")
     else:
         print("No new game achievements to add.")
     
