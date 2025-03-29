@@ -2369,6 +2369,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 checkTT = trainType(number.upper())
                 if checkTT == traintype:
                     set = setNumber(number.upper())
+                    if set == None:
+                        set = traintype
                 else:
                     set = number.upper()
         else:
@@ -2391,6 +2393,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 
             
         # Add train to the list
+        print(f'adding {set} {type} {savedate} {line} {start.title()} {end.title()} {notes}')
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
         
         if line in vLineLines:
