@@ -36,7 +36,7 @@ async def helpCommand(ctx,category,command):
             "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
             "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
             "</log bus:1289843416628330506> - Log any bus or coach.",
-            'For a comprehensive guide of which of these log commands to use in which situation, type open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
+            'For a comprehensive guide of which of these log commands to use in which situation, open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
             "</log stats:1289843416628330506> - View stats for your logs such as top lines, stations, sets etc. You can view your stats in many diffrent ways.",
             "</log view:1289843416628330506> - View your logs",
             "</log delete:1289843416628330506> - Delete a log you've made.",

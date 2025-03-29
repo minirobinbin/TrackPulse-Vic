@@ -2355,6 +2355,9 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
+        if line in ['Overland','overland','The Overland','the overland','the Overland','theoverland']:
+            await ctx.edit_original_response(content='''If you're trying to log a trip on the Overland, please use </log adelaide-train:1289843416628330506>. For a comprehensive guide of which of these log commands to use in which situation, open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"''')
+
         # Initialize variables
         set = 'Unknown'
         type = 'Unknown'
