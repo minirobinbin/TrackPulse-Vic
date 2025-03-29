@@ -707,9 +707,15 @@ line_coordinates = {
             (5250 + x_offset, 4300 + y_offset, 5650 + x_offset, 4400 + y_offset),
         ],
         ('Caulfield','Malvern'): [
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (5300 + x_offset, 4000 + y_offset, 5400 + x_offset, 4150 + y_offset),
         ],
         ('Malvern','Anzac'): [
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (5250 + x_offset, 2950 + y_offset, 5400 + x_offset, 4050 + y_offset),
             (3900 + x_offset, 2950 + y_offset, 4850 + x_offset, 3050 + y_offset),
         ],
@@ -826,9 +832,15 @@ line_coordinates = {
         ],
         ('Caulfield', 'Malvern'):[
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (4900 + x_offset, 4000 + y_offset, 5000 + x_offset, 4150 + y_offset),
         ],
         ('Malvern', 'Armadale'):[
+            (4900 + x_offset, 3950 + y_offset, 5080 + x_offset, 4100 + y_offset), # malvern coords
+            (5080 + x_offset, 4000 + y_offset, 5270 + x_offset, 4050 + y_offset), # malvern coords
+            (5270 + x_offset, 3950 + y_offset, 5450 + x_offset, 4100 + y_offset), # malvern coords
             (4850 + x_offset, 3800 + y_offset, 5000 + x_offset, 4050 + y_offset),
         ],
         ('Armadale', 'Toorak'):[
@@ -842,9 +854,8 @@ line_coordinates = {
             (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
         ],
         ('South Yarra', 'Richmond'):[
-            (4600 + x_offset, 2100 + y_offset, 5250 + x_offset, 2150 + y_offset),
-            (5250 + x_offset, 2100 + y_offset, 5400 + x_offset, 2450 + y_offset),
-            (4950 + x_offset, 2350 + y_offset, 5100 + x_offset, 2700 + y_offset),
+            (4600 + x_offset, 2100 + y_offset, 5000 + x_offset, 2150 + y_offset),
+            (4950 + x_offset, 2150 + y_offset, 5100 + x_offset, 2700 + y_offset),
             (4800 + x_offset, 2700 + y_offset, 5050 + x_offset, 2850 + y_offset), # south yarra coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
@@ -1183,8 +1194,10 @@ line_coordinates = {
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5200 + x_offset, 2200 + y_offset, 5250 + x_offset, 4150 + y_offset),
-            (4650 + x_offset, 2150 + y_offset, 5250 + x_offset, 2250 + y_offset),
+            (5200 + x_offset, 2200 + y_offset, 5250 + x_offset, 4000 + y_offset),
+            (5200 + x_offset, 4050 + y_offset, 5250 + x_offset, 4150 + y_offset),
+            (4650 + x_offset, 2150 + y_offset, 4950 + x_offset, 2250 + y_offset),
+            (5000 + x_offset, 2150 + y_offset, 5250 + x_offset, 2250 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
@@ -1526,8 +1539,10 @@ line_coordinates = {
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
         ],
         ('Caulfield','Richmond'): [
-            (5100 + x_offset, 2300 + y_offset, 5150 + x_offset, 4150 + y_offset),
-            (4650 + x_offset, 2250 + y_offset, 5150 + x_offset, 2350 + y_offset),
+            (5100 + x_offset, 2300 + y_offset, 5150 + x_offset, 4000 + y_offset),
+            (5100 + x_offset, 4050 + y_offset, 5150 + x_offset, 4150 + y_offset),
+            (4650 + x_offset, 2250 + y_offset, 4950 + x_offset, 2350 + y_offset),
+            (5000 + x_offset, 2250 + y_offset, 5150 + x_offset, 2350 + y_offset),
             (4900 + x_offset, 4150 + y_offset, 5450 + x_offset, 4300 + y_offset), # caulfield coords
             (4500 + x_offset, 1950 + y_offset, 4650 + x_offset, 2500 + y_offset), # richmond coords
         ],
