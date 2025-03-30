@@ -257,3 +257,6 @@ def process_train_log(username, line, number, start, end, date, traintype, notes
     # Generate log ID and save to CSV
     log_id = addTrain(username, set, type, savedate, line, start.title(), end.title(), notes)
     return log_id
+
+if __name__ == '__main__':
+    app.run(debug=True)
