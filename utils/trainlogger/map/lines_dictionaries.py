@@ -104,7 +104,7 @@ lines_dictionary_log_train_map_post_munnel = {
     'Daylesford Spa Country Railway': [['Bullarto', 'Passing Clouds', 'Musk', 'Daylesford'], ptv_grey],
     'Mornington Tourist Railway': [['Moorooduc', 'Tanti Park', 'Narambi Road', 'Stopping Place 16', 'Mornington'], ptv_grey],
     'Victorian Goldfields Railway': [['Castlemaine', 'Muckleford', 'Maldon'], ptv_grey],
-    'Walhalla Goldfields Railway': [['Thomson', 'Winter Platform', 'Cascade Brdige Halt', 'Happy Creek', 'Walhalla'], ptv_grey],
+    'Walhalla Goldfields Railway': [['Thomson', 'Winter Platform', 'Cascade Bridge Halt', 'Happy Creek', 'Walhalla'], ptv_grey],
     'Unknown/Other': [[None], ptv_grey],
 }
 

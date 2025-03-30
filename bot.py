@@ -2355,6 +2355,9 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
+        if line in ['Overland','overland','The Overland','the overland','the Overland','theoverland']:
+            await ctx.edit_original_response(content='''If you're trying to log a trip on the Overland, please use </log adelaide-train:1289843416628330506>. For a comprehensive guide of which of these log commands to use in which situation, open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"''')
+
         # Initialize variables
         set = 'Unknown'
         type = 'Unknown'
@@ -4505,7 +4508,8 @@ async def viewMaps(ctx, mode: str):
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
         # app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
-async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
+@app_commands.autocomplete(line=line_autocompletion)
+async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, line: str='All', year: int=0):
     await ctx.response.defer()
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
@@ -4520,7 +4524,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
 
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4531,9 +4535,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
@@ -4547,7 +4552,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         
         if mode == "time_based_variants/log_train_map_post_munnel.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_post_munnel, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_post_munnel, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4557,9 +4562,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
@@ -4573,7 +4579,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         
         if mode == "log_sydney-tram_map.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4583,9 +4589,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"THIS MAP IS NOT FINISHED [Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
