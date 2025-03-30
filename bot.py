@@ -3819,10 +3819,12 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
             name = 'comeng17'
         else:
             name = userid
-            
-        if user != ctx.user and ctx.user.id not in admin_users:
-            await ctx.followup.send('You can only view your own stats!')
-            return
+            # 
+        if user != None:
+            if user != ctx.user and ctx.user.id not in admin_users:
+                print(f'user {user} is not the same as {ctx.user}')
+                await ctx.followup.send('You can only view your own stats!')
+                return
             
         if global_stats:
             data = globalTopStats(statSearch)
