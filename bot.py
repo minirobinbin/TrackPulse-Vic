@@ -1,4 +1,4 @@
-'''TrackPulse 𝕍𝕀ℂ
+'''TrackPulse Vic
     Copyright (C) 2024  Billy Evans
 
     This program is free software: you can redistribute it and/or modify
@@ -140,7 +140,7 @@ from utils.trainlogger.map.lines_dictionaries import *
 
 
 
-print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
+print("""TrackPulse Vic Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
@@ -438,7 +438,7 @@ async def on_ready():
     bot.tree.add_command(favourites)
 
     try:
-        await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
+        await channel.send(f"""TrackPulse Vic Copyright (C) 2024  Billy Evans
         This program comes with ABSOLUTELY NO WARRANTY.
         This is free software, and you are welcome to redistribute it
         under certain conditions""")
@@ -3278,7 +3278,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 embed=discord.Embed(title='Train Logs', colour=vline_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
-                embed.add_field(name='Click here to view your own logs on the website:', value=f'[Trackpulse VIC Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
+                embed.add_field(name='Click here to view your own logs on the website:', value=f'[Trackpulse Vic Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
                 await logsthread.send(f'# {userid.name}\'s Train Logs')
@@ -3791,8 +3791,8 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
     app_commands.Choice(name="Lines", value="lines"),
     app_commands.Choice(name="Stations", value="stations"),
     app_commands.Choice(name="Trips", value="pairs"),
-    app_commands.Choice(name="Trip Length (VIC train only)", value="length"),
-    app_commands.Choice(name='Distance over time (VIC train only)', value='distanceovertime'),
+    app_commands.Choice(name="Trip Length (Vic train only)", value="length"),
+    app_commands.Choice(name='Distance over time (Vic train only)', value='distanceovertime'),
     app_commands.Choice(name="Sets", value="sets"),
     app_commands.Choice(name="Dates", value="dates"),
     app_commands.Choice(name="Types", value="types"),
@@ -4829,14 +4829,14 @@ async def run_in_thread(ctx, operator):
 async def about(ctx):
     await ctx.response.defer()
     log_command(ctx.user.id, 'about')
-    embed = discord.Embed(title="About", description="TrackPulse VIC is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
+    embed = discord.Embed(title="About", description="TrackPulse Vic is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
-    embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/Track-Pulse-VIC/TrackPulse-Vic/issues)')
+    embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/TrackPulse-Vic/TrackPulse-Vic/issues)')
     await ctx.edit_original_response(embed=embed)
 
 
@@ -4882,7 +4882,7 @@ async def yearinreview(ctx, year: int=2024):
             # v/line vs metro percent
             
             embed.set_thumbnail(url=ctx.user.avatar.url)
-            embed.set_footer(text="Trains Logged with TrackPulse VIC", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
+            embed.set_footer(text="Trains Logged with TrackPulse Vic", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
 
             await ctx.edit_original_response(embed=embed)
             
