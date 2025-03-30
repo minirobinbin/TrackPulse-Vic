@@ -16,7 +16,7 @@ def is_hexadecimal(s):
          return False
    return True
 
-def addTrain(username, date, train_number, train_type, line, start, end, note):
+def addTrain(username, set, date, train_type, line, start, end, note):
 
     # Create a CSV file named after the username
     filename = f"utils/trainlogger/userdata/{username}.csv"
@@ -29,8 +29,8 @@ def addTrain(username, date, train_number, train_type, line, start, end, note):
     else:
         print(f"File already exists: {filename}")
     
-    if date.endswith('-'):
-        date = date[:-1]
+    if set.endswith('-'):
+        set = set[:-1]
 
     id = None
 
@@ -53,7 +53,7 @@ def addTrain(username, date, train_number, train_type, line, start, end, note):
     with open(filename, 'a', newline='') as file:
         writer = csv.writer(file)
         # file.write('\n')
-        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, note])
+        writer.writerow([f'#{id}',set, date,train_type, line, start, end, note])
 
 
     print(f"Data saved to {filename}")

@@ -1,4 +1,4 @@
-'''TrackPulse 𝕍𝕀ℂ
+'''TrackPulse Vic
     Copyright (C) 2024  Billy Evans
 
     This program is free software: you can redistribute it and/or modify
@@ -140,7 +140,7 @@ from utils.trainlogger.map.lines_dictionaries import *
 
 
 
-print("""TrackPulse VIC Copyright (C) 2024  Billy Evans
+print("""TrackPulse Vic Copyright (C) 2024  Billy Evans
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions""")
@@ -438,7 +438,7 @@ async def on_ready():
     bot.tree.add_command(favourites)
 
     try:
-        await channel.send(f"""TrackPulse 𝕍𝕀ℂ Copyright (C) 2024  Billy Evans
+        await channel.send(f"""TrackPulse Vic Copyright (C) 2024  Billy Evans
         This program comes with ABSOLUTELY NO WARRANTY.
         This is free software, and you are welcome to redistribute it
         under certain conditions""")
@@ -593,7 +593,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -2337,7 +2337,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
-    async def log(notes):
+    async def log(notes, ctx,line, number, start, end, date, traintype):
         await printlog("logging the thing")
 
         savedate = date.split('/')
@@ -2355,6 +2355,10 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
 
+        if 'overland' in line.lower():
+            await ctx.edit_original_response(content='''If you're trying to log a trip on the Overland, please use </log adelaide-train:1289843416628330506>. For a comprehensive guide of which of these log commands to use in which situation, open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"''')
+            return
+            
         # Initialize variables
         set = 'Unknown'
         type = 'Unknown'
@@ -2365,13 +2369,21 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if traintype == "Tait":
                 set = '381M-208T-230D-317M'
             else:
+                
                 # check if its a known train type and find the set, but if its not known just use the number
                 checkTT = trainType(number.upper())
                 if checkTT == traintype:
                     set = setNumber(number.upper())
+                    if set == None:
+                        set = traintype
                 else:
                     set = number.upper()
         else:
+            # if the user puts a vlocity with he letters VL
+            if number.upper().startswith('VL') and len(number) == 6:
+                print('vlocity with vl')
+                number = number.strip('VL').replace(' ', '')
+            
             # checking if train number is valid
             if number != 'Unknown':
                 set = setNumber(number.upper())
@@ -2391,6 +2403,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 
             
         # Add train to the list
+        print(f'adding {set} {type} {savedate} {line} {start.title()} {end.title()} {notes}')
         id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
         
         if line in vLineLines:
@@ -2446,7 +2459,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         
                         
     # Run in a separate task
-    asyncio.create_task(log(notes))
+    asyncio.create_task(log(notes,ctx,line, number, start, end, date, traintype))
 
     
 #thing to delete the stuff
@@ -3265,6 +3278,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 embed=discord.Embed(title='Train Logs', colour=vline_colour)
                 embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
+                embed.add_field(name='Click here to view your own logs on the website:', value=f'[Trackpulse Vic Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
                 await ctx.response.send_message(embed=embed)
                 await logsthread.send(f'# <:train:1241164967789727744> {userid.name}\'s CSV file', file=file)
                 await logsthread.send(f'# {userid.name}\'s Train Logs')
@@ -3361,11 +3375,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
                         image = None
-                        
-                        # thing to find image:
-                        await printlog(f"Finding image for {number}")
-                        image = getTramImage(f'{row[2].replace("-Class","")}.{row[1]}')
-                                        
+                                                                
                         #send in thread to reduce spam!
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
                             # Make the embed
@@ -3781,8 +3791,8 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
     app_commands.Choice(name="Lines", value="lines"),
     app_commands.Choice(name="Stations", value="stations"),
     app_commands.Choice(name="Trips", value="pairs"),
-    app_commands.Choice(name="Trip Length (VIC train only)", value="length"),
-    app_commands.Choice(name='Distance over time (VIC train only)', value='distanceovertime'),
+    app_commands.Choice(name="Trip Length (Vic train only)", value="length"),
+    app_commands.Choice(name='Distance over time (Vic train only)', value='distanceovertime'),
     app_commands.Choice(name="Sets", value="sets"),
     app_commands.Choice(name="Dates", value="dates"),
     app_commands.Choice(name="Types", value="types"),
@@ -4499,8 +4509,10 @@ async def viewMaps(ctx, mode: str):
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
         app_commands.Choice(name="Victorian Trains after the Metro Tunnel opens", value="time_based_variants/log_train_map_post_munnel.png"),
+        # app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
-async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, year: int=0):
+@app_commands.autocomplete(line=line_autocompletion)
+async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, line: str='All', year: int=0):
     await ctx.response.defer()
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
@@ -4515,7 +4527,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
 
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4526,9 +4538,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
@@ -4542,7 +4555,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         
         if mode == "time_based_variants/log_train_map_post_munnel.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_post_munnel, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_post_munnel, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4552,9 +4565,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Post Metro Tunnel Map of logs with </log train:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
@@ -4568,7 +4582,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         
         if mode == "log_sydney-tram_map.png":
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, year)
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_sydney_tram_map, mode, line, year)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -4578,9 +4592,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
             # Send the map once generated
             try:
                 file = discord.File(f'temp/{username}.png', filename='map.png')
-                year_str = '' if year == 0 else f'in {str(year)}'
+                line_str = '' if line == 'All' else f' on the {line} Line'
+                year_str = '' if year == 0 else f' in {str(year)}'
                 imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username} {year_str}", 
+                embed = discord.Embed(title=f"Map of logs with </log sydney-tram:1289843416628330506> for @{username}{year_str}{line_str}", 
                                     color=0xb8b8b8, 
                                     description=f"THIS MAP IS NOT FINISHED [Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")
@@ -4618,13 +4633,31 @@ async def viewAchievements(ctx, user: discord.User = None):
         user = ctx.user
 
     # Get user's achievements
+    user_achievements = {}  # Change to dict to store dates
     filepath = f'utils/trainlogger/achievements/data/{user.name}.csv'
-    user_achievements = []
     if os.path.exists(filepath):
         with open(filepath, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                user_achievements.extend(row)
+                # Process achievements in pairs (id, date)
+                for i in range(0, len(row), 2):
+                    if i+1 < len(row):
+                        achievement_id = row[i]
+                        achievement_date = row[i+1]
+                        user_achievements[achievement_id] = achievement_date
+
+    # Get all achievements from master list with dates
+    all_achievements = []
+    with open('utils/trainlogger/achievements/achievements.csv', 'r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row:  # Skip empty rows
+                achievement_id = row[0]
+                name = row[1] 
+                description = row[2]
+                has_achievement = achievement_id in user_achievements
+                date = user_achievements.get(achievement_id, None) if has_achievement else None
+                all_achievements.append((achievement_id, name, description, has_achievement, date))
 
     # Get all achievements from master list
     all_achievements = []
@@ -4654,10 +4687,14 @@ async def viewAchievements(ctx, user: discord.User = None):
         for achievement in pages[page_num]:
             achievement_id, name, description, has_achievement = achievement
             emoji = "✅" if has_achievement else "🔒"
-            embed.add_field(name=f"{emoji} {name}", value=description, inline=False)
-            
+            value = description
+            if has_achievement:
+                date = user_achievements.get(achievement_id)
+                if date != 'unknown':
+                    value += f"\nDate earned: {date}"
+            embed.add_field(name=f"{emoji} {name}", value=value, inline=False)
+        
         return embed
-
        # Create buttons
     class NavButtons(discord.ui.View):
         def __init__(self):
@@ -4794,13 +4831,14 @@ async def run_in_thread(ctx, operator):
 async def about(ctx):
     await ctx.response.defer()
     log_command(ctx.user.id, 'about')
-    embed = discord.Embed(title="About", description="TrackPulse VIC is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
+    embed = discord.Embed(title="About", description="TrackPulse Vic is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)',inline=True)
     embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
+    embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
-    embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/Track-Pulse-VIC/TrackPulse-Vic/issues)')
+    embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/TrackPulse-Vic/TrackPulse-Vic/issues)')
     await ctx.edit_original_response(embed=embed)
 
 
@@ -4846,7 +4884,7 @@ async def yearinreview(ctx, year: int=2024):
             # v/line vs metro percent
             
             embed.set_thumbnail(url=ctx.user.avatar.url)
-            embed.set_footer(text="Trains Logged with TrackPulse VIC", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
+            embed.set_footer(text="Trains Logged with TrackPulse Vic", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
 
             await ctx.edit_original_response(embed=embed)
             

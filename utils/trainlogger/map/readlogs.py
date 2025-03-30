@@ -344,21 +344,21 @@ def postcompat(data:list, lines_dictionary:dict):
                     elif station2 in lines_dictionary['Frankston'][0]:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Frankston Loop,*Southern Cross,{station2},')
                 elif group == 'Pakenham':
-                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    if station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
-                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station1 = '*Malvern'
-                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
                 elif group == 'Cranbourne':
-                    if station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    if station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central'] and station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         group = 'Unknown'
-                    elif station1 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station1 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station1 = '*Malvern'
-                    elif station2 in ['South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
+                    elif station2 in ['Armadale','Toorak','Hawksburn','South Yarra','Richmond','Flinders Street','Southern Cross','Flagstaff','Parliament','Melbourne Central']:
                         newdata.append(f'{cols[0]},{cols[1]},{cols[2]},{trip_date},Unknown,{station1},{station2},')
                         station2 = '*Malvern'
                 elif group == 'Sunbury':
@@ -375,7 +375,7 @@ def postcompat(data:list, lines_dictionary:dict):
     return newdata
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', year:int=0):
+def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0):
     if mode == 'time_based_variants/log_train_map_pre_munnel.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
@@ -392,9 +392,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -408,9 +412,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -486,10 +492,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_pre_munnel
         y_offset = y_offset_log_train_map_pre_munnel
@@ -512,9 +523,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -528,9 +543,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -614,10 +631,15 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                     group = 'ballarat_seperate'
                 elif cols[4] in ['Ararat', 'Maryborough']:
                     group = 'ararat/maryborough_seperate'
+                elif cols[4] in ['Puffing Billy Railway', 'Yarra Valley Railway', 'Daylesford Spa Country Railway', 'Mornington Tourist Railway', 'Victorian Goldfields Railway', 'Walhalla Goldfields Railway']:
+                    group = 'heritage'
                 else:
                     group = cols[4]
-                    
-                affected_lines.append((cols[5], cols[6], group))
+                if cols[5] == cols[6] and cols[5] == 'Healesville':
+                    stop_2 = 'Tunnel Hill'
+                else:
+                    stop_2=cols[6]
+                affected_lines.append((cols[5], stop_2, group))
 
         x_offset = x_offset_log_train_map_post_munnel
         y_offset = y_offset_log_train_map_post_munnel
@@ -638,9 +660,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -654,9 +680,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
