@@ -375,7 +375,7 @@ def postcompat(data:list, lines_dictionary:dict):
     return newdata
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', year:int=0):
+def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0):
     if mode == 'time_based_variants/log_train_map_pre_munnel.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
@@ -392,9 +392,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -408,9 +412,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -517,9 +523,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -533,9 +543,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -648,9 +660,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 print(f"Trip year: {trip_year}")
                 print(f"Year: {year}")
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
+                print(f"Trip line: {trip_line}")
+                print(f"Line: {line_choice}")
             
-            # Only process if year is 0 (all years) or matches the specified year
-            if year == 0 or trip_year == year:
+            # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -664,9 +680,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
             if len(cols) >= 6:
                 # Extract year from the date in column 3 (index 2)
                 trip_year = int(cols[3].split('-')[0])
+                # Extract line from the date in column 4 (index 3)
+                trip_line = cols[4]
                 
-                # Only process if year is 0 (all years) or matches the specified year
-                if year == 0 or trip_year == year:
+                # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
