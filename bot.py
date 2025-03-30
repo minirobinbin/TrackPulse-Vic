@@ -2337,7 +2337,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
-    async def log(notes):
+    async def log(notes, ctx,line, number, start, end, date, traintype):
         await printlog("logging the thing")
 
         savedate = date.split('/')
@@ -2365,6 +2365,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if traintype == "Tait":
                 set = '381M-208T-230D-317M'
             else:
+                
                 # check if its a known train type and find the set, but if its not known just use the number
                 checkTT = trainType(number.upper())
                 if checkTT == traintype:
@@ -2374,6 +2375,11 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 else:
                     set = number.upper()
         else:
+            # if the user puts a vlocity with he letters VL
+            if number.upper().startswith('VL') and len(number) == 6:
+                print('vlocity with vl')
+                number = number.strip('VL').replace(' ', '')
+            
             # checking if train number is valid
             if number != 'Unknown':
                 set = setNumber(number.upper())
@@ -2449,7 +2455,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         
                         
     # Run in a separate task
-    asyncio.create_task(log(notes))
+    asyncio.create_task(log(notes,ctx,line, number, start, end, date, traintype))
 
     
 #thing to delete the stuff
