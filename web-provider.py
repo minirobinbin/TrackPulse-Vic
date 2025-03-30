@@ -9,6 +9,10 @@ import time
 import re
 from urllib.parse import urlencode
 
+from utils.checktype import trainType
+from utils.trainlogger.main import addTrain
+from utils.trainset import setNumber
+
 app = Flask(__name__)
 CORS(app, resources={
     "/csv/*": {"origins": "*"},
@@ -223,15 +227,26 @@ def process_train_log(username, line, number, start, end, date, traintype, notes
         if traintype == "Tait":
             set = '381M-208T-230D-317M'
         else:
-            # Simplified train type check (you might want to expand this)
-            set = number if is_valid_train_number(number) else traintype
+            # check if its a known train type and find the set, but if its not known just use the number
+            checkTT = trainType(number.upper())
+            if checkTT == traintype:
+                set = setNumber(number.upper())
+                if set == None:
+                    set = traintype
+            else:
+                set = number.upper()
     else:
-        if number.startswith('VL') and len(number) == 6:
+        # if the user puts a vlocity with he letters VL
+        if number.upper().startswith('VL') and len(number) == 6:
+            print('vlocity with vl')
             number = number.strip('VL').replace(' ', '')
-        if not is_valid_train_number(number):
-            raise ValueError(f"Invalid train number: '{number}'")
-        set = number  # Simplified; in reality, you'd use setNumber()
-        type = determine_train_type(number)  # Simplified; replace with actual logic
+        
+        # checking if train number is valid
+        if number != 'Unknown':
+            set = setNumber(number.upper())
+        if set == None:
+            raise ValueError(f'Invalid train number: `{number.upper()}`')
+        type = trainType(number.upper())
 
     # Clean notes
     if notes:
@@ -240,5 +255,5 @@ def process_train_log(username, line, number, start, end, date, traintype, notes
         notes = f'"{notes}"'  # Quote for CSV compatibility
 
     # Generate log ID and save to CSV
-    log_id = add_train_to_csv(username, set, type, savedate, line, start, end, notes)
+    log_id = addTrain(username, set, type, savedate, line, start.title(), end.title(), notes)
     return log_id
