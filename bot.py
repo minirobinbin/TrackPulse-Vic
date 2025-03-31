@@ -2599,7 +2599,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
                 return
 
     
-    result = editRow(username, idformatted, mode,line,number,start,end,date,traintype,notes)
+    result = editRow(username, idformatted, mode,line,number,start,end,savedate,traintype,notes)
     
     if result == 'invalid id did not show up':
         await ctx.edit_original_response(content=f'Invalid log ID entered: `{idformatted}`')
