@@ -4,20 +4,12 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import os
 import requests
-import csv
-import time
-import re
 from urllib.parse import urlencode
-
-from utils.checktype import trainType
-from utils.trainlogger.main import addTrain
-from utils.trainset import setNumber
 
 app = Flask(__name__)
 CORS(app, resources={
     "/csv/*": {"origins": "*"},
-    "/auth/discord": {"origins": "*"},
-    "/log-train": {"origins": "*"}
+    "/auth/discord": {"origins": "*"}
 })
 
 limiter = Limiter(
@@ -37,10 +29,8 @@ DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 CSV_DIR = os.getenv("CSV_DIR")
 MAP_DIR = os.getenv("MAP_DIR")
 
-# Existing endpoints remain unchanged...
-
 @app.route('/csv/<filename>', methods=['GET', 'OPTIONS'])
-@limiter.limit("100/day")
+@limiter.limit("500/day")
 def serve_csv(filename):
     if request.method == 'OPTIONS':
         response = make_response()
@@ -67,7 +57,7 @@ def serve_csv(filename):
         return response
 
 @app.route('/map/<filename>', methods=['GET', 'OPTIONS'])
-@limiter.limit("100/day")
+@limiter.limit("500/day")
 def serve_map(filename):
     filename = filename + "-map.png"
     if request.method == 'OPTIONS':
@@ -95,7 +85,7 @@ def serve_map(filename):
         return response
 
 @app.route('/auth/discord', methods=['POST', 'OPTIONS'])
-@limiter.limit("50/day;10/hour")
+@limiter.limit("500/day;100/hour")
 def discord_auth():
     if request.method == 'OPTIONS':
         response = make_response()
@@ -149,114 +139,5 @@ def discord_auth():
         print(f"Error during Discord auth: {e}")
         return jsonify({"error": "Authentication failed"}), 500
 
-# New train logging endpoint
-@app.route('/log-train', methods=['POST', 'OPTIONS'])
-@limiter.limit("50/day;10/hour")
-def log_train():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, ngrok-skip-browser-warning'
-        print("Handled OPTIONS preflight request for /log-train")
-        return response
-
-    # Check authorization
-    auth_header = request.headers.get('Authorization')
-    if not auth_header or not auth_header.startswith('Bearer '):
-        return jsonify({"error": "Unauthorized: Missing or invalid token"}), 401
-    access_token = auth_header.split(' ')[1]
-
-    # Verify token with Discord
-    try:
-        user_response = requests.get(DISCORD_USER_URL, headers={'Authorization': f'Bearer {access_token}'})
-        user_response.raise_for_status()
-        user_data = user_response.json()
-        username = user_data.get('username')
-        if not username:
-            return jsonify({"error": "Invalid token: Username not found"}), 401
-    except requests.RequestException:
-        return jsonify({"error": "Invalid or expired token"}), 401
-
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "No data provided"}), 400
-
-    required_fields = ['number', 'date', 'line', 'start', 'end', 'traintype', 'notes', 'hidemessage', 'username']
-    if not all(field in data for field in required_fields):
-        return jsonify({"error": "Missing required fields"}), 400
-
-    # Extract data
-    number = data['number'].strip().upper()
-    date = data['date'].strip().lower()
-    line = data['line']
-    start = data['start'].title()
-    end = data['end'].title()
-    traintype = data['traintype']
-    notes = data['notes'].strip()
-    hidemessage = data['hidemessage']
-    username = data['username']
-
-    # Process the train log
-    try:
-        log_id = process_train_log(username, line, number, start, end, date, traintype, notes)
-        response = jsonify({"logId": log_id, "message": "Train logged successfully"})
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
-
-# Train logging logic (adapted from Discord bot)
-def process_train_log(username, line, number, start, end, date, traintype, notes):
-    # Date handling
-    if date == 'today':
-        savedate = time.strftime("%Y-%m-%d", time.localtime())
-    else:
-        try:
-            savedate = time.strptime(date, "%d/%m/%Y")
-            savedate = time.strftime("%Y-%m-%d", savedate)
-        except ValueError:
-            raise ValueError(f"Invalid date: '{date}'. Use 'today' or 'DD/MM/YYYY' format.")
-
-    # Train type and set logic
-    set = 'Unknown'
-    type = 'Unknown'
-
-    if traintype != 'auto':
-        type = traintype
-        if traintype == "Tait":
-            set = '381M-208T-230D-317M'
-        else:
-            # check if its a known train type and find the set, but if its not known just use the number
-            checkTT = trainType(number.upper())
-            if checkTT == traintype:
-                set = setNumber(number.upper())
-                if set == None:
-                    set = traintype
-            else:
-                set = number.upper()
-    else:
-        # if the user puts a vlocity with he letters VL
-        if number.upper().startswith('VL') and len(number) == 6:
-            print('vlocity with vl')
-            number = number.strip('VL').replace(' ', '')
-        
-        # checking if train number is valid
-        if number != 'Unknown':
-            set = setNumber(number.upper())
-        if set == None:
-            raise ValueError(f'Invalid train number: `{number.upper()}`')
-        type = trainType(number.upper())
-
-    # Clean notes
-    if notes:
-        notes = re.sub(r'[^\x00-\x7F]+', '', notes)  # Remove emojis
-        notes = notes.replace('\n', ' ').strip()
-        notes = f'"{notes}"'  # Quote for CSV compatibility
-
-    # Generate log ID and save to CSV
-    log_id = addTrain(username, set, type, savedate, line, start.title(), end.title(), notes)
-    return log_id
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5001, debug=False)

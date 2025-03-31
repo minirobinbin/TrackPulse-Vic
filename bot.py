@@ -2592,7 +2592,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
                 savedate = time.strptime(date, "%d/%m/%Y")
                 savedate = time.strftime("%Y-%m-%d", savedate)
             except ValueError:
-                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nMake sure to use a possible date.')
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nMake sure to use the format DD/MM/YYYY.')
                 return
             except TypeError:
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
@@ -5162,48 +5162,6 @@ async def update(ctx):
             await ctx.send("You are not authorized to use this command.")
     else:
         await ctx.send("Remote updates are not enabled")
-
-'''@bot.command()
-async def mapstrips(ctx,user: discord.Member=None, year: int=0):
-    log_command(ctx.author.id, 'maps-trips')
-    await printlog(f"Making trip map for {str(ctx.author.id)}")
-
-    async def generate_map():
-        if user == None:
-            username = ctx.author.name
-            target_user = ctx.author.name
-        else:
-            username = user.name
-            target_user = user.name
-
-        try:
-            await asyncio.to_thread(logMap, target_user, lines_dictionary_map, year=year)
-        except FileNotFoundError:
-            await ctx.channel.send(f'{"You have" if user == None else username + " has"} no logs!')
-            return
-        except Exception as e:
-            await ctx.channel.send(f'Error:\n```{e}```')
-            return
-       # Send the map once generated
-        try:
-            file = discord.File(f'temp/{username}.png', filename='map.png')
-            year_str = '' if year == 0 else str(year)
-            imageURL = f'https://trackpulse.xm9g.net/logs/map?img={uploadImage(f"temp/{username}.png", f"{username}-map")}&name={username}\'s%20Victorian%20train%20map'
-            embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username} {year_str}", 
-                                color=0xb8b8b8, 
-                                description=f"This command is NOT FINISHED and is in ACTIVE DEVELOPMENT. It may be highly buggy and is not finished. However, we've decided to let people use this command, even in its unfinished form, if they choose to.\n[Click here to view in your browser]({imageURL})")
-            embed.set_image(url="attachment://map.png")
-            user_pic = await bot.fetch_user(1002449671224041502)
-            pfp = user_pic.avatar.url
-            embed.set_author(name="Map by Comeng17", icon_url=pfp)
-            embed.set_footer(text="If you're interested in helping make these maps (especially the interstate ones) contact Xm9G or Comeng17")
-            await ctx.channel.send(embed=embed, file=file)
-        except Exception as e:
-            await ctx.channel.send(f'Error sending map:\n```{e}```')
-
-    # Start the async map generation
-    asyncio.create_task(generate_map())'''
-        
     
 # important
 bot.run(BOT_TOKEN)
