@@ -64,6 +64,7 @@ def serve_map(filename):
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Accept, ngrok-skip-browser-warning'
+        response.headers['ngrok-skip-browser-warning'] = '*'
         print("Handled OPTIONS preflight request for /map")
         return response
 
