@@ -2581,6 +2581,23 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
             notes = notes.replace('\n', ' ')
             #add quotes so the csv dosn't break when u use a comma
             notes = f'"{notes}"'
+            
+    # convert date from DD/MM/YYYY to YYYY-MM-DD
+    if date != 'nochange':
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nMake sure to use a possible date.')
+                return
+            except TypeError:
+                await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
+                return
+
     
     result = editRow(username, idformatted, mode,line,number,start,end,date,traintype,notes)
     
