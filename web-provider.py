@@ -59,7 +59,6 @@ def serve_csv(filename):
 @app.route('/map/<filename>', methods=['GET', 'OPTIONS'])
 @limiter.limit("500/day")
 def serve_map(filename):
-    filename = filename + "-map.png"
     if request.method == 'OPTIONS':
         response = make_response()
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -73,7 +72,6 @@ def serve_map(filename):
     print(f"Full path: {file_path}")
     print(f"Path exists: {os.path.exists(file_path)}")
     print(f"Is PNG: {file_path.endswith('.png')}")
-    print(f"Files in directory: {os.listdir(CSV_DIR)}")
     
     if os.path.exists(file_path) and file_path.endswith('.png'):
         response = send_file(file_path, mimetype='image/png')
