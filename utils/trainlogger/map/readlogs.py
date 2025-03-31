@@ -375,7 +375,7 @@ def postcompat(data:list, lines_dictionary:dict):
     return newdata
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0):
+def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0, modeName:str='vic'):
     if mode == 'time_based_variants/log_train_map_pre_munnel.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
@@ -727,4 +727,4 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
     # do the map gen
     map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)
     print(affected_lines)
-    map_handler.highlight_map(affected_lines, f"temp/{user}.png", stations)
+    map_handler.highlight_map(affected_lines, f"utils/trainlogger/userdata/maps/{user}-{modeName}.png", stations)
