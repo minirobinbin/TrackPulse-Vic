@@ -2597,7 +2597,8 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
             except TypeError:
                 await ctx.edit_original_response(content=f'Invalid date: `{date}`\nUse the form `dd/mm/yyyy`')
                 return
-
+    else:
+        savedate = 'nochange'
     
     result = editRow(username, idformatted, mode,line,number,start,end,savedate,traintype,notes)
     
