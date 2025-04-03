@@ -4563,7 +4563,7 @@ async def profile(ctx, user: discord.User = None):
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed.add_field(
-        name='Adelaide Tram Log Stats:',
+        name='<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats:',
         value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
             f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
@@ -4577,7 +4577,7 @@ async def profile(ctx, user: discord.User = None):
 
                                     
             except FileNotFoundError:
-                embed.add_field(name="Adelaide Tram Log Stats", value=f'{username} has no logged trips in South Austrlia!')
+                embed.add_field(name="<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats", value=f'{username} has no logged trips in South Austrlia!')
 
         # perth Logger
             try:
