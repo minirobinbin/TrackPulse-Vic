@@ -3708,7 +3708,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await logsthread.send(embed=embed)
                         time.sleep(0.7)
 
-            # for adleiade tram:
+            # for adelaide tram:
             if mode == 'adelaide-trams':
                 if user == None:
                     userid = ctx.user
