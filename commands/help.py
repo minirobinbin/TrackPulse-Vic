@@ -461,7 +461,7 @@ Heritage Tram On Mainline: Currently Not Available
 Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**South Australia:**
 Adelaide Metro Rail: </log adelaide-train:1289843416628330506>
 Journey Beyond Rail: </log adelaide-train:1289843416628330506>
-Adelaide Metro Tram: Currently Not Available
+Adelaide Metro Tram: </log adelaide-tram:1289843416628330506>
 Adelaide Metro Bus: </log bus:1289843416628330506>
 Adelaide Metro Regional Bus and Coach: </log bus:1289843416628330506>
 V/Line Coach: </log bus:1289843416628330506>
