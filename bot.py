@@ -2058,8 +2058,27 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             else:
                                 await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
                         # funny ones
-                        elif user_response.content.lower() == '!idk':
+                        elif 'idk' in user_response.content.lower():
                             await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
+                        elif 'i dont know' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
+                        elif 'sorry' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.")
+                        elif 'my bad' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.") 
+                        elif 'oops' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.")
+                        elif 'bruh' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} 💀")
+                        elif 'shit' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} :(")
+                        elif 'fuck' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} :(")
+                        elif 'what' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} its a station.")
+                        elif 'wtf' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} what?")
+                        
                         
                         else:
                             await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
