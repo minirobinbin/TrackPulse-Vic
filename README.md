@@ -1,4 +1,4 @@
-# TrackPulse 𝕍𝕀ℂ
+# TrackPulse Vic
 
 ## How to use:
 - rename `rename.env` to `.env`
