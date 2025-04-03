@@ -1991,7 +1991,8 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
             # Define a check function to validate user input
             async def check(m):
                 return m.channel == channel and m.author != bot.user and m.content.startswith('!')
-
+            async def funnyCheck(m):    
+                return m.channel == channel and m.author != bot.user
             try:
                 correct = False
                 if ultrahard:
@@ -2057,8 +2058,24 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                                 await ctx.channel.send(f"Station Name: `{station}`\nUrl: `{url}`")
                             else:
                                 await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
+                        
+                        
+                        else:
+                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            log_command(user_response.author.id, 'game-station-guesser-incorrect')
+                            roundResponse = True
+                            incorrectAnswers += 1
+                            if ultrahard:
+                                addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
+                            else:
+                                addLoss(user_response.author.id, user_response.author.name, 'guesser')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
+                    
+                    # checker for the funnies ( no ! needed)       
+                    if await funnyCheck(user_response) == True:
                         # funny ones
-                        elif 'idk' in user_response.content.lower():
+                        if 'idk' in user_response.content.lower():
                             await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
                         elif 'i dont know' in user_response.content.lower():
                             await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
@@ -2078,20 +2095,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                             await ctx.channel.send(f"{user_response.author.mention} its a station.")
                         elif 'wtf' in user_response.content.lower():
                             await ctx.channel.send(f"{user_response.author.mention} what?")
-                        
-                        
-                        else:
-                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                            log_command(user_response.author.id, 'game-station-guesser-incorrect')
-                            roundResponse = True
-                            incorrectAnswers += 1
-                            if ultrahard:
-                                addLoss(user_response.author.id, user_response.author.name, 'ultrahard')
-                            else:
-                                addLoss(user_response.author.id, user_response.author.name, 'guesser')
-                            if user_response.author not in participants:
-                                participants.append(user_response.author)
-                        
+                          
             except asyncio.TimeoutError:
                 if ultrahard:
                     await ctx.channel.send(f"Times up. Answers are not revealed in ultrahard mode.")
