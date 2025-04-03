@@ -4577,7 +4577,7 @@ async def profile(ctx, user: discord.User = None):
 
                                     
             except FileNotFoundError:
-                embed.add_field(name="<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats", value=f'{username} has no logged trips in South Austrlia!')
+                embed.add_field(name="<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats", value=f'{username} has no logged trips in Adelaide!')
 
         # perth Logger
             try:
