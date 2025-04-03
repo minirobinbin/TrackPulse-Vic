@@ -2052,12 +2052,15 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                                 await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")  
                         
                         # view the image info (admin only) 
-                        elif user_response.content.lower() == '!reveal':
+                        elif user_response.content.lower() == '!reveal' or user_response.content.lower() == '!release':
                             if user_response.author.id in admin_users :
                                 await ctx.channel.send(f"Station Name: `{station}`\nUrl: `{url}`")
                             else:
                                 await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
-
+                        # funny ones
+                        elif user_response.content.lower() == '!idk':
+                            await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
+                        
                         else:
                             await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
                             log_command(user_response.author.id, 'game-station-guesser-incorrect')
