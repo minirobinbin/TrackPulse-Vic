@@ -12,3 +12,10 @@
 
 ## Important
 if you wanna change what channels the bot sends notifications in or change the role you can find them in `bot.py`
+
+# Contributers:
+<a href="https://github.com/TrackPulse-Vic/TrackPulse-Vic/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=TrackPulse-Vic/TrackPulse-Vic" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
