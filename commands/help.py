@@ -31,9 +31,10 @@ async def helpCommand(ctx,category,command):
         [
             "</log train:1289843416628330506> - Log a Melbourne/Victorian train you have been on. The full set and type will be autofilled by inputting a carriage number, for locomotive serviced use the locomotive number. If you don't know any of the information you can type 'Unknown'.",
             "</log tram:1289843416628330506> - Log a Melbourne tram, works in a similar way to log train.",
-            "</log sydney-train:1289843416628330506> - Log a Sydney train, works in a similar way to log train however the set and type will not be autofilled.",
-            "</log sydney-tram:1289843416628330506> - Log a Sydney tram, works the exact same as the log sydney-train.",
+            "</log sydney-train:1289843416628330506> - Log a NSW train, works in a similar way to log train however the set and type will not be autofilled.",
+            "</log sydney-tram:1289843416628330506> - Log a NSW tram, works the exact same as the log sydney-train.",
             "</log adelaide-train:1289843416628330506> - Log an Adelaide train. The type will be autofilled from the carriage number.",
+            "</log adelaide-tram:1289843416628330506> - Log an Adelaide tram, works the exact same as the log adelaide-train.",
             "</log perth-train:1289843416628330506> - Log a Perth train. The type will be autofilled from the carriage number.",
             "</log bus:1289843416628330506> - Log any bus or coach.",
             'For a comprehensive guide of which of these log commands to use in which situation, open </help:1261177133372280957> and in the "commands" option choose "Which /log command should I use?"',
@@ -131,6 +132,18 @@ Required:
     Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
 
 Optional:
+    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
+    Start: the starting station of your trip. You can choose from the list or type your own.
+    End: the ending station of your trip. You can choose from the list or type your own.''',
+        '/log adelaide-tram': '''</log adelaide-tram:1289843416628330506> is a command to log any Adelaide tram trips. Make sure to log each different leg of your trip seperately.
+
+**Options:**
+
+Required:
+    Line: which tram line you rode on. You have to choose one of the options.
+
+Optional:
+    Number: which carriage you rode. Examples include "101", "201". If you don't know, type "Unknown".
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Start: the starting station of your trip. You can choose from the list or type your own.
     End: the ending station of your trip. You can choose from the list or type your own.''',
