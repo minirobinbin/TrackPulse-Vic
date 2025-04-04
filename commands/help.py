@@ -480,15 +480,10 @@ Transwa Coach: </log bus:1289843416628330506>
 Other Bus/Coach: </log bus:1289843416628330506>
 Heritage Train On Mainline: Currently Not Available
 Heritage Railway: Currently Not Available
-Heritage Tram On Mainline: Currently Not Available
 Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Northern Territory**
 Journey Beyond Rail: </log adelaide-train:1289843416628330506>
 Darwinbus: </log bus:1289843416628330506>
-Other Bus/Coach: </log bus:1289843416628330506>
-Heritage Train On Mainline: Currently Not Available
-Heritage Railway: Currently Not Available
-Heritage Tram On Mainline: Currently Not Available
-Heritage Tramway: Currently Not Available"""); embed.add_field(name="", value="""**Other regions:**
+Other Bus/Coach: </log bus:1289843416628330506>"""); embed.add_field(name="", value="""**Other regions:**
 NSW TrainLink Rail: </log sydney-train:1289843416628330506>
 NSW TrainLink Coach: </log bus:1289843416628330506>
 Any Bus/Coach: </log bus:1289843416628330506>"""); 
