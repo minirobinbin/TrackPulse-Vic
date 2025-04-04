@@ -182,6 +182,13 @@ for line in file:
     Adelaidestations_list.append(line)
 file.close()
 
+file = open('utils\\datalists\\adelaidestops.txt','r')
+Adelaidestops_list = []
+for line in file:
+    line = line.strip()
+    Adelaidestops_list.append(line)
+file.close()
+
 file = open('utils\\datalists\\adelaidelines.txt','r')
 Adelaidelines_list = []
 for line in file:
@@ -281,8 +288,8 @@ bus_coach_stops = bus_stops + vline_coach_stops
 bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
-required_folders = ['utils/trainlogger/userdata','temp', 'utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
-                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data', 'utils/trainlogger/userdata/maps']
+required_folders = ['utils/trainlogger/userdata','temp','utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/adelaide-trams','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
         print(f"{folder} exists")
@@ -316,6 +323,7 @@ transperth_colour = 0x008635
 transwa_colour = 0xcf4520
 
 adelaide_metro_colour = 0xf68a24 #this may or may not need fixing
+adelaide_tram_colour = adelaide_metro_colour
 
 #guesser colours
 very_easy_colour = 0x89ff65
@@ -593,7 +601,7 @@ async def task_loop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-order','/help','/line-status','/log adelaide-train','/log adelaide-tram','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -2505,6 +2513,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     app_commands.Choice(name="NSW Train", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    app_commands.Choice(name="Adelaide Tram", value="adelaide-trams"),
     app_commands.Choice(name="Perth Train", value="perth-trains"),
     app_commands.Choice(name="Bus", value="bus"),
 ])
@@ -2587,6 +2596,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
     # app_commands.Choice(name="NSW Train", value="sydney-trains"),
     # app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     # app_commands.Choice(name="Adelaide Train", value="adelaide-trains"),
+    # app_commands.Choice(name="Adelaide Tram", value="adelaide-traMS"),
     # app_commands.Choice(name="Perth Train", value="perth-trains"),
     # app_commands.Choice(name="Bus", value="bus"),
 ])
@@ -2934,6 +2944,79 @@ async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/
     # Run in a separate task
     asyncio.create_task(log())
 
+
+# Adelaide tram logger
+async def Adelaidestop_autocompletion(
+    interaction: discord.Interaction,
+    current: str
+) -> typing.List[app_commands.Choice[str]]:
+    fruits = Adelaidestops_list.copy()
+    return [
+        app_commands.Choice(name=fruit, value=fruit)
+        for fruit in fruits if current.lower() in fruit.lower()
+    ][:25]
+
+@trainlogs.command(name="adelaide-tram", description="Log a Adelaide Tram you have been on")
+@app_commands.describe(number = "Carrige Number", type = 'Type of tram', date = "Date in DD/MM/YYYY format", line = 'Tram Line', start='Starting Stop', end = 'Ending Stop', hidemessage='Hide the message from other users, note this will not make the log private.')
+@app_commands.autocomplete(start=Adelaidestop_autocompletion)
+@app_commands.autocomplete(end=Adelaidestop_autocompletion)
+
+@app_commands.choices(line=[
+        app_commands.Choice(name="Glenelg to Royal Adelaide Hospital Line", value="GLNELG"),
+        app_commands.Choice(name="Botanic Gardens to Entertainment Centre Line", value="BTANIC"),
+        app_commands.Choice(name="Glenelg to Festival Plaza Line", value="FESTVL"),
+        app_commands.Choice(name="Adelaide Loop Line", value="ADLOOP"),
+])
+@app_commands.choices(type=[
+        app_commands.Choice(name="100 Series", value="100 Series"),
+        app_commands.Choice(name="200 Series", value="200 Series"),
+])
+# SYdney tram logger nsw tram
+async def logAdelaideTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+    channel = ctx.channel
+    await printlog(date)
+    async def log():
+        log_command(ctx.user.id, 'log-adelaide-tram')
+        await printlog("logging the adelaide tram")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        # idk how to get nsw train set numbers i cant find a list of all sets pls help
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid tram number: {number.upper()}',ephemeral=True)
+            return
+
+        # Add train to the list
+        id = addAdelaideTram(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+
+        embed = discord.Embed(title="Tram Logged",colour=adelaide_tram_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
+
 # Perth logger
 async def Perthstation_autocompletion(
     interaction: discord.Interaction,
@@ -3181,6 +3264,7 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
         app_commands.Choice(name="NSW Trains", value="sydney-trains"),
         app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
         app_commands.Choice(name="Adelaide Trains & Journey Beyond", value="adelaide-trains"),
+        app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
         app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
@@ -3223,7 +3307,9 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
             if mode == 'sydney-trams':
                 file_path = f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv' 
             if mode == 'adelaide-trains':
-                file_path = f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv' 
+                file_path = f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv'
+            if mode == 'adelaide-trams':
+                file_path = f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv' 
             if mode == 'perth-trains':
                 file_path = f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv'   
                 
@@ -3629,7 +3715,64 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
     
                         await logsthread.send(embed=embed)
                         time.sleep(0.7)
-                          
+
+            # for adelaide tram:
+            if mode == 'adelaide-trams':
+                if user == None:
+                    userid = ctx.user
+                else:
+                    userid = user
+                
+                try:
+                    file = discord.File(f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv')
+                except FileNotFoundError:
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                    return
+                await printlog(userid.name)
+                data = readAdelaideTramLogs(userid.name)
+                if data == 'no data':
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no trams logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
+                    return
+            
+                # create thread
+                logsthread = await ctx.channel.create_thread(
+                    name=f'{userid.name}\'s Adelaide Tram Logs',
+                    auto_archive_duration=60,
+                    type=discord.ChannelType.public_thread
+                )
+                
+                # send reponse message
+                await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+                await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+                await logsthread.send(f'# {userid.name}\'s Tram Logs')
+                formatted_data = ""
+                for sublist in data:
+                    if len(sublist) >= 7:  # Ensure the sublist has enough items
+                        image = None
+                                        
+                        #send in thread to reduce spam!
+                        thread = await ctx.channel.create_thread(name=f"{userid.name}'s logs")
+                            # Make the embed
+
+                        if sublist[4] == 'Unknown':
+                            embed = discord.Embed(title=f"Log {sublist[0]}")
+                        else:
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=adelaide_tram_colour)
+                        embed.add_field(name=f'Set', value="{} ({})".format(sublist[1], sublist[2]))
+                        embed.add_field(name=f'Line', value="{}".format(sublist[4]))
+                        embed.add_field(name=f'Date', value="{}".format(sublist[3]))
+                        embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                        embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+
+                        await logsthread.send(embed=embed)
+                        time.sleep(0.5) 
+
             # for perth:
             if mode == 'perth-trains':
                 if user == None:
@@ -3760,6 +3903,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
     app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 ])
 async def export(ctx, format:str, mode:str, hidemessage:bool=False):
@@ -3779,6 +3923,7 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
     app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 ])
 async def importlogs(ctx, mode:str, file:discord.Attachment):
@@ -3875,6 +4020,7 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
     app_commands.Choice(name="New South Wales Trains", value="sydney-trains"),
     app_commands.Choice(name="Sydney Light Rail", value="sydney-trams"),
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
+    app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
@@ -4365,7 +4511,7 @@ async def profile(ctx, user: discord.User = None):
                 embed.add_field(
         name='<:NSWLightRail:1255084906053369856> Light Rail Log Stats:',
         value=f'**Top Line:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
-            f'**Top Station:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
             f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
@@ -4408,6 +4554,38 @@ async def profile(ctx, user: discord.User = None):
     )
             except FileNotFoundError:
                 embed.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:", value=f'{username} has no logged trips in Adelaide!')
+
+
+        # adelaide tram Logger
+            try:
+                lines = topStats(username, 'lines', 0, 'adelaide-trams')
+                stations = topStats(username, 'stations', 0, 'adelaide-trams')
+                sets = topStats(username, 'sets', 0, 'adelaide-trams')
+                trains = topStats(username, 'types', 0, 'adelaide-trams')
+                dates = topStats(username, 'dates', 0, 'adelaide-trams')
+                trips = topStats(username, 'pairs', 0, 'adelaide-trams')
+                
+                #other stats stuff:
+                eDate =lowestDate(username, 'adelaide-trams')
+                LeDate =highestDate(username, 'adelaide-trams')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats:',
+        value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Stop:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "adelaide-trams")}'
+    )
+
+                                    
+            except FileNotFoundError:
+                embed.add_field(name="<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats", value=f'{username} has no logged trips in Adelaide!')
 
         # perth Logger
             try:

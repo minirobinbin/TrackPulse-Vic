@@ -87,6 +87,7 @@ def allTopStats(user, stat, year):
         f'utils/trainlogger/userdata/sydney-trams/{user}.csv',
         f'utils/trainlogger/userdata/bus/{user}.csv',
         f'utils/trainlogger/userdata/adelaide-trains/{user}.csv',
+        f'utils/trainlogger/userdata/adelaide-trams/{user}.csv',
         f'utils/trainlogger/userdata/perth-trains/{user}.csv'
     ]
     file_paths = [path for path in file_pathsChecker if os.path.exists(path)]
@@ -458,6 +459,7 @@ def topOperators(user):
     
     jbr_count=0
     adelaideMetro_count=0
+    adelaide_trams_count=0
     
     transperth_count = 0
     
@@ -493,7 +495,7 @@ def topOperators(user):
     except:
         pass
     
-     # sydney tram
+    # sydney tram
     try:
         with open(f'utils/trainlogger/userdata/sydney-trams/{user}.csv') as csvfile:
             reader = csv.reader(csvfile)
@@ -524,6 +526,14 @@ def topOperators(user):
                     other_count += 1
     except:
         pass 
+    # adelaide tram
+    try:
+        with open(f'utils/trainlogger/userdata/adelaide-trams/{user}.csv') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                adelaide_trams_count +=1
+    except:
+        pass    
      # perth train
     try:
         with open(f'utils/trainlogger/userdata/perth-trains/{user}.csv') as csvfile:
@@ -558,6 +568,8 @@ def topOperators(user):
             writer.writerow(['Journey Beyond', jbr_count])
         if adelaideMetro_count > 0:
             writer.writerow(['Adelaide Metro', adelaideMetro_count])
+        if adelaide_trams_count > 0:
+            writer.writerow(['Adelaide Trams', adelaide_trams_count])
         if transperth_count > 0:
             writer.writerow(['Transperth', transperth_count])
         if other_count > 0:
