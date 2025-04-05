@@ -4980,10 +4980,10 @@ async def profile(ctx, user: discord.User = None):
             else:
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
             if stats[3] != 'no stats':
-                item, wins, losses = stats[2]
+                item, wins, losses = stats[3]
                 embed.add_field(name=':grey_question: Station Hangman', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
             else:
-                embed.add_field(name=':grey_question: Station Hangman', value='No data',inline=False)
+               embed.add_field(name=':grey_question: Station Hangman', value='No data',inline=False)
             
             # other stats
             try:
