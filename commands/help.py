@@ -25,6 +25,7 @@ async def helpCommand(ctx,category,command):
         "fun": [
             "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
             "</games station-order:1240101357847838813> - Play a game where you recall which stations are up or down from a specific station.",
+            "</games station-hangman:1240101357847838813> - Play a game where you a station name, letter by letter.",
             "</stats leaderboard:1240101357847838815> - Shows the leaderboards for the games.",
         ],
         "logs":
@@ -115,7 +116,14 @@ Optional:
 
 Optional:
     Direction: if you wish to only play with a certain direction from the station, you may select that station. You must choose from the list. By default it is set to "Up or Down"
-    Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 25.''',
+    Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 10.''',
+        '/games station-hangman': '''</games station-hangman:1240101357847838813> is a command that allows you to play a game where you have to guess a station name, letter by letter. To skip a round, type "!skip". To end the game, type "!stop".
+
+**Options:**
+
+Optional:
+    Rounds: input the number of rounds you want to play. The default is 1. The range is 1 to 10.
+    Attempts: input the number of wrong guesses allowed before a round is lost. The default is 10''',
         '/help': '''</help:1261177133372280957> is a command... wait a minute. If you've gotten this far I think you know how to use this command. And besides, just /help by itself gives the tutorial for this command.''',
         '/line-status': '''</line-status:1322429532757819473> is a command that allows you to view the current distruption status of all the lines ran by a certain rail operator. This is currently only for Metro and V/Line.
 
