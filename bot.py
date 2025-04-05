@@ -2470,6 +2470,8 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
 
             guessed_list = ""
             guessed = ""
+            for letter in station:
+                guessed = guessed + "- "
 
             failed = f""
 
