@@ -2476,6 +2476,8 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
 
             failed = f""
 
+            incorrectGuesses = 0
+
             embed = discord.Embed(
                 title=f"Guess the station! It has {len(station)} letters",
                 description=f"**Guess either letters or station names.\nNote you only have {attempts} incorrect guesses until you lose**\nAnswer using this format:\n!<Letter> or !<Station name or part of station name>\n\n*Use !skip to skip to the next round.*",
@@ -2520,14 +2522,14 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 if guessed.replace(" ", "") == station.replace(" ", ""):
                                     correct = True
                                     await ctx.channel.send("You won!")
-                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
+                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
                             else:
                                 await ctx.channel.send(f'Already guessed {user_response.author.mention}! Try again.')
                                 log_command(user_response.author.id, 'game-station-hangman-neutral')
                                 roundResponse = True
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
-                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
+                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
                         elif user_response.content.lower() == '!skip':
                             if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
                                 await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{station}||")
@@ -2565,6 +2567,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 log_command(user_response.author.id, 'game-station-hangman-incorrect')
                                 roundResponse = True
                                 incorrectAnswers += 1
+                                incorrectGuesses += 1
                                 addLoss(user_response.author.id, user_response.author.name, 'hangman')
                                 if len(user_response.content[1:].lower().replace(" ", "")) == 1:
                                     if failed == "":
@@ -2573,8 +2576,8 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                         failed = failed + f", {user_response.content[1:].lower().replace(" ", "")}"
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
-                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
-                                if incorrectAnswers >= attempts:
+                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
+                                if incorrectGuesses >= attempts:
                                     await ctx.channel.send('You lost!')
                                     await ctx.channel.send(f"The answer was ||{station}||")
                                     break
@@ -2584,7 +2587,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 roundResponse = True
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
-                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
+                                await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
 
                 
                     # checker for the funnies ( no ! needed)       
