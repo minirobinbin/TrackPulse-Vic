@@ -2475,7 +2475,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
 
             embed = discord.Embed(
                 title=f"Guess the station! It has {len(station)} letters",
-                description=f"**Guess either letters or station names.\nNote you onlt have {attempts} incorrect guesses until you lose**\nAnswer using this format:\n!<Letter> or !<Station name or part of station name>\n\n*Use !skip to skip to the next round.*",
+                description=f"**Guess either letters or station names.\nNote you only have {attempts} incorrect guesses until you lose**\nAnswer using this format:\n!<Letter> or !<Station name or part of station name>\n\n*Use !skip to skip to the next round.*",
                 colour=metro_colour)
             embed.set_author(name=f"Round {round+1}/{rounds}")
             if round == 0:
@@ -2572,6 +2572,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
                                 if incorrectAnswers >= attempts:
                                     await ctx.channel.send('You lost!')
+                                    await ctx.channel.send(f"The answer was ||{station}||")
                                     break
                             else:
                                 await ctx.channel.send(f'Already guessed {user_response.author.mention}! Try again.')
