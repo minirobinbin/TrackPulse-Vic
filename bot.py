@@ -3357,10 +3357,18 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
         app_commands.Choice(name="Perth Trains", value="perth-trains"),
 
 ])
+@app_commands.choices(send=[
+        app_commands.Choice(name="Web (Victorian Train only)", value="web"),
+        app_commands.Choice(name="Thread", value="thread"),
+])
 
-async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
+async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, send:str='web'):
     async def sendLogs():
         log_command(ctx.user.id, 'view-log')
+        
+        if mode == 'train' and id == None and send == 'web':
+            await ctx.response.send_message('[Click here to view your logs online](https://trackpulse.xm9g.net/logs/viewer)', ephemeral=True)
+            return
         
         if user == None:
                 userid = ctx.user
