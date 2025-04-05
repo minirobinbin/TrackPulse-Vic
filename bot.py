@@ -3590,7 +3590,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
         log_command(ctx.user.id, 'view-log')
         
         if mode == 'train' and id == None and send == 'web':
-            await ctx.response.send_message('[Click here to view your logs online](https://trackpulse.xm9g.net/logs/viewer)', ephemeral=True)
+            await ctx.response.send_message('[Click here to view your logs online](https://trackpulse.xm9g.net/logs/viewer)', ephemeral=False)
             return
         
         if user == None:
