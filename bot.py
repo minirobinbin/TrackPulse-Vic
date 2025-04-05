@@ -5462,12 +5462,12 @@ async def update(ctx):
                 directory = git.cmd.Git(directory)
                 try:
                     directory.stash('save')  # Stash local changes
-                except:
+                except Exception as e:
                     await printlog(f"Potential Error: ```{e}```")
                 directory.pull()
                 try:
                     directory.stash('pop')  # Restore stashed changes
-                except:
+                except Exception as e:
                     await printlog(f"Potential Error: ```{e}```")
 
                 await ctx.send("The bot has successfully been updated, restart to apply changes.")
