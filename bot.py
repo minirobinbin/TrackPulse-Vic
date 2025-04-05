@@ -2470,7 +2470,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
 
             guessed_list = ""
             guessed = ""
-            for letter in station:
+            for letter in station.replace(" ", ""):
                 guessed = guessed + "- "
 
             failed = f""
@@ -2505,7 +2505,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 guessed_list = guessed_list + user_response.content[1:].lower().replace(" ", "") # this is obviously broken, will be funny to see tho
                                 await printlog(guessed_list)
                                 guessed = ""
-                                for letter in station:
+                                for letter in station.replace(" ", ""):
                                     if letter.lower() in guessed_list:
                                         guessed = guessed + letter + " "
                                     else:
