@@ -2154,6 +2154,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         app_commands.Choice(name="Station Guesser", value="guesser"),
         app_commands.Choice(name="Ultrahard Station Guesser", value="ultrahard"),
         app_commands.Choice(name="Station order game", value="domino"),
+        app_commands.Choice(name="Station Hangman", value="hangman"),
 
 ])
 
@@ -4975,6 +4976,11 @@ async def profile(ctx, user: discord.User = None):
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
             else:
                 embed.add_field(name=':left_right_arrow: Station Order Guesser', value='No data',inline=False)
+            if stats[3] != 'no stats':
+                item, wins, losses = stats[2]
+                embed.add_field(name=':grey_question: Station Hangman', value=f'Wins: {str(wins)}\nLosses: {str(losses)}\nAccuracy: {str(round((wins/(wins+losses))*100, 1))}%', inline=False)
+            else:
+                embed.add_field(name=':grey_question: Station Hangman', value='No data',inline=False)
             
             # other stats
             try:

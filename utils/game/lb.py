@@ -96,7 +96,7 @@ def top5(game):
 
 def fetchUserStats(name):
     stats = []
-    for game in ['guesser','ultrahard','domino']:
+    for game in ['guesser','ultrahard','domino','hangman']:
         csv_file = f'utils/game/scores/{game}.csv'
         try:
             with open(csv_file, newline='') as csvfile:
