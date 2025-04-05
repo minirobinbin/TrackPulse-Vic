@@ -2565,10 +2565,11 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 roundResponse = True
                                 incorrectAnswers += 1
                                 addLoss(user_response.author.id, user_response.author.name, 'hangman')
-                                if failed == "":
-                                    failed = user_response.content[1:].lower().replace(" ", "")
-                                else:
-                                    failed = failed + f", {user_response.content[1:].lower().replace(" ", "")}"
+                                if len(user_response.content[1:].lower().replace(" ", "")) == 1:
+                                    if failed == "":
+                                        failed = user_response.content[1:].lower().replace(" ", "")
+                                    else:
+                                        failed = failed + f", {user_response.content[1:].lower().replace(" ", "")}"
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
                                 await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectAnswers}')
