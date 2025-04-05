@@ -289,7 +289,7 @@ bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp','utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/adelaide-trams','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
-                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps']
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
         print(f"{folder} exists")
@@ -2245,7 +2245,18 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
 
         channel_game_status[channel] = True
 
+        ignoredRounds = 0
+        setLine = 'All Lines' if line == 'all' else f'{line.title()} line'
+        
+        # stuff for end of game stats
+        incorrectAnswers = 0
+        correctAnswers = 0
+        skippedGames = 0
+        participants = []
+
         for round in range(rounds):
+            roundResponse = False
+
             # choose random number of stations
             numdirection = random.randint(2,5)
 
@@ -2284,7 +2295,10 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
                 await ctx.channel.send(embed=embed)
 
             # Define a check function to validate user input
-            async def check(m): return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+            async def check(m): 
+                return m.channel == channel and m.author != bot.user and m.content.startswith('!')
+            async def funnyCheck(m):    
+                return m.channel == channel and m.author != bot.user
 
             # get list of correct stations
             if numdirection > 0:
@@ -2303,34 +2317,109 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
                     response = user_response.content[1:].lower().split(',')
                     response = [x.strip() for x in response]
 
-
-                    # Check if the user's response matches the correct station
-                    if response == correct_list1:
-                        await ctx.channel.send(f"{user_response.author.mention} guessed it correctly!")
-                        addLb(user_response.author.id, user_response.author.name, 'domino')
-                        
-                        correct = True 
-                    elif user_response.content.lower() == '!skip':
-                        if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
-                            break
+                    if await check(user_response) == True:  # fixed cause check broke    
+                        # Check if the user's response matches the correct station
+                        if response == correct_list1:
+                            await ctx.channel.send(f"{user_response.author.mention} guessed it correctly!")
+                            addLb(user_response.author.id, user_response.author.name, 'domino')
+                            log_command(user_response.author.id, 'game-station-order-correct')
+                            correctAnswers += 1
+                            ignoredRounds = 0
+                            roundResponse = True
+                            correct = True 
+                        elif user_response.content.lower() == '!skip':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
+                                log_command(user_response.author.id, 'game-station-order-skip')
+                                skippedGames += 1
+                                roundResponse = True
+                                break
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
+                        elif user_response.content.lower() == '!stop':
+                            if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Game ended.")
+                                log_command(user_response.author.id, 'game-station-order-stop')
+                                embed = discord.Embed(title=f"Game Summary | {setLine}")
+                                embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                                embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                                embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                                embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                                await ctx.channel.send(embed=embed)  
+                                for user in participants:
+                                    await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                                channel_game_status[channel] = False
+                                return
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")
+                        # view the image info (admin only) 
+                        elif user_response.content.lower() == '!reveal' or user_response.content.lower() == '!release':
+                            if user_response.author.id in admin_users :
+                                await ctx.channel.send(f"Stations: `{correct_list1}`")
+                            else:
+                                await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
                         else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only skip the round if you were the one who started it.")
-                    elif user_response.content.lower() == '!stop':
-                        if user_response.author.id in ctx.user.id or user_response.author.id in admin_users :
-                            await ctx.channel.send(f"Game ended.")
-                            return
-                        else:
-                            await ctx.channel.send(f"{user_response.author.mention} you can only stop the game if you were the one who started it.")
-                    else:
-                        await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
-                        addLoss(user_response.author.id, user_response.author.name, 'domino')
+                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            log_command(user_response.author.id, 'game-station-order-incorrect')
+                            roundResponse = True
+                            incorrectAnswers += 1
+                            addLoss(user_response.author.id, user_response.author.name, 'domino')
+                            if user_response.author not in participants:
+                                participants.append(user_response.author)
+                
+                    # checker for the funnies ( no ! needed)       
+                    if await funnyCheck(user_response) == True:
+                        # funny ones
+                        if 'idk' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
+                        elif 'i dont know' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} I don't know either.")
+                        elif 'sorry' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.")
+                        elif 'my bad' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.") 
+                        elif 'oops' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} Its ok.")
+                        elif 'bruh' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} 💀")
+                        elif 'shit' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} :(")
+                        elif 'fuck' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} :(")
+                        elif 'what' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} its a set of stations.")
+                        elif 'wtf' in user_response.content.lower():
+                            await ctx.channel.send(f"{user_response.author.mention} what?")
                         
             except asyncio.TimeoutError:
                 await ctx.channel.send(f"Times up. The answer was ||{correct_list[0]}, {correct_list[1]}{f', {correct_list[2]}' if len(correct_list) >=3 else ''}{f', {correct_list[3]}' if len(correct_list) >=4 else ''}{f', {correct_list[4]}' if len(correct_list) >=5 else ''}||")
             finally:
-                # Reset game status down the game ends
+                if not roundResponse:
+                    ignoredRounds += 1
+                await printlog(f'Ignored rounds: {ignoredRounds}')
+                if ignoredRounds >= 4 and roundResponse == False:
+                    await ctx.channel.send("No responses for 4 rounds. Game ended.")
+                    embed = discord.Embed(title=f"Game Summary | {setLine}")
+                    embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+                    embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+                    embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+                    embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+                    await ctx.channel.send(embed=embed)  
+                    for user in participants:
+                        await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                    return
+                        
+                # Reset game status after the game ends
                 channel_game_status[channel] = False
+                
+        embed = discord.Embed(title=f"Game Summary | {setLine}")
+        embed.add_field(name="Rounds played", value=f'{skippedGames} skipped, {rounds} total.', inline=True)
+        embed.add_field(name="Correct Guesses", value=correctAnswers, inline=True)
+        embed.add_field(name="Incorrect Guesses", value=incorrectAnswers, inline=True)
+        embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
+        await ctx.channel.send(embed=embed)  
+        for user in participants:
+            await addGameAchievement(user.name,ctx.channel.id,user.mention)
             
     # Run the game in a separate task
     asyncio.create_task(run_game(line))
