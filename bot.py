@@ -2069,7 +2069,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                         
                         
                         else:
-                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            await user_response.add_reaction('❌')
                             log_command(user_response.author.id, 'game-station-guesser-incorrect')
                             roundResponse = True
                             incorrectAnswers += 1
@@ -2360,7 +2360,7 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
                             else:
                                 await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
                         else:
-                            await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                            await user_response.add_reaction('❌')
                             log_command(user_response.author.id, 'game-station-order-incorrect')
                             roundResponse = True
                             incorrectAnswers += 1
@@ -2513,7 +2513,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                         guessed = guessed + letter + " "
                                     else:
                                         guessed = guessed + "- "
-                                await ctx.channel.send(f"{user_response.author.mention} guessed a correct part of the station name!")
+                                await user_response.add_reaction('✅')
                                 addLb(user_response.author.id, user_response.author.name, 'hangman')
                                 log_command(user_response.author.id, 'game-station-hangman-correct')
                                 correctAnswers += 1
@@ -2563,7 +2563,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 await ctx.channel.send(f"{user_response.author.mention} you can only reveal the image if you are an admin.")
                         else:
                             if not user_response.content[1:].lower().replace(" ", "") in failed:
-                                await ctx.channel.send(f"Wrong guess {user_response.author.mention}! Try again.")
+                                await user_response.add_reaction('❌')
                                 log_command(user_response.author.id, 'game-station-hangman-incorrect')
                                 roundResponse = True
                                 incorrectAnswers += 1
