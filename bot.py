@@ -113,7 +113,7 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
-from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, getAchievementInfo
+from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, checkHangmanAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainlogger.map.uploadimage import uploadImage
 from utils.trainset import *
@@ -530,15 +530,21 @@ async def addAchievement(username, channel, mention):
         await channel.send(mention,embed=embed)
         
 # game achievement awarder  check game achievements
-async def addGameAchievement(username, channel, mention):
+async def addGameAchievement(username, channel, mention, game:str='guesser'):
     await printlog(f'checking game achievements for {username}')
     channel = bot.get_channel(channel)
-    new = checkGameAchievements(username)
+    print('game:', game)
+    if game == 'guesser':
+        new = checkGameAchievements(username)
+    elif game == 'hangman':
+        new = checkHangmanAchievements(username)
+    print('New achievements:', new)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await channel.send(mention,embed=embed)
+
 
 # Rare train finder
 async def check_rare_trains_in_thread():
@@ -2550,7 +2556,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
                                 await ctx.channel.send(embed=embed)  
                                 for user in participants:
-                                    await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                                    await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
                                 channel_game_status[channel] = False
                                 return
                             else:
@@ -2573,7 +2579,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                     if failed == "":
                                         failed = user_response.content[1:].lower().replace(" ", "")
                                     else:
-                                        failed = failed + f", {user_response.content[1:].lower().replace(" ", "")}"
+                                        failed = failed + f', {user_response.content[1:].lower().replace(" ", "")}'
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
                                 await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
@@ -2629,7 +2635,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                     embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
                     await ctx.channel.send(embed=embed)  
                     for user in participants:
-                        await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                        await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
                     return
                         
                 # Reset game status after the game ends
@@ -2642,7 +2648,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
         embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
         await ctx.channel.send(embed=embed)  
         for user in participants:
-            await addGameAchievement(user.name,ctx.channel.id,user.mention)
+            await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
             
     # Run the game in a separate task
     asyncio.create_task(run_game(line))

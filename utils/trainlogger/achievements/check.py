@@ -698,6 +698,96 @@ def checkGameAchievements(user):
     
     return truly_new
 
+def checkHangmanAchievements(user):
+    filepath = f"utils/game/scores/hangman.csv"
+    new_achievements = []
+    
+    print(f'Checking for hangman achievements for {user}')
+    
+    if not os.path.exists(filepath):
+        print('Data file does not exist!')
+        return []
+    
+    # Track stats from game file
+    wins = 0
+    losses = 0
+
+    with open(filepath, mode='r', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 1 and row[1] == user:
+                wins = int(row[2])
+                losses = int(row[3])
+                break
+    total_games = wins + losses
+    print(f'{user} hangman stats: {wins} wins, {losses} losses, {total_games} total')
+    
+    # amount of games achievement
+    if total_games > 0:
+        new_achievements.append('200')
+    if total_games >= 25:
+        new_achievements.append('201')
+    if total_games >= 100:
+        new_achievements.append('202')
+    
+    # wins achievement
+    if wins >= 10:
+        new_achievements.append('203')
+    if wins >= 50:
+        new_achievements.append('204')
+    if wins >= 100:
+        new_achievements.append('205')
+    if wins >= 1000:
+        new_achievements.append('206')
+        
+    # accuracy achievements
+    if total_games >= 50:
+        accuracy = (wins / total_games) * 100
+        if accuracy >= 90:
+            new_achievements.append('207')
+        if accuracy >= 75:
+            new_achievements.append('208')
+        if accuracy >= 99:
+            new_achievements.append('209')
+
+    # Check which achievements are actually new
+    userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
+    existing_achievements = {}  # Dictionary to store achievement ID: date
+    
+    # Read existing achievements with dates
+    if os.path.exists(userCSV):
+        with open(userCSV, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                for i in range(0, len(row), 2):  # Assuming format: [id, date, id, date, ...]
+                    if i + 1 < len(row):
+                        existing_achievements[row[i]] = row[i + 1]
+    
+    # Determine truly new achievements with current date
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    truly_new = [ach for ach in new_achievements if ach not in existing_achievements]
+    new_with_dates = {ach: current_date for ach in truly_new}
+    
+    # Combine existing and new achievements
+    all_achievements = existing_achievements.copy()
+    all_achievements.update(new_with_dates)
+    
+    # Write all achievements with dates to CSV
+    if all_achievements:
+        with open(userCSV, 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            # Flatten dictionary into list: [id1, date1, id2, date2, ...]
+            flat_list = [item for pair in all_achievements.items() for item in pair]
+            csv_writer.writerow(flat_list)
+    
+    if truly_new:
+        print(f"Added the following game achievements on {current_date}: {truly_new}")
+    else:
+        print("No new game achievements to add.")
+        
+    return truly_new
+    
+
 def returnAchievements(user):
     filepath = f'utils/trainlogger/achievements/data/{user}.csv'
     achievements = []
