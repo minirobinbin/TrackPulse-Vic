@@ -1670,9 +1670,14 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
             else:
                 embed.set_footer(text=f"V/Line departures are unavailable")
-
-        await ctx.edit_original_response(embed=embed, content='')          
-
+        
+        try:
+            await ctx.edit_original_response(embed=embed, content='')     
+        except Exception as e:
+            await ctx.edit_original_response(content=f'Error loading departures. Please try again later.\n```{e}```')
+            await printlog(f'ErROR: {e}') 
+            await printlog(traceback.format_exc())  
+    
     asyncio.create_task(nextdeps(stop, time))
     
     
