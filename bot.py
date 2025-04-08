@@ -1465,21 +1465,30 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
             mode ='2'
         elif station in vline_stops:
             mode = '3'
+        elif station.endswith('Railway Station'):
+            mode = '3'
         else:
             mode = '0'
+            
 
         if mode == '3':
-            await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
+            pass
+            # await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
             return
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
         
+        print(f'Finding stop id for {station}, mode {mode}')
         stop_id = nameToStopID(station, mode)
         
         if stop_id == 'None':
-            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
-            return
+            print('Trying to see if its a V/Line station')
+            mode = 3
+            stop_id = nameToStopID(f'{station} Railway Station', mode)
+            if stop_id == 'None':
+                await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
+                return
 
         timecopy = time
         if time == "none":
@@ -1521,20 +1530,37 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
          
         
         # make embed with data
-        if line == "all" and mode == "0":
-            if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
+        print(f'Making embed for mode {mode}')
+        # Default embed title and color
+        embed_title = f"Departures from {station.title()}"
+        embed_color = ptv_grey
+
+        # Customize embed based on mode and line
+        if mode == "0":
+            embed_color = metro_colour
+            if line == "all":
+                embed_title = f"Metro trains departing {station.title()}"
             else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-        elif line != 'all' and mode == "0":
-            if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-            else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-        elif mode == '1':
-            embed= discord.Embed(title=f"Trams departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=tram_colour)
-        elif mode == '2':
-            embed= discord.Embed(title=f"Busses departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=bus_colour)
+                embed_title = f"Metro trains departing {station.title()} on the {line} line"
+        elif mode == "1":
+            embed_color = tram_colour
+            embed_title = f"Trams departing {station.title()}"
+        elif mode == "2":
+            embed_color = bus_colour
+            embed_title = f"Busses departing {station.title()}"
+        elif mode == "3":
+            embed_color = vline_colour
+            embed_title = f"V/Line trains departing {station.title()}"
+
+        # Add "Station" suffix if not already present
+        if not station.title().endswith('Station') and mode in ["0", "3"]:
+            embed_title += " Station"
+            
+        # Add timestamp to title
+        embed_title += f" after {start_time}"
+        
+        # Create embed
+        embed = discord.Embed(title=embed_title, timestamp=discord.utils.utcnow(), color=embed_color)
 
 
         fields = 0
@@ -1543,10 +1569,11 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
 
         
         for departure in departures:
+            print(f'Departure: {departure}')
             route_id= departure['route_id'] 
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc, final_time):
-                # await printlog(f"time in past")
+                print(f"time in past")
                 pass
             else:
                 run_ref = departure['run_ref']
@@ -1584,7 +1611,8 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 # get the direction for busses and trams and also the route number
                 if mode in ['1', '2']:
                     route_number = routes[str(route_id)]['route_number']
-                    direction = getDirectionName(runs[run_ref]['direction_id'])                    
+                    direction = getDirectionName(runs[run_ref]['direction_id'])     
+                              
             
                 # train emoji
                 trainType = getEmojiForDeparture(trainType)
@@ -1610,7 +1638,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 if mode == '0':
                     embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')}) {delaystring}\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 elif mode in ['1', '2']: 
-                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
+                    embed.add_field(name=f"{route_number} to {desto}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`") 
+                elif mode == '3':
+                    embed.add_field(name=f"dsddsds", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
+                    
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -1624,7 +1655,7 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
             embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         # get station image
-        if mode == '0':
+        if mode == '0' or mode == '3':
             image = getStationImage(station)
             if image != None: 
                 embed.set_thumbnail(url=image)  
