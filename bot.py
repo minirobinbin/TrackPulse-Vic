@@ -1455,7 +1455,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
         station = station.strip('⭐ ')
-        await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()} in channel {ctx.channel.mention}')
+        try:
+            await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()} in channel {ctx.channel.mention}')
+        except:
+            await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()}')
 
         if station in metro_stops:
             mode = '0'
@@ -1569,11 +1572,11 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
 
         
         for departure in departures:
-            print(f'Departure: {departure}')
+            # print(f'Departure: {departure}')
             route_id= departure['route_id'] 
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc, final_time):
-                print(f"time in past")
+                # print(f"time in past")
                 pass
             else:
                 run_ref = departure['run_ref']
@@ -5746,6 +5749,12 @@ async def update(ctx):
             await ctx.send("You are not authorized to use this command.")
     else:
         await ctx.send("Remote updates are not enabled")
+        
+# thing to notify of errors:
+@bot.event
+async def on_command_error(ctx, error):
+    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+    await ctx.log_channel.send(f"An error occurred: {str(error)}\n<@780303451980038165>")
     
 # important
 bot.run(BOT_TOKEN)
