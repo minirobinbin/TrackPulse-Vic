@@ -1156,6 +1156,11 @@ async def runidsearch(ctx, number:str, mode:str='metro'):
                         for item in runData:
                             # latitude = item['vehicle_position']['latitude']
                             # longitude = item['vehicle_position']['longitude']
+                            try:
+                                vehicle = item['vehicle_descriptor']['description']
+                            except:
+                                print('couldnt get vehicle')
+                                vehicle = 'Unknown Train'
                             line = get_route_name(item['route_id'])
                             await printlog(f'Line: {line}')
                 elif mode == "vline":
@@ -1184,7 +1189,7 @@ async def runidsearch(ctx, number:str, mode:str='metro'):
             elif mode == "bus" or mode == 'nightbus':
                 colour = bus_colour
             
-            embed = discord.Embed(title=f"{number}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"{number}- {vehicle}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
