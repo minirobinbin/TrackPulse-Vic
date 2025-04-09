@@ -146,3 +146,25 @@ def TDNtoRunID(tdn):
     aski2 = str(aski)[1]
     final = aski1 + aski2 + tdn[1:]
     return(final)
+
+async def cleanAPITrainNumber(number:str):
+    """
+    This function will clean up the train number if its a hcmt and also it will return the train type better than the api provides such as differentitating between EDI and Alstom Comengs.
+    """
+    if "-" in str(number):
+        cars = number.split("-")
+        split = []
+        for car in cars:
+            split.append(car)
+            Type = trainType(car)        
+
+        for carriage in split:
+            print(f'splitted carriage: {carriage}')
+            if len(carriage) == 5 and carriage.endswith("M"): # filter HCMT carriages
+                car = carriage[:-1]
+                Type = "HCMT"
+                return Type, car
+            else:
+                return Type, number
+                
+    return '', '' # if no type is found return None

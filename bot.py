@@ -1620,10 +1620,9 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 if mode in ['1', '2']:
                     route_number = routes[str(route_id)]['route_number']
                     direction = getDirectionName(runs[run_ref]['direction_id'])     
-                              
-            
+                
                 # train emoji
-                trainType = getEmojiForDeparture(trainType)
+                # trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
                 if run_ref.startswith('9') and mode == '0':
@@ -1634,7 +1633,13 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
-                route_name = get_route_name(route_id)                
+                route_name = get_route_name(route_id)
+                
+                # get the train type from the number
+                if mode == "0":
+                    print(f'Train number: {trainNumber}')
+                    trainType, trainNumber = await cleanAPITrainNumber(trainNumber)       
+                    print(f'Train type: {trainType}')         
                 
                 # thing for stony point
                 if route_name == "Stony Point":
