@@ -2840,27 +2840,34 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         if type == 'Tait':
             image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
         
-        if not '-' in set:
-            image = getImage(set)
+        try:
+            if not '-' in set:
+                image = getImage(set)
 
-        else:
-            hyphen_index = set.find("-")
-            if hyphen_index != -1:
-                first_car = set[:hyphen_index]
-                await printlog(f'First car: {first_car}')
-                image = getImage(first_car)
-                if image == None:
-                    last_hyphen = set.rfind("-")
-                    if last_hyphen != -1:
-                        last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                        await printlog(f'Last car: {last_car}')
-                        image = getImage(last_car)
-                        if image == None:
-                            image = getImage(type)
-                            await printlog(f'the loco number is: {set}')
-        if image != None:
-            embed.set_thumbnail(url=image)
+            else:
+                hyphen_index = set.find("-")
+                if hyphen_index != -1:
+                    first_car = set[:hyphen_index]
+                    await printlog(f'First car: {first_car}')
+                    image = getImage(first_car)
+                    if image == None:
+                        last_hyphen = set.rfind("-")
+                        if last_hyphen != -1:
+                            last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            await printlog(f'Last car: {last_car}')
+                            image = getImage(last_car)
+                            if image == None:
+                                image = getImage(type)
+                                await printlog(f'the loco number is: {set}')
+            if image != None:
+                embed.set_thumbnail(url=image)
+            
+        except Exception as e:
+            await printlog(f"Error getting image: {e}")
+
         embed.set_footer(text=f"Log ID #{id}")
+        
+        
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
