@@ -1660,7 +1660,12 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
         for disruption in disruptions:
-            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
+            # Truncate disruption title if its ling
+            title = disruption['title']
+            if len(title) > 200:
+                title = title[:200] + "..."
+            
+            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {title}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         # get station image
         if mode == '0' or mode == '3':
