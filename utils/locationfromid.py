@@ -29,7 +29,8 @@ def find_vehicle_by_descriptor_id(data, search_string):
             result = {
                 "vehicle_position": run["vehicle_position"],
                 "run_ref": run["run_ref"],
-                "route_id": run["route_id"]
+                "route_id": run["route_id"],
+                "vehicle_descriptor": run["vehicle_descriptor"],
             }
             results.append(result)
     print(f'RESULTS THING: {results}')

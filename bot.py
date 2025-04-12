@@ -113,7 +113,7 @@ from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
-from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, getAchievementInfo
+from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, checkHangmanAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainlogger.map.uploadimage import uploadImage
 from utils.trainset import *
@@ -530,15 +530,21 @@ async def addAchievement(username, channel, mention):
         await channel.send(mention,embed=embed)
         
 # game achievement awarder  check game achievements
-async def addGameAchievement(username, channel, mention):
+async def addGameAchievement(username, channel, mention, game:str='guesser'):
     await printlog(f'checking game achievements for {username}')
     channel = bot.get_channel(channel)
-    new = checkGameAchievements(username)
+    print('game:', game)
+    if game == 'guesser':
+        new = checkGameAchievements(username)
+    elif game == 'hangman':
+        new = checkHangmanAchievements(username)
+    print('New achievements:', new)
     for achievement in new:
         info = getAchievementInfo(achievement)
         embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await channel.send(mention,embed=embed)
+
 
 # Rare train finder
 async def check_rare_trains_in_thread():
@@ -1150,6 +1156,11 @@ async def runidsearch(ctx, number:str, mode:str='metro'):
                         for item in runData:
                             # latitude = item['vehicle_position']['latitude']
                             # longitude = item['vehicle_position']['longitude']
+                            try:
+                                vehicle = item['vehicle_descriptor']['description']
+                            except:
+                                print('couldnt get vehicle')
+                                vehicle = 'Unknown Train'
                             line = get_route_name(item['route_id'])
                             await printlog(f'Line: {line}')
                 elif mode == "vline":
@@ -1178,7 +1189,7 @@ async def runidsearch(ctx, number:str, mode:str='metro'):
             elif mode == "bus" or mode == 'nightbus':
                 colour = bus_colour
             
-            embed = discord.Embed(title=f"{number}", colour=colour, timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=f"{number}- {vehicle}", colour=colour, timestamp=discord.utils.utcnow())
 
             # add the stops to the embed.
             stopsString = ''
@@ -1449,7 +1460,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         await ctx.response.defer()
         log_command(ctx.user.id, 'departures-search')
         station = station.strip('⭐ ')
-        await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()} in channel {ctx.channel.mention}')
+        try:
+            await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()} in channel {ctx.channel.mention}')
+        except:
+            await printlog(f'{ctx.user.name} ran departures for {station} at time {datetime.today()}')
 
         if station in metro_stops:
             mode = '0'
@@ -1459,21 +1473,30 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
             mode ='2'
         elif station in vline_stops:
             mode = '3'
+        elif station.endswith('Railway Station'):
+            mode = '3'
         else:
             mode = '0'
+            
 
         if mode == '3':
-            await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
+            pass
+            # await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
             return
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
         
+        print(f'Finding stop id for {station}, mode {mode}')
         stop_id = nameToStopID(station, mode)
         
         if stop_id == 'None':
-            await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
-            return
+            print('Trying to see if its a V/Line station')
+            mode = 3
+            stop_id = nameToStopID(f'{station} Railway Station', mode)
+            if stop_id == 'None':
+                await ctx.edit_original_response(content=f"Cannot find stop {station.title()}.")
+                return
 
         timecopy = time
         if time == "none":
@@ -1515,20 +1538,37 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
          
         
         # make embed with data
-        if line == "all" and mode == "0":
-            if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
+        print(f'Making embed for mode {mode}')
+        # Default embed title and color
+        embed_title = f"Departures from {station.title()}"
+        embed_color = ptv_grey
+
+        # Customize embed based on mode and line
+        if mode == "0":
+            embed_color = metro_colour
+            if line == "all":
+                embed_title = f"Metro trains departing {station.title()}"
             else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-        elif line != 'all' and mode == "0":
-            if station.title().endswith('Station'):
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-            else:
-                embed= discord.Embed(title=f"Metro trains departing {station.title()} Station on the {line} line after {start_time}", timestamp=discord.utils.utcnow(),color=metro_colour)
-        elif mode == '1':
-            embed= discord.Embed(title=f"Trams departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=tram_colour)
-        elif mode == '2':
-            embed= discord.Embed(title=f"Busses departing {station.title()} after {start_time}", timestamp=discord.utils.utcnow(), color=bus_colour)
+                embed_title = f"Metro trains departing {station.title()} on the {line} line"
+        elif mode == "1":
+            embed_color = tram_colour
+            embed_title = f"Trams departing {station.title()}"
+        elif mode == "2":
+            embed_color = bus_colour
+            embed_title = f"Busses departing {station.title()}"
+        elif mode == "3":
+            embed_color = vline_colour
+            embed_title = f"V/Line trains departing {station.title()}"
+
+        # Add "Station" suffix if not already present
+        if not station.title().endswith('Station') and mode in ["0", "3"]:
+            embed_title += " Station"
+            
+        # Add timestamp to title
+        embed_title += f" after {start_time}"
+        
+        # Create embed
+        embed = discord.Embed(title=embed_title, timestamp=discord.utils.utcnow(), color=embed_color)
 
 
         fields = 0
@@ -1537,10 +1577,11 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
 
         
         for departure in departures:
+            # print(f'Departure: {departure}')
             route_id= departure['route_id'] 
             scheduled_departure_utc = departure['scheduled_departure_utc']
             if isPast(scheduled_departure_utc, final_time):
-                # await printlog(f"time in past")
+                # print(f"time in past")
                 pass
             else:
                 run_ref = departure['run_ref']
@@ -1578,10 +1619,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 # get the direction for busses and trams and also the route number
                 if mode in ['1', '2']:
                     route_number = routes[str(route_id)]['route_number']
-                    direction = getDirectionName(runs[run_ref]['direction_id'])                    
-            
+                    direction = getDirectionName(runs[run_ref]['direction_id'])     
+                
                 # train emoji
-                trainType = getEmojiForDeparture(trainType)
+                # trainType = getEmojiForDeparture(trainType)
                 
                 # Convert PTV run REF to TDN
                 if run_ref.startswith('9') and mode == '0':
@@ -1592,7 +1633,13 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 #convert to timestamp
                 depTime=convert_iso_to_unix_time(scheduled_departure_utc)
                 #get route name:
-                route_name = get_route_name(route_id)                
+                route_name = get_route_name(route_id)
+                
+                # get the train type from the number
+                if mode == "0":
+                    print(f'Train number: {trainNumber}')
+                    trainType, trainNumber = await cleanAPITrainNumber(trainNumber)       
+                    print(f'Train type: {trainType}')         
                 
                 # thing for stony point
                 if route_name == "Stony Point":
@@ -1604,7 +1651,10 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
                 if mode == '0':
                     embed.add_field(name=f"{getlineEmoji(route_name)}\n{desto} {note if note else ''}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')}) {delaystring}\nPlatform {platform_number}\n{trainType} {trainNumber}\nTDN: `{TDN}`")
                 elif mode in ['1', '2']: 
-                    embed.add_field(name=f"{route_number} to {direction}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
+                    embed.add_field(name=f"{route_number} to {desto}", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`") 
+                elif mode == '3':
+                    embed.add_field(name=f"dsddsds", value=f"\nDeparting {depTime} ({convert_iso_to_unix_time(scheduled_departure_utc,'short-time')})\nRun `{run_ref}`")
+                    
                 fields = fields + 1
                 if fields == 9:
                     break
@@ -1615,19 +1665,29 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
         for disruption in disruptions:
-            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {disruption['title']}", 
+            # Truncate disruption title if its ling
+            title = disruption['title']
+            if len(title) > 200:
+                title = title[:200] + "..."
+            
+            embed.insert_field_at(index=0, name=f"<:Disruption:1322444175941173280> {title}", 
                                 value=f"[{disruption['description']}]({disruption['url']})\n", inline=False)
         # get station image
-        if mode == '0':
+        if mode == '0' or mode == '3':
             image = getStationImage(station)
             if image != None: 
                 embed.set_thumbnail(url=image)  
                 embed.set_footer(text=f"V/Line departures are unavailable | Photo by {getPhotoCredits(station)}")       
             else:
                 embed.set_footer(text=f"V/Line departures are unavailable")
-
-        await ctx.edit_original_response(embed=embed, content='')          
-
+        
+        try:
+            await ctx.edit_original_response(embed=embed, content='')     
+        except Exception as e:
+            await ctx.edit_original_response(content=f'Error loading departures. Please try again later.\n```{e}```')
+            await printlog(f'ErROR: {e}') 
+            await printlog(traceback.format_exc())  
+    
     asyncio.create_task(nextdeps(stop, time))
     
     
@@ -2550,7 +2610,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                 embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
                                 await ctx.channel.send(embed=embed)  
                                 for user in participants:
-                                    await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                                    await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
                                 channel_game_status[channel] = False
                                 return
                             else:
@@ -2573,7 +2633,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                                     if failed == "":
                                         failed = user_response.content[1:].lower().replace(" ", "")
                                     else:
-                                        failed = failed + f", {user_response.content[1:].lower().replace(" ", "")}"
+                                        failed = failed + f', {user_response.content[1:].lower().replace(" ", "")}'
                                 if user_response.author not in participants:
                                     participants.append(user_response.author)
                                 await ctx.channel.send(f'# Letters: {guessed}\n\n**Incorrect guesses: {failed}**\n\nIncorrect guesses left: {attempts - incorrectGuesses}')
@@ -2629,7 +2689,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
                     embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
                     await ctx.channel.send(embed=embed)  
                     for user in participants:
-                        await addGameAchievement(user.name,ctx.channel.id,user.mention)
+                        await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
                     return
                         
                 # Reset game status after the game ends
@@ -2642,7 +2702,7 @@ async def hangman(ctx, rounds: int = 1, attempts: int = 10):
         embed.add_field(name="Participants", value=', '.join([participant.mention for participant in participants]))
         await ctx.channel.send(embed=embed)  
         for user in participants:
-            await addGameAchievement(user.name,ctx.channel.id,user.mention)
+            await addGameAchievement(user.name,ctx.channel.id,user.mention, game='hangman')
             
     # Run the game in a separate task
     asyncio.create_task(run_game(line))
@@ -2785,27 +2845,34 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         if type == 'Tait':
             image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
         
-        if not '-' in set:
-            image = getImage(set)
+        try:
+            if not '-' in set:
+                image = getImage(set)
 
-        else:
-            hyphen_index = set.find("-")
-            if hyphen_index != -1:
-                first_car = set[:hyphen_index]
-                await printlog(f'First car: {first_car}')
-                image = getImage(first_car)
-                if image == None:
-                    last_hyphen = set.rfind("-")
-                    if last_hyphen != -1:
-                        last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
-                        await printlog(f'Last car: {last_car}')
-                        image = getImage(last_car)
-                        if image == None:
-                            image = getImage(type)
-                            await printlog(f'the loco number is: {set}')
-        if image != None:
-            embed.set_thumbnail(url=image)
+            else:
+                hyphen_index = set.find("-")
+                if hyphen_index != -1:
+                    first_car = set[:hyphen_index]
+                    await printlog(f'First car: {first_car}')
+                    image = getImage(first_car)
+                    if image == None:
+                        last_hyphen = set.rfind("-")
+                        if last_hyphen != -1:
+                            last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            await printlog(f'Last car: {last_car}')
+                            image = getImage(last_car)
+                            if image == None:
+                                image = getImage(type)
+                                await printlog(f'the loco number is: {set}')
+            if image != None:
+                embed.set_thumbnail(url=image)
+            
+        except Exception as e:
+            await printlog(f"Error getting image: {e}")
+
         embed.set_footer(text=f"Log ID #{id}")
+        
+        
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
@@ -5709,6 +5776,12 @@ async def update(ctx):
             await ctx.send("You are not authorized to use this command.")
     else:
         await ctx.send("Remote updates are not enabled")
+        
+# thing to notify of errors:
+@bot.event
+async def on_command_error(ctx, error):
+    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+    await ctx.log_channel.send(f"An error occurred: {str(error)}\n<@780303451980038165>")
     
 # important
 bot.run(BOT_TOKEN)
