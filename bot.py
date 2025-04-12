@@ -3163,7 +3163,7 @@ async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', st
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed, emphemeral=hidemessage)
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
