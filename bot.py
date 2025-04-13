@@ -4580,6 +4580,7 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
 
 @stats.command(name='termini', description='View which line termini you have been to')
 async def termini(ctx):
+    await ctx.response.defer()
     log_command(ctx.user.id, 'log-termini')
     try:
         data =terminiList(ctx.user.name)
