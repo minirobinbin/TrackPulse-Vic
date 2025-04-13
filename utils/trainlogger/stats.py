@@ -964,7 +964,7 @@ def stationlist(user, state):
 
 def terminiList(user):
     termini = [
-        "Lilydale", "Belgrave", "Bairnsdale", "Traralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Waurn Ponds', "Warrnambool", "Wendouree", 'Ararat','Sunbury', 'Maryborough', 'Bendigo', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
+        "Lilydale", "Belgrave", "Alamein", "Glen Waverley", "Bairnsdale", "Traralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Waurn Ponds', "Warrnambool", "Wendouree", 'Ararat','Sunbury', 'Maryborough', 'Epsom','Eaglehawk', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
     ]
     
     # Read CSV file
