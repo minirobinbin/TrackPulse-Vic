@@ -4587,8 +4587,11 @@ async def termini(ctx):
     except:
         data = 'No logs found'
     
+    
     if len(data) <= 2000:
-        await ctx.followup.send(data)
+        embed = discord.Embed(title=f'Line termini {ctx.user.name} has visited', colour=metro_colour, description=data)
+        await ctx.edit_original_response(embed=embed)
+        return
     else:
         await ctx.response.send_message(f"Termini you have visited:")
         split_strings = []
