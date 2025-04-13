@@ -4611,6 +4611,7 @@ async def termini(ctx):
 
 @completion.command(name='sets', description='View which sets you have been on')
 @app_commands.choices(train=[
+    app_commands.Choice(name="Summary", value="summary"),
     app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
     app_commands.Choice(name="Comeng", value="Comeng"),
     app_commands.Choice(name="Siemens Nexas", value="Siemens Nexas"),
@@ -4621,8 +4622,24 @@ async def termini(ctx):
 ])
 async def sets(ctx, train:str):
     userid = ctx.user
+    trainTypes = ["X'Trapolis 100", "Comeng", 'Siemens Nexas', 'HCMT', 'VLocity', 'Sprinter', 'N Class']
     await ctx.response.defer()
     log_command(ctx.user.id, 'log-sets')
+    
+    # summary:
+    if train == 'summary':
+        embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
+        for train in trainTypes:
+            try:
+                data = setlist(ctx.user.name, train, summary=True)
+                embed.add_field(name=f'{getTrainTypeEmoji(train)} {train}', value=data, inline=True)
+            except:
+                await ctx.edit_original_response(content='No logs found!')
+                return
+        embed.set_footer(text='Choose a train type to see which sets you have been on.')
+        await ctx.edit_original_response(embed=embed)
+        return
+    # specific traim
     try:
         data =setlist(ctx.user.name, train)
     except:

@@ -360,6 +360,24 @@ def getEmojiForDeparture(trainType):
         return('<:sprinter:1325040386913075200>')
     else:
         return(trainType)
+    
+def getTrainTypeEmoji(trainType):
+    if trainType == "Comeng":
+        return('<:comeng:1325040425426286592>')
+    elif trainType == "Siemens Nexas":
+        return('<:siemens:1325040408866193449>')
+    elif trainType == "X'Trapolis 100":
+        return('<:xtrap:1325040397688377364>')
+    elif trainType == "HCMT":
+        return('<:hcmt:1325040456496713768>')
+    elif trainType == "Sprinter":
+        return('<:sprinter:1325040386913075200>')
+    elif trainType == "VLocity":
+        return('<:VLocity:1214140045133348906>')
+    elif trainType == 'N Class':
+        return('<:NClass:1214140049243770911>')
+    else:
+        return(trainType)
 
 def getModeEmoji(mode:int):
     if mode == 0:

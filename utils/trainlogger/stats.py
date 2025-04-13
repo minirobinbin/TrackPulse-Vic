@@ -577,7 +577,7 @@ def topOperators(user):
                 
     return output
 
-def setlist(user, train):
+def setlist(user, train, summary:bool = False):
     # List of items
     if train == "X'Trapolis 100":
         sets = [
@@ -883,15 +883,18 @@ def setlist(user, train):
         else:
             item_counts[row[1]] = 1
 
-    # Create a string with ticks for matching items
-    result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in sets])
-    
+    if summary == False:
+        # Create a string with ticks for matching items
+        result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in sets])
+    else:
+        result_string = ''
+      
     # Calculate the percentage of sets that have been ticked
     ticked_sets = [item for item in sets if item in [row[1] for row in csv_data]]
     percent_ticked = round(len(ticked_sets) / len(sets) * 100, 2)
 
     # Add the percentage to the end of the string
-    result_string += f"\n\n{len(ticked_sets)}/{len(sets)} ({percent_ticked}%) sets ridden"
+    result_string += f"\n\n{len(ticked_sets)}/{len(sets)} ({percent_ticked}%) sets ridden" if summary == False else f"{len(ticked_sets)}/{len(sets)} `{percent_ticked}%`"
     
     return(result_string)
 
