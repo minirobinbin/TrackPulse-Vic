@@ -44,7 +44,10 @@ async def NSWsearchTrainCommand(ctx, number):
         
         embed.add_field(name=f'{train_info['Set Number']} - {trainType}', value=train_info['Carriages'], inline=False)
         embed.add_field(name='Livery:', value=train_info['Livery'], inline=False)
-        embed.add_field(name='Information', value=f'- **Status:** {train_info['Status']}\n- **Note:** {train_info['Note']}', inline=False)
+        info_text = f"- **Status:** {train_info['Status']}"
+        if train_info['Note']:
+            info_text += f"\n- **Note:** {train_info['Note']}"
+        embed.add_field(name='Information', value=info_text, inline=False)
         embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)', inline=False)
          
         await ctx.followup.send(embed=embed)
