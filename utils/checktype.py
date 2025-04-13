@@ -168,3 +168,30 @@ async def cleanAPITrainNumber(number:str):
                 return Type, number
                 
     return '', '' # if no type is found return None
+
+def sydneyTrainType(setNumber):
+    # figure out the train type
+        if setNumber.startswith('A'):
+            trainType = 'Waratah A set'
+        elif setNumber.startswith('B'):
+            trainType = 'Waratah B set'
+        elif setNumber.startswith('H'):
+            trainType = 'OSCar'
+        elif setNumber.startswith('J'):
+            trainType = 'Hunter'
+        elif setNumber.startswith('K'):
+            trainType = 'K Set'
+        elif setNumber.startswith('M'):
+            trainType = 'Millenium'
+        elif setNumber.startswith('N'):
+            trainType = 'Endeavour'
+        elif setNumber.startswith('T'):
+            trainType = 'Tangara'
+        elif setNumber.startswith('V'):
+            trainType = 'V Set'
+            
+        else:
+            trainType = 'Unknown'
+            
+        return trainType
+        

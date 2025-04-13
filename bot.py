@@ -47,6 +47,7 @@ import builtins
 # thing to make it work on all oses
 import sys
 
+from commands.NSWsearchtrain import NSWsearchTrainCommand
 from commands.searchtrain import searchTrainCommand
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
@@ -1097,9 +1098,38 @@ async def line_info(ctx, search: str):
 
 # Train search train
 @search.command(name="train", description="Search for a specific Train")
-async def train_search(ctx, train: str, hide_run_info:bool=False):
-    await searchTrainCommand(ctx, train, hide_run_info, metro_colour, vline_colour, ptv_grey,interchange_stations,lines_dictionary_main)
+@app_commands.describe(train="Carriage/Locomotive number to search for. For NSW you can also put the set number.", state="State to search in", hide_run_info="Hide run info")
+@app_commands.choices(state=[
+        app_commands.Choice(name="Victoria", value="Victoria"),
+        app_commands.Choice(name="New South Wales", value="NSW"),
+])
+async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=False):
+    # try and auto find state
+    if state == 'auto':
+        Type = trainType(train)
+        if Type == f'Train type not found for {train}' or Type == None:
+            print('Carriage is not victorian, checking for nsw')
+            state = 'NSW'
+        else:
+            state = 'Victoria'
     
+    if state == 'Victoria':
+        try:
+            await searchTrainCommand(ctx, train, hide_run_info, metro_colour, vline_colour, ptv_grey,interchange_stations,lines_dictionary_main)
+        except Exception as e:
+            await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
+            await printlog(f'Search Train error: {e}')
+            return
+    elif state == 'NSW':
+        try:
+            await NSWsearchTrainCommand(ctx,train)
+        except Exception as e:
+            await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
+            await printlog(f'Search Sydney Train error: {e}')
+            return
+    else:
+        await ctx.response.send_message(f"{state} is not supported yet.")
+        
             
 # search run id   
 @search.command(name="run", description="Shows the run for a specific TDN, found in the departures command")
