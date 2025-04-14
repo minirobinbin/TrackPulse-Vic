@@ -5690,13 +5690,32 @@ async def analytics(ctx,mode: str=None, user: discord.Member=None):
                     
                     command_counts.append((f'<@{filename.strip(".csv")}>', total_commands))
             
-            # Sort by number of commands (descending)
+            # Sort by number of commands
             command_counts.sort(key=lambda x: x[1], reverse=True)
             
-            # Format the output strings
-            all_files = [f'{user} - {count} commands' for user, count in command_counts]
-            msg = await ctx.send('...')
-            await msg.edit(content=  f"{len(all_files)} users:\n" + "\n".join(all_files))
+            output = f"{len(command_counts)} users:\n"
+            current_chunk = ""
+            chunks = []
+            
+            for user, count in command_counts:
+                line = f'{user} - {count} commands\n'
+                if len(current_chunk) + len(line) > 1900: 
+                    chunks.append(current_chunk)
+                    current_chunk = line
+                else:
+                    current_chunk += line
+            
+            if current_chunk:
+                chunks.append(current_chunk)
+
+            messages = []
+            for _ in chunks:
+                msg = await ctx.send('...')
+                messages.append(msg)
+
+            for i, chunk in enumerate(chunks):
+                prefix = output if i == 0 else ""  
+                await messages[i].edit(content=prefix + chunk)
             
         else:
             try:
