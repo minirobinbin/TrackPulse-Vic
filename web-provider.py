@@ -9,7 +9,8 @@ from urllib.parse import urlencode
 app = Flask(__name__)
 CORS(app, resources={
     "/csv/*": {"origins": "*"},
-    "/auth/discord": {"origins": "*"}
+    "/auth/discord": {"origins": "*"},
+    "/map/*": {"origins": "*"}
 })
 
 limiter = Limiter(
@@ -63,7 +64,7 @@ def serve_map(filename):
         response = make_response()
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Accept, ngrok-skip-browser-warning'
+        response.headers['Access-Control-Allow-Headers'] = 'Accept, ngrok-skip-browser-warning, access-control-allow-methods'
         response.headers['ngrok-skip-browser-warning'] = '*'
         print("Handled OPTIONS preflight request for /map")
         return response
@@ -80,7 +81,12 @@ def serve_map(filename):
         return response
     else:
         response = make_response(f"File not found or not a PNG at {file_path}", 404)
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers.update({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Accept, ngrok-skip-browser-warning, access-control-allow-methods',
+            'ngrok-skip-browser-warning': '*'
+        })
         return response
 
 @app.route('/auth/discord', methods=['POST', 'OPTIONS'])
