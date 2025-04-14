@@ -3104,7 +3104,7 @@ async def station_autocompletion(
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, route:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='today', hidemessage:bool=False):
     await ctx.response.defer(ephemeral=hidemessage)
     channel = ctx.channel
     await printlog(date)
@@ -3617,7 +3617,7 @@ async def station_autocompletion(
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 
-async def logBus(ctx, line:str, operator:str='Unknown', date:str='today', start:str='N/A', end:str='N/A', type:str='Unknown', number: str='Unknown', hidemessage:bool=False):
+async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='Unknown', date:str='today', type:str='Unknown', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
