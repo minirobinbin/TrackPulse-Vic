@@ -5850,10 +5850,12 @@ async def update(ctx):
 # thing to notify of errors:
 @bot.event
 async def on_command_error(ctx, error):
+    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
     if not isinstance(error, commands.CommandNotFound):
-        log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
         await log_channel.send(f"{str(error)}\n<@780303451980038165>")
         await ctx.channel.send(f"An error occurred: {str(error)}")
-    
+        
+    await log_channel.send(f"{str(error)}")
+
 # important
 bot.run(BOT_TOKEN)
