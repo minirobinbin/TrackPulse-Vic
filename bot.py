@@ -5832,7 +5832,7 @@ async def update(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    await ctx.log_channel.send(f"An error occurred: {str(error)}\n<@780303451980038165>")
+    await log_channel.send(f"An error occurred: {str(error)}\n<@780303451980038165>")
     
 # important
 bot.run(BOT_TOKEN)
