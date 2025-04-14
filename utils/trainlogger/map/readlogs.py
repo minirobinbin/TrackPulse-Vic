@@ -375,7 +375,7 @@ def postcompat(data:list, lines_dictionary:dict):
     return newdata
 
 
-def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0, modeName:str='vic'):
+def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_train_map_pre_munnel.png', line_choice:str="All", year:int=0, modeName:str='vic', trainType:str='all'):
     if mode == 'time_based_variants/log_train_map_pre_munnel.png':
         file = open(f'utils/trainlogger/userdata/{user}.csv', 'r')
         data = file.readlines()
@@ -394,11 +394,13 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 print(f"Year: {year}")
                 # Extract line from the date in column 4 (index 3)
                 trip_line = cols[4]
+                trip_train = cols[2]
                 print(f"Trip line: {trip_line}")
                 print(f"Line: {line_choice}")
-            
+                print(f"Train type: {trip_train}")    
+                print(f"TraiRequested type: {trainType}")           
             # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -414,9 +416,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 # Extract line from the date in column 4 (index 3)
                 trip_line = cols[4]
+                trip_train = cols[2]
+
                 
                 # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -529,7 +533,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 print(f"Line: {line_choice}")
             
             # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -545,9 +549,11 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 # Extract line from the date in column 4 (index 3)
                 trip_line = cols[4]
+                trip_train = cols[2]
+
                 
                 # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -666,7 +672,7 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 print(f"Line: {line_choice}")
             
             # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+            if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                 station1, station2 = cols[5], cols[6]
                 if station1 not in stations:
                     stations.append(station1)
@@ -682,9 +688,10 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
                 trip_year = int(cols[3].split('-')[0])
                 # Extract line from the date in column 4 (index 3)
                 trip_line = cols[4]
+                trip_train = cols[2]
                 
                 # Only process if year is 0 (all years) or matches the specified year and line is all line or matches the specified line
-                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice):
+                if (year == 0 or trip_year == year) and (line_choice == 'All' or trip_line == line_choice) and (trainType == 'all' or trainType == trip_train):
                     start, end, group = cols[5], cols[6], cols[4]
                     start = start.replace('*','')
                     end = end.replace('*','')
@@ -727,4 +734,4 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
     # do the map gen
     map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)
     print(affected_lines)
-    map_handler.highlight_map(affected_lines, f"utils/trainlogger/userdata/maps/{user}-{modeName}.png", stations)
+    map_handler.highlight_map(affected_lines, f"utils/trainlogger/userdata/maps/{user}-{modeName}-{year}-{trainType}-{line_choice}.png", stations)

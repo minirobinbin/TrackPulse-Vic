@@ -5177,7 +5177,7 @@ async def viewMaps(ctx, mode: str):
     except Exception as e:
         await printlog(e)
 
-# map trip command
+# map trip command maps trips 
 @maps.command(name='trips', description="View a map of all the trips you've logged")
 @app_commands.choices(mode=[
         app_commands.Choice(name="Victorian Trains", value="time_based_variants/log_train_map_pre_munnel.png"),
@@ -5185,7 +5185,18 @@ async def viewMaps(ctx, mode: str):
         # app_commands.Choice(name="NSW Light Rail", value="log_sydney-tram_map.png"),
 ])
 @app_commands.autocomplete(line=line_autocompletion)
-async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",user: discord.Member=None, line: str='All', year: int=0):
+@app_commands.choices(train=[
+        app_commands.Choice(name="All", value="all"),
+        app_commands.Choice(name="EDI Comeng", value="EDI Comeng"),
+        app_commands.Choice(name="Alstom Comeng", value="Alstom Comeng"),
+        app_commands.Choice(name="X'Trapolis 100", value="X'Trapolis 100"),
+        app_commands.Choice(name="HCMT", value="HCMT"),
+        app_commands.Choice(name="Siemens", value="Siemens Nexas"),
+        app_commands.Choice(name="VLocity", value="VLocity"),
+        app_commands.Choice(name="N Class", value="N Class"),
+        app_commands.Choice(name="Sprinter", value="Sprinter"),
+])
+async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.png",line: str='All', train:str='all', year: int=0, user: discord.Member=None,):
     await ctx.response.defer()
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
@@ -5201,7 +5212,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             modeName = 'vic'
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic')
+                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic', train)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -5211,11 +5222,22 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 return
             # Send the map once generated
             try:
-                file = discord.File(f'utils/trainlogger/userdata/maps/{username}-{modeName}.png', filename='map.png')
+                # make nameextras string
+                nameextras = ''
+                if train != 'all' and year != 0:
+                    nameextras = f' for {train} trains in {year}'
+                elif train != 'all':
+                    nameextras = f' for ' + train.strip("\'")
+                elif year != 0:
+                    nameextras = f' in {year}'
+                if line != 'All':
+                    nameextras += f' on the {line} line'
+                
+                file = discord.File(f'utils/trainlogger/userdata/maps/{username}-{modeName}-{year}-{train}-{line}.png', filename='map.png')
                 line_str = '' if line == 'All' else f' on the {line} Line'
                 year_str = '' if year == 0 else f' in {str(year)}'
-                imageURL = f'https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}&name={username}\'s%20Victorian%20train%20map'
-                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{year_str}{line_str}", 
+                imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{nameextras.replace(' ', '%20')}"
+                embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{nameextras}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
                 embed.set_image(url="attachment://map.png")

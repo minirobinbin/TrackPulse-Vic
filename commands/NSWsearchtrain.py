@@ -42,7 +42,7 @@ async def NSWsearchTrainCommand(ctx, number):
         # make the embed 4 the train info
         embed = discord.Embed(title=f"{number}:", color=0xeb6607)
         
-        embed.add_field(name=f'{train_info['Set Number']} - {trainType}', value=train_info['Carriages'], inline=False)
+        embed.add_field(name=f'{train_info["Set Number"]} - {trainType}', value=train_info['Carriages'], inline=False)
         embed.add_field(name='Livery:', value=train_info['Livery'], inline=False)
         info_text = f"- **Status:** {train_info['Status']}"
         if train_info['Note']:
