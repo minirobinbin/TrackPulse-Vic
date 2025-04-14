@@ -2769,19 +2769,19 @@ async def type_autocompletion(
     
 #log train logger
 @trainlogs.command(name="train", description="Log a train you have been on")
-@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', traintype='Type of train (will be autofilled if a train number is entered)', notes='Any notes you want to add to the log', hidemessage='Hide the message from other users, note this will not make the log private.')
+@app_commands.describe(number = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', type='Type of train (will be autofilled if a train number is entered)', notes='Any notes you want to add to the log', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-@app_commands.autocomplete(traintype=type_autocompletion)
+@app_commands.autocomplete(type=type_autocompletion)
 
 # Train logger
-async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', traintype:str='auto', notes:str=None, hidemessage:bool=False):
+async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', type:str='auto', notes:str=None, hidemessage:bool=False):
     channel = ctx.channel
     await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
     await printlog(date)
-    async def log(notes, ctx,line, number, start, end, date, traintype):
+    async def log(notes, ctx,line, number, start, end, date, type):
         await printlog("logging the thing")
 
         savedate = date.split('/')
@@ -2805,21 +2805,21 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             
         # Initialize variables
         set = 'Unknown'
-        type = 'Unknown'
+        type_final = 'Unknown'
 
-        # Handle traintype first
-        if traintype != 'auto':
-            type = traintype
-            if traintype == "Tait":
+        # Handle type first
+        if type != 'auto':
+            type_final = type
+            if type == "Tait":
                 set = '381M-208T-230D-317M'
             else:
                 
                 # check if its a known train type and find the set, but if its not known just use the number
                 checkTT = trainType(number.upper())
-                if checkTT == traintype:
+                if checkTT == type:
                     set = setNumber(number.upper())
                     if set == None:
-                        set = traintype
+                        set = type
                 else:
                     set = number.upper()
         else:
@@ -2834,7 +2834,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if set == None:
                 await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
-            type = trainType(number.upper())
+            type_final = type(number.upper())
             
         # Strip emojis and newlines from notes if provided
         if notes:
@@ -2847,8 +2847,8 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 
             
         # Add train to the list
-        print(f'adding {set} {type} {savedate} {line} {start.title()} {end.title()} {notes}')
-        id = addTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title(), notes)
+        print(f'adding {set} {type_final} {savedate} {line} {start.title()} {end.title()} {notes}')
+        id = addTrain(ctx.user.name, set, type_final, savedate, line, start.title(), end.title(), notes)
         
         if line in vLineLines:
             embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
@@ -2860,7 +2860,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             except:
                 embed = discord.Embed(title="Train Logged")
         
-        embed.add_field(name="Set", value=f'{set} ({type})')
+        embed.add_field(name="Set", value=f'{set} ({type_final})')
         embed.add_field(name="Line", value=line)
         embed.add_field(name="Date", value=savedate)
         if getStationDistance(load_station_data("utils/trainlogger/stationDistances.csv"), start, end) != 'N/A':
@@ -2872,7 +2872,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        if type == 'Tait':
+        if type_final == 'Tait':
             image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
         
         try:
@@ -2892,7 +2892,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                             await printlog(f'Last car: {last_car}')
                             image = getImage(last_car)
                             if image == None:
-                                image = getImage(type)
+                                image = getImage(type_final)
                                 await printlog(f'the loco number is: {set}')
             if image != None:
                 embed.set_thumbnail(url=image)
@@ -2910,7 +2910,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         
                         
     # Run in a separate task
-    asyncio.create_task(log(notes,ctx,line, number, start, end, date, traintype))
+    asyncio.create_task(log(notes,ctx,line, number, start, end, date, type))
 
     
 #thing to delete the stuff
@@ -3012,8 +3012,8 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 @app_commands.autocomplete(line=line_autocompletion)
-@app_commands.autocomplete(traintype=type_autocompletion)
-async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', traintype:str='auto', notes:str='nochange'):
+@app_commands.autocomplete(type=type_autocompletion)
+async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', type:str='auto', notes:str='nochange'):
     await ctx.response.defer()
     log_command(ctx.user.id, 'edit-row')
     
@@ -3053,7 +3053,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
     else:
         savedate = 'nochange'
     
-    result = editRow(username, idformatted, mode,line,number,start,end,savedate,traintype,notes)
+    result = editRow(username, idformatted, mode,line,number,start,end,savedate,type,notes)
     
     if result == 'invalid id did not show up':
         await ctx.edit_original_response(content=f'Invalid log ID entered: `{idformatted}`')
@@ -3221,7 +3221,7 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
-async def logNSWTrain(ctx, number: str, type:str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3295,7 +3295,7 @@ async def Adelaideline_autocompletion(
 @app_commands.autocomplete(line=Adelaideline_autocompletion)
 
 # Adelaide train logger journey beyond too
-async def logSATrain(ctx, number: str, line:str, date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+async def logSATrain(ctx, line:str, number: str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     await printlog(date)
@@ -3381,7 +3381,7 @@ async def Adelaidestop_autocompletion(
         app_commands.Choice(name="200 Series", value="200 Series"),
 ])
 # SYdney tram logger nsw tram
-async def logAdelaideTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+async def logSATram(ctx, line:str, number: str, type:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():
@@ -3544,7 +3544,7 @@ async def NSWstop_autocompletion(
         app_commands.Choice(name="Citadis 305", value="Citadis 305"),
 ])
 # SYdney tram logger nsw tram
-async def logNSWTram(ctx, type:str, line:str, number: str='Unknown', date:str='today', start:str='N/A', end:str='N/A', hidemessage:bool=False):
+async def logNSWTram(ctx, line:str, number: str, type:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
     async def log():

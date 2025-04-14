@@ -136,13 +136,13 @@ Required:
 **Options:**
 
 Required:
-    Number: which carriage you rode. Examples include "3005", "3115", "4001", "NR18". If you don't know, type "Unknown".
     Line: which line you rode on. You have to choose one of the options or type a custom one. If you don't know, type "Unknown". Note that the "----" option isn't meant to be used and just is a seperator to seperate the Adelaide Metro and Journey Beyond lines.
+    Number: which carriage you rode. Examples include "3005", "3115", "4001", "NR18". If you don't know, type "Unknown".
+    Start: the starting station of your trip. You can choose from the list or type your own.
+    End: the ending station of your trip. You can choose from the list or type your own.
 
 Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Start: the starting station of your trip. You can choose from the list or type your own.
-    End: the ending station of your trip. You can choose from the list or type your own.
     Hidemessage: True or False. False by default. If you choose true, it will make the response message only visible to you.''',
         '/log adelaide-tram': '''</log adelaide-tram:1289843416628330506> is a command to log any Adelaide tram trips. Make sure to log each different leg of your trip seperately.
 
@@ -150,12 +150,12 @@ Optional:
 
 Required:
     Line: which tram line you rode on. You have to choose one of the options.
-
-Optional:
     Number: which carriage you rode. Examples include "101", "201". If you don't know, type "Unknown".
-    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Start: the starting station of your trip. You can choose from the list or type your own.
     End: the ending station of your trip. You can choose from the list or type your own.
+
+Optional:
+    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Hidemessage: True or False. False by default. If you choose true, it will make the response message only visible to you.''',
         '/log bus': '''</log bus:1289843416628330506> is a command to log any bus trips. This is the most versatile log of the log commands as you can log any bus from anywhere. Make sure to log each different leg of your trip seperately.
 
@@ -195,7 +195,7 @@ Optional:
     Start: the starting station of your trip. You can choose from the list or type your own.
     End: the ending station of your trip. You can choose from the list or type your own.
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
+    Type: if there are multiple trains with the same number, or you didn't input a number, specify which train type you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
     Notes: add any notes you want to add to your log.''',        
         '/log export': '''</log export:1289843416628330506> is a command that allows you to export a file containing all the logs you've made for a specific mode. You can only export your own logs.
 
@@ -244,14 +244,14 @@ Optional:
 **Options:**
 
 Required:
+    Line: which line you rode on. You have to choose one of the options. If you don't know, select "Unknown".
     Number: which carriage you rode. Examples include "1801", "2402", "D6360", "N1930". If you don't know, type "Unknown".
     Type: which type of train you rode on. You have to choose one of the options. If you don't know, select "Unknown".
-    Line: which line you rode on. You have to choose one of the options. If you don't know, select "Unknown".
+    Start: the starting station of your trip. You can choose from the list or type your own.
+    End: the ending station of your trip. You can choose from the list or type your own.
 
 Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Start: the starting station of your trip. You can choose from the list or type your own.
-    End: the ending station of your trip. You can choose from the list or type your own.
     Hidemessage: True or False. False by default. If you choose true, it will make the response message only visible to you.''',
         '/log sydney-tram': '''</log sydney-tram:1289843416628330506> is a command to log any Sydney Light Rail tram trips. Make sure to log each different leg of your trip seperately.
 
@@ -259,12 +259,12 @@ Optional:
 
 Required:
     Line: which Light Rail line you rode on. You have to choose one of the options.
-
-Optional:
     Number: which carriage you rode. Examples include "001", "2112". If you don't know, type "Unknown".
-    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Start: the starting station of your trip. You can choose from the list or type your own.
     End: the ending station of your trip. You can choose from the list or type your own.
+
+Optional:
+    Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
     Hidemessage: True or False. False by default. If you choose true, it will make the response message only visible to you.''',
         '/log train': '''</log train:1289843416628330506> is a command to log any Metro and V/Line train trips. You can also log some heritage trips in Victoria. Make sure to log each different leg of your trip seperately.
 
@@ -278,7 +278,7 @@ Required:
 
 Optional:
     Date: if the trip is a trip from the past, input the date here, otherwise, the current date will be added.
-    Traintype: if there are multiple trains with the same number, or you didn't input a number, specify which traintype you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
+    Type: if there are multiple trains with the same number, or you didn't input a number, specify which train type you rode on. You generally don't need this if you know the train number, it's generally only needed for heritage trips.
     Notes: add any notes you want to add to your log.
     Hidemessage: True or False. False by default. If you choose true, it will make the response message only visible to you.''',
         '/log tram': '''</log tram:1289843416628330506> is a command to log any Yarra Trams tram trips. Make sure to log each different leg of your trip seperately.
