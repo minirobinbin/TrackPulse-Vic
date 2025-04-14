@@ -363,7 +363,7 @@ def getEmojiForDeparture(trainType):
     
 def getTrainTypeEmoji(trainType):
     if trainType == "Comeng":
-        return('<:comeng:1325040425426286592>')
+        return('<:EDIComeng:1214140064653639712> <:AlstomComeng:1214140062187388968>')
     elif trainType == "Siemens Nexas":
         return('<:siemens:1325040408866193449>')
     elif trainType == "X'Trapolis 100":
