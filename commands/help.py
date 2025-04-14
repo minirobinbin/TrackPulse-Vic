@@ -355,7 +355,7 @@ Required:
 
 Optional:
     Mode: choose which Operator you would like to search the run for. It is set to Metro by default. Currently Metro is also the only option.''',
-        '/search train': '''</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars). It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
+        '/search train': '''</search train:1240101357847838814> is a command to look up any Victorian train (except locomotive hauled carriages or freight cars) and some NSW Trains . It will give you a overview of the train, including photos and status, along with the ability to see the current runs for Metro trains.
 
 **Options:**
 
@@ -363,6 +363,7 @@ Required:
     Train: input the Number of the train you're searching. Examples include "1M", "9026", "N452", "2111".
 
 Optional:
+    State: choose the state the train you want to search belongs to. This is not required except for when a number is used by multiple states. You must choose from the list.
     Hide_run_info: True or False. False by default. If you choose true, it will not show the run info for the train.''',
         '/search train-photo': '''</search train-photo:1240101357847838814> is a command to view the all the photos in the Xm9G photo archive for a specific train.
 
