@@ -2125,7 +2125,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                                 
                         elif user_response.content.lower() == '!skip':
                             if user_response.author.id == ctx.user.id or user_response.author.id in admin_users :
-                                await ctx.channel.send(f"Round {round+1} skipped.")
+                                await ctx.channel.send(f"Round {round+1} skipped. The answer was ||{station.title()}||" if not ultrahard else f"Round {round+1} skipped.")
                                 log_command(user_response.author.id, 'game-station-guesser-skip')
                                 skippedGames += 1
                                 roundResponse = True
@@ -5850,9 +5850,10 @@ async def update(ctx):
 # thing to notify of errors:
 @bot.event
 async def on_command_error(ctx, error):
-    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    await log_channel.send(f"An error occurred: {str(error)}\n<@780303451980038165>")
-    await ctx.channel.send(f"An error occurred: {str(error)}")
+    if not isinstance(error, commands.CommandNotFound):
+        log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+        await log_channel.send(f"{str(error)}\n<@780303451980038165>")
+        await ctx.channel.send(f"An error occurred: {str(error)}")
     
 # important
 bot.run(BOT_TOKEN)
