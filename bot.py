@@ -2834,7 +2834,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             if set == None:
                 await ctx.edit_original_response(content=f'Invalid train number: `{number.upper()}`')
                 return
-            type_final = type(number.upper())
+            type_final = trainType(number.upper())
             
         # Strip emojis and newlines from notes if provided
         if notes:
