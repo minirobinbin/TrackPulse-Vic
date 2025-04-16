@@ -1,3 +1,5 @@
+import discord
+
 def genColor(status):
     print(f"Line Status: {status}")
     if status == "Major Delays":
@@ -394,3 +396,24 @@ def yesOrNo(input:bool):
         return('✅')
     else:
         return('❌')
+    
+def getSydneyTrainIcon(train:str, discord_format:bool=True):
+    if discord_format:
+        if train == 'Waratah A set' or train == 'Waratah B set':
+            file = discord.File("assets/nsw-train-icons/waratah.jpg", filename="image.png")
+        elif train == 'OSCar':
+            file = discord.File("assets/nsw-train-icons/Oscar.jpg", filename="image.png")
+        elif train == 'Hunter':
+            file = discord.File("assets/nsw-train-icons/Hunter.jpg", filename="image.png")
+        elif train == 'K Set':
+            file = discord.File("assets/nsw-train-icons/K-Set.jpg", filename="image.png")
+        elif train == 'Millenium':
+            file = discord.File("assets/nsw-train-icons/Millennium.jpg", filename="image.png")
+        elif train == 'Endeavour':
+            file = discord.File("assets/nsw-train-icons/Endeavour.jpg", filename="image.png")
+        elif train == 'Tangara':
+            file = discord.File("assets/nsw-train-icons/Tangara.jpg", filename="image.png")
+        elif train == 'V Set':
+            file = discord.File("assets/nsw-train-icons/Vset.jpg", filename="image.png")
+            
+        return file        

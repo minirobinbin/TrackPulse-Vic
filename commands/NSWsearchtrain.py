@@ -3,6 +3,7 @@ import csv
 import discord
 
 from utils.checktype import sydneyTrainType
+from utils.colors import getSydneyTrainIcon
 
 async def NSWsearchTrainCommand(ctx, number):
     await ctx.response.defer()
@@ -49,5 +50,6 @@ async def NSWsearchTrainCommand(ctx, number):
             info_text += f"\n- **Note:** {train_info['Note']}"
         embed.add_field(name='Information', value=info_text, inline=False)
         embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)', inline=False)
-         
-        await ctx.followup.send(embed=embed)
+        
+        embed.set_thumbnail(url="attachment://image.png")
+        await ctx.followup.send(file=getSydneyTrainIcon(trainType), embed=embed)

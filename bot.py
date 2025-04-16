@@ -1096,9 +1096,9 @@ async def line_info(ctx, search: str):
 
 
 
-# Train search train
+# search Train search train
 @search.command(name="train", description="Search for a specific Train")
-@app_commands.describe(train="Carriage/Locomotive number to search for. For NSW you can also put the set number.", state="State to search in", hide_run_info="Hide run info")
+@app_commands.describe(train="Carriage/Locomotive number to search for. For NSW you can also put the set number.", state="State to search in, will be found automattically if empty.", hide_run_info="Hide run info")
 @app_commands.choices(state=[
         app_commands.Choice(name="Victoria", value="Victoria"),
         app_commands.Choice(name="New South Wales", value="NSW"),
