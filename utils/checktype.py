@@ -189,7 +189,11 @@ def sydneyTrainType(setNumber):
             trainType = 'Tangara'
         elif setNumber.startswith('V'):
             trainType = 'V Set'
-            
+        elif setNumber.startswith('XP'):
+            trainType = 'XPT'    
+        elif setNumber.startswith('P'):
+            trainType = 'Xplorer'
+        
         else:
             trainType = 'Unknown'
             

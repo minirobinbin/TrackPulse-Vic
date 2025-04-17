@@ -415,5 +415,6 @@ def getSydneyTrainIcon(train:str, discord_format:bool=True):
             file = discord.File("assets/nsw-train-icons/Tangara.jpg", filename="image.png")
         elif train == 'V Set':
             file = discord.File("assets/nsw-train-icons/Vset.jpg", filename="image.png")
-            
+        else:
+            file = None
         return file        
