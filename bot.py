@@ -1121,12 +1121,12 @@ async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=Fal
             await printlog(f'Search Train error: {e}')
             return
     elif state == 'NSW':
-        try:
-            await NSWsearchTrainCommand(ctx,train)
-        except Exception as e:
-            await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
-            await printlog(f'Search Sydney Train error: {e}')
-            return
+        # try:
+        await NSWsearchTrainCommand(ctx,train)
+        # except Exception as e:
+        #     await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
+        #     await printlog(f'Search Sydney Train error: {e}')
+        #     return
     else:
         await ctx.response.send_message(f"{state} is not supported yet.")
         

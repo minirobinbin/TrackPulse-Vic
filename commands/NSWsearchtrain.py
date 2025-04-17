@@ -18,6 +18,9 @@ async def NSWsearchTrainCommand(ctx, number):
                     'Status': row[2],
                     'Livery': row[3],
                     'Note': row[4],
+                    'Operator': row[5],
+                    'EnteredService': row[6],
+                    'Gauge': row[7],
                 }
         if not train_info:
             train_info = None
