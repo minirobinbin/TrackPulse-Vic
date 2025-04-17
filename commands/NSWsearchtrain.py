@@ -49,7 +49,7 @@ async def NSWsearchTrainCommand(ctx, number):
         if train_info['Note']:
             info_text += f"\n- **Note:** {train_info['Note']}"
         embed.add_field(name='Information', value=info_text, inline=False)
-        embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)', inline=False)
+        embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)\n[Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)', inline=False)
         
         embed.set_thumbnail(url="attachment://image.png")
         await ctx.followup.send(file=getSydneyTrainIcon(trainType), embed=embed)

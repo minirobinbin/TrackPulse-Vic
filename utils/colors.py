@@ -408,7 +408,7 @@ def getSydneyTrainIcon(train:str, discord_format:bool=True):
         elif train == 'K Set':
             file = discord.File("assets/nsw-train-icons/K-Set.jpg", filename="image.png")
         elif train == 'Millenium':
-            file = discord.File("assets/nsw-train-icons/Millennium.jpg", filename="image.png")
+            file = discord.File("assets/nsw-train-icons/Millenium.jpg", filename="image.png")
         elif train == 'Endeavour':
             file = discord.File("assets/nsw-train-icons/Endeavour.jpg", filename="image.png")
         elif train == 'Tangara':
