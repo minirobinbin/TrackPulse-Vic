@@ -31,6 +31,9 @@ async def NSWsearchTrainCommand(ctx, number):
                         'Status': row[2],
                         'Livery': row[3],
                         'Note': row[4],
+                        'Operator': row[5],
+                        'EnteredService': row[6],
+                        'Gauge': row[7],
                     }
                     break
             if not train_info:
@@ -48,6 +51,13 @@ async def NSWsearchTrainCommand(ctx, number):
         info_text = f"- **Status:** {train_info['Status']}"
         if train_info['Note']:
             info_text += f"\n- **Note:** {train_info['Note']}"
+        if train_info['Operator']:
+            info_text += f"\n- **Operator:** {train_info['Operator']}"
+        if train_info['EnteredService']:
+            info_text += f"\n- **Entered Service:** {train_info['EnteredService']}"
+        if train_info['Gauge']:
+            info_text += f"\n- **Gauge:** {train_info['Gauge']}"
+
         embed.add_field(name='Information', value=info_text, inline=False)
         embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)\n[Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)', inline=False)
         
