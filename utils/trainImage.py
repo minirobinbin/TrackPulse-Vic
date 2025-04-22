@@ -70,6 +70,3 @@ def vicSigURL(carriageNumber, trainType):
         url = f'https://vicsig.net/index.php?page=suburban&carriage={carriageNumber}&cartype={carType}&traintype={name}'
     
     return(url)
-
-print(
-vicSigURL('1M', "X'Trapolis 100"))

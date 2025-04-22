@@ -82,7 +82,7 @@ def top5(game):
         with open(csv_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                id_wins.append((row['id'], int(row['wins']), int(row['losses'])))
+                id_wins.append((row['username'], int(row['wins']), int(row['losses']))) # username is actually id
     except FileNotFoundError:
         return 'no stats'
     
@@ -90,7 +90,7 @@ def top5(game):
     sorted_ids = sorted(id_wins, key=lambda x: x[1], reverse=True)
 
     # Get the top 5 (id, wins) tuples
-    top_5_ids = sorted_ids[:7]
+    top_5_ids = sorted_ids[:10]
 
     return top_5_ids
 

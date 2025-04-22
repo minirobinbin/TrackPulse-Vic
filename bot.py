@@ -2248,23 +2248,23 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
 
 ])
 
-async def lb(ctx, game: str='guesser'):
+async def lb(ctx, game:str):
     log_command(ctx.user.id, 'view-leaderboard')
     channel = ctx.channel
     leaders = top5(game)
     if leaders == 'no stats':
-        await ctx.response.send_message('There is no data for this game yet!',ephemeral=True)
+        await ctx.response.send_message('There is no data for this game yet!',ephemeral=True) # lol this would never show
         return
-    await printlog(leaders)
+
     # Create the embed
-    embed = discord.Embed(title=f"Top 7 players for {game}", color=discord.Color.gold())
+    embed = discord.Embed(title=f"Top 10 players for {game}", color=discord.Color.gold())
     
     count = 1
-    for item, number, losses in leaders:
+    for userid, number, losses in leaders:
         try:
-            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
+            embed.add_field(name=f'{count}.', value=f'<@{userid}>\nWins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
         except:
-            embed.add_field(name=f'{count}: {item}', value=f'Wins: {str(number)}\nLosses: {str(losses)}', inline=False)
+            embed.add_field(name=f'{count}.', value=f'<@{userid}>\nWins: {str(number)}\nLosses: {str(losses)}', inline=False)
         count = count + 1
         
     await ctx.response.send_message(embed=embed)
