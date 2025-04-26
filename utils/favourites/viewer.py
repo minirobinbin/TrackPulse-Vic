@@ -35,8 +35,6 @@ def remove_favourite(name, stop):
             writer.writerow([fav])
     
     return f"Removed {stop} from your favourites"
-
-
         
 def get_favourites(name):
     filename = f"utils/favourites/data/{name}.csv"
