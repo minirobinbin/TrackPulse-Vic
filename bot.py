@@ -4775,10 +4775,19 @@ async def sets(ctx, state:str):
             await logsthread.send(item)
 
 @bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
-async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number: str, date: str, location: str):
+@app_commands.choices(photofor=[
+    app_commands.Choice(name="Railway Photo & Bot train search", value="website"),
+    app_commands.Choice(name="Bot/Website Station Photo Guessing Game", value="guesser"),
+])
+async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str, location: str, photofor:str, number: str=''):
     await ctx.response.defer(ephemeral=True)
     log_command(ctx.user.id, 'submit-photo')
     async def submitPhoto():
+        # see if they diddnt put a car number
+        if photofor == 'website' and number == '':
+            await ctx.edit_original_response(content="Please provide the number for the train in the photo.")
+            return
+        
         target_guild_id = 1214139268725870602
         target_channel_id = 1238821549352685568
         
@@ -4792,11 +4801,11 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, car_number
                 if photo.content_type.startswith('image/'):
                     await photo.save(f"./photo-submissions/{photo.filename}")
                     file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await channel.send(f'# Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file) # type: ignore
+                    await channel.send(f'# Photo submitted for {photofor} by <@{ctx.user.id}>:\n- Number {number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file) # type: ignore
                     
                     # publically send embed
                     embed = discord.Embed(title='Photo Submission', 
-                      description=f'Photo submitted by <@{ctx.user.id}>:\n- Number {car_number}\n- Date: {date}\n- Location: {location}')
+                      description=f'Photo submitted by <@{ctx.user.id}> for {photofor}:\n- Number {number}\n- Date: {date}\n- Location: {location}')
                     file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
                     embed.set_image(url=f"attachment://{photo.filename}")
                     await public_channel.send(embed=embed, file=file) # type: ignore
