@@ -533,21 +533,70 @@ def checkAchievements(user):
                 print('Specific train and station combo achievement not added')
     else:
         print('No adelaide logs')
+        
+    # check for all metro lines in 1 day
+    print('Checking for all metro lines in 1 day...')
+    metro_end_stations = {
+        'Lilydale': 'Lilydale',
+        'Belgrave': 'Belgrave', 
+        'Alamein': 'Alamein',
+        'Glen Waverley': 'Glen Waverley',
+        'Pakenham': 'East Pakenham',
+        'Cranbourne': 'Cranbourne',
+        'Frankston': 'Frankston',
+        'Sandringham': 'Sandringham',
+        'Williamstown': 'Williamstown',
+        'Werribee': 'Werribee',
+        'Sunbury': 'Sunbury',
+        'Craigieburn': 'Craigieburn',
+        'Upfield': 'Upfield',
+        'Mernda': 'Mernda',
+        'Hurstbridge': 'Hurstbridge'
+    }
+
+    end_stations_by_date = {}
+
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 6:
+                date = row[3]
+                from_station = row[5]
+                to_station = row[6]
+                
+                if date not in end_stations_by_date:
+                    end_stations_by_date[date] = set()
+                    
+                # Check if either station is an end station
+                for station in [from_station, to_station]:
+                    if station in metro_end_stations.values():
+                        end_stations_by_date[date].add(station)
+        
+        # Check if any date has all end stations
+        all_end_stations = set(metro_end_stations.values())
+        for date, stations in end_stations_by_date.items():
+            if stations == all_end_stations:
+                new_achievements.append('35')
+                print('All end stations in one day achievement added')
+                break
+        else:
+            print('All end stations in one day achievement not added')
+            if end_stations_by_date:
+                max_stations = max(len(stations) for stations in end_stations_by_date.values())
+                print(f"Maximum end stations visited in one day: {max_stations}")
     
     # Check which achievements are actually new
     userCSV = f'utils/trainlogger/achievements/data/{user}.csv'
-    existing_achievements = {}  # Dictionary to store achievement ID: date
+    existing_achievements = {}
     
-    # Read existing achievements with dates
     if os.path.exists(userCSV):
         with open(userCSV, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                for i in range(0, len(row), 2):  # Assuming format: [id, date, id, date, ...]
+                for i in range(0, len(row), 2):
                     if i + 1 < len(row):
                         existing_achievements[row[i]] = row[i + 1]
     
-    # Determine truly new achievements with current date
     current_date = datetime.now().strftime('%Y-%m-%d')
     truly_new = [ach for ach in new_achievements if ach not in existing_achievements]
     new_with_dates = {ach: current_date for ach in truly_new}
@@ -560,7 +609,6 @@ def checkAchievements(user):
     if all_achievements:
         with open(userCSV, 'w', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
-            # Flatten dictionary into list: [id1, date1, id2, date2, ...]
             flat_list = [item for pair in all_achievements.items() for item in pair]
             csv_writer.writerow(flat_list)
     
