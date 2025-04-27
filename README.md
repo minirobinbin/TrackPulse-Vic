@@ -1,6 +1,7 @@
 # TrackPulse Vic
 
 ## How to use:
+- Install the branch of discord.py with Components V2 support `pip install -U git+https://github.com/DA-344/d.py@feat/components-v2`
 - rename `rename.env` to `.env`
 - fill discord bot token and ptv api info in the `.env` file
 

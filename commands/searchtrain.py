@@ -16,6 +16,7 @@ from utils.unixtime import convert_iso_to_unix_time, convert_times
 
 async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_colour=0x0072ce, vline_colour=0x8f1a95, ptv_grey=0x333434, interchange_stations=None,lines_dictionary_main=None):
     await ctx.response.defer()
+    
     log_command(ctx.user.id, 'train-search')
     # await ctx.response.send_message(f"Searching, trip data may take longer to send...")
     channel = ctx.channel
@@ -34,94 +35,110 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
     elif type in vlineTrains:
         colour = vline_colour
     else:
-        colour = ptv_grey
+        colour = None
     
     if type is None:
        await ctx.edit_original_response(content="Train not found")
     else:
-        embed = discord.Embed(title=f"{train.upper()}:", color=colour)
-        # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         try:
             if set.endswith('-'):
-                embed.add_field(name=type, value=set[:-1])
-            else:
-                embed.add_field(name=type, value=f'{set}')
+                set = set[:-1]
         except:
             await ctx.edit_original_response(content="Train not found")
             return
         
-        if train.upper() == "7005":  # Only old livery sprinter
-            embed.set_thumbnail(url="https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
-        else:
-            embed.set_thumbnail(url=getIcon(type))
-        
-        if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
-            information = trainData(set)
-            print(information)
-            infoData=''
-            if information[5]:
-                infoData+=f'\n- **Name:** {information[5]}\n'
-                
-            if information[2]:
-                infoData+=f'- **Entered Service:** {information[2]}\n'
-                
-            if information[3]:
-                infoData+=f'- **Status:** {information[3]}\n'
-            
-            if information[4]:
-                infoData+=f'- **Notes:** {information[4]}\n'
-            if information[7]:
-                infoData+=f'- **Interior:** {information[7]}\n'
-            
-            if information[9]:
-                infoData+=f'- **Operator:** {information[9]}\n'
-            
-            if information[8]:
-                infoData+=f'- **Gauge:** {information[8]}\n'
-            
-            if information[1]:
-                embed.add_field(name='Livery', value=f'{information[1]}', inline=False)
-                
-                
-            # thing if the user has been on
-            async def checkTrainRidden(variable, file_path):
-                if not os.path.exists(file_path):
-                    print(f"The file {file_path} does not exist.")
-                    return False, []
+        # embed = discord.Embed(title=f"{train.upper()}:", color=colour)
+        # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
+        class InfoContainer(discord.ui.Container):
+            aboveheading = discord.ui.TextDisplay(f'-# Result for {train.upper()}:')
+            heading = discord.ui.TextDisplay(f'# {type} `{set}`')
 
-                log_ids = []
-                with open(file_path, mode='r') as file:
-                    csv_reader = csv.reader(file)
-                    for row in csv_reader:
-                        if row[1] == variable:
-                            log_ids.append(row[0])
-                
-                return bool(log_ids), log_ids
+            # img1 = discord.MediaGalleryItem("https://railway-photos.xm9g.net/photos/1M.webp")
+            # photos = discord.ui.MediaGallery(img1)
+
+            # text2 = discord.ui.TextDisplay("Row 3", row=2)
         
-            fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
-            trainridden = checkTrainRidden(set, fPath)
-            if trainridden:
-                result, log_ids = await trainridden
+            
+            # Re enable this when thumbnail is fixed
+            '''if train.upper() == "7005":  # Only old livery sprinter
+                thumbnail = discord.ui.Thumbnail("https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
+            else:
+                thumbnail = discord.ui.Thumbnail(getIcon(type))
+
+                # embed.set_thumbnail(url=)'''
+            
+            if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
+                information = trainData(set)
+                print(information)
+                infoData=''
+                if information[5]:
+                    infoData+=f'\n- **Name:** {information[5]}\n'
+                    
+                if information[2]:
+                    infoData+=f'- **Entered Service:** {information[2]}\n'
+                    
+                if information[3]:
+                    infoData+=f'- **Status:** {information[3]}\n'
+                
+                if information[4]:
+                    infoData+=f'- **Notes:** {information[4]}\n'
+                if information[7]:
+                    infoData+=f'- **Interior:** {information[7]}\n'
+                
+                if information[9]:
+                    infoData+=f'- **Operator:** {information[9]}\n'
+                
+                if information[8]:
+                    infoData+=f'- **Gauge:** {information[8]}\n'
+                
+                if information[1]:
+                    liverydisplay = discord.ui.TextDisplay(f'**Livery:** {information[1]}')
+                    
+                    
+                # thing if the user has been on
+                def checkTrainRidden(variable, file_path):
+                    if not os.path.exists(file_path):
+                        print(f"The file {file_path} does not exist.")
+                        return False, []
+
+                    log_ids = []
+                    with open(file_path, mode='r') as file:
+                        csv_reader = csv.reader(file)
+                        for row in csv_reader:
+                            if row[1] == variable:
+                                log_ids.append(row[0])
+                    
+                    return bool(log_ids), log_ids
+            
+                fPath = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+                result, log_ids = checkTrainRidden(set, fPath)
                 if result:
                     log_ids_str = ', '.join([f'`{id}`' for id in log_ids])
-                    infoData += f'\n\n✅ You have been on this train before (Log IDs: {log_ids_str})'
-                
-            embed.add_field(name='Information', value=infoData)
-        else:
-            embed.add_field(name='Information', value='None available')
-        
-        image = getImage(train.upper())
-        if image != None:
-            embed.set_image(url=image)            
-            embed.add_field(name="Source:", value=f'[{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net?number={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        else:
-            embed.add_field(name="Source:", value='[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)', inline=False)
-        """
-        if type in metroTrains:
-            embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+                    infoData += f'\n\nYou have been on this train before (Log IDs: {log_ids_str})'
+                    
+                infofield = discord.ui.TextDisplay(f'## **Information:**\n{infoData}')
+            else:
+                infofield = discord.ui.TextDisplay(f'**Information:** None available')
+            
+            seperator1 = discord.ui.Separator()
+            
+            # train image
+            image = getImage(train.upper())
+            if image != None:
+                galleryPic1 = discord.MediaGalleryItem(image)
+                gallery = discord.ui.MediaGallery(galleryPic1)
+                sources = discord.ui.TextDisplay(f'-# **Sources:** [{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net?number={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
+            else:
+                sources = discord.ui.TextDisplay(f'-# **Sources:** [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
             """
+            if type in metroTrains:
+                embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
+                """
         # send it 
-        embed_update = await ctx.edit_original_response(embed=embed)
+        class TestView(discord.ui.LayoutView):
+            container = InfoContainer(id=1, accent_color=colour)
+
+        embed_update = await ctx.edit_original_response(view=TestView())
         
         if type in metroTrains and not hide_run_info:
             # map thing
