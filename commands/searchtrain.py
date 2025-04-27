@@ -51,21 +51,9 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         class InfoContainer(discord.ui.Container):
             aboveheading = discord.ui.TextDisplay(f'-# Result for {train.upper()}:')
+
             heading = discord.ui.TextDisplay(f'# {type} `{set}`')
-
-            # img1 = discord.MediaGalleryItem("https://railway-photos.xm9g.net/photos/1M.webp")
-            # photos = discord.ui.MediaGallery(img1)
-
-            # text2 = discord.ui.TextDisplay("Row 3", row=2)
-        
-            
-            # Re enable this when thumbnail is fixed
-            '''if train.upper() == "7005":  # Only old livery sprinter
-                thumbnail = discord.ui.Thumbnail("https://xm9g.net/discord-bot-assets/MPTB/Sprinter-VLine.png")
-            else:
-                thumbnail = discord.ui.Thumbnail(getIcon(type))
-
-                # embed.set_thumbnail(url=)'''
+            # section = discord.ui.Section(accessory=discord.ui.Thumbnail(getIcon(type))).add_item(discord.ui.TextDisplay("Text in a section"))
             
             if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
                 information = trainData(set)
@@ -119,16 +107,17 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                 infofield = discord.ui.TextDisplay(f'## **Information:**\n{infoData}')
             else:
                 infofield = discord.ui.TextDisplay(f'**Information:** None available')
-            
-            seperator1 = discord.ui.Separator()
-            
+                        
             # train image
             image = getImage(train.upper())
             if image != None:
                 galleryPic1 = discord.MediaGalleryItem(image)
                 gallery = discord.ui.MediaGallery(galleryPic1)
+                seperator1 = discord.ui.Separator()
                 sources = discord.ui.TextDisplay(f'-# **Sources:** [{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net?number={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
             else:
+                seperator1 = discord.ui.Separator()
+
                 sources = discord.ui.TextDisplay(f'-# **Sources:** [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
             """
             if type in metroTrains:
@@ -180,81 +169,87 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                     return
                 file_path = f"temp/{train}-map.png"
                 if os.path.exists(file_path):
-                    file = discord.File(file_path, filename=f"{train}-map.png")
-                    
-                    embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary_main[line][1], timestamp=discord.utils.utcnow())
-                    embed.remove_field(0)
+                        file = discord.File(file_path, filename=f"{train}-map.png")
+                        class RunContainer(discord.ui.Container):
+                            heading = discord.ui.TextDisplay(f'## {train}\'s current trip')
 
-                    # Add the stops to the embed.
-                    stopsString = ''
-                    fieldCounter = 0
-                    currentFieldLength = 0
+                            
+                            embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary_main[line][1], timestamp=discord.utils.utcnow())
+                            embed.remove_field(0)
 
-                    first_stop = True
+                            # Add the stops to the embed.
+                            stopsString = ''
+                            fieldCounter = 0
+                            currentFieldLength = 0
 
-                    for stop_name, stop_time, status, schedule in stoppingPattern:
-                        if status == 'Skipped':
-                            # For skipped stops
-                            stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'
-                        else:
-                            # Calculate delay in minutes
-                            delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
-                            delay_str = f"+{delay}m" if delay > 0 else ""
+                            first_stop = True
 
-                            if first_stop:
-                                if stop_name in interchange_stations:
-                                    emoji_type = "interchange_first"
+                            for stop_name, stop_time, status, schedule in stoppingPattern:
+                                if status == 'Skipped':
+                                    # For skipped stops
+                                    stopEntry = f'{getMapEmoji(line, "skipped")} ~~{stop_name}~~'
                                 else:
-                                    emoji_type = "terminus"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
-                                first_stop = False
-                            else:
-                                # Check if it's the last stop in the list
-                                if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
-                                    if stop_name in interchange_stations:
-                                        emoji_type = "interchange_last"
-                                    else:
-                                        emoji_type = "terminus2"
-                                else:
-                                    # Check stop_name in interchange_stations
-                                    if stop_name in interchange_stations:
-                                        emoji_type = "interchange"
-                                    else:
-                                        emoji_type = "stop"
-                                stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
+                                    # Calculate delay in minutes
+                                    delay = (convert_times(stop_time) - convert_times(schedule)) // 60  # Convert seconds to minutes
+                                    delay_str = f"+{delay}m" if delay > 0 else ""
 
+                                    if first_stop:
+                                        if stop_name in interchange_stations:
+                                            emoji_type = "interchange_first"
+                                        else:
+                                            emoji_type = "terminus"
+                                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
+                                        first_stop = False
+                                    else:
+                                        # Check if it's the last stop in the list
+                                        if stop_name == stoppingPattern[-1][0]:  # Check if current stop name is the last one
+                                            if stop_name in interchange_stations:
+                                                emoji_type = "interchange_last"
+                                            else:
+                                                emoji_type = "terminus2"
+                                        else:
+                                            # Check stop_name in interchange_stations
+                                            if stop_name in interchange_stations:
+                                                emoji_type = "interchange"
+                                            else:
+                                                emoji_type = "stop"
+                                        stopEntry = f'{getMapEmoji(line, emoji_type)} {stop_name} - {convert_iso_to_unix_time(stop_time)} {delay_str}'
+
+                                
+                                # Add newline for formatting
+                                stopEntry += '\n'
+
+                                if currentFieldLength + len(stopEntry) > 4000:
+                                    # Add the current field and start a new one
+                                    if fieldCounter == 0:  # First field
+                                        stopsString += f'{getMapEmoji(line, "cont1")}\n'
+                                    else:
+                                        stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
+                                    runDisplaySection = discord.ui.TextDisplay(stopsString)
+                                    # embed.add_field(name=f"⠀", value=stopsString, inline=False)
+                                    stopsString = stopEntry
+                                    fieldCounter += 1
+                                    currentFieldLength = len(stopEntry)
+                                else:
+                                    stopsString += stopEntry
+                                    currentFieldLength += len(stopEntry)
+
+                            # Add the last field if there's any content left
+                            if stopsString:
+                                if fieldCounter > 0:  # Not the first field
+                                    stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
+                                runDisplay = discord.ui.TextDisplay(stopsString)
+                            
+                            mapGallery = discord.ui.MediaGallery(discord.MediaGalleryItem(f'attachment://{train}-map.png'))
+                            footer = discord.ui.TextDisplay('-# Maps © Thunderforest, Data © OpenStreetMap contributors')
+
+                        # Delete the old message
+                        await mapEmbedUpdate.delete()
                         
-                        # Add newline for formatting
-                        stopEntry += '\n'
-
-                        if currentFieldLength + len(stopEntry) > 1000:
-                            # Add the current field and start a new one
-                            if fieldCounter == 0:  # First field
-                                stopsString += f'{getMapEmoji(line, "cont1")}\n'
-                            else:
-                                stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}{getMapEmoji(line, "cont1")}\n'
-                            embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                            stopsString = stopEntry
-                            fieldCounter += 1
-                            currentFieldLength = len(stopEntry)
-                        else:
-                            stopsString += stopEntry
-                            currentFieldLength += len(stopEntry)
-
-                    # Add the last field if there's any content left
-                    if stopsString:
-                        if fieldCounter > 0:  # Not the first field
-                            stopsString = f'{getMapEmoji(line, "cont2")}\n{stopsString}'
-                        embed.add_field(name=f"⠀", value=stopsString, inline=False)
-                    
-                    embed.set_image(url=f'attachment://{train}-map.png')
-                    embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
-
-                    # Delete the old message
-                    await mapEmbedUpdate.delete()
-                    
-                    # Send a new message with the file and embed
-                    await embed_update.reply(file=file, embed=embed)
+                        # Send a new message with the file and embed
+                        class RunView(discord.ui.LayoutView):
+                            container = RunContainer(id=2)
+                        await embed_update.reply(file=file, view=RunView())
                 else:
                     await mapEmbedUpdate.delete()
                     await embed_update.reply(content=f"Error: Map file '{file_path}' not found.")

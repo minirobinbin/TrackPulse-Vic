@@ -1106,7 +1106,7 @@ async def line_info(ctx, search: str):
 async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=False):
     # try and auto find state
     if state == 'auto':
-        Type = trainType(train)
+        Type = trainType(train) 
         if Type == f'Train type not found for {train}' or Type == None:
             print('Carriage is not victorian, checking for nsw')
             state = 'NSW'
