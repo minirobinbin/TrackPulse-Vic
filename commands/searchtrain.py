@@ -51,7 +51,6 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         class InfoContainer(discord.ui.Container):
             aboveheading = discord.ui.TextDisplay(f'-# Result for {train.upper()}:')
-
             heading = discord.ui.TextDisplay(f'# {type} `{set}`')
             # section = discord.ui.Section(accessory=discord.ui.Thumbnail(getIcon(type))).add_item(discord.ui.TextDisplay("Text in a section"))
             
@@ -114,11 +113,11 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                 galleryPic1 = discord.MediaGalleryItem(image)
                 gallery = discord.ui.MediaGallery(galleryPic1)
                 seperator1 = discord.ui.Separator()
-                sources = discord.ui.TextDisplay(f'-# **Sources:** [{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net?number={train.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
+                sources = discord.ui.TextDisplay(f'-# **Sources:** [{getPhotoCredits(train.upper())} (Photo)](https://railway-photos.xm9g.net?number={train.upper()}), Vicsig & Wikipedia (Other info)')
             else:
                 seperator1 = discord.ui.Separator()
 
-                sources = discord.ui.TextDisplay(f'-# **Sources:** [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), Vicsig & Wikipedia (Other info)')
+                sources = discord.ui.TextDisplay(f'-# **Sources:** Vicsig & Wikipedia (Other info)')
             """
             if type in metroTrains:
                 embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
