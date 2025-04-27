@@ -6,6 +6,8 @@ import os
 import requests
 from urllib.parse import urlencode
 
+from utils.game.lb import addLb, addLoss
+
 app = Flask(__name__)
 CORS(app, resources={
     "/csv/*": {"origins": "*"},
@@ -143,6 +145,40 @@ def discord_auth():
     except requests.RequestException as e:
         print(f"Error during Discord auth: {e}")
         return jsonify({"error": "Authentication failed"}), 500
+    
+@app.route('/guesser/leaderboard', methods=['POST', 'OPTIONS'])
+@limiter.limit("10000/day;1000/hour")
+def update_user_status():
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
+    data = request.get_json()
+    if not data or 'username' not in data or 'status' not in data:
+        return jsonify({"error": "Missing username or status"}), 400
+
+    username = data['username']
+    status = data['status']
+
+    if not isinstance(status, bool):
+        return jsonify({"error": "Status must be boolean"}), 400
+
+    try:
+        if status == True:
+            addLb('0', username, "guesser")
+        else:
+            addLoss('0', username, "guesser")
+        
+        response = jsonify({"success": True, "message": f"Leaderboard updated for {username}"})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+
+    except Exception as e:
+        print(f"Error processing user status: {e}")
+        return jsonify({"error": "Failed to process user status"}), 500
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=False)

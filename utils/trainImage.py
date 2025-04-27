@@ -12,6 +12,16 @@ def getImage(number):
     else:
         return(None)
     
+def getNSWImage(number):
+    photo_url = f"https://railway-photos.xm9g.net/photos/nsw/{number}.webp"
+
+    # Make a HEAD request to check if the photo exists
+    URLresponse = requests.head(photo_url)
+    if URLresponse.status_code == 200:
+        return(photo_url)
+    else:
+        return(None)
+    
     
 def getTramImage(number):
     photo_url = f"https://railway-photos.xm9g.net/trams/photos/{number}.jpg"

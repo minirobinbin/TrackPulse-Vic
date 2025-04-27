@@ -2,9 +2,13 @@ import csv
 import requests
 import io
 
-def getPhotoCredits(train):
+def getPhotoCredits(train, state='VIC'):
     # image credits:
-    url = 'https://railway-photos.xm9g.net/credit.csv'
+    if state == 'VIC':
+        url = 'https://railway-photos.xm9g.net/credit.csv'
+    elif state == 'NSW':
+        url = 'https://railway-photos.xm9g.net/nswcredit.csv'
+        
     search_value = train.strip().upper()
 
     response = requests.get(url)

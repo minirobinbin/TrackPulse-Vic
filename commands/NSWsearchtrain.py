@@ -4,6 +4,8 @@ import discord
 
 from utils.checktype import sydneyTrainType
 from utils.colors import getSydneyTrainIcon
+from utils.photo import getPhotoCredits
+from utils.trainImage import getNSWImage
 
 async def NSWsearchTrainCommand(ctx, number):
     await ctx.response.defer()
@@ -46,8 +48,18 @@ async def NSWsearchTrainCommand(ctx, number):
         # get train type name
         trainType = sydneyTrainType(train_info['Set Number'])
         
+       
+            
+        
         # make the embed 4 the train info
         embed = discord.Embed(title=f"{number}:", color=0xeb6607)
+        
+        # get train image
+        url = getNSWImage(train_info['Set Number'])
+        if url != None:
+            credits = getPhotoCredits(train_info['Set Number'], 'NSW')
+            embed.set_image(url=url)
+            embed.set_footer(text=f"Photo by {credits}")
         
         embed.add_field(name=f'{train_info["Set Number"]} - {trainType}', value=train_info['Carriages'], inline=False)
         embed.add_field(name='Livery:', value=train_info['Livery'], inline=False)
