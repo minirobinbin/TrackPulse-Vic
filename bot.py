@@ -48,6 +48,7 @@ import builtins
 import sys
 
 from commands.NSWsearchtrain import NSWsearchTrainCommand
+from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
@@ -431,8 +432,8 @@ async def on_ready():
     # download the trainset data     
     csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
     save_location = "utils/trainsets.csv"
-    await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
-    await download_csv(csv_url, save_location)
+    # await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
+    # await download_csv(csv_url, save_location)
     
     channel = bot.get_channel(STARTUP_CHANNEL_ID)
 
@@ -823,77 +824,8 @@ async def route(ctx, mode: str, number: int):
 @search.command(name="train-photo", description="Search for xm9g's railway photos")
 @app_commands.describe(number="Carriage number", search_set="Search the full set instead of the train number")
 async def line_info(ctx, number: str, search_set:bool=False):
-    async def sendPhoto(photo_url):
-        log_command(ctx.user.id, 'photo_search')
-        # Make a HEAD request to check if the photo exists
-        URLresponse = requests.head(photo_url)
-        await printlog(URLresponse.status_code)
-        if URLresponse.status_code == 200:
-            await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
-        else:
-            mAdded = search_query+'M'
-            # try with m added
-            photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}.webp"
-            URLresponse = requests.head(photo_url)
-            if URLresponse.status_code == 200:
-                await channel.send(photo_url)
-                for i in range(2,5):
-                    photo_url = f"https://railway-photos.xm9g.net/photos/{mAdded}-{i}.webp"
-                    await printlog(f"searching for other images for {mAdded}")
-                    await printlog(f"url: {photo_url}")
-                    URLresponse = requests.head(photo_url)
-                    if URLresponse.status_code == 200:
-                        await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
-                    else:
-                        await printlog("no other images found")
-                        await channel.send(f"Photo not in xm9g database!")
-                        break
-            else:
-                await channel.send(f"Photo not in xm9g database!")
-                
-            
-            
-        for i in range(2,5):
-            photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}-{i}.webp"
-            await printlog(f"searching for other images for {search_query}")
-            await printlog(f"url: {photo_url}")
-            URLresponse = requests.head(photo_url)
-            if URLresponse.status_code == 200:
-                await channel.send(f'[Photo by {getPhotoCredits(f"{search_query}-{i}")}](<https://railway-photos.xm9g.net#:~:text={search_query}>) | [View in browser]({photo_url})')
-            else:
-                await printlog("no other images found")
-                break
-    
-    # start of the thing
-    channel = ctx.channel
-    search_query = number.upper()
-    photo_url = f"https://railway-photos.xm9g.net/photos/{search_query}.webp"
-    await ctx.response.send_message(f"Searching for `{search_query}`...")
-    
-    #get full set
-    try:
-        fullSet = setNumber(number).split("-")
-    except Exception as e:
-        await printlog(f'cannot get full set for {number}')
-        search_set=False
-        await log_channel.send(f'Error: ```{e}```\n with search train photo ran by {ctx.user.mention}\n<@{USER_ID}>')
-                
-    await sendPhoto(photo_url)
-    
-    if search_set:
-        await printlog(f'Searching full set: {fullSet}')
-        if fullSet[0] != number:
-            search_query=fullSet[0].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[0]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[0]}.webp")
-        if fullSet[1] != number:
-            search_query=fullSet[1].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[1]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[1]}.webp")
-        if fullSet[2] != number:
-            search_query=fullSet[2].upper()
-            await ctx.channel.send(f'Photos for `{fullSet[2]}`')
-            await sendPhoto(f"https://railway-photos.xm9g.net/photos/{fullSet[2]}.webp")
+    log_command(ctx.user.id, 'train-photo')
+    await searchTrainPhoto(ctx, number, search_set)
 
 # Station search station
 

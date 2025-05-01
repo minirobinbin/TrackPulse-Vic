@@ -182,7 +182,7 @@ def checkAchievements(user):
         print(f"Current log count: {log_count}")
         
     # Check for Aboriginal train set numbers
-    print('Checking for Aboriginal train sets...')
+    print('Checking for Aboriginal trains...')
     special_sets = ['853M-1627T-854M', '933M-1667T-934M', '9024-9124-9224-9324-9724-9824-9924']
 
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
@@ -190,10 +190,10 @@ def checkAchievements(user):
         for row in csv_reader:
             if len(row) > 1 and row[1] in special_sets:
                 new_achievements.append('9')
-                print('Aboriginal train set achievement added')
+                print('Aboriginal train achievement added')
                 break
         else:
-            print('Aboriginal train set achievement not added')
+            print('Aboriginal train achievement not added')
             
     # Check for V/Line trains at Metro stations achievement
     print('Checking for V/Line trains at Metro stations...')
@@ -228,8 +228,8 @@ def checkAchievements(user):
         else:
             print('SG set achievement not added')
     
-    # Check for 7005 train
-    print('Checking for the 7005 train...')
+    # Check for 7005
+    print('Checking for 7005')
     vline_train_7005 = '7005'
 
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
@@ -449,6 +449,7 @@ def checkAchievements(user):
     station_pairs = {
         ('Southern Cross', 'Swan Hill'): '28',
         ('Riversdale', 'Willison'): '34',
+        ('Werribee', 'Frankston'): '36',
 
     }
 
