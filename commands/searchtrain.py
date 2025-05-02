@@ -40,18 +40,18 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
     if type is None:
        await ctx.edit_original_response(content="Train not found")
     else:
-        try:
-            if set.endswith('-'):
-                set = set[:-1]
-        except:
-            await ctx.edit_original_response(content="Train not found")
-            return
+        # try:
+        #     if set.endswith('-'):
+        #         set = set[:-1]
+        # except:
+        #     await ctx.edit_original_response(content="Train not found")
+        #     return
         
         # embed = discord.Embed(title=f"{train.upper()}:", color=colour)
         # embed.add_field(name='\u200b', value=f'{setEmoji(type)}\u200b', inline=False) 
         class InfoContainer(discord.ui.Container):
             aboveheading = discord.ui.TextDisplay(f'-# Result for {train.upper()}:')
-            heading = discord.ui.TextDisplay(f'# {type} `{set}`')
+            heading = discord.ui.TextDisplay(f'# {type} `{set[:-1] if set.endswith("-") else set}`')
             # section = discord.ui.Section(accessory=discord.ui.Thumbnail(getIcon(type))).add_item(discord.ui.TextDisplay("Text in a section"))
             
             if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:

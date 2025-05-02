@@ -1046,12 +1046,12 @@ async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=Fal
             state = 'Victoria'
     
     if state == 'Victoria':
-        try:
-            await searchTrainCommand(ctx, train, hide_run_info, metro_colour, vline_colour, ptv_grey,interchange_stations,lines_dictionary_main)
-        except Exception as e:
-            await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
-            await printlog(f'Search Train error: {e}')
-            return
+        # try:
+        await searchTrainCommand(ctx, train, hide_run_info, metro_colour, vline_colour, ptv_grey,interchange_stations,lines_dictionary_main)
+        # except Exception as e:
+        #     await ctx.edit_original_response(content=f'An error has occored. Please try again.\n`{e}`')
+        #     await printlog(f'Search Train error: {e}')
+        #     return
     elif state == 'NSW':
         try:
             await NSWsearchTrainCommand(ctx,train)
