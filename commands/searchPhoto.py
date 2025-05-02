@@ -37,13 +37,13 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
             carriage_num = f"{carriage}{photoNumber}"
             
             credits = getPhotoCredits(carriage_num, state='VIC')
-            allCredits.append(credits) if credits not in allCredits else None
             url = f'https://railway-photos.xm9g.net/photos/{carriage_num}.webp'
             try:
                 response = requests.head(url)
                 if response.status_code == 200:
                     gallery_item = discord.MediaGalleryItem(media=url, description=f'{carriage}, Photo by {credits}')
                     images.append(gallery_item)
+                    allCredits.append(credits) if credits not in allCredits else None
                     image_count += 1
                 else:
                     if photoNumber == '':
@@ -57,7 +57,7 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
         
         if images:
             class GalleryContainer(discord.ui.Container):
-                heading = discord.ui.TextDisplay(f'## Photos of {carriage}')
+                heading = discord.ui.TextDisplay(f'## Photos of [{carriage}](https://railway-photos.xm9g.net?number={carriage})')
                 gallery = discord.ui.MediaGallery(*images)
                 credits = discord.ui.TextDisplay(f'-# Photos by: {", ".join(allCredits)}')
                     
