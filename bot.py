@@ -95,9 +95,11 @@ def custom_listdir(path='.'):
     return original_listdir(fixed_path)
 os.listdir = custom_listdir
 
-
+# Commands imports
 from commands.help import helpCommand
 from commands.logexport import logExport
+
+# Utils imports
 from utils import trainset
 from utils.directions import getDirectionName
 from utils.downloader import downloader_function
@@ -107,23 +109,28 @@ from utils.colors import *
 from utils.stationID import nameToStopID
 from utils.stats.stats import *
 from utils.pageScraper import *
-from utils.stopid import find_stop_id
 from utils.trainImage import *
 from utils.checktype import *
 from utils.rareTrain import *
 from utils.montagueAPI import *
 from utils.map.map import *
 from utils.game.lb import *
+
+# trainlogger imports
 from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, checkHangmanAchievements, getAchievementInfo
 from utils.trainlogger.main import *
-from utils.trainlogger.map.uploadimage import uploadImage
 from utils.trainset import *
 from utils.trainlogger.stats import *
 from utils.trainlogger.ids import *
+from utils.trainlogger.map.readlogs import logMap
+from utils.trainlogger.map.mapimage import compress, legend
+from utils.trainlogger.map.lines_dictionaries import *
+from utils.trainlogger.achievements import *
+from utils.trainlogger.graph import *
+
 from utils.unixtime import *
 from utils.pastTime import *
 from utils.routeName import *
-from utils.trainlogger.graph import *
 from utils.locationFromNumber import *
 from utils.photo import *
 from utils.mykipython import *
@@ -133,11 +140,8 @@ from utils.stoppingpattern import *
 from utils.locationfromid import *
 from utils.stationDisruptions import *
 from utils.stats.stats import *
-from utils.trainlogger.achievements import *
 from utils.vlineTrickery import getVlineStopType
-from utils.trainlogger.map.readlogs import logMap
-from utils.trainlogger.map.mapimage import compress, legend
-from utils.trainlogger.map.lines_dictionaries import *
+
 
 
 
@@ -334,14 +338,6 @@ hard_colour = 0xffa665
 very_hard_colour = 0xff6565
 ultrahard_colour = 0xe52727
 
-# UNUSED: things to store the message ids for line status boards.
-last_message = None
-comeng_last_message = None
-last_message_metro = None
-comeng_last_message_metro = None
-last_message_vline = None
-comeng_last_message_vline = None
-
 # ENV READING
 config = dotenv_values(".env")
 
@@ -377,7 +373,7 @@ if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
     
 lineStatusOn = False
 
-channel_game_status = {} #thing to store what channels are running the guessing game
+channel_game_status = {} # variable to store what channels are running the guessing game
 
 # line stations and colours
 lines_dictionary_main = {
@@ -401,7 +397,7 @@ lines_dictionary_main = {
     'Unknown/Other':[[None], ptv_grey],
 }
 
-# Group commands
+# Command Groups
 class CommandGroups(app_commands.Group):
     ...
 
@@ -598,7 +594,7 @@ async def task_loop():
         thread = threading.Thread(target=check_rare_trains_in_thread)
         thread.start()
     else:
-        await printlog("Rare checker not enabled!")
+        await print("Rare checker not enabled!")
 
 # @tasks.loop(minutes=15)
 # async def task_loop():
@@ -661,17 +657,6 @@ async def help(ctx, category: app_commands.Choice[str] = None, command:str=None)
     ]
 )
 async def line_info(ctx, line: str):
-    """
-    This function retrieves information about a Metro line and sends it as an embed to the Discord channel.
-
-    Args:
-        ctx (ApplicationContext): The context of the command.
-        line (str): The name of the Metro line to retrieve information about.
-
-    Returns:
-        None
-    """
-    
     await ctx.response.defer()
     log_command(ctx.user.id, 'line_info')
 
@@ -737,7 +722,7 @@ async def line_info(ctx, line: str):
 @app_commands.choices(mode=[
         app_commands.Choice(name="Bus", value="2"),
         app_commands.Choice(name="Tram", value="1"),
-        # app_commands.Choice(name="Metro Train", value="0"),
+        app_commands.Choice(name="Metro Train", value="0"),
         # app_commands.Choice(name="VLine Train", value="3"),
         # app_commands.Choice(name="Night Bus", value="4"),
 ])
