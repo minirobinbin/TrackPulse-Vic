@@ -300,4 +300,3 @@ def trainData(search_value):
             if row[0] == search_value:
                 return row
     return None
-

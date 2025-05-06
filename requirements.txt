@@ -13,3 +13,6 @@ staticmap
 pathlib2
 GitPython
 Wand
+folium
+webdriver_manager
+cryptography

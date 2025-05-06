@@ -12,6 +12,16 @@ def getImage(number):
     else:
         return(None)
     
+def getNSWImage(number):
+    photo_url = f"https://railway-photos.xm9g.net/photos/nsw/{number}.webp"
+
+    # Make a HEAD request to check if the photo exists
+    URLresponse = requests.head(photo_url)
+    if URLresponse.status_code == 200:
+        return(photo_url)
+    else:
+        return(None)
+    
     
 def getTramImage(number):
     photo_url = f"https://railway-photos.xm9g.net/trams/photos/{number}.jpg"
@@ -36,3 +46,37 @@ def getStationImage(station):
         return(url)
 
     return(None)
+
+# get VICSIG URL
+def vicSigURL(carriageNumber, trainType):
+    if trainType == 'VLocity':
+        url = f'https://vicsig.net/passenger/railmotor/{carriageNumber}/VLocity'
+    elif trainType == 'Sprinter':
+        url = f'https://vicsig.net/passenger/railmotor/{carriageNumber}/Sprinter'
+    elif trainType == 'N Class':
+        url = f'https://vicsig.net/index.php?page=locomotives&number={carriageNumber}&class=N&type=Diesel-Electric&orgstate=V'
+        
+    else:
+        if trainType in ['HCMT', "X'Trapolis 2.0"]:
+            url = ''
+        
+        
+        
+        if trainType == "X'Trapolis 100":
+            name = 'X%27Trapolis'
+        elif trainType == "EDI Comeng" or trainType == "Alstom Comeng":
+            name = 'Comeng'
+        elif trainType == 'Siemens Nexas':
+            name = 'Siemens'
+        elif trainType == 'HCMT':
+            name = 'HCMT'
+            
+        if carriageNumber.endswith('M'):
+            carType = 'M'
+        elif carriageNumber.endswith('T'):
+            carType = 'T'
+        
+            
+        url = f'https://vicsig.net/index.php?page=suburban&carriage={carriageNumber}&cartype={carType}&traintype={name}'
+    
+    return(url)

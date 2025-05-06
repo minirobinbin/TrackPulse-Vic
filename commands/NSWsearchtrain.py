@@ -3,6 +3,9 @@ import csv
 import discord
 
 from utils.checktype import sydneyTrainType
+from utils.colors import getSydneyTrainIcon
+from utils.photo import getPhotoCredits
+from utils.trainImage import getNSWImage
 
 async def NSWsearchTrainCommand(ctx, number):
     await ctx.response.defer()
@@ -17,6 +20,9 @@ async def NSWsearchTrainCommand(ctx, number):
                     'Status': row[2],
                     'Livery': row[3],
                     'Note': row[4],
+                    'Operator': row[5],
+                    'EnteredService': row[6],
+                    'Gauge': row[7],
                 }
         if not train_info:
             train_info = None
@@ -30,6 +36,9 @@ async def NSWsearchTrainCommand(ctx, number):
                         'Status': row[2],
                         'Livery': row[3],
                         'Note': row[4],
+                        'Operator': row[5],
+                        'EnteredService': row[6],
+                        'Gauge': row[7],
                     }
                     break
             if not train_info:
@@ -39,15 +48,37 @@ async def NSWsearchTrainCommand(ctx, number):
         # get train type name
         trainType = sydneyTrainType(train_info['Set Number'])
         
+       
+            
+        
         # make the embed 4 the train info
         embed = discord.Embed(title=f"{number}:", color=0xeb6607)
+        
+        # get train image
+        url = getNSWImage(train_info['Set Number'])
+        if url != None:
+            credits = getPhotoCredits(train_info['Set Number'], 'NSW')
+            embed.set_image(url=url)
+            embed.set_footer(text=f"Photo by {credits}")
         
         embed.add_field(name=f'{train_info["Set Number"]} - {trainType}', value=train_info['Carriages'], inline=False)
         embed.add_field(name='Livery:', value=train_info['Livery'], inline=False)
         info_text = f"- **Status:** {train_info['Status']}"
         if train_info['Note']:
             info_text += f"\n- **Note:** {train_info['Note']}"
+        if train_info['Operator']:
+            info_text += f"\n- **Operator:** {train_info['Operator']}"
+        if train_info['EnteredService']:
+            info_text += f"\n- **Entered Service:** {train_info['EnteredService']}"
+        if train_info['Gauge']:
+            info_text += f"\n- **Gauge:** {train_info['Gauge']}"
+
         embed.add_field(name='Information', value=info_text, inline=False)
-        embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)', inline=False)
-         
-        await ctx.followup.send(embed=embed)
+        embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)\n[Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)', inline=False)
+        
+        icon = getSydneyTrainIcon(trainType)
+        if icon != None:
+            embed.set_thumbnail(url="attachment://image.png")
+            await ctx.followup.send(file=icon, embed=embed)
+        else:
+            await ctx.followup.send(embed=embed)
