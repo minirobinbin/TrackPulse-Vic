@@ -10,6 +10,7 @@
 26,Dandenong Drifter,Ride on the Dandenong Group
 2,Metro Master,Ride all Metro train types
 3,V/Line Voyager,Ride all V/Line train types
+37,City Looper,Visit every City Loop station as well as Flinders Street and Southern Cross
 4,Line Legend,Ride on every line in Victoria
 16,Suburban Safari,Catch a V/Line to Pakenham or Sunbury
 32,V/Line Lookout,Catch a V/Line train to or from Essendon or Berwick
@@ -20,13 +21,16 @@
 27,Train Type Titan,Ride all different types of trains in one day
 34,Shortest Trip,Ride from Riversdale to Willison - The shortest distance between stations
 36,City Crosser,Ride on a stingle train all the way from Werribee to Frankston (or Sandringham after the Metro Tunnel opens)
+39,Altona Loop,Visit every station on the Altona Loop
 35,All Metro Lines,Ride to the end of all Metro lines in one day (excluding Stony Point)
 17,Gauge Guru,Ride on a standard gauge VLocity
 18,Retro Rider,Ride on 7005 (the only old livery sprinter)
 19,Station Stalker,Log 100 visits to a specific station
 8,Steam Whistle Winner,Ride a heritage train
+40,Newport Workshops,Ride a heritage train to or from Newport Station
 11,Anniversary Aboard,1 year of logging
 28,Swan Hill Sojourner,Complete the full journey from Melbourne to Swan Hill
+38,Waking up in Geelong,Visit every V/Line station in Geelong
 33,Government Subsidised Freeloader,Ride on the Overland with a V/Line ticket
 12,Centurion Conductor,Log 100 trains
 13,Halfway to Heaven,Log 500 trains

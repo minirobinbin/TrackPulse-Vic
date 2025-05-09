@@ -135,6 +135,41 @@ def checkAchievements(user):
             print('End of line achievement not added')
             print(f"End stations visited: {visited_stations & end_stations}")
             
+    # check for a group of staitons visited
+    print('Checking for station groups...')
+
+    station_groups = {
+        'City Loop': {
+            'stations': {'Southern Cross', 'Flinders Street', 'Parliament', 'Melbourne Central', 'Flagstaff'},
+            'achievement': '37'
+        },
+        'Geelong': {
+            'stations': {'Corio', 'North Shore','North Geelong', 'Geelong', 'South Geelong', 'Marshall', 'Waurn Ponds'},
+            'achievement': '38'
+        },
+        'Altona Loop': {
+            'stations': {'Altona','Seaholme', 'Westona'},
+            'achievement': '39'
+        },
+    }
+
+    visited_stations = set()
+    with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) > 6:
+                visited_stations.add(row[5])  # From station
+                visited_stations.add(row[6])  # To station
+                
+        for group_name, group_data in station_groups.items():
+            print(f'Checking {group_name} group...')
+            if visited_stations.issuperset(group_data['stations']):
+                new_achievements.append(group_data['achievement'])
+                print(f'{group_name} group achievement added')
+            else:
+                print(f'{group_name} group achievement not added')
+                print(f"Stations missing: {group_data['stations'] - visited_stations}")
+    
     # 1 year of logging checker
     print('Checking for 1 year of logging...')
 
@@ -253,6 +288,9 @@ def checkAchievements(user):
             if len(row) > 2 and row[2] not in standard_trains:
                 new_achievements.append('8')
                 print('heratige train achievement added')
+                if row[5] or row[6] == 'Newport':
+                    new_achievements.append('40')
+                    print('heratige from/to newport achievement added')
                 break
         else:
             print('heratige train achievement not added')
