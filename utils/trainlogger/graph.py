@@ -219,7 +219,6 @@ def pieChart(file_path, heading, uname):
     def get_random_color():
         return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
-    # Define a darker color palette
     colors = [label_colors.get(label, get_random_color()) for label in labels]
     
     plt.style.use('dark_background')
@@ -251,14 +250,14 @@ def dayChart(csv_file, uname):
     daily_df = df.asfreq('D', fill_value=0)
 
     # Plotting
-    plt.style.use('dark_background')  # Applying dark theme
+    plt.style.use('dark_background')  
     plt.figure(figsize=(10, 6))
-    plt.plot(daily_df.index, daily_df['Number'], color='cyan')  # Adjust color for better visibility
-    plt.xlabel('Date', color='white')  # Adjust label color
-    plt.ylabel('Trips', color='white')  # Adjust label color
-    plt.title(f'Trips per day - {uname}', color='white')  # Adjust title color
-    plt.grid(True, color='gray')  # Adjust grid color
-    plt.xticks(rotation=45, color='white')  # Adjust tick color
+    plt.plot(daily_df.index, daily_df['Number'], color='cyan')
+    plt.xlabel('Date', color='white')
+    plt.ylabel('Trips', color='white')
+    plt.title(f'Trips per day - {uname}', color='white')
+    plt.grid(True, color='gray')
+    plt.xticks(rotation=45, color='white')
     plt.tight_layout()
     
     plt.savefig(f'temp/Graph{uname}.png')
