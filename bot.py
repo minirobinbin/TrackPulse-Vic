@@ -595,7 +595,7 @@ async def task_loop():
         thread = threading.Thread(target=check_rare_trains_in_thread)
         thread.start()
     else:
-        await print("Rare checker not enabled!")
+        print("Rare checker not enabled!")
 
 # @tasks.loop(minutes=15)
 # async def task_loop():
@@ -4695,6 +4695,8 @@ async def sets(ctx, state:str):
 @app_commands.choices(photofor=[
     app_commands.Choice(name="Railway Photo & Bot train search", value="website"),
     app_commands.Choice(name="Bot/Website Station Photo Guessing Game", value="guesser"),
+    app_commands.Choice(name="Both", value="both"),
+
 ])
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str, location: str, photofor:str, number: str=''):
     await ctx.response.defer(ephemeral=True)
