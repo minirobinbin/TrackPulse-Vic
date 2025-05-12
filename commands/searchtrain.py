@@ -258,7 +258,7 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                 print(f'Error:\n```{e}```')  
         # Run transportVicSearch in a separate thread
         
-        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas']:
+        if type in ['HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas'] and not hide_run_info:
             asyncio.create_task(addmap())
             # loop = asyncio.get_event_loop()
             # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
