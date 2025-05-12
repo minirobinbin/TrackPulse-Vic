@@ -171,7 +171,9 @@ async def cleanAPITrainNumber(number:str):
 
 def sydneyTrainType(setNumber):
     # figure out the train type
-        if setNumber.startswith('A'):
+        if setNumber.startswith('AM'):
+            trainType = 'Alstom Metropolis'
+        elif setNumber.startswith('A'):
             trainType = 'Waratah A set'
         elif setNumber.startswith('B'):
             trainType = 'Waratah B set'

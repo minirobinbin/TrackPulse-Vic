@@ -52,7 +52,11 @@ async def NSWsearchTrainCommand(ctx, number):
             
         
         # make the embed 4 the train info
-        embed = discord.Embed(title=f"{number}:", color=0xeb6607)
+        if train_info['Operator'] == 'Sydney Metro':
+            colour = 0x0e8489
+        else:
+            colour = 0xeb6607
+        embed = discord.Embed(title=f"{number}:", color=colour)
         
         # get train image
         url = getNSWImage(train_info['Set Number'])
