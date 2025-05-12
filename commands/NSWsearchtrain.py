@@ -52,37 +52,39 @@ async def NSWsearchTrainCommand(ctx, number):
             
         
         # make the embed 4 the train info
-        if train_info['Operator'] == 'Sydney Metro':
-            colour = 0x0e8489
-        else:
-            colour = 0xeb6607
-        embed = discord.Embed(title=f"{number}:", color=colour)
-        
-        # get train image
-        url = getNSWImage(train_info['Set Number'])
-        if url != None:
-            credits = getPhotoCredits(train_info['Set Number'], 'NSW')
-            embed.set_image(url=url)
-            embed.set_footer(text=f"Photo by {credits}")
-        
-        embed.add_field(name=f'{train_info["Set Number"]} - {trainType}', value=train_info['Carriages'], inline=False)
-        embed.add_field(name='Livery:', value=train_info['Livery'], inline=False)
-        info_text = f"- **Status:** {train_info['Status']}"
-        if train_info['Note']:
-            info_text += f"\n- **Note:** {train_info['Note']}"
-        if train_info['Operator']:
-            info_text += f"\n- **Operator:** {train_info['Operator']}"
-        if train_info['EnteredService']:
-            info_text += f"\n- **Entered Service:** {train_info['EnteredService']}"
-        if train_info['Gauge']:
-            info_text += f"\n- **Gauge:** {train_info['Gauge']}"
+        class InfoContainer(discord.ui.Container):
+            upperheading = discord.ui.TextDisplay(f'-# Result for {number.upper()}')
+            heading = discord.ui.TextDisplay(f'# {trainType} `{train_info["Set Number"]}`')
 
-        embed.add_field(name='Information', value=info_text, inline=False)
-        embed.add_field(name='Source:', value='[NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki)\n[Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)', inline=False)
+            liveryDisplay = discord.ui.TextDisplay(f'Livery: {train_info['Livery']}')
+            info_text = f"- **Status:** {train_info['Status']}"
+            if train_info['Note']:
+                info_text += f"\n- **Note:** {train_info['Note']}"
+            if train_info['Operator']:
+                info_text += f"\n- **Operator:** {train_info['Operator']}"
+            if train_info['EnteredService']:
+                info_text += f"\n- **Entered Service:** {train_info['EnteredService']}"
+            if train_info['Gauge']:
+                info_text += f"\n- **Gauge:** {train_info['Gauge']}"
+            infoDisplay = discord.ui.TextDisplay(f'## Information:\n{info_text}')
         
-        icon = getSydneyTrainIcon(trainType)
-        if icon != None:
-            embed.set_thumbnail(url="attachment://image.png")
-            await ctx.followup.send(file=icon, embed=embed)
-        else:
-            await ctx.followup.send(embed=embed)
+            # get train image
+            url = getNSWImage(train_info['Set Number'])
+            if url != None:
+                credits = getPhotoCredits(train_info['Set Number'], 'NSW')
+                galleryPic1 = discord.MediaGalleryItem(url)
+                gallery = discord.ui.MediaGallery(galleryPic1)
+                seperator1 = discord.ui.Separator()
+                sources = discord.ui.TextDisplay(f'-# **Sources:** {credits} (Photo), [NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki), [Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)')
+            else:
+                seperator1 = discord.ui.Separator()
+                sources = discord.ui.TextDisplay(f'-# **Sources:** [NSW Transport Wiki](https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki), [Icons from NSW Transport](https://transportnsw.info/travel-info/ways-to-get-around/train/fleet-facilities/sydney-intercity-train-fleet)')
+            
+            
+        class infoView(discord.ui.LayoutView):
+            if train_info['Operator'] == 'Sydney Metro':
+                colour = 0x0e8489
+            else:
+                colour = 0xeb6607
+            container = InfoContainer(id=1, accent_color=colour)
+        await ctx.followup.send(view=infoView())
