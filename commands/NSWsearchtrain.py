@@ -54,7 +54,7 @@ async def NSWsearchTrainCommand(ctx, number):
         # make the embed 4 the train info
         class InfoContainer(discord.ui.Container):
             upperheading = discord.ui.TextDisplay(f'-# Result for {number.upper()}')
-            heading = discord.ui.TextDisplay(f'# {trainType} `{train_info["Set Number"]}`')
+            heading = discord.ui.TextDisplay(f'# {trainType} `{train_info["Set Number"]}`\n`{train_info["Carriages"]}`')
 
             liveryDisplay = discord.ui.TextDisplay(f'Livery: {train_info['Livery']}')
             info_text = f"- **Status:** {train_info['Status']}"

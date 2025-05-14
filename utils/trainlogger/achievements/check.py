@@ -912,3 +912,24 @@ def getAchievementInfo(id):
                 }
         return None
     
+def awardAchievement(user, id):
+    filepath = f'utils/trainlogger/achievements/data/{user}.csv'
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    
+    existing_achievements = {}
+    if os.path.exists(filepath):
+        with open(filepath, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                for i in range(0, len(row), 2):
+                    if i + 1 < len(row):
+                        existing_achievements[row[i]] = row[i + 1]
+    
+    if id not in existing_achievements:
+        with open(filepath, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([id, current_date])
+        print(f"Awarded achievement {id} to {user} on {current_date}")
+    else:
+        print(f"{user} already has achievement {id}")
+    

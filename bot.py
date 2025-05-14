@@ -118,7 +118,7 @@ from utils.map.map import *
 from utils.game.lb import *
 
 # trainlogger imports
-from utils.trainlogger.achievements.check import checkAchievements, checkGameAchievements, checkHangmanAchievements, getAchievementInfo
+from utils.trainlogger.achievements.check import awardAchievement, checkAchievements, checkGameAchievements, checkHangmanAchievements, getAchievementInfo
 from utils.trainlogger.main import *
 from utils.trainset import *
 from utils.trainlogger.stats import *
@@ -5248,6 +5248,17 @@ async def refreshachievements(ctx):
         embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await ctx.send(f'<@{ctx.author.id}>',embed=embed)
+
+@bot.command()
+async def award(ctx, user: discord.User, achievement:int): 
+    log_command(ctx.author.id, 'award-achievement')
+    await ctx.send(f'Awarding achievement id `{achievement}` to {user.mention}...')
+    awardAchievement(user.name, achievement)
+    info = getAchievementInfo(str(achievement))
+    embed = discord.Embed(title='Achievement unlocked!', color=achievement_colour)
+    embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
+    await user.send(f'<@{user.id}>',embed=embed)    
+
     
 @achievements.command(name='view', description='View your achievements.')
 @app_commands.describe(user="Who's achievements to show?")
@@ -5798,14 +5809,14 @@ async def update(ctx):
         await ctx.send("Remote updates are not enabled")
         
 # thing to notify of errors:
-@bot.event
-async def on_command_error(ctx, error):
-    log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
-    if not isinstance(error, commands.CommandNotFound):
-        await log_channel.send(f"{str(error)}\n<@780303451980038165>")
-        await ctx.channel.send(f"An error occurred: {str(error)}")
+# @bot.event
+# async def on_command_error(ctx, error):
+#     log_channel = bot.get_channel(STARTUP_CHANNEL_ID)
+#     if not isinstance(error, commands.CommandNotFound):
+#         await log_channel.send(f"{str(error)}\n<@780303451980038165>")
+#         await ctx.channel.send(f"An error occurred: {str(error)}")
         
-    await log_channel.send(f"{str(error)}")
+#     await log_channel.send(f"{str(error)}")
 
 # important
 bot.run(BOT_TOKEN)
