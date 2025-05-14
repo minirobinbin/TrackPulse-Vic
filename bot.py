@@ -5251,7 +5251,7 @@ async def refreshachievements(ctx):
 
 @bot.command()
 async def award(ctx, user: discord.User, achievement:int):
-    if ctx.user.id in admin_users:
+    if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'award-achievement')
         await ctx.send(f'Awarding achievement id `{achievement}` to {user.mention}...')
         awardAchievement(user.name, achievement)
@@ -5260,7 +5260,7 @@ async def award(ctx, user: discord.User, achievement:int):
         embed.add_field(name=info['name'], value=f"{info['description']}\n\n View all your achievements: </achievements view:1327085604789551134>")
         await user.send(f'<@{user.id}>',embed=embed)   
     else:
-        await ctx.send('You do not have permission to use this command.') 
+        print('User is not an admin, he cannot give achievements') 
 
     
 @achievements.command(name='view', description='View your achievements.')
