@@ -73,7 +73,7 @@ def trainType(number):
         
         if car.startswith("Y"):
             return("Y Class")
-        if car.startswith("T"):
+        if car.startswith("T") and int(car[1:]) >= 320 and int(car[1:]) <= 413:
             return("T Class")
         if car.startswith("S"):
             number = int(car[1:])
