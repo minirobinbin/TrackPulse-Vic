@@ -279,13 +279,12 @@ def checkAchievements(user):
             
     # Check for heratige train types
     print('Checking for heratige train types...')
-    standard_trains = {'X\'Trapolis 100', 'X\'Trapolis 2.0', 'Alstom Comeng', 'EDI Comeng', 'HCMT', 
-                      'Siemens Nexas', 'VLocity', 'Sprinter', 'N Class'}
+    heariatage = {'Tait', 'K Class', 'R Class', 'S Class', 'A2 Class', 'D3 Class', 'Y Class', 'T Class'}
 
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
-            if len(row) > 2 and row[2] not in standard_trains:
+            if len(row) > 2 and row[2] not in heariatage:
                 new_achievements.append('8')
                 print('heratige train achievement added')
                 if row[5] or row[6] == 'Newport':
