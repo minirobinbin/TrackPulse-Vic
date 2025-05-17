@@ -284,7 +284,7 @@ def checkAchievements(user):
     with open(filepath, mode='r', newline='', encoding='utf-8') as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
-            if len(row) > 2 and row[2] not in heariatage:
+            if len(row) > 2 and row[2] in heariatage:
                 new_achievements.append('8')
                 print('heratige train achievement added')
                 if row[5] or row[6] == 'Newport':
