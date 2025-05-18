@@ -3890,7 +3890,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                             await printlog('no image')
 
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)
+                        time.sleep(1)
             
             # for sydney light rail tram:
             if mode == 'sydney-trams':
@@ -3947,7 +3947,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
 
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5) 
+                        time.sleep(1) 
             
             # for nsw train:
             if mode == 'sydney-trains':
@@ -4005,7 +4005,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
 
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)     
+                        time.sleep(1)     
             # for adelaide:
             if mode == 'adelaide-trains':
                 if user == None:
@@ -4117,7 +4117,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
 
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5) 
+                        time.sleep(1) 
 
             # for perth:
             if mode == 'perth-trains':
@@ -4174,7 +4174,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)  
+                        time.sleep(1)  
             # for bus:
             if mode == 'bus':
                 if user == None:
@@ -4233,7 +4233,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(0.5)  
+                        time.sleep(1)  
     asyncio.create_task(sendLogs())
 
 # log export
