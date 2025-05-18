@@ -24,7 +24,7 @@ def addTrain(username, set, date, train_type, line, start, end, note):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -60,7 +60,7 @@ def addTrain(username, set, date, train_type, line, start, end, note):
     return id
 
 # Tram version:
-def addTram(username, date, train_number, train_type, line, start, end):
+def addTram(username, date, train_number, train_type, line, start, end, notes):
 
     # Create a CSV file named after the username
     filename = f"utils/trainlogger/userdata/tram/{username}.csv"
@@ -68,7 +68,7 @@ def addTram(username, date, train_number, train_type, line, start, end):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -97,7 +97,7 @@ def addTram(username, date, train_number, train_type, line, start, end):
     with open(filename, 'a', newline='') as file:
         writer = csv.writer(file)
         # file.write('\n')
-        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end])
+        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, notes])
 
 
     print(f"Data saved to {filename}")
@@ -111,7 +111,7 @@ def addSydneyTrain(username, date, train_number, train_type, line, start, end):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -146,7 +146,7 @@ def addSydneyTrain(username, date, train_number, train_type, line, start, end):
     print(f"Data saved to {filename}")
     return id
 
-def addBus(username, date, train_number, train_type, line, start, end, operator):
+def addBus(username, date, train_number, train_type, line, start, end, operator, notes=None):
 
     # Create a CSV file named after the username
     filename = f"utils/trainlogger/userdata/bus/{username}.csv"
@@ -154,7 +154,7 @@ def addBus(username, date, train_number, train_type, line, start, end, operator)
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -183,7 +183,7 @@ def addBus(username, date, train_number, train_type, line, start, end, operator)
     with open(filename, 'a', newline='') as file:
         writer = csv.writer(file)
         # file.write('\n')
-        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, operator])
+        writer.writerow([f'#{id}',date, train_number,train_type, line, start, end, operator, notes])
 
 
     print(f"Data saved to {filename}")
@@ -197,7 +197,7 @@ def addFlight(username, date, train_number, train_type, line, start, end, operat
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -241,7 +241,7 @@ def addSydneyTram(username, date, train_number, train_type, line, start, end):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -284,7 +284,7 @@ def addAdelaideTrain(username, date, train_number, train_type, line, start, end)
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -327,7 +327,7 @@ def addAdelaideTram(username, date, train_number, train_type, line, start, end):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -370,7 +370,7 @@ def addPerthTrain(username, date, train_number, train_type, line, start, end):
     if not os.path.exists(filename):
         # Create the file if it does not exist
         with open(filename, 'w') as file:
-            file.write('')  # Write an empty string to create the file
+            file.write('')  
         print(f"File created: {filename}")
     else:
         print(f"File already exists: {filename}")
@@ -407,12 +407,12 @@ def addPerthTrain(username, date, train_number, train_type, line, start, end):
 
 def readLogs(username):
 
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -421,7 +421,7 @@ def readLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1] 
         else:
@@ -431,12 +431,12 @@ def readLogs(username):
         return []
  
 def readTramLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/tram/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -445,7 +445,7 @@ def readTramLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -455,12 +455,12 @@ def readTramLogs(username):
         return []
 
 def readSydneyTrainLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/sydney-trains/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -469,7 +469,7 @@ def readSydneyTrainLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -479,12 +479,12 @@ def readSydneyTrainLogs(username):
         return []
     
 def readSydneyLightRailLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/sydney-trams/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -493,7 +493,7 @@ def readSydneyLightRailLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -503,12 +503,12 @@ def readSydneyLightRailLogs(username):
         return []
 
 def readBusLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/bus/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -517,7 +517,7 @@ def readBusLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -527,12 +527,12 @@ def readBusLogs(username):
         return []
 
 def readAdelaideLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/adelaide-trains/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -541,7 +541,7 @@ def readAdelaideLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -551,12 +551,12 @@ def readAdelaideLogs(username):
         return []
 
 def readAdelaideTramLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/adelaide-trams/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -565,7 +565,7 @@ def readAdelaideTramLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -575,12 +575,12 @@ def readAdelaideTramLogs(username):
         return []
     
 def readPerthLogs(username):
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/perth-trains/{username}.csv"
     user_data = []
 
     try:
-        # Open the CSV file and read the data
+
         with open(filename, 'r', newline='') as file:
             reader = csv.reader(file)
             user_data = list(reader)
@@ -589,7 +589,7 @@ def readPerthLogs(username):
             if user_data == []:
                 return 'no data'
         
-        # Return the data instead of printing it
+
         if len(user_data) > 0:
             return user_data[::-1]
         else:
@@ -605,7 +605,7 @@ def readRow(username, logid):
     except FileNotFoundError:
         return 'no data at all'
     
-    # Create the filename based on the username
+
     filename = f"utils/trainlogger/userdata/{username}.csv"
 
     # Open the CSV file and read the data
@@ -636,7 +636,7 @@ def universalReadRow(username, logid, mode):
     except FileNotFoundError:
         return 'no data at all'
     
-    # Create the filename based on the username
+
     if mode == 'train':
         filename = f"utils/trainlogger/userdata/{username}.csv"
     else:
@@ -664,7 +664,7 @@ def universalReadRow(username, logid, mode):
                 return row
         
 def deleteRow(username, logid, mode):
-    # Create the filename based on the username
+
     if mode == 'train':
         filename = f"utils/trainlogger/userdata/{username}.csv"
     else:

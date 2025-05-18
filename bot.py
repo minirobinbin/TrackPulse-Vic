@@ -3021,11 +3021,11 @@ async def station_autocompletion(
         app_commands.Choice(name="109 Box Hill Central - Port Melbourne", value="109")
 ])
 
-async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='today', hidemessage:bool=False):
+async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='today', notes:str=None, hidemessage:bool=False):
     await ctx.response.defer(ephemeral=hidemessage)
     channel = ctx.channel
     await printlog(date)
-    async def log():
+    async def log(notes):
         log_command(ctx.user.id, 'log-tram')
         await printlog("logging the thing")
 
@@ -3051,9 +3051,17 @@ async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='tod
         type = tramType(number.upper())
         if type == None or type == 'Tram type not found for UNKNOWN':
             type = 'N/A'
+            
+        if notes != None:
+            # Remove emojis using regex
+            notes = re.sub(r'[^\x00-\x7F]+', '', notes)
+            # Remove newlines
+            notes = notes.replace('\n', ' ')
+            #add quotes so the csv dosn't break when u use a comma
+            notes = f'"{notes}"'
 
         # Add train to the list
-        id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title())
+        id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title(), notes)
 
         embed = discord.Embed(title="Tram Logged",colour=tram_colour)
         
@@ -3061,6 +3069,8 @@ async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='tod
         embed.add_field(name="Line", value=route)
         embed.add_field(name="Date", value=savedate)
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        if notes != None:
+            embed.add_field(name="Notes", value=notes.strip('"'))
         embed.set_footer(text=f"Log ID #{id}")
 
         # thing to find image:
@@ -3073,7 +3083,7 @@ async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='tod
         
                 
     # Run in a separate task
-    asyncio.create_task(log())
+    asyncio.create_task(log(notes))
     
     
     
@@ -3534,10 +3544,10 @@ async def station_autocompletion(
 @app_commands.autocomplete(start=station_autocompletion)
 @app_commands.autocomplete(end=station_autocompletion)
 
-async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='Unknown', date:str='today', type:str='Unknown', hidemessage:bool=False):
+async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='Unknown', date:str='today', type:str='Unknown', notes:str=None, hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
-    async def log():
+    async def log(notes):
         log_command(ctx.user.id, 'log-bus')
         await printlog("logging the bus")
 
@@ -3557,9 +3567,15 @@ async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='U
                 return
 
         set = number
+        
+        # format notes so it dosnt break anything
+        if notes:
+            notes = re.sub(r'[^\x00-\x7F]+', '', notes)
+            notes = notes.replace('\n', ' ')
+            # notes = f'"{notes}"'
 
         # Add bus to the list
-        id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title())
+        id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title(), notes)
 
         embed = discord.Embed(title="Bus Logged",colour=bus_colour)
         
@@ -3568,13 +3584,15 @@ async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='U
         embed.add_field(name="Line", value=line)
         embed.add_field(name="Date", value=savedate)
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        if notes != None:
+            embed.add_field(name="Notes", value=notes)
         embed.set_footer(text=f"Log ID #{id}")
 
         await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
-    asyncio.create_task(log())
+    asyncio.create_task(log(notes))
 
 
 
@@ -3862,6 +3880,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                        if len(sublist) >= 8:
+                            embed.add_field(name='Notes:', value=sublist[7].strip('"'))
                         # embed.set_thumbnail(url=image)
 
                         try:
@@ -4208,6 +4228,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
                         embed.add_field(name=f'Operator', value="{}".format(sublist[7]))
                         embed.add_field(name=f'Bus Number', value="{} ({})".format(sublist[1], sublist[2]))
+                        if len(sublist) > 8:
+                            embed.add_field(name='Notes:', value=sublist[8].strip('"'))
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
