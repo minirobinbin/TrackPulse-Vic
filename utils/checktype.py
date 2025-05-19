@@ -81,17 +81,21 @@ def trainType(number):
             if 300 <= number <= 317:
                 return("S Class (Diesel)")
         
+            
+        if int(car) >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
+            return "HCMT"
+        if int(car) >= 8301 and int(car) <= 8325 or int(car) >= 8401 and int(car) <= 8425 or int(car) >= 8101 and int(car) <= 8125 or int(car) >= 8601 and int(car) <= 8625 or int(car) >= 8201 and int(car) <= 8225 or int(car) >= 8501 and int(car) <= 8525:
+            return "X'Trapolis 2.0"
+        if (1100 <= int(car) <= 1228) or (1230 <= int(car) <= 1328) or (1330 <= int(car) <= 1392) or (int(car) == 1399) or (1593 <= int(car) <= 1598) or (2100 <= int(car) <= 2132) or (2134 <= int(car) <= 2141) or (2200 <= int(car) <= 2232) or (2234 <= int(car) <= 2241) or (2300 <= int(car) <= 2332) or (2334 <= int(car) <= 2341):
+            return "VLocity"
+        if (7001 <= int(car) <= 7022):
+            return "Sprinter"
+        
+        if car in ['IEV100', 'IEV102', 'EV120']:
+            return 'Infrastructure evaluation vehicle'
+        
         if car.startswith("TRAIN"):
             return("Error: TrainID sent")
-            
-        elif int(car) >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
-            return "HCMT"
-        elif int(car) >= 8301 and int(car) <= 8325 or int(car) >= 8401 and int(car) <= 8425 or int(car) >= 8101 and int(car) <= 8125 or int(car) >= 8601 and int(car) <= 8625 or int(car) >= 8201 and int(car) <= 8225 or int(car) >= 8501 and int(car) <= 8525:
-            return "X'Trapolis 2.0"
-        elif (1100 <= int(car) <= 1228) or (1230 <= int(car) <= 1328) or (1330 <= int(car) <= 1392) or (int(car) == 1399) or (1593 <= int(car) <= 1598) or (2100 <= int(car) <= 2132) or (2134 <= int(car) <= 2141) or (2200 <= int(car) <= 2232) or (2234 <= int(car) <= 2241) or (2300 <= int(car) <= 2332) or (2334 <= int(car) <= 2341):
-            return "VLocity"
-        elif (7001 <= int(car) <= 7022):
-            return "Sprinter"
         
         else:
             return(f"Train type not found for {number}")
