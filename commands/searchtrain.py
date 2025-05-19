@@ -54,7 +54,8 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
             heading = discord.ui.TextDisplay(f'# {type} `{set[:-1] if set.endswith("-") else set}`')
             # section = discord.ui.Section(accessory=discord.ui.Thumbnail(getIcon(type))).add_item(discord.ui.TextDisplay("Text in a section"))
             
-            if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
+            try:
+            # if type in ["X'Trapolis 2.0", 'HCMT', "X'Trapolis 100", 'Alstom Comeng', 'EDI Comeng', 'Siemens Nexas','VLocity', 'Sprinter', 'N Class', 'Y Class', "T Class", "S Class (Diesel)"]:
                 information = trainData(set)
                 print(information)
                 infoData=''
@@ -104,7 +105,8 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                     infoData += f'\n\nYou have been on this train before (Log IDs: {log_ids_str})'
                     
                 infofield = discord.ui.TextDisplay(f'## **Information:**\n{infoData}')
-            else:
+            except Exception as e:
+                print(f"Error: {e}")
                 infofield = discord.ui.TextDisplay(f'**Information:** None available')
                         
             # train image

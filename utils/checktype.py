@@ -81,6 +81,11 @@ def trainType(number):
             if 300 <= number <= 317:
                 return("S Class (Diesel)")
         
+        if car in ['IEV100', 'IEV102', 'EV120']:
+            return 'Infrastructure evaluation vehicle'
+        
+        if car.startswith("TRAIN"):
+            return("Error: TrainID sent")
             
         if int(car) >= 9001 and int(car) <= 9070 or int(car) >= 9101 and int(car) <= 9170 or int(car) >= 9201 and int(car) <= 9270 or int(car) >= 9301 and int(car) <= 9370 or int(car) >= 9701 and int(car) <= 9770 or int(car) >= 9801 and int(car) <= 9870 or int(car) >= 9901 and int(car) <= 9970:
             return "HCMT"
@@ -91,11 +96,6 @@ def trainType(number):
         if (7001 <= int(car) <= 7022):
             return "Sprinter"
         
-        if car in ['IEV100', 'IEV102', 'EV120']:
-            return 'Infrastructure evaluation vehicle'
-        
-        if car.startswith("TRAIN"):
-            return("Error: TrainID sent")
         
         else:
             return(f"Train type not found for {number}")
