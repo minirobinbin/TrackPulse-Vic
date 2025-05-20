@@ -1021,6 +1021,7 @@ async def line_info(ctx, search: str):
         app_commands.Choice(name="New South Wales", value="NSW"),
 ])
 async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=False):
+    if train == 'IEV120': train = 'EV120'
     # try and auto find state
     if state == 'auto':
         Type = trainType(train) 
