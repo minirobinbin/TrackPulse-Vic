@@ -54,19 +54,16 @@ sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
 
-# Fix for os.mkdir()
 original_mkdir = os.mkdir
 def custom_mkdir(path, mode=0o777):
-    # Handle string paths and Path objects
     if isinstance(path, str):
         fixed_path = path.replace('\\', os.sep).replace('/', os.sep)
-    else:  # Assume it's a Path object or similar
+    else:
         fixed_path = str(path).replace('\\', os.sep).replace('/', os.sep)
-    # print(f"Creating dir: {fixed_path}", flush=True)  # Debug
+    # print(f"Creating dir: {fixed_path}", flush=True) 
     return original_mkdir(fixed_path, mode)
 os.mkdir = custom_mkdir
 
-# Your existing custom_open and custom_listdir...
 original_open = builtins.open
 def custom_open(file, *args, **kwargs):
     if isinstance(file, str):
@@ -375,6 +372,9 @@ if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
 lineStatusOn = False
 
 channel_game_status = {} # variable to store what channels are running the guessing game
+
+global traintoedit 
+traintoedit = None # var that will store the selected train in the db to edit.
 
 # line stations and colours
 lines_dictionary_main = {
@@ -5710,6 +5710,108 @@ async def analytics(ctx,mode: str=None, user: discord.Member=None):
                 await ctx.send(file=file)
             except FileNotFoundError:
                 await ctx.send(content=f'No analytics data found for {user.mention}')
+
+# commands to edit the train info database
+@bot.tree.command(name="select-train-for-editing", description="Select a line in the train info database to edit.")
+async def select_train(ctx, train: str):
+    await ctx.response.defer()
+    if ctx.user.id in admin_users:
+        log_command(ctx.user.id, 'select-train-for-editing')
+        with open('utils/trainsets.csv', 'r', newline='', encoding='utf-8') as csvfile:
+                    reader = csv.reader(csvfile)
+                    collumheadings = next(reader)
+                    found = False
+                    for row in reader:
+                        if row[0].lower() == train.lower():
+                            found = True
+                            break
+                    if found:
+                        await ctx.edit_original_response(content=f"Found the train in the db,\nplease say the new values for each collum in the same format as the above, or say 'cancel' to cancel the edit.\n{collumheadings}\nCopy and pase the message below to make editing easier:")
+                        await ctx.channel.send(f"{','.join(row)}")
+                        def check(m):
+                            return m.author == ctx.user and m.channel == ctx.channel
+                        try:
+                            msg = await bot.wait_for("message", check=check, timeout=60)
+                            if msg.content.lower() == 'cancel':
+                                await ctx.channel.send("Edit cancelled.")
+                                return
+                            new_values = msg.content.split(',')
+                            if len(new_values) != len(collumheadings):
+                                await ctx.channel.send(f"Incorrect number of values provided. Expected {len(collumheadings)}, got {len(new_values)}.\n**Most likely this is due to there being a comma in the text somewhere, e.g. the date. Please remove this.**")
+                                return
+                            
+                            rows = []
+                            with open('utils/trainsets.csv', 'r', newline='', encoding='utf-8') as csvfile:
+                                reader = csv.reader(csvfile)
+                                collumheadings = next(reader)
+                                for row in reader:
+                                    rows.append(row)
+                            
+                            # Find the row to edit and update it
+                            for row in rows:
+                                if row[0].lower() == train.lower():
+                                    for i, value in enumerate(new_values):
+                                        row[i] = value.strip()
+                                    break
+                            
+                            # Write the updated data back to the CSV
+                            with open('D:\\Billy\\Douments\\Self made programs\\railway-photos-1\\trainsets.csv', 'w', newline='', encoding='utf-8') as csvfile:
+                                writer = csv.writer(csvfile)
+                                writer.writerow(collumheadings)
+                                writer.writerows(rows)
+                                
+                            # push the file to github
+                            await ctx.channel.send("Pushing changes to GitHub...")
+                            repo_dir = "D:\\Billy\\Douments\\Self made programs\\railway-photos-1"
+                            repo = git.Repo(repo_dir)
+                            await ctx.channel.send("Pulling from git...")
+                            await printlog("Pulling from git...")
+                            try:
+                                directory = repo_dir
+                                directory = git.cmd.Git(directory)
+                                try:
+                                    directory.stash('save')  # Stash local changes
+                                except Exception as e:
+                                    await printlog(f"Potential Error during stash save: ```{e}```")
+                                try:
+                                    directory.pull()
+                                except Exception as e:
+                                    await ctx.channel.send(f"Error during git pull: {e}")
+                                    await printlog(f"Error during git pull: {e}")
+                                    return
+                                try:
+                                    directory.stash('pop')  # Restore stashed changes
+                                except Exception as e:
+                                    await printlog(f"Potential Error during stash pop: ```{e}```")
+                            except Exception as e:
+                                await ctx.channel.send(f"Error initializing git: {e}")
+                                await printlog(f"Error initializing git: {e}")
+                                return
+
+                            try:
+                                repo.git.add('trainsets.csv')
+                                repo.git.commit('-m', f'Updated train info for {train} via bot by {ctx.user.name}')
+                            except Exception as e:
+                                await ctx.channel.send(f"Error committing changes: {e}")
+                                await printlog(f"Error committing changes: {e}")
+                                return
+
+                            try:
+                                repo.git.push('origin', 'main')
+                            except Exception as e:
+                                await ctx.channel.send(f"Error pushing changes to GitHub: {e}")
+                                await printlog(f"Error pushing changes to GitHub: {e}")
+                                return
+                            
+                            await ctx.channel.send("Train info updated successfully!")
+                            await printlog(f"Train info for {train} updated successfully by {ctx.user.name}")
+                        except asyncio.TimeoutError:
+                            await ctx.channel.send("response timed out. edit cancelled.")
+                    else:
+                        await ctx.edit_original_response(content=f"Train `{train}` not found in the database. Please check the train number and try again.")
+    else:
+        await ctx.edit_original_response(content="Only TrackPulse Vic admins can edit the train database. If you think this is a mistake, please joing the TrackPulse Vic server.\nhttps://discord.gg/nfAqAnceQ5")
+        await printlog(f'{str(ctx.user.id)} tried to edit the train info database.')
 
 # ping command
 @bot.command()
