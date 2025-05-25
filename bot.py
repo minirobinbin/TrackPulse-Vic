@@ -2818,9 +2818,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         except Exception as e:
             await printlog(f"Error getting image: {e}")
 
-        embed.set_footer(text=f"Log ID #{id}")
-        
-        
+        embed.set_footer(text=f"Log ID #{id} | We are updating how logs are stored, and your log IDs may change in the future.")
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
@@ -3637,6 +3635,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
             
 
         if id != None:
+            await ctx.response.defer()
             
             if mode == 'train':
                 file_path = f'utils/trainlogger/userdata/{userid.name}.csv'
@@ -3724,10 +3723,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                             embed.set_thumbnail(url=image)
                         except:
                             await printlog('no image')
-                        await ctx.response.send_message(embed=embed)
+                        await ctx.followup.send(embed=embed)
                         return
                 # if there is no row with the id:
-                await ctx.response.send_message(f'Cannot find log `{id}`')
+                await ctx.followup.send(f'Cannot find log `{id}`')
                 
         else:
             # for train
