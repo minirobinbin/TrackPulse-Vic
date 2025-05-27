@@ -2178,11 +2178,11 @@ async def lb(ctx, game:str):
     embed = discord.Embed(title=f"Top 10 players for {game}", color=discord.Color.gold())
     
     count = 1
-    for userid, number, losses in leaders:
+    for userid, number, losses, username in leaders:
         try:
-            embed.add_field(name=f'{count}.', value=f'<@{userid}>\nWins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
+            embed.add_field(name=f'{count}.', value=f'<@{userid}> ({username})\nWins: {str(number)}\nLosses: {str(losses)}\nAccuracy: {str(round((number/(number+losses))*100, 1))}%', inline=False)
         except:
-            embed.add_field(name=f'{count}.', value=f'<@{userid}>\nWins: {str(number)}\nLosses: {str(losses)}', inline=False)
+            embed.add_field(name=f'{count}.', value=f'<@{userid}> ({username})\nWins: {str(number)}\nLosses: {str(losses)}', inline=False)
         count = count + 1
         
     await ctx.response.send_message(embed=embed)
