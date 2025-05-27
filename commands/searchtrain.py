@@ -174,10 +174,6 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                         class RunContainer(discord.ui.Container):
                             heading = discord.ui.TextDisplay(f'## {train}\'s current trip')
 
-                            
-                            embed = discord.Embed(title=f"{train}'s current trip", url=url, colour=lines_dictionary_main[line][1], timestamp=discord.utils.utcnow())
-                            embed.remove_field(0)
-
                             # Add the stops to the embed.
                             stopsString = ''
                             fieldCounter = 0
