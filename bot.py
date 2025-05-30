@@ -2164,7 +2164,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
 
 
     
-@stats.command(name="leaderboard", description="Global leaderboards for the games.",)
+@stats.command(name="leaderboard", description="Leaderboards for the games.",)
 @app_commands.describe(game="What game's leaderboard to show?")
 @app_commands.choices(game=[
         app_commands.Choice(name="Station Guesser", value="guesser"),
@@ -2172,16 +2172,21 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         app_commands.Choice(name="Station order game", value="domino"),
         app_commands.Choice(name="Station Hangman", value="hangman"),
 ])
-async def lb(ctx, game:str):
+@app_commands.choices(scope=[
+        app_commands.Choice(name="Global", value="global"),
+        app_commands.Choice(name="Server", value="server")
+])
+async def lb(ctx, game:str, scope:str='global'):
     log_command(ctx.user.id, 'view-leaderboard')
     channel = ctx.channel
-    leaders = top5(game)
+    guild = bot.get_guild(ctx.guild.id)
+    leaders = top5(game, scope, guild if scope == 'server' else None)
     if leaders == 'no stats':
         await ctx.response.send_message('There is no data for this game yet!',ephemeral=True) # lol this would never show
         return
 
     # Create the embed
-    embed = discord.Embed(title=f"Top 10 players for {game}", color=discord.Color.gold())
+    embed = discord.Embed(title=f"Top 10 players for {game}" if scope == 'global' else f'Top 10 players for {game} in {guild}', color=discord.Color.gold())
     
     count = 1
     for userid, number, losses, username in leaders:
