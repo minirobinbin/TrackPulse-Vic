@@ -2179,7 +2179,11 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
 async def lb(ctx, game:str, scope:str='global'):
     log_command(ctx.user.id, 'view-leaderboard')
     channel = ctx.channel
-    guild = bot.get_guild(ctx.guild.id)
+    try:
+        guild = bot.get_guild(ctx.guild.id)
+    except AttributeError:
+        guild = None
+        scope = 'global'
     leaders = top5(game, scope, guild if scope == 'server' else None)
     if leaders == 'no stats':
         await ctx.response.send_message('There is no data for this game yet!',ephemeral=True) # lol this would never show
