@@ -3113,7 +3113,7 @@ async def NSWstation_autocompletion(
     ][:25]
     
 @trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
+@app_commands.describe(number = "Carrige or Set Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
 
@@ -3162,10 +3162,10 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
-async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, date:str='today', hidemessage:bool=False):
+async def logNSWTrain(ctx,  line:str, number: str, start:str, end:str, type:str='auto', date:str='today', hidemessage:bool=False):
     channel = ctx.channel
-    await printlog(date)
-    async def log():
+    await ctx.response.defer(ephemeral=hidemessage)
+    async def log(type):
         log_command(ctx.user.id, 'log-nsw-train')
         await printlog("logging the nsw sydney train")
 
@@ -3185,7 +3185,13 @@ async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, 
                 return
 
         # idk how to get nsw train set numbers i cant find a list of all sets pls help
-        set = number
+        # nvm now we have this info provided!
+        set = getSydneySetNumber(number)
+        if set == None:
+            set = number.upper()
+            
+        if type == 'auto':
+            type = sydneyTrainType(set)
         if set == None:
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
@@ -3201,11 +3207,11 @@ async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, 
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
+        await ctx.followup.send(embed=embed)
         
                 
     # Run in a separate task
-    asyncio.create_task(log())
+    asyncio.create_task(log(type))
 
 
 # Adelaide LOGGER AND overland logger

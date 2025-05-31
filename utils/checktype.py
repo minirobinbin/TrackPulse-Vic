@@ -1,4 +1,7 @@
 
+import csv
+
+
 def trainType(number):
     car = str(number).upper()
     try:
@@ -205,3 +208,34 @@ def sydneyTrainType(setNumber):
             
         return trainType
         
+def getSydneySetNumber(number):
+    with open('utils/datalists/nsw-trains.csv', 'r') as file:
+        csv_reader = csv.reader(file)
+        train_info = None
+        for row in csv_reader:
+            if row[0] == number:
+                train_info = {
+                    'Set Number': row[0],
+                    'Carriages': row[1],
+                    'Status': row[2],
+                    'Livery': row[3],
+                    'Note': row[4],
+                    'Operator': row[5],
+                    'EnteredService': row[6],
+                    'Gauge': row[7],
+                }
+        if not train_info:
+            train_info = None
+            file.seek(0)
+            for row in csv_reader:
+                carriages = row[1].split('-')
+                if number in carriages:
+                    train_info = {
+                        'Set Number': row[0],
+                        'Carriages': row[1],
+                    }
+                    break
+            if not train_info:
+                return None
+            else:
+                return train_info['Set Number']
