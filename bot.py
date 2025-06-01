@@ -50,6 +50,7 @@ import sys
 from commands.NSWsearchtrain import NSWsearchTrainCommand
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
+from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
@@ -5183,7 +5184,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             modeName = 'vic'
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic', train)
+                percent_amount = await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic', train)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -5191,6 +5192,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 await ctx.followup.send(f'An error occurred while generating the map:\n```{e}```')
                 print(f'Error generating map for {username}:\n```{str(e)}\n\n{traceback.format_exc()}```\n<@{USER_ID}>')
                 return
+            
+            # get the percentage of area covered
+            percentageCovered = (percent_amount/getTotalLines()*100)
+            
             # Send the map once generated
             try:
                 # make nameextras string
@@ -5203,11 +5208,13 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                     nameextras = f' in {year}'
                 if line != 'All':
                     nameextras += f' on the {line} line'
+                nameextras += f' | {round(percentageCovered, 2)}% of segments travelled'
                 
                 file = discord.File(f'utils/trainlogger/userdata/maps/{username}-{modeName}-{year}-{train}-{line}.png', filename='map.png')
                 line_str = '' if line == 'All' else f' on the {line} Line'
                 year_str = '' if year == 0 else f' in {str(year)}'
-                imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{nameextras.replace(' ', '%20')}"
+                cleanednamextras = nameextras.replace('%', '%25').replace(' ', '%20').replace('|', '%7C')
+                imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{cleanednamextras}"
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{nameextras}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")
