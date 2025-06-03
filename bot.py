@@ -4503,13 +4503,23 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
                 )
             except Exception as e:
                 await ctx.followup.send(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
-                
+        
+            # gen the graph
+            try:
+                if global_stats:
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name, True)
+                else:
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name, True)
+            except Exception as e:
+                await ctx.followup.send(f"Error generating graph: `{e}`")
+                return
             # send reponse message
             pfp = userid.avatar.url
             embed=discord.Embed(title=stat.title(), colour=metro_colour)
             embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
-            embed.add_field(name='Click here to view your stats:', value=f'<#{logsthread.id}>')
-            await ctx.followup.send(embed=embed)
+            embed.add_field(name='Click here to view your full stats:', value=f'<#{logsthread.id}>')
+            embed.set_image(url='attachment://graph.png')
+            await ctx.followup.send(embed=embed, file=discord.File(f'temp/Graph{ctx.user.name}.png', filename="graph.png"))
             for item in data:
                 station, times = item.split(': ')
                 message += f'{count}. **{station}:** `{times}`\n'
@@ -4519,9 +4529,9 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
                     message = ''
             try:
                 if global_stats:
-                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name)
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} ― Global', ctx.user.name, False)
                 else:
-                    barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name)
+                    barChart(csv_filename, stat.title(), f'Top {stat.title()} in {year} ― {name}' if year !=0 else f'Top {stat.title()} ― {name}', ctx.user.name, False)
                 await logsthread.send(message, file=discord.File(f'temp/Graph{ctx.user.name}.png'))
             except FileNotFoundError:
                 await logsthread.send(f'User has no logs! {e}')
@@ -5644,26 +5654,27 @@ async def analytics(ctx,mode: str=None, user: discord.Member=None):
             else:
                 await ctx.send(output)
         elif mode == 'servers':
-            guild_list = []
-            total_users = 0
+            pass
+            # guild_list = []
+            # total_users = 0
             
-            # Get all guilds
-            for guild in bot.guilds:
-                member_count = len(guild.members)
-                total_users += member_count
-                guild_list.append(f"{guild.name}: {member_count} members")
+            # # Get all guilds
+            # for guild in bot.guilds:
+            #     member_count = len(guild.members)
+            #     total_users += member_count
+            #     guild_list.append(f"{guild.name}: {member_count} members")
             
-            # Format output
-            output = f"Bot is in {len(bot.guilds)} servers with {total_users} total users:\n"
-            output += "\n".join(guild_list)
+            # # Format output
+            # output = f"Bot is in {len(bot.guilds)} servers with {total_users} total users:\n"
+            # output += "\n".join(guild_list)
             
-            # Split into chunks if too long
-            if len(output) > 2000:
-                chunks = [output[i:i+1990] for i in range(0, len(output), 1990)]
-                for chunk in chunks:
-                    await ctx.send(f"```{chunk}```")
-            else:
-                await ctx.send(f"```{output}```")
+            # # Split into chunks if too long
+            # if len(output) > 2000:
+            #     chunks = [output[i:i+1990] for i in range(0, len(output), 1990)]
+            #     for chunk in chunks:
+            #         await ctx.send(f"```{chunk}```")
+            # else:
+            #     await ctx.send(f"```{output}```")
             
         elif user == None:
             all_files = []

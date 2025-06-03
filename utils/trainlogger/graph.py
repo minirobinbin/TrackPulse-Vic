@@ -166,19 +166,32 @@ label_colors = {
 
 
 
-def barChart(file_path, dataType, heading, uname):
+def barChart(file_path, dataType, heading, uname, limit=False):
     # Lists to store data from the file
     labels = []
     values = []
 
     # Read the file and extract data
     with open(file_path, 'r') as file:
+        data = []
         for line in file:
-            # Split each line into label and value
             parts = line.strip().split(',')
-            labels.append(parts[0])
-            values.append(int(parts[1]))
+            label = parts[0]
+            value = int(parts[1])
+            data.append((label, value))
 
+    if limit:
+        # Filter out values less than or equal to 5
+        filtered_data = [(label, value) for label, value in data if value > 5]
+
+        sorted_data = sorted(filtered_data, key=lambda item: item[1], reverse=True)
+        top_5_data = sorted_data[:10]
+
+        # Extract labels and values from the top 5 data
+        labels, values = zip(*top_5_data) if top_5_data else ([], [])
+
+    else:
+        labels, values = zip(*data) if data else ([], [])
     
     colors = [label_colors.get(label, 'white') for label in labels]
 
