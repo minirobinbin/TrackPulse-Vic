@@ -14,7 +14,7 @@ A11,D6311-N5311-N5511-T6511-T6611-N5611-N5411-D6411,In service,Sydney Trains,,Sy
 A12,D6312-N5312-N5512-T6512-T6612-N5612-N5412-D6412,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A13,D6313-N5313-N5513-T6513-T6613-N5613-N5413-D6413,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A14,D6314-N5314-N5514-T6514-T6614-N5614-N5414-D6414,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
-A15,D6315-N5315-N5515-T6515-T6615-N5615-N5415-D6415,In service,Sydney Trains,Set A15 is currently home to D6342 as D6315 is being repaired after hitting a trailer in Vineyard back in 2024.,Sydney Trains,2011 - 2014,"1,435mm Standard"
+A15,D6342-N5315-N5515-T6515-T6615-N5615-N5415-D6415,In service,Sydney Trains,Set A15 is currently home to D6342 as D6315 was repaired after hitting a trailer in Vineyard back in 2024. D6315 is now a spare car.,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A16,D6316-N5316-N5516-T6516-T6616-N5616-N5416-D6416,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A17,D6317-N5317-N5517-T6517-T6617-N5617-N5417-D6417,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A18,D6318-N5318-N5518-T6518-T6618-N5618-N5418-D6418,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
@@ -41,7 +41,7 @@ A38,D6338-N5338-N5538-T6538-T6638-N5638-N5438-D6438,In service,Sydney Trains,,Sy
 A39,D6339-N5339-N5539-T6539-T6639-N5639-N5439-D6439,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A40,D6340-N5340-N5540-T6540-T6640-N5640-N5440-D6440,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A41,D6341-N5341-N5541-T6541-T6641-N5641-N5441-D6441,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
-A42,D6342-N5342-N5542-T6542-T6642-N5642-N5442-D6442,In service,Sydney Trains,D6342 was heavily damaged when it collided with the buffer stop at Richmond back in 2019. The rest of the train partially derailed.,Sydney Trains,2011 - 2014,"1,435mm Standard"
+A42,D6379-N5342-N5542-T6542-T6642-N5642-N5442-D6442,In service,Sydney Trains,D6342 was heavily damaged when it collided with the buffer stop at Richmond back in 2019. D6379 from the prototype Waratah is replacing D6342.,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A43,D6343-N5343-N5543-T6543-T6643-N5643-N5443-D6443,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A44,D6344-N5344-N5544-T6544-T6644-N5644-N5444-D6444,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
 A45,D6345-N5345-N5545-T6545-T6645-N5645-N5445-D6445,In service,Sydney Trains,,Sydney Trains,2011 - 2014,"1,435mm Standard"
@@ -540,6 +540,6 @@ AM44,4401-4403-4405-4406-4404-4402,In Service,Sydney Metro,,Sydney Metro,2024,"1
 AM45,4501-4503-4505-4506-4504-4502,In Service,Sydney Metro,,Sydney Metro,2024,"1,435mm Standard"
 ,,,,,,,
 ,,,,,,,
-,All information correct as at 10:23 12/05/2025.,,,,,,
+,All information correct as at 09:18 30/05/2025.,,,,,,
 ,All information gathered from NSW Trains Wiki.,,,,,,
 ,https://nswtrains.fandom.com/wiki/NSW_Railways_Wiki,,,,,,

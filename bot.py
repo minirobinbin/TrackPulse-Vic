@@ -50,6 +50,7 @@ import sys
 from commands.NSWsearchtrain import NSWsearchTrainCommand
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
+from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
@@ -2164,7 +2165,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
 
 
     
-@stats.command(name="leaderboard", description="Global leaderboards for the games.",)
+@stats.command(name="leaderboard", description="Leaderboards for the games.",)
 @app_commands.describe(game="What game's leaderboard to show?")
 @app_commands.choices(game=[
         app_commands.Choice(name="Station Guesser", value="guesser"),
@@ -2172,16 +2173,25 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
         app_commands.Choice(name="Station order game", value="domino"),
         app_commands.Choice(name="Station Hangman", value="hangman"),
 ])
-async def lb(ctx, game:str):
+@app_commands.choices(scope=[
+        app_commands.Choice(name="Global", value="global"),
+        app_commands.Choice(name="Server", value="server")
+])
+async def lb(ctx, game:str, scope:str='global'):
     log_command(ctx.user.id, 'view-leaderboard')
     channel = ctx.channel
-    leaders = top5(game)
+    try:
+        guild = bot.get_guild(ctx.guild.id)
+    except AttributeError:
+        guild = None
+        scope = 'global'
+    leaders = top5(game, scope, guild if scope == 'server' else None)
     if leaders == 'no stats':
         await ctx.response.send_message('There is no data for this game yet!',ephemeral=True) # lol this would never show
         return
 
     # Create the embed
-    embed = discord.Embed(title=f"Top 10 players for {game}", color=discord.Color.gold())
+    embed = discord.Embed(title=f"Top 10 players for {game}" if scope == 'global' else f'Top 10 players for {game} in {guild}', color=discord.Color.gold())
     
     count = 1
     for userid, number, losses, username in leaders:
@@ -3104,7 +3114,7 @@ async def NSWstation_autocompletion(
     ][:25]
     
 @trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
-@app_commands.describe(number = "Carrige Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
+@app_commands.describe(number = "Carrige or Set Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
 @app_commands.autocomplete(start=NSWstation_autocompletion)
 @app_commands.autocomplete(end=NSWstation_autocompletion)
 
@@ -3153,10 +3163,10 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name="Unknown", value="Unknown"),
 ])
 # SYdney train logger nsw train
-async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, date:str='today', hidemessage:bool=False):
+async def logNSWTrain(ctx,  line:str, number: str, start:str, end:str, type:str='auto', date:str='today', hidemessage:bool=False):
     channel = ctx.channel
-    await printlog(date)
-    async def log():
+    await ctx.response.defer(ephemeral=hidemessage)
+    async def log(type):
         log_command(ctx.user.id, 'log-nsw-train')
         await printlog("logging the nsw sydney train")
 
@@ -3176,7 +3186,13 @@ async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, 
                 return
 
         # idk how to get nsw train set numbers i cant find a list of all sets pls help
-        set = number
+        # nvm now we have this info provided!
+        set = getSydneySetNumber(number)
+        if set == None:
+            set = number.upper()
+            
+        if type == 'auto':
+            type = sydneyTrainType(set)
         if set == None:
             await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
             return
@@ -3192,11 +3208,11 @@ async def logNSWTrain(ctx,  line:str, number: str, type:str,start:str, end:str, 
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
+        await ctx.followup.send(embed=embed)
         
                 
     # Run in a separate task
-    asyncio.create_task(log())
+    asyncio.create_task(log(type))
 
 
 # Adelaide LOGGER AND overland logger
@@ -5178,7 +5194,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             modeName = 'vic'
             try:
-                await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic', train)
+                percent_amount = await asyncio.to_thread(logMap, target_user, lines_dictionary_log_train_map_pre_munnel, mode, line, year, 'vic', train)
             except FileNotFoundError:
                 await ctx.followup.send(f'{"You have" if user == None else username + " has"} no logs!')
                 return
@@ -5186,6 +5202,10 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                 await ctx.followup.send(f'An error occurred while generating the map:\n```{e}```')
                 print(f'Error generating map for {username}:\n```{str(e)}\n\n{traceback.format_exc()}```\n<@{USER_ID}>')
                 return
+            
+            # get the percentage of area covered
+            percentageCovered = (percent_amount/getTotalLines()*100)
+            
             # Send the map once generated
             try:
                 # make nameextras string
@@ -5198,11 +5218,13 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                     nameextras = f' in {year}'
                 if line != 'All':
                     nameextras += f' on the {line} line'
+                nameextras += f' | {round(percentageCovered, 2)}% of segments travelled'
                 
                 file = discord.File(f'utils/trainlogger/userdata/maps/{username}-{modeName}-{year}-{train}-{line}.png', filename='map.png')
                 line_str = '' if line == 'All' else f' on the {line} Line'
                 year_str = '' if year == 0 else f' in {str(year)}'
-                imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{nameextras.replace(' ', '%20')}"
+                cleanednamextras = nameextras.replace('%', '%25').replace(' ', '%20').replace('|', '%7C')
+                imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{cleanednamextras}"
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{nameextras}", 
                                     color=0xb8b8b8, 
                                     description=f"[Click here to view in your browser]({imageURL})")

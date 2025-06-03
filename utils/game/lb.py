@@ -72,17 +72,23 @@ def addLoss(username, id, game):
         writer.writeheader()
         writer.writerows(data)
         
-def top5(game):
-    # Create an empty list to store (id, wins) tuples
+def top5(game, scope='global', server=None):
     id_wins = []
     csv_file = f'utils/game/scores/{game}.csv'
-
-    # Read the CSV file and populate the list with (id, wins) tuples
+    print(f'getting top 5 for {game} in {scope} scope')
+    print(f'server is {server}')
     try:
         with open(csv_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                id_wins.append((row['username'], int(row['wins']), int(row['losses']),row['id'])) # username is actually id
+                if scope == 'global':
+                    id_wins.append((row['username'], int(row['wins']), int(row['losses']),row['id'])) # username is actually id
+                elif scope == 'server':
+                    if server.get_member(int(row['username'])):
+                        print(f'{row['username']} is in server')
+                        id_wins.append((row['username'], int(row['wins']), int(row['losses']),row['id'])) # ^ same comment as above applies here
+                    else:
+                        print(f'{row['username']} is not in server')
     except FileNotFoundError:
         return 'no stats'
     

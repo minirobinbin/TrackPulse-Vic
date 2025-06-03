@@ -735,3 +735,5 @@ def logMap(user:str, lines_dictionary:dict, mode:str='time_based_variants/log_tr
     map_handler = MapImageHandler(f"utils/trainlogger/map/{mode}", lines_dictionary, x_offset, y_offset, station_coordinates, line_coordinates)
     print(affected_lines)
     map_handler.highlight_map(affected_lines, f"utils/trainlogger/userdata/maps/{user}-{modeName}-{year}-{trainType}-{line_choice}.png", stations)
+    affected_lines = list(set(affected_lines))
+    return(len(affected_lines))
