@@ -4752,6 +4752,8 @@ async def sets(ctx, state:str):
     app_commands.Choice(name="Both", value="both"),
 
 ])
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str, location: str, photofor:str, number: str=''):
     await ctx.response.defer(ephemeral=True)
     log_command(ctx.user.id, 'submit-photo')
