@@ -37,7 +37,7 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
             carriage_num = f"{carriage}{photoNumber}"
             
             credits = getPhotoCredits(carriage_num, state='VIC')
-            url = f'https://railway-photos.xm9g.net/photos/{carriage_num}.webp'
+            url = f'https://victorianrailphotos.com/photos/{carriage_num}.webp'
             try:
                 response = requests.head(url)
                 if response.status_code == 200:
@@ -57,7 +57,7 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
         
         if images:
             class GalleryContainer(discord.ui.Container):
-                heading = discord.ui.TextDisplay(f'## Photos of [{carriage}](https://railway-photos.xm9g.net?number={carriage})')
+                heading = discord.ui.TextDisplay(f'## Photos of [{carriage}](https://victorianrailphotos.com?number={carriage})')
                 gallery = discord.ui.MediaGallery(*images)
                 credits = discord.ui.TextDisplay(f'-# Photos by: {", ".join(allCredits)}')
                     
