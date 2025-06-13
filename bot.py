@@ -427,7 +427,7 @@ async def download_csv(url, save_path):
 @bot.event
 async def on_ready():
     # download the trainset data     
-    csv_url = "https://railway-photos.xm9g.net/trainsets.csv"
+    csv_url = "https://victorianrailphotos.com/trainsets.csv"
     save_location = "utils/trainsets.csv"
     # await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
     # await download_csv(csv_url, save_location)
@@ -1275,7 +1275,7 @@ async def tramsearch(ctx, tram: str):
         
         embed.set_image(url=getTramImage(tram.upper()))
         
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://railway-photos.xm9g.net?number={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://victorianrailphotos.com?number={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
@@ -2807,7 +2807,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         # thing to find image:
         await printlog(f"Finding image for {number}")
         if type_final == 'Tait':
-            image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
+            image = 'https://victorianrailphotos.com/photos/317M-6.webp'
         
         try:
             if not '-' in set:
@@ -3693,7 +3693,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         
                         # thing to find image:
                         if row[2] == 'Tait':
-                            image = 'https://railway-photos.xm9g.net/photos/317M-6.webp'
+                            image = 'https://victorianrailphotos.com/photos/317M-6.webp'
                         
                         if not '-' in row[1]:
                             image = getImage(row[1])
@@ -3788,7 +3788,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title='Train Logs', colour=vline_colour)
-                embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+                embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
                 embed.add_field(name='Click here to view your logs:', value=f'<#{logsthread.id}>')
                 embed.add_field(name='Click here to view your own logs on the website:', value=f'[Trackpulse Vic Website](https://discord.com/oauth2/authorize?client_id=1214144664513417218&redirect_uri=https%3A%2F%2Ftrackpulse.xm9g.net%2Flogs%2Fviewer&response_type=code&scope=identify)')
                 await ctx.response.send_message(embed=embed)
@@ -4456,7 +4456,7 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
                 # send reponse message
                 pfp = userid.avatar.url
                 embed=discord.Embed(title=f"{userid.name}'s longest trips in Victoria", colour=metro_colour)
-                embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+                embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
                 embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
                 await ctx.followup.send(embed=embed)
                 
@@ -4532,7 +4532,7 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
             # send reponse message
             pfp = userid.avatar.url
             embed=discord.Embed(title=stat.title(), colour=metro_colour)
-            embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+            embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
             embed.add_field(name='Click here to view your full stats:', value=f'<#{logsthread.id}>')
             embed.set_image(url='attachment://graph.png')
             await ctx.followup.send(embed=embed, file=discord.File(f'temp/Graph{ctx.user.name}.png', filename="graph.png"))
@@ -4662,7 +4662,7 @@ async def sets(ctx, train:str):
     # send reponse message
     pfp = userid.avatar.url
     embed=discord.Embed(title=f'{train} sets {userid.name} has been on', colour=metro_colour)
-    embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+    embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
     embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
     await ctx.edit_original_response(embed=embed)
 
@@ -4719,7 +4719,7 @@ async def sets(ctx, state:str):
     # send reponse message
     pfp = userid.avatar.url
     embed=discord.Embed(title=f'{state} stations {userid.name} has been to', colour=metro_colour)
-    embed.set_author(name=userid.name, url='https://railway-photos.xm9g.net', icon_url=pfp)
+    embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
     embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
     await ctx.edit_original_response(embed=embed)
     
@@ -4745,7 +4745,7 @@ async def sets(ctx, state:str):
         for item in split_strings:
             await logsthread.send(item)
 
-@bot.tree.command(name='submit-photo', description="Submit a photo to railway-photos.xm9g.net and the bot.")
+@bot.tree.command(name='submit-photo', description="Submit a photo to victorianrailphotos.com and the bot.")
 @app_commands.choices(photofor=[
     app_commands.Choice(name="Railway Photo & Bot train search", value="website"),
     app_commands.Choice(name="Bot/Website Station Photo Guessing Game", value="guesser"),
@@ -4782,7 +4782,7 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
                     file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
                     embed.set_image(url=f"attachment://{photo.filename}")
                     await public_channel.send(embed=embed, file=file) # type: ignore
-                    await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://railway-photos.xm9g.net.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
+                    await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://victorianrailphotos.com.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
                 else:
                     await ctx.edit_original_response(content="Please upload a valid image file.")
             else:
@@ -5536,7 +5536,7 @@ async def about(ctx):
     embed = discord.Embed(title="About", description="TrackPulse Vic is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\nAperture',inline=True)
-    embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://railway-photos.xm9g.net/)")
+    embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://victorianrailphotos.com/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
@@ -5861,7 +5861,7 @@ async def ping(ctx):
     log_command(ctx.author.id, 'ping')
     
 @bot.command()
-async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
+async def syncdb(ctx, url='https://victorianrailphotos.com/trainsets.csv'):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = url
@@ -5881,7 +5881,7 @@ async def syncdb(ctx, url='https://railway-photos.xm9g.net/trainsets.csv'):
 async def syncgame(ctx):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
-        csv_url = 'https://railway-photos.xm9g.net/botgames/guesser.csv'
+        csv_url = 'https://victorianrailphotos.com/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
         await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
@@ -5891,7 +5891,7 @@ async def syncgame(ctx):
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
             
-        csv_url = 'https://railway-photos.xm9g.net/botgames/ultrahard.csv'
+        csv_url = 'https://victorianrailphotos.com/botgames/ultrahard.csv'
         save_location = "utils/game/images/ultrahard.csv"
         await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")

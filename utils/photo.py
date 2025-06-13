@@ -5,9 +5,9 @@ import io
 def getPhotoCredits(train, state='VIC'):
     # image credits:
     if state == 'VIC':
-        url = 'https://railway-photos.xm9g.net/credit.csv'
+        url = 'https://victorianrailphotos.com/credit.csv'
     elif state == 'NSW':
-        url = 'https://railway-photos.xm9g.net/nswcredit.csv'
+        url = 'https://victorianrailphotos.com/nswcredit.csv'
         
     search_value = train.strip().upper()
 
