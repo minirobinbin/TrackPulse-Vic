@@ -584,7 +584,9 @@ async def log_rare_trains(rare_trains):
 @tasks.loop(minutes=10)
 async def task_loop():
     # update status
-    await bot.change_presence(activity=discord.CustomActivity(name=f'{getTotalTrips()} trips logged'))
+    totalLogs = getTotalTrips()
+    printlog(f"Updating bot status, total logs = `{totalLogs}`")
+    await bot.change_presence(activity=discord.CustomActivity(name=f'{totalLogs} trips logged'))
     
     if rareCheckerOn:
         log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
