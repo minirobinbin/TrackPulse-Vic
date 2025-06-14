@@ -5538,11 +5538,12 @@ async def about(ctx):
     embed = discord.Embed(title="About", description="TrackPulse Vic is a Discord bot that allows users to log their train, and tram trips in Victoria, New South Wales, South Australia and Western Australia, along with any bus trips. It also provides the ability to get real-time line status updates for Metro Trains Melbourne, upcoming departures from Melbourne stations and the ability to search for information about a specific train, as well as a range of other features.", color=discord.Color.blue())
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\nAperture',inline=True)
-    embed.add_field(name='Photos sourced from',value="[XM9G's Victorian Railway Photos](https://victorianrailphotos.com/)")
+    embed.add_field(name='Photos sourced from',value="[Victorian Rail Photos](https://victorianrailphotos.com/)")
     embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
     embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/TrackPulse-Vic/TrackPulse-Vic/issues)')
+    embed.set_footer(text=f"{getTotalTrips()} trips logged with TrackPulse Vic", icon_url="https://xm9g.net/discord-bot-assets/logo.png")
     await ctx.edit_original_response(embed=embed)
 
 

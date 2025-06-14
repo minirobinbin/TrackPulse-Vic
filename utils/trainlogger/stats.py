@@ -987,3 +987,54 @@ def terminiList(user):
     result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in termini])
      
     return(result_string)
+
+def getTotalTrips(user='all', mode='all'):
+    if user == 'all':
+        base_paths = []
+        if mode in ['all', 'train']:
+            base_paths.append('utils/trainlogger/userdata/')
+        if mode in ['all', 'tram']:
+            base_paths.append('utils/trainlogger/userdata/tram/')
+        if mode in ['all', 'sydney-trains']:
+            base_paths.append('utils/trainlogger/userdata/sydney-trains/')
+        if mode in ['all', 'sydney-trams']:
+            base_paths.append('utils/trainlogger/userdata/sydney-trams/')
+        if mode in ['all', 'bus']:
+            base_paths.append('utils/trainlogger/userdata/bus/')
+        if mode in ['all', 'adelaide-trains']:
+            base_paths.append('utils/trainlogger/userdata/adelaide-trains/')
+        if mode in ['all', 'adelaide-trams']:
+            base_paths.append('utils/trainlogger/userdata/adelaide-trams/')
+        if mode in ['all', 'perth-trains']:
+            base_paths.append('utils/trainlogger/userdata/perth-trains/')
+
+        file_paths = []
+        for base_path in base_paths:
+            if os.path.exists(base_path):
+                for root, _, files in os.walk(base_path):
+                    for file in files:
+                        if file.endswith('.csv') and file != 'XXm9G.csv' and file != 'comeng_17.csv':
+                            file_paths.append(os.path.join(root, file))
+        
+        total_line_count = 0
+        for filename in file_paths:
+            try:
+                with open(filename, 'r') as csv_file:
+                    csv_reader = csv.reader(csv_file)
+                    line_count = sum(1 for row in csv_reader)
+                    total_line_count += line_count
+            except:
+                pass
+        return total_line_count
+    else:
+        if mode == 'train':
+            filename = f'utils/trainlogger/userdata/{user}.csv'
+        else:
+            filename = f'utils/trainlogger/userdata/{mode}/{user}.csv'
+        try:
+            with open(filename, 'r') as csv_file:
+                csv_reader = csv.reader(csv_file)
+                line_count = sum(1 for row in csv_reader)
+        except:
+            line_count = 0
+        return line_count
