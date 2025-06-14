@@ -458,9 +458,6 @@ async def on_ready():
     except:
         await printlog("WARNING: Rare train checker is not enabled!")
         await channel.send(f"WARNING: Rare train checker is not enabled! <@{USER_ID}>")
-
-    activity = discord.Activity(type=discord.ActivityType.watching, name='Melbourne trains')
-    await bot.change_presence(activity=activity)
     
     # Refresh all users
     if startupAchievements:
@@ -586,6 +583,9 @@ async def log_rare_trains(rare_trains):
 
 @tasks.loop(minutes=10)
 async def task_loop():
+    # update status
+    await bot.change_presence(activity=discord.CustomActivity(name=f'{getTotalTrips()} trips logged'))
+    
     if rareCheckerOn:
         log_channel = bot.get_channel(RARE_SERVICE_CHANNEL_ID)
         await log_channel.send("Checking for trains on lines they aren't meant for")
