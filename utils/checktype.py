@@ -202,6 +202,8 @@ def sydneyTrainType(setNumber):
             trainType = 'XPT'    
         elif setNumber.startswith('P'):
             trainType = 'Xplorer'
+        elif int(setNumber) >= 4801 and int(setNumber) <= 4863 or int(setNumber) >= 4865 and int(setNumber) <= 48165 or int(setNumber) >= 48208 and int(setNumber) <= 48209 or int(setNumber)== 48216:
+            trainType = '48 Class'
         
         else:
             trainType = 'Unknown'
