@@ -967,12 +967,10 @@ def terminiList(user):
         "Lilydale", "Belgrave", "Alamein", "Glen Waverley", "Bairnsdale", "Traralgon", 'East Pakenham', 'Cranbourne', 'Frankston', 'Stony Point', 'Sandringham', 'Williamstown', 'Werribee', 'Waurn Ponds', "Warrnambool", "Wendouree", 'Ararat','Sunbury', 'Maryborough', 'Epsom','Eaglehawk', 'Swan Hill', 'Echuca','Flemington Racecourse','Craigieburn','Upfield', 'Seymour', 'Shepparton', 'Albury', "Mernda", 'Hurstbridge' 
     ]
     
-    # Read CSV file
     with open(f'utils/trainlogger/userdata/{user}.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         csv_data = list(reader)
 
-   # Create a dictionary to count the occurrences of each item
     item_counts = {}
     for row in csv_data:
         if row[5] in item_counts:
@@ -983,7 +981,6 @@ def terminiList(user):
             item_counts[row[5]] = 1
             item_counts[row[6]] = 1
 
-    # Create a string with ticks for matching items
     result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in termini])
      
     return(result_string)
@@ -1008,14 +1005,18 @@ def getTotalTrips(user='all', mode='all'):
         if mode in ['all', 'perth-trains']:
             base_paths.append('utils/trainlogger/userdata/perth-trains/')
 
-        file_paths = []
+        file_paths = set()
         for base_path in base_paths:
             if os.path.exists(base_path):
                 for root, _, files in os.walk(base_path):
                     for file in files:
-                        if file.endswith('.csv') and file != 'XXm9G.csv' and file != 'comeng_17.csv':
-                            file_paths.append(os.path.join(root, file))
-        
+                        # Normalize file name to lowercase for comparison
+                        file_lower = file.lower()
+                        if file_lower.endswith('.csv') and file_lower not in ['xxm9g.csv', 'comeng_17.csv']:
+                            # Normalize path to avoid duplicates
+                            full_path = os.path.abspath(os.path.join(root, file))
+                            file_paths.add(full_path)
+
         total_line_count = 0
         for filename in file_paths:
             try:
@@ -1023,8 +1024,10 @@ def getTotalTrips(user='all', mode='all'):
                     csv_reader = csv.reader(csv_file)
                     line_count = sum(1 for row in csv_reader)
                     total_line_count += line_count
-            except:
-                pass
+                    print(f"File: {filename}, Line Count: {line_count}, Total: {total_line_count}")
+            except Exception as e:
+                print(f"Error reading {filename}: {e}")
+                continue
         return total_line_count
     else:
         if mode == 'train':
@@ -1035,6 +1038,7 @@ def getTotalTrips(user='all', mode='all'):
             with open(filename, 'r') as csv_file:
                 csv_reader = csv.reader(csv_file)
                 line_count = sum(1 for row in csv_reader)
-        except:
+        except Exception as e:
+            print(f"Error reading {filename}: {e}")
             line_count = 0
         return line_count
