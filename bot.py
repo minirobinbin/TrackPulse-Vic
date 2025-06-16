@@ -1623,6 +1623,13 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         
         # disruptions:
         disruptions = getStationDisruptions(stop_id)
+        disruptionsAmount = len(disruptions)
+        if disruptionsAmount > 3:
+            disruptions = disruptions[:3]  # Limit to 3 disruptions for embed size
+            disruptions.insert(0,{
+                'title': f'+{disruptionsAmount-3} more disruptions',
+                'description': 'view more',
+                'url': 'https://www.ptv.vic.gov.au/disruptions/disruptions-information/'})
         for disruption in disruptions:
             # Truncate disruption title if its ling
             title = disruption['title']
