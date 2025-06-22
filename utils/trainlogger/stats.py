@@ -1024,7 +1024,6 @@ def getTotalTrips(user='all', mode='all'):
                     csv_reader = csv.reader(csv_file)
                     line_count = sum(1 for row in csv_reader)
                     total_line_count += line_count
-                    print(f"File: {filename}, Line Count: {line_count}, Total: {total_line_count}")
             except Exception as e:
                 print(f"Error reading {filename}: {e}")
                 continue
