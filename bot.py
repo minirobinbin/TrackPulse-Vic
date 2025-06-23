@@ -5235,12 +5235,12 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
                     nameextras = f' in {year}'
                 if line != 'All':
                     nameextras += f' on the {line} line'
-                nameextras += f' | {round(percentageCovered, 2)}% of segments travelled'
+                nameextras += f' | {round(percentageCovered, 2)} percent of segments travelled'
                 
                 file = discord.File(f'utils/trainlogger/userdata/maps/{username}-{modeName}-{year}-{train}-{line}.png', filename='map.png')
                 line_str = '' if line == 'All' else f' on the {line} Line'
                 year_str = '' if year == 0 else f' in {str(year)}'
-                cleanednamextras = nameextras.replace('%', '%25').replace(' ', '%20').replace('|', '%7C')
+                cleanednamextras = nameextras.replace(' ', '%20').replace('|', '%7C')
                 imageURL = f"https://trackpulse.xm9g.net/logs/map?img={username}-{modeName}-{year}-{train.replace(' ', '%20')}-{line.replace(' ', '%20')}&name={username}%27s%20Victorian%20train%20map{cleanednamextras}"
                 embed = discord.Embed(title=f"Map of logs with </log train:1289843416628330506> for @{username}{nameextras}", 
                                     color=0xb8b8b8, 
