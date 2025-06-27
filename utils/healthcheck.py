@@ -3,6 +3,7 @@ def pinghealthcheck():
     import requests
 
     uuid = os.getenv('HEALTHCHECK_UUID')
+    print(f"Health check UUID: {uuid}")
 
     url = f'https://hc-ping.com/{uuid}'
     
@@ -15,4 +16,3 @@ def pinghealthcheck():
     except requests.RequestException as e:
         print(f"An error occurred during the health check: {e}")
         
-pinghealthcheck()
