@@ -3,9 +3,6 @@ def pinghealthcheck():
     import requests
 
     uuid = os.getenv('HEALTHCHECK_UUID')
-    if not uuid:
-        print("HEALTHCHECK_UUID is not set in the env, skipping ping.")
-        return
 
     url = f'https://hc-ping.com/{uuid}'
     
@@ -14,6 +11,8 @@ def pinghealthcheck():
         if response.status_code == 200:
             print("Health check successful.")
         else:
-            print(f"Health check failed with status code: {response.status_code}")
+            print(f"Health check failed with status code: {response.status_code}, check the UUID is set correctly in the env")
     except requests.RequestException as e:
         print(f"An error occurred during the health check: {e}")
+        
+pinghealthcheck()
