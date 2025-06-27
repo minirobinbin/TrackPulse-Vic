@@ -26,11 +26,17 @@ DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
 DISCORD_USER_URL = "https://discord.com/api/users/@me"
 
 from dotenv import load_dotenv
+import threading
+import time
 load_dotenv()
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 CSV_DIR = os.getenv("CSV_DIR")
 MAP_DIR = os.getenv("MAP_DIR")
+
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({"message": "TPV web provider is running."})
 
 @app.route('/csv/<filename>', methods=['GET', 'OPTIONS'])
 @limiter.limit("500/day")
@@ -179,6 +185,7 @@ def update_user_status():
     except Exception as e:
         print(f"Error processing user status: {e}")
         return jsonify({"error": "Failed to process user status"}), 500
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=False)

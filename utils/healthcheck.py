@@ -1,12 +1,14 @@
-def pinghealthcheck():
+def pinghealthcheck(service:str='bot'):
     import os
     from dotenv import load_dotenv
     import requests
 
     # Load environment variables from .env file
     load_dotenv()
-
-    uuid = os.getenv('HEALTHCHECK_UUID')
+    if service == 'backend':
+        uuid = os.getenv('BACKEND_HEALTHCHECK_UUID')
+    else:
+        uuid = os.getenv('HEALTHCHECK_UUID')
     print(f"Health check UUID: {uuid}")
 
     url = f'https://hc-ping.com/{uuid}'
