@@ -1,6 +1,10 @@
 def pinghealthcheck():
     import os
+    from dotenv import load_dotenv
     import requests
+
+    # Load environment variables from .env file
+    load_dotenv()
 
     uuid = os.getenv('HEALTHCHECK_UUID')
     print(f"Health check UUID: {uuid}")
@@ -15,4 +19,3 @@ def pinghealthcheck():
             print(f"Health check failed with status code: {response.status_code}, check the UUID is set correctly in the env")
     except requests.RequestException as e:
         print(f"An error occurred during the health check: {e}")
-        
