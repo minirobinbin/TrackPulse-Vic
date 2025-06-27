@@ -99,7 +99,7 @@ from commands.help import helpCommand
 from commands.logexport import logExport
 
 # Utils imports
-from utils import trainset
+from utils import healthcheck, trainset
 from utils.directions import getDirectionName
 from utils.downloader import downloader_function
 from utils.favourites.viewer import *
@@ -505,6 +505,7 @@ async def on_ready():
     # uptime
     global uptime
     uptime = int(time.time())
+    healthcheck.pinghealthcheck() # ping to the monitoring thing
     
     # restart or normal start
     file = open('restart.txt','r')
@@ -604,6 +605,8 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
 
+    healthcheck.pinghealthcheck() # ping to the monitoring thing
+    
 # @tasks.loop(minutes=15)
 # async def task_loop():
     # Create a new thread to run checkRareTrainsOnRoute
