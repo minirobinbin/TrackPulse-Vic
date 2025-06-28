@@ -35,6 +35,7 @@ CSV_DIR = os.getenv("CSV_DIR")
 MAP_DIR = os.getenv("MAP_DIR")
 
 @app.route('/', methods=['GET'])
+@limiter.limit("10000/day;100/hour")
 def root():
     return jsonify({"message": "TPV web provider is running."})
 
