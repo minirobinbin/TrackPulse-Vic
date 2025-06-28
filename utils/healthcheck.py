@@ -1,4 +1,4 @@
-def pinghealthcheck(service:str='bot'):
+def pinghealthcheck(service:str='bot', fail:bool=False):
     import os
     from dotenv import load_dotenv
     import requests
@@ -12,6 +12,8 @@ def pinghealthcheck(service:str='bot'):
     print(f"Health check UUID: {uuid}")
 
     url = f'https://hc-ping.com/{uuid}'
+    if fail:
+        url += '/fail'
     
     try:
         response = requests.get(url)

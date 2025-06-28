@@ -590,7 +590,13 @@ async def log_rare_trains(rare_trains):
 async def task_loop():
     # update status
     totalLogs = getTotalTrips()
-    await printlog(f"Updating bot status, total logs = `{totalLogs}`")
+    healthcheck.pinghealthcheck() # ping to the monitoring thing
+
+    try:
+        await printlog(f"Updating bot status, total logs = `{totalLogs}`")
+    except Exception as e:
+        healthcheck.pinghealthcheck(fail=True)
+        
     await bot.change_presence(activity=discord.CustomActivity(name=f'{totalLogs} trips logged'))
     
     if rareCheckerOn:
@@ -604,8 +610,6 @@ async def task_loop():
         thread.start()
     else:
         print("Rare checker not enabled!")
-
-    healthcheck.pinghealthcheck() # ping to the monitoring thing
     
 # @tasks.loop(minutes=15)
 # async def task_loop():

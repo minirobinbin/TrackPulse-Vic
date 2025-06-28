@@ -56,7 +56,7 @@ async def NSWsearchTrainCommand(ctx, number):
             upperheading = discord.ui.TextDisplay(f'-# Result for {number.upper()}')
             heading = discord.ui.TextDisplay(f'# {trainType} `{train_info["Set Number"]}`\n`{train_info["Carriages"]}`')
 
-            liveryDisplay = discord.ui.TextDisplay(f'Livery: {train_info['Livery']}')
+            liveryDisplay = discord.ui.TextDisplay(f'Livery: {train_info["Livery"]}')
             info_text = f"- **Status:** {train_info['Status']}"
             if train_info['Note']:
                 info_text += f"\n- **Note:** {train_info['Note']}"
