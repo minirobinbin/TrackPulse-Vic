@@ -2854,7 +2854,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         except Exception as e:
             await printlog(f"Error getting image: {e}")
 
-        embed.set_footer(text=f"Log ID #{id} | We are updating how logs are stored, and your log IDs may change in the future.")
+        embed.set_footer(text=f"Log ID #{id}")
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
