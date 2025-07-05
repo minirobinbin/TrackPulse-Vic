@@ -173,6 +173,7 @@ def barChart(file_path, dataType, heading, uname, limit=False):
 
     # Read the file and extract data
     with open(file_path, 'r') as file:
+        print(f"Reading data from {file_path}")
         data = []
         for line in file:
             parts = line.strip().split(',')
@@ -184,11 +185,14 @@ def barChart(file_path, dataType, heading, uname, limit=False):
         # Filter out values less than or equal to 5
         filtered_data = [(label, value) for label, value in data if value > 5]
 
-        sorted_data = sorted(filtered_data, key=lambda item: item[1], reverse=True)
-        top_5_data = sorted_data[:10]
+        if len(filtered_data) == 0:
+            # if theres nothing abovve 5 then sort all data
+            sorted_data = sorted(data, key=lambda item: item[1], reverse=True)
+        else:
+            sorted_data = sorted(filtered_data, key=lambda item: item[1], reverse=True)
 
-        # Extract labels and values from the top 5 data
-        labels, values = zip(*top_5_data) if top_5_data else ([], [])
+        top_10_data = sorted_data[:10]
+        labels, values = zip(*top_10_data) if top_10_data else ([], [])
 
     else:
         labels, values = zip(*data) if data else ([], [])

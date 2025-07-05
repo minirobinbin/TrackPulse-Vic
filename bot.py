@@ -3245,61 +3245,6 @@ async def NSWstation_autocompletion(
         app_commands.Choice(name=fruit, value=fruit)
         for fruit in fruits if current.lower() in fruit.lower()
     ][:25]
-    
-@trainlogs.command(name="sydney-train", description="Log a Sydney/NSW train you have been on")
-@app_commands.describe(number = "Carrige or Set Number", type = 'Type of train', date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
-@app_commands.autocomplete(start=NSWstation_autocompletion)
-@app_commands.autocomplete(end=NSWstation_autocompletion)
-
-@app_commands.choices(line=[
-        app_commands.Choice(name="T1 North Shore & Western Line", value="T1"),
-        app_commands.Choice(name="T2 Inner West & Leppington Line", value="T2"),
-        app_commands.Choice(name="T3 Bankstown Line", value="T3"),
-        app_commands.Choice(name="T4 Eastern Suburbs & Illawarra Line", value="T4"),
-        app_commands.Choice(name="T5 Cumberland Line", value="T5"),
-        app_commands.Choice(name="T6 Lidcombe & Bankstown Line", value="T6"),
-        app_commands.Choice(name="T7 Olympic Park Line", value="T7"),
-        app_commands.Choice(name="T8 Airport & South Line", value="T8"),
-        app_commands.Choice(name="T9 Northern Line", value="T9"),
-        
-        app_commands.Choice(name="Metro North West Line", value="Metro North West Line"),
-
-        app_commands.Choice(name="Blue Mountains Line", value="Blue Mountains Line"),
-        app_commands.Choice(name="Central Coast & Newcastle Line", value="Central Coast & Newcastle Line"),
-        app_commands.Choice(name="Hunter Line", value="Hunter Line"),
-        app_commands.Choice(name="South Coast Line", value="South Coast Line"),
-        app_commands.Choice(name="Southern Highlands Line", value="Southern Highlands Line"),
-
-        app_commands.Choice(name="North Coast Region", value="North Coast Region"),
-        app_commands.Choice(name="North Western Region", value="North Western Region"),
-        app_commands.Choice(name="Southern Region", value="Southern Region"),
-        app_commands.Choice(name="Western Region", value="Western Region"),
-
-        app_commands.Choice(name="Unknown", value="Unknown")
-])
-@app_commands.choices(type=[
-        app_commands.Choice(name="K set", value="K set"),
-        app_commands.Choice(name="Tangara - T Set", value="Tangara"),
-        app_commands.Choice(name="Millennium - M Set", value="Millennium"),
-        app_commands.Choice(name="OSCAR - H set", value="OSCAR"),
-        app_commands.Choice(name="Waratah - A & B sets", value="Waratah"),
-        
-        app_commands.Choice(name="V set", value="V set"),
-        app_commands.Choice(name="D set", value="D set"),
-        app_commands.Choice(name="Endeavour railcar", value="Endeavour railcar"),
-        app_commands.Choice(name="Hunter railcar", value="Hunter railcar"),
-        app_commands.Choice(name="XPT", value="XPT"),
-        app_commands.Choice(name="Xplorer", value="Xplorer"),
-        
-        app_commands.Choice(name="Metropolis Stock", value="Metropolis Stock"),
-
-        app_commands.Choice(name="Unknown", value="Unknown"),
-])
-# SYdney train logger nsw train
-async def logNSWTrain(ctx,  line:str, number: str, start:str, end:str, type:str='auto', date:str='today', hidemessage:bool=False):
-    log_command(ctx.user.id, 'log-nsw-train')
-    await ctx.response.defer(ephemeral=hidemessage)
-    asyncio.create_task(logQLDtrain(type))
 
 # Adelaide LOGGER AND overland logger
 async def Adelaidestation_autocompletion(
