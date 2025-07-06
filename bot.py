@@ -1444,7 +1444,7 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
         # if mode == '3':
         #     pass
         #     # await ctx.edit_original_response(content="You cannot currently search departures for V/Line services")
-            return
+            # return
         if line != "all" and mode != "0":
             await ctx.edit_original_response(content="You can only specify a line for trains")
             return
