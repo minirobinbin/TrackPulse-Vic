@@ -88,11 +88,12 @@ def allTopStats(user, stat, year):
         f'utils/trainlogger/userdata/bus/{user}.csv',
         f'utils/trainlogger/userdata/adelaide-trains/{user}.csv',
         f'utils/trainlogger/userdata/adelaide-trams/{user}.csv',
-        f'utils/trainlogger/userdata/perth-trains/{user}.csv'
+        f'utils/trainlogger/userdata/perth-trains/{user}.csv',
+        f'utils/trainlogger/userdata/flights/{user}.csv',
+
     ]
     file_paths = [path for path in file_pathsChecker if os.path.exists(path)]
 
-    # Counters to keep track of line, station, set, date, type, and station pair frequencies
     line_counter = Counter()
     station_counter = Counter()
     set_counter = Counter()
@@ -114,7 +115,7 @@ def allTopStats(user, stat, year):
                         line = row[4]
                         start_station = row[5]
                         end_station = row[6]
-                        train_set = row[1]  # Changed to 'train_set' since 'set' is a Python keyword
+                        train_set = row[1]
                         train_type = row[2]
                         pair = (start_station, end_station)
 

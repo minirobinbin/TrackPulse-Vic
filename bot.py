@@ -52,6 +52,7 @@ from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 from commands.traintimleyfetcher import seeWhereTrainsAre
+from utils.aviationAPIs.airportdata import get_airport_data
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
@@ -295,7 +296,7 @@ bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp','utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/adelaide-trams','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
-                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps']
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps', 'utils/trainlogger/userdata/flights']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
         print(f"{folder} exists")
@@ -3497,17 +3498,16 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     asyncio.create_task(log())
 
 # plane logger
-    
 @trainlogs.command(name="flight", description="Log a Flight you have been on")
-@app_commands.describe(flightnumber = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
+@app_commands.describe(flightnumber = "Flight Number", date = "Date in DD/MM/YYYY format", airline = 'Air Line', start='Starting Airport ICAO', end = 'Ending Airport ICAO', hidemessage='Hide the message from other users, note this will not make the log private.')
 # @app_commands.autocomplete(start=Perthstation_autocompletion)
 # @app_commands.autocomplete(end=Perthstation_autocompletion)
 # @app_commands.autocomplete(line=Perthline_autocompletion)
 
-# Perth logger
-async def logPerthTrain(ctx, flightnumber: str, line:str, start:str, end:str, date:str='today', hidemessage:bool=False):
-    channel = ctx.channel
-    log_command(ctx.user.id, 'log-perth-train')
+# plane logger
+async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:str, flightnumber: str='None', date:str='today', hidemessage:bool=False):
+    log_command(ctx.user.id, 'log-flight')
+    await ctx.response.defer(ephemeral=hidemessage)
     await printlog(date)
     async def log():
         await printlog("logging the fliying train")
@@ -3526,42 +3526,23 @@ async def logPerthTrain(ctx, flightnumber: str, line:str, start:str, end:str, da
             except TypeError:
                 await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
                 return
-
-        set = number
-        if set == None:
-            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
-            return
         
-        try:
-            if 201 <= int(number) <=248:
-                type = 'A-Series'
-            elif 301 <= int(number) <=348:
-                type = 'A-Series'
-            elif 4049 <= int(number) <=4126:
-                type = 'B-Series'
-            elif 6049 <= int(number) <=6126:
-                type = 'B-Series'
-            elif 5049 <= int(number) <=5126:
-                type = 'B-Series'
-            elif int(str(number)[-3:]) >= 126:
-                type = 'C-Series'
-            else:
-                type = 'Unknown'
-        except:
-            type = 'Unknown'
+        # find info for the airports
+        startinfo = get_airport_data(start)
+        endinfo = get_airport_data(end)
         
         # Add train to the list
-        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addFlight(ctx.user.name, registration.upper(), type.upper(), savedate, flightnumber.upper(), start.upper(), end.upper(), airline.title())
 
-        embed = discord.Embed(title="Train Logged",colour=transperth_colour)
+        embed = discord.Embed(title="Flight Logged",colour=0x0070c0)
         
-        embed.add_field(name="Number", value=f'{set} ({type})')
-        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Flight", value=f'{airline} {flightnumber}')
+        embed.add_field(name="Aircraft", value=f'{type} ({registration})')
         embed.add_field(name="Date", value=savedate)
-        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.add_field(name="Trip", value=f':flag_{startinfo['country_code'].lower()}: {startinfo['name']} to :flag_{endinfo['country_code'].lower()}: {endinfo['name']}')
         embed.set_footer(text=f"Log ID #{id}")
 
-        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
+        await ctx.followup.send(embed=embed, ephemeral=hidemessage)
         
                 
     # Run in a separate task
@@ -3733,6 +3714,7 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
         app_commands.Choice(name="Adelaide Trains & Journey Beyond", value="adelaide-trains"),
         app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
         app_commands.Choice(name="Perth Trains", value="perth-trains"),
+        app_commands.Choice(name="Flights", value="flights"),
 
 ])
 @app_commands.choices(send=[
@@ -3780,6 +3762,8 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                 file_path = f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv' 
             if mode == 'perth-trains':
                 file_path = f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv'   
+            if mode == 'flights':
+                file_path = f'utils/trainlogger/userdata/flights/{userid.name}.csv'  
                 
             
             
@@ -4241,7 +4225,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
 
                         await logsthread.send(embed=embed)
-                        time.sleep(1) 
+                        time.sleep(2) 
 
             # for perth:
             if mode == 'perth-trains':
@@ -4298,7 +4282,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(1)  
+                        time.sleep(2)  
             # for bus:
             if mode == 'bus':
                 if user == None:
@@ -4357,7 +4341,65 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         # embed.set_thumbnail(url=image)
     
                         await logsthread.send(embed=embed)
-                        time.sleep(1)  
+                        time.sleep(2) 
+            # for plane:
+            if mode == 'flights':
+                if user == None:
+                    userid = ctx.user
+                else:
+                    userid = user
+                
+                try:
+                    file = discord.File(f'utils/trainlogger/userdata/flights/{userid.name}.csv')
+                except FileNotFoundError:
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no flights logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no flights logged!",ephemeral=True)
+                    return
+                await printlog(userid.name)
+                data = readFlightlogs(userid.name)
+                if data == 'no data':
+                    if userid == ctx.user:
+                        await ctx.response.send_message("You have no flights logged!",ephemeral=True)
+                    else:
+                        await ctx.response.send_message("This user has no flights logged!",ephemeral=True)
+                    return
+            
+                # create thread
+                logsthread = await ctx.channel.create_thread(
+                    name=f'{userid.name}\'s Flight Logs',
+                    auto_archive_duration=60,
+                    type=discord.ChannelType.public_thread
+                )
+                
+                # send reponse message
+                await ctx.response.send_message(f"Logs will be sent in <#{logsthread.id}>")
+                await logsthread.send(f'# {userid.name}\'s CSV file', file=file)
+                await logsthread.send(f' # {userid.name}\'s Flight Logs')
+                formatted_data = ""
+                for sublist in data:
+                    if len(sublist) >= 7:  # Ensure the sublist has enough items
+                        image = None
+                                                
+                        #send in thread to reduce spam!
+                        thread = await ctx.channel.create_thread(name=f"{userid.name}'s flight logs")
+                            # Make the embed
+                        if sublist[4] == 'Unknown':
+                            embed = discord.Embed(title=f"Log {sublist[0]}")
+                        else:
+                            embed = discord.Embed(title=f"Log {sublist[0]}",colour=bus_colour)
+                        embed.add_field(name=f'Flight', value=f"{sublist[4]} {sublist[2]}")
+                        embed.add_field(name=f'Date', value="{}".format(sublist[1]))
+                        embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
+                        embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
+                        embed.add_field(name=f'Registration', value="{}".format(sublist[7]))
+                        if len(sublist) > 8:
+                            embed.add_field(name='Notes:', value=sublist[8].strip('"'))
+                        # embed.set_thumbnail(url=image)
+    
+                        await logsthread.send(embed=embed)
+                        time.sleep(2)   
     asyncio.create_task(sendLogs())
 
 # log export
@@ -4494,6 +4536,7 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
     app_commands.Choice(name="Adelaide Trains", value="adelaide-trains"),
     app_commands.Choice(name="Adelaide Trams", value="adelaide-trams"),
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
+    app_commands.Choice(name="Flights", value="flights"),
 
 ])
 async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&g', global_stats:bool=False, user: discord.User = None, year:int=0):
@@ -5163,7 +5206,37 @@ async def profile(ctx, user: discord.User = None):
                                     
             except FileNotFoundError:
                 embed.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:transperthbus:1335396307510235217><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips!')
+    # plane Logger
+            try:
+                lines = topStats(username, 'lines', 0, 'flights')
+                stations = topStats(username, 'stations', 0, 'flights')
+                sets = topStats(username, 'sets', 0, 'flights')
+                trains = topStats(username, 'types', 0, 'flights')
+                dates = topStats(username, 'dates', 0, 'flights')
+                trips = topStats(username, 'pairs', 0, 'flights')
+                
+                #other stats stuff:
+                eDate =lowestDate(username, 'flights')
+                LeDate =highestDate(username, 'flights')
+                joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
+                last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
+                embed.add_field(
+        name='✈️ Flight Log Stats:',
+        value=f'**Top Route:** {lines[1] if len(lines) > 1 and lines[0].startswith("Unknown") else lines[0]}\n'
+            f'**Top Airport:** {stations[1] if len(stations) > 1 and stations[0].startswith("Unknown") else stations[0]}\n'
+            f'**Top Type:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
+            f'**Top Registration:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
+            f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
+            f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
+            f'User started logging {joined}\n'
+            f'Last log {last}\n'
+            f'Total logs: {logAmounts(username, "flights")}'
+    )
 
+                                    
+            except FileNotFoundError as e:
+                embed.add_field(name="✈️ Flight Log Stats", value=f'{username} has no logged plane trips!')
+                print(f'ERROR: {e}')
             
             #games
             stats = fetchUserStats(username)
