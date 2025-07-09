@@ -51,6 +51,7 @@ from commands.NSWsearchtrain import NSWsearchTrainCommand
 from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
+from commands.traintimleyfetcher import seeWhereTrainsAre
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
@@ -3495,6 +3496,76 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     # Run in a separate task
     asyncio.create_task(log())
 
+# plane logger
+    
+@trainlogs.command(name="flight", description="Log a Flight you have been on")
+@app_commands.describe(flightnumber = "Carrige Number", date = "Date in DD/MM/YYYY format", line = 'Train Line', start='Starting Station', end = 'Ending Station', hidemessage='Hide the message from other users, note this will not make the log private.')
+# @app_commands.autocomplete(start=Perthstation_autocompletion)
+# @app_commands.autocomplete(end=Perthstation_autocompletion)
+# @app_commands.autocomplete(line=Perthline_autocompletion)
+
+# Perth logger
+async def logPerthTrain(ctx, flightnumber: str, line:str, start:str, end:str, date:str='today', hidemessage:bool=False):
+    channel = ctx.channel
+    log_command(ctx.user.id, 'log-perth-train')
+    await printlog(date)
+    async def log():
+        await printlog("logging the fliying train")
+
+        savedate = date.split('/')
+        if date.lower() == 'today':
+            current_time = time.localtime()
+            savedate = time.strftime("%Y-%m-%d", current_time)
+        else:
+            try:
+                savedate = time.strptime(date, "%d/%m/%Y")
+                savedate = time.strftime("%Y-%m-%d", savedate)
+            except ValueError:
+                await ctx.response.send_message(f'Invalid date: {date}\nMake sure to use a possible date.', ephemeral=True)
+                return
+            except TypeError:
+                await ctx.response.send_message(f'Invalid date: {date}\nUse the form `dd/mm/yyyy`', ephemeral=True)
+                return
+
+        set = number
+        if set == None:
+            await ctx.response.send_message(f'Invalid train number: {number.upper()}',ephemeral=True)
+            return
+        
+        try:
+            if 201 <= int(number) <=248:
+                type = 'A-Series'
+            elif 301 <= int(number) <=348:
+                type = 'A-Series'
+            elif 4049 <= int(number) <=4126:
+                type = 'B-Series'
+            elif 6049 <= int(number) <=6126:
+                type = 'B-Series'
+            elif 5049 <= int(number) <=5126:
+                type = 'B-Series'
+            elif int(str(number)[-3:]) >= 126:
+                type = 'C-Series'
+            else:
+                type = 'Unknown'
+        except:
+            type = 'Unknown'
+        
+        # Add train to the list
+        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+
+        embed = discord.Embed(title="Train Logged",colour=transperth_colour)
+        
+        embed.add_field(name="Number", value=f'{set} ({type})')
+        embed.add_field(name="Line", value=line)
+        embed.add_field(name="Date", value=savedate)
+        embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
+        embed.set_footer(text=f"Log ID #{id}")
+
+        await ctx.response.send_message(embed=embed, ephemeral=hidemessage)
+        
+                
+    # Run in a separate task
+    asyncio.create_task(log())
 
 async def NSWstop_autocompletion(
     interaction: discord.Interaction,
@@ -5330,6 +5401,16 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
 
     # Start the async map generation
     asyncio.create_task(generate_map())
+
+@bot.command(name='testfind')
+async def testfind(ctx):
+    info = await seeWhereTrainsAre(['271M'])
+    print(info)
+    embed = discord.Embed(title=f'{info[4]}\'s Location')
+    embed.add_field(name='Line', value=f'{info[1]} line to {info[5]}')
+    embed.add_field(name='URL', value=info[2])
+    await ctx.send(embed=embed)
+    
 
 # achievement commands
 @bot.command()
