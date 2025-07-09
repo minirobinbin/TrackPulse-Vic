@@ -18,4 +18,5 @@ if you wanna change what channels the bot sends notifications in or change the r
 <a href="https://github.com/TrackPulse-Vic/TrackPulse-Vic/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=TrackPulse-Vic/TrackPulse-Vic" />
 </a>
+
 ![Alt](https://repobeats.axiom.co/api/embed/6a4b236482f2ba0941a28abe403e386543c2946b.svg "Repobeats analytics image")
