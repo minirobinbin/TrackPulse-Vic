@@ -53,6 +53,7 @@ from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 from commands.traintimleyfetcher import seeWhereTrainsAre
 from utils.aviationAPIs.airportdata import get_airport_data
+from utils.aviationAPIs.aircraftphoto import getplaneimage
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
@@ -3530,6 +3531,18 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
         # find info for the airports
         startinfo = get_airport_data(start)
         endinfo = get_airport_data(end)
+        # get photo
+        try:
+            response = getplaneimage(registration)
+            photo = response['photos'][0]
+            imgURL = photo['thumbnail']['src']
+            photographer = photo['photographer']
+            url = photo['link']
+        except Exception as e:
+            await printlog(f'Error getting image: {e}')
+            imgURL = None
+            photographer = 'no one'
+            url = 'https://planespotters.net'
         
         # Add train to the list
         id = addFlight(ctx.user.name, registration.upper(), type.upper(), savedate, flightnumber.upper(), start.upper(), end.upper(), airline.title())
@@ -3540,6 +3553,8 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
         embed.add_field(name="Aircraft", value=f'{type} ({registration})')
         embed.add_field(name="Date", value=savedate)
         embed.add_field(name="Trip", value=f':flag_{startinfo['country_code'].lower()}: {startinfo['name']} to :flag_{endinfo['country_code'].lower()}: {endinfo['name']}')
+        embed.set_thumbnail(url=imgURL)
+        embed.add_field(name="Photo", value=f'Photo by {photographer} on [planespotters.net]({url})')
         embed.set_footer(text=f"Log ID #{id}")
 
         await ctx.followup.send(embed=embed, ephemeral=hidemessage)
@@ -4381,6 +4396,19 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                 for sublist in data:
                     if len(sublist) >= 7:  # Ensure the sublist has enough items
                         image = None
+                        
+                        # get image
+                        try:
+                            response = getplaneimage(sublist[1])
+                            photo = response['photos'][0]
+                            imgURL = photo['thumbnail']['src']
+                            photographer = photo['photographer']
+                            url = photo['link']
+                        except Exception as e:
+                            await printlog(f'Error getting image: {e}')
+                            imgURL = None
+                            photographer = 'no one'
+                            url = 'https://planespotters.net'
                                                 
                         #send in thread to reduce spam!
                         thread = await ctx.channel.create_thread(name=f"{userid.name}'s flight logs")
@@ -4389,14 +4417,15 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                             embed = discord.Embed(title=f"Log {sublist[0]}")
                         else:
                             embed = discord.Embed(title=f"Log {sublist[0]}",colour=bus_colour)
-                        embed.add_field(name=f'Flight', value=f"{sublist[4]} {sublist[2]}")
-                        embed.add_field(name=f'Date', value="{}".format(sublist[1]))
+                        embed.add_field(name=f'Flight', value=f"{sublist[7]} {sublist[4]}")
+                        embed.add_field(name=f'Date', value="{}".format(sublist[3]))
                         embed.add_field(name=f'Trip Start', value="{}".format(sublist[5]))
                         embed.add_field(name=f'Trip End', value="{}".format(sublist[6]))
-                        embed.add_field(name=f'Registration', value="{}".format(sublist[7]))
+                        embed.add_field(name=f'Registration', value="{}".format(sublist[1]))
                         if len(sublist) > 8:
                             embed.add_field(name='Notes:', value=sublist[8].strip('"'))
-                        # embed.set_thumbnail(url=image)
+                        embed.set_thumbnail(url=imgURL)
+                        embed.add_field(name='Photo', value=f'Photo by {photographer} on [planespotters.net]({url})')
     
                         await logsthread.send(embed=embed)
                         time.sleep(2)   
