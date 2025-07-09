@@ -3529,15 +3529,22 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
                 return
         
         # find info for the airports
-        startinfo = get_airport_data(start)
-        endinfo = get_airport_data(end)
+        # print('getting airport data')
+        # startinfo = get_airport_data(start)
+        # endinfo = get_airport_data(end)
+        # print('got airport data')
         # get photo
+        print('getting the pic')
+        response = await getplaneimage(registration)
+        print('got the pic')
         try:
-            response = getplaneimage(registration)
+            if not response.get('photos'):
+                raise ValueError("No photos found for this registration")
             photo = response['photos'][0]
             imgURL = photo['thumbnail']['src']
             photographer = photo['photographer']
             url = photo['link']
+
         except Exception as e:
             await printlog(f'Error getting image: {e}')
             imgURL = None
@@ -3552,7 +3559,7 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
         embed.add_field(name="Flight", value=f'{airline} {flightnumber}')
         embed.add_field(name="Aircraft", value=f'{type} ({registration})')
         embed.add_field(name="Date", value=savedate)
-        embed.add_field(name="Trip", value=f':flag_{startinfo['country_code'].lower()}: {startinfo['name']} to :flag_{endinfo['country_code'].lower()}: {endinfo['name']}')
+        embed.add_field(name="Trip", value=f'{start.upper()} to {end.upper()}')
         embed.set_thumbnail(url=imgURL)
         embed.add_field(name="Photo", value=f'Photo by {photographer} on [planespotters.net]({url})')
         embed.set_footer(text=f"Log ID #{id}")

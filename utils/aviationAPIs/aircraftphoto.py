@@ -1,8 +1,9 @@
 import requests
 
-def getplaneimage(rego):
+async def getplaneimage(rego):
     url = f'https://api.planespotters.net/pub/photos/reg/{rego}'
     response = requests.get(url)
+    print('got image')
     
     if response.status_code == 200:
         return response.json()
