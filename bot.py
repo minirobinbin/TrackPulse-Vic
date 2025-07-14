@@ -5808,16 +5808,24 @@ async def run_in_thread(ctx, operator):
 @schedule.command(name="add", description="Add a train to make its run be send in a channel every 30 minutes.")
 @app_commands.describe(train="A carriage number on the train to send, eg 860M", channel="The channel to send the run to")
 async def add_schedule(ctx, train: str, channel: discord.TextChannel):
-    log_command(ctx.user.id, 'add-schedule')
-    await ctx.response.defer()
-    await trainTimleyFetcherAdd(ctx, train, channel, 30)
+    if ctx.user.guild_permissions.administrator:
+        log_command(ctx.user.id, 'add-schedule')
+        await ctx.response.defer()
+        await trainTimleyFetcherAdd(ctx, train, channel, 30)
+    else:
+        await ctx.response.send_message("Only administrators can add schedules.", ephemeral=True)
+        return
     
 @schedule.command(name="remove", description="Remove a train to make its run not be send in the channel.")
 @app_commands.describe(train="The carriage number of the train to stop sending, eg 860M", channel="The channel to stop sending the run to.")
 async def add_schedule(ctx, train: str, channel: discord.TextChannel):
-    log_command(ctx.user.id, 'remove-schedule')
-    await ctx.response.defer()
-    await trainTimleyFetcherRemove(ctx, train, channel)
+    if ctx.user.guild_permissions.administrator:
+        log_command(ctx.user.id, 'remove-schedule')
+        await ctx.response.defer()
+        await trainTimleyFetcherRemove(ctx, train, channel)
+    else:
+        await ctx.response.send_message("Only administrators can remove schedules.", ephemeral=True)
+        return
     
 @schedule.command(name="list", description="List all trains that are being sent in a channel.")
 async def list_schedule(ctx, channel: discord.TextChannel):
