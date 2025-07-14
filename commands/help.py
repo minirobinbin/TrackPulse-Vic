@@ -21,6 +21,9 @@ async def helpCommand(ctx,category,command):
             "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
             "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
             "</year-in-review:1294634052099375155> - View your year in review with key stats from your logs.",
+            "</schedule add:1394221058890010635 - Add a train to be sent in a channel every 30 minutes.",
+            "</schedule remove:1394221058890010635> - Remove a train to stop being sent in a channel.",
+            "</schedule list:1394221058890010635> - List all the trains that are being sent in a channel.",
         ],
         "fun": [
             "</games station-guesser:1240101357847838813> - Play a game where you guess what station a photo was taken at.",
