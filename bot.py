@@ -643,7 +643,7 @@ async def trainTimleyCheckerLoop():
                     if str(train[0]) == str(channel[1]):
                         print(f"channele: {channel[0]}")
                         channelID = bot.get_channel(int(channel[0]))
-                        await channelID.send(f"Train {train[0]} is not currently running")
+                        await channelID.send(f"{train[0]} is not currently running")
                     else:
                         print(f'{train[0]} not {channel[1]}')
             else:
