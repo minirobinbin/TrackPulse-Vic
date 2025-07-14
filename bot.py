@@ -51,7 +51,7 @@ from commands.NSWsearchtrain import NSWsearchTrainCommand
 from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
-from commands.traintimleyfetcher import seeWhereTrainsAre
+from commands.traintimleyfetcher import getchannelstocheck, seeWhereTrainsAre, trainTimleyFetcherAdd, trainTimleyFetcherList, trainTimleyFetcherRemove
 from utils.aviationAPIs.airportdata import get_airport_data
 from utils.aviationAPIs.aircraftphoto import getplaneimage
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
@@ -144,6 +144,7 @@ from utils.locationfromid import *
 from utils.stationDisruptions import *
 from utils.stats.stats import *
 from utils.vlineTrickery import getVlineStopType
+import threading
 
 
 
@@ -416,6 +417,7 @@ myki = CommandGroups(name='myki')
 completion = CommandGroups(name='completion')
 achievements = CommandGroups(name='achievements')
 favourites = CommandGroups(name='favourite')
+schedule = CommandGroups(name='schedule')
 
 async def download_csv(url, save_path):
         response = requests.get(url)
@@ -447,6 +449,7 @@ async def on_ready():
     bot.tree.add_command(completion)
     bot.tree.add_command(achievements)
     bot.tree.add_command(favourites)
+    bot.tree.add_command(schedule)
 
     try:
         await channel.send(f"""TrackPulse Vic Copyright (C) 2024  Billy Evans
@@ -456,6 +459,8 @@ async def on_ready():
     except Exception as e:
         await printlog(f'Error: {e}\n make sure the bot has premission to send in the startup channel')
         return
+    
+    trainTimleyCheckerLoop.start()  # Start the train timley checker loop
     
     try:
         task_loop.start()
@@ -615,6 +620,54 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
     
+@tasks.loop(minutes=30)
+async def trainTimleyCheckerLoop():
+    # Run the train location checking in a background task so it doesn't block the bot
+    async def run_checker():
+        await printlog('Starting the train timley checker certified software solution!')
+        channels = getchannelstocheck()
+        trains = []
+        
+        for thing in channels:
+            if thing not in trains:
+                trains.append(thing[1])
+        print('the trains to check:', trains)
+        # try:
+        tlocs = await seeWhereTrainsAre(trains)
+        print(f'tlocs: {tlocs}')
+
+        for train in tlocs:
+            if train[1].startswith('No trip data available'):
+                print(f'cant find run for {train[0]}')
+                for channel in channels:
+                    if str(train[0]) == str(channel[1]):
+                        print(f"channele: {channel[0]}")
+                        channelID = bot.get_channel(int(channel[0]))
+                        await channelID.send(f"Train {train[0]} is not currently running")
+                    else:
+                        print(f'{train[0]} not {channel[1]}')
+            else:
+                print(f'found run for {train[4]}')
+                for channel in channels:
+                    if str(train[4]) == str(channel[1]):
+                        embed = discord.Embed(title=f'{train[4]}\'s Location', description=f'{train[1]} line to {train[5]}', url=train[2], color=lines_dictionary_main[train[1]][1], timestamp=datetime.now())
+                        
+                        #image
+                        image = discord.File(f'temp/{train[0]}', filename="map.png")
+                        embed.set_image(url="attachment://map.png")
+                        
+                        channelID = bot.get_channel(int(channel[0]))
+                        await channelID.send(embed=embed, file=image)
+                    else:
+                        print(f'{train[4]} not {channel[1]}')
+
+        # except Exception as e:
+        #     await printlog(f"Error in train timley checker: {e}")
+
+    # Start the checker as a background task so it doesn't block the event loop
+    await run_checker()
+            
+
 # @tasks.loop(minutes=15)
 # async def task_loop():
     # Create a new thread to run checkRareTrainsOnRoute
@@ -5513,12 +5566,13 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_pre_munnel.
 
 @bot.command(name='testfind')
 async def testfind(ctx):
-    info = await seeWhereTrainsAre(['271M'])
+    info = await seeWhereTrainsAre(['271M', '115M'])
     print(info)
-    embed = discord.Embed(title=f'{info[4]}\'s Location')
-    embed.add_field(name='Line', value=f'{info[1]} line to {info[5]}')
-    embed.add_field(name='URL', value=info[2])
-    await ctx.send(embed=embed)
+    for train in info:
+        embed = discord.Embed(title=f'{train[4]}\'s Location')
+        embed.add_field(name='Line', value=f'{train[1]} line to {train[5]}')
+        embed.add_field(name='URL', value=train[2])
+        await ctx.send(embed=embed)
     
 
 # achievement commands
@@ -5750,6 +5804,26 @@ async def run_in_thread(ctx, operator):
     with open('utils/line-status-data.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(statuses)
+        
+@schedule.command(name="add", description="Add a train to make its run be send in a channel every 30 minutes.")
+@app_commands.describe(train="A carriage number on the train to send, eg 860M", channel="The channel to send the run to")
+async def add_schedule(ctx, train: str, channel: discord.TextChannel):
+    log_command(ctx.user.id, 'add-schedule')
+    await ctx.response.defer()
+    await trainTimleyFetcherAdd(ctx, train, channel, 30)
+    
+@schedule.command(name="remove", description="Remove a train to make its run not be send in the channel.")
+@app_commands.describe(train="The carriage number of the train to stop sending, eg 860M", channel="The channel to stop sending the run to.")
+async def add_schedule(ctx, train: str, channel: discord.TextChannel):
+    log_command(ctx.user.id, 'remove-schedule')
+    await ctx.response.defer()
+    await trainTimleyFetcherRemove(ctx, train, channel)
+    
+@schedule.command(name="list", description="List all trains that are being sent in a channel.")
+async def list_schedule(ctx, channel: discord.TextChannel):
+    log_command(ctx.user.id, 'view-schedule-list')
+    await ctx.response.defer()
+    await trainTimleyFetcherList(ctx, channel)
 
 #about/credits
 @bot.tree.command(name="about", description="View information about the bot.")
