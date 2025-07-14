@@ -648,6 +648,11 @@ async def trainTimleyCheckerLoop():
                         print(f'{train[0]} not {channel[1]}')
             else:
                 print(f'found run for {train[4]}')
+                # store the coords in the history csv
+                with open(f'utils/schedule/history/{train[4]}.csv', 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([train[1], train[2], train[3], train[4], train[5], train[6], train[7]])
+                
                 for channel in channels:
                     if str(train[4]) == str(channel[1]):
                         embed = discord.Embed(title=f'{train[4]}\'s Location', description=f'{train[1]} line to {train[5]}', url=train[2], color=lines_dictionary_main[train[1]][1], timestamp=datetime.now())

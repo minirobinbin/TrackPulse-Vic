@@ -116,7 +116,7 @@ async def getinfo(train):
         if os.path.exists(file_path):
                 file = f"{train}-map.png"
                 
-                return file, line, url, stoppingPattern, train, lastStop
+                return file, line, url, stoppingPattern, train, lastStop, latitude , longitude
         else:
             return(f"Error: Map file '{file_path}' not found.")
     except Exception as e:
