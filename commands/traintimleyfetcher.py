@@ -14,6 +14,7 @@ import asyncio
 
 async def trainTimleyFetcherAdd(ctx, train, channel, frequency):
     conn = sqlite3.connect('utils/schedule/channels.db')
+    # create the table if it done't exist
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS train_timely (
@@ -24,12 +25,25 @@ async def trainTimleyFetcherAdd(ctx, train, channel, frequency):
         )
     ''')
     cursor.execute('''
+        SELECT train, frequency FROM train_timely WHERE channel = ?
+    ''', (channel.id,))
+    rows = cursor.fetchall()
+    
+    if len(rows)>= 10:
+        await ctx.followup.send("You can only track a maximum of 10 trains in a channel.")
+        return
+    if any(row[0] == train for row in rows):
+        await ctx.followup.send(f"{train} is already being tracked in this channel.")
+        return
+
+    cursor.execute('''
         INSERT INTO train_timely (channel, train, frequency)
         VALUES (?, ?, ?)
     ''', (channel.id, train, frequency))
     conn.commit()
     conn.close()
     embed = discord.Embed(title="Train added to tracking", description=f"The current run for {train} will be sent in {channel.mention} every {frequency} minutes.") 
+    embed.set_footer(text=f"{10-len(rows)} slots remaining in this channel.")
     await ctx.followup.send(embed=embed)
 
 async def trainTimleyFetcherRemove(ctx, train, channel):
