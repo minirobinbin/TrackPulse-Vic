@@ -649,7 +649,7 @@ async def trainTimleyCheckerLoop():
             else:
                 print(f'found run for {train[4]}')
                 # store the coords in the history csv
-                with open(f'utils/schedule/history/{train[4]}.csv', 'w', newline='') as file:
+                with open(f'utils/schedule/history/{train[4]}.csv', 'a', newline='') as file:
                     writer = csv.writer(file)
                     writer.writerow([train[1], train[2], train[3], train[4], train[5], train[6], train[7]])
                 
