@@ -656,6 +656,7 @@ async def trainTimleyCheckerLoop():
                 for channel in channels:
                     if str(train[4]) == str(channel[1]):
                         embed = discord.Embed(title=f'{train[4]}\'s Location', description=f'{train[1]} line to {train[5]}', url=train[2], color=lines_dictionary_main[train[1]][1], timestamp=datetime.now())
+                        embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
                         
                         #image
                         image = discord.File(f'temp/{train[0]}', filename="map.png")
