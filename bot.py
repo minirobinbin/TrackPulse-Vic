@@ -651,7 +651,7 @@ async def trainTimleyCheckerLoop():
                 # store the coords in the history csv
                 with open(f'utils/schedule/history/{train[4]}.csv', 'a', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow([train[1], train[2], train[3], train[4], train[5], train[6], train[7]])
+                    writer.writerow([train[1], train[2], train[3], train[4], train[5], train[6], train[7], datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
                 
                 for channel in channels:
                     if str(train[4]) == str(channel[1]):
