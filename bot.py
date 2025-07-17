@@ -5953,6 +5953,20 @@ async def send(ctx, user: discord.Member, *, message: str):
             await ctx.send("Couldn't send a message to that user.")
     else:
         await ctx.send("You are not authorized to use this command.")
+        
+# export train data
+@bot.command()
+async def exporthistory(ctx, train:str):
+    if ctx.author.id in admin_users:
+        filepath = f'utils/schedule/history/{train}.csv'
+        if not os.path.exists(filepath):
+            await ctx.send(f"No history found for train {train}.")
+            return
+    
+        log_command(ctx.author.id, 'export-history')
+        await ctx.send(file=discord.File(filepath, filename=f"{train}.csv"))
+    else:
+        await ctx.send("Currently only admins can export train history, in the future this data may become available to all users.")
 
 # analytics viewer
 @bot.command()
