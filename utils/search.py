@@ -2,6 +2,10 @@ import requests
 from utils.keyCalc import *
 import csv
 import json
+import os
+import pickle
+import time
+from pathlib import Path
 
 def search_api_request(search_term):
     # API endpoint URL
@@ -79,22 +83,35 @@ def routes_list(type):
         formatted = json.dumps(data, indent=4)
         return(formatted)
     else:
-        # Print an error message if the request was not successful
         print(f"Error: {response.status_code} - {response.text}")
 
 def runs_api_request(route_id):
-    # API endpoint URL
+    cache_dir = Path('cache')
+    cache_dir.mkdir(exist_ok=True)
+    cache_file = cache_dir / f"{route_id}.pkl"
+    
+    # check if cache exists withing 2 mins
+    if cache_file.exists():
+        cache_time = os.path.getmtime(cache_file)
+        if time.time() - cache_time < 120:
+            with open(cache_file, 'rb') as f:
+                print(f"Reading from cache for route_id: {route_id}")
+                return pickle.load(f)
+    
     url = getUrl(f'/v3/runs/route/{route_id}?expand=All')
-    print(f"search url: {url}")
+    print(f"not using cache, search url: {url}")
     
     response = requests.get(url)
     
-    # Check if the request was successful
     if response.status_code == 200:
         data = response.json()
-        return(data)
+        # Save to cache
+        with open(cache_file, 'wb') as f:
+            pickle.dump(data, f)
+        return data
     else:
         print(f"Error: {response.status_code} - {response.text}")
+        return None
         
 def runs_ref_api_request(ref):
     # API endpoint URL

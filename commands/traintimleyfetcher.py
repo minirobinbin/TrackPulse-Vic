@@ -138,19 +138,17 @@ async def getinfo(train):
 
 import concurrent.futures
 
-async def seeWhereTrainsAre(trains:list):
+async def seeWhereTrainsAre(trains: list):
     locations = []
     with concurrent.futures.ThreadPoolExecutor() as executor:
         loop = asyncio.get_event_loop()
         
-        futures = [
-            loop.run_in_executor(
+        for train in trains:
+            future = loop.run_in_executor(
                 executor, 
-                lambda train=train: asyncio.run(getinfo(train)) # calling async function in thread requires this
+                lambda t=train: asyncio.run(getinfo(t))  # calling async function in thread
             )
-            for train in trains
-        ]
-        
-        for result in await asyncio.gather(*futures):
-            locations.append(result)
+            locations.append(await future)
+            await asyncio.sleep(1)  # Wait 1 second before processing next train
+            
     return locations
