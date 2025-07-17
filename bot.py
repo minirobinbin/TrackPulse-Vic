@@ -620,7 +620,7 @@ async def task_loop():
     else:
         print("Rare checker not enabled!")
     
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=10)
 async def trainTimleyCheckerLoop():
     # Run the train location checking in a background task so it doesn't block the bot
     async def run_checker():
@@ -669,7 +669,7 @@ async def trainTimleyCheckerLoop():
         # except Exception as e:
         #     await printlog(f"Error in train timley checker: {e}")
 
-    # Start the checker as a background task so it doesn't block the event loop
+    # Start the checker as a background task so it doesn't block the  loop
     await run_checker()
             
 
@@ -5810,13 +5810,13 @@ async def run_in_thread(ctx, operator):
         writer = csv.writer(file)
         writer.writerow(statuses)
         
-@schedule.command(name="add", description="Add a train to make its run be send in a channel every 30 minutes.")
+@schedule.command(name="add", description="Add a train to make its run be send in a channel every 10 minutes.")
 @app_commands.describe(train="A carriage number on the train to send, eg 860M", channel="The channel to send the run to")
 async def add_schedule(ctx, train: str, channel: discord.TextChannel):
     if ctx.user.guild_permissions.administrator:
         log_command(ctx.user.id, 'add-schedule')
         await ctx.response.defer()
-        await trainTimleyFetcherAdd(ctx, train, channel, 30)
+        await trainTimleyFetcherAdd(ctx, train, channel, 10)
     else:
         await ctx.response.send_message("Only administrators can add schedules.", ephemeral=True)
         return
