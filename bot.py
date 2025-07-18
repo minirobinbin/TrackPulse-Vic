@@ -619,11 +619,15 @@ async def task_loop():
         thread.start()
     else:
         print("Rare checker not enabled!")
-    
-@tasks.loop(minutes=10)
+
+
+global secondLoop # var to see every second loop
+secondLoop = True
+@tasks.loop(minutes=5)
 async def trainTimleyCheckerLoop():
     # Run the train location checking in a background task so it doesn't block the bot
     async def run_checker():
+        global secondLoop
         await printlog('Starting the train timley checker certified software solution!')
         channels = getchannelstocheck()
         trains = []
@@ -654,18 +658,23 @@ async def trainTimleyCheckerLoop():
                     writer.writerow([train[1], train[2], train[3], train[4], train[5], train[6], train[7], datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
                 
                 for channel in channels:
-                    if str(train[4]) == str(channel[1]):
-                        embed = discord.Embed(title=f'{train[4]}\'s Location', description=f'{train[1]} line to {train[5]}', url=train[2], color=lines_dictionary_main[train[1]][1], timestamp=datetime.now())
-                        embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
-                        
-                        #image
-                        image = discord.File(f'temp/{train[0]}', filename="map.png")
-                        embed.set_image(url="attachment://map.png")
-                        
-                        channelID = bot.get_channel(int(channel[0]))
-                        await channelID.send(embed=embed, file=image)
+                    if secondLoop:
+                        if str(train[4]) == str(channel[1]):
+                            embed = discord.Embed(title=f'{train[4]}\'s Location', description=f'{train[1]} line to {train[5]}', url=train[2], color=lines_dictionary_main[train[1]][1], timestamp=datetime.now())
+                            embed.set_footer(text='Maps © Thunderforest, Data © OpenStreetMap contributors')
+                            
+                            #image
+                            image = discord.File(f'temp/{train[0]}', filename="map.png")
+                            embed.set_image(url="attachment://map.png")
+                            
+                            channelID = bot.get_channel(int(channel[0]))
+                            await channelID.send(embed=embed, file=image)
+                        else:
+                            print(f'{train[4]} not {channel[1]}')
+                        secondLoop = False
                     else:
-                        print(f'{train[4]} not {channel[1]}')
+                        print('not sending, secondLoop is False')
+                        secondLoop = True
 
         # except Exception as e:
         #     await printlog(f"Error in train timley checker: {e}")
