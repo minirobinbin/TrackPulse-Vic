@@ -2955,6 +2955,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     app_commands.Choice(name="Adelaide Tram", value="adelaide-trams"),
     app_commands.Choice(name="Perth Train", value="perth-trains"),
     app_commands.Choice(name="Bus", value="bus"),
+    app_commands.Choice(name="Flight", value="flights"),
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
     class DeleteConfirmation(discord.ui.View):
