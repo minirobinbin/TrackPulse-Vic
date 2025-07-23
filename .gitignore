@@ -8,7 +8,8 @@ logs.txt
 userdata/
 utils/game/scores/
 utils/trainlogger/userdatabackup
-photo-submissions/
+photosubmissions/photos/
+photosubmissions/db.db
 temp/
 utils/line-status-data.csv
 logins/

@@ -52,6 +52,7 @@ from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 from commands.traintimleyfetcher import getchannelstocheck, seeWhereTrainsAre, trainTimleyFetcherAdd, trainTimleyFetcherList, trainTimleyFetcherRemove
+from photosubmissions.manager import addSubmission, removeSubmission, returnQueue
 from utils.aviationAPIs.airportdata import get_airport_data
 from utils.aviationAPIs.aircraftphoto import getplaneimage
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
@@ -298,7 +299,7 @@ bus_coach_stops = sorted(set(bus_coach_stops))
 
 # Create required folders cause their not on github
 required_folders = ['utils/trainlogger/userdata','temp','utils/trainlogger/userdata/adelaide-trains','utils/trainlogger/userdata/adelaide-trams','utils/trainlogger/userdata/sydney-trains','utils/trainlogger/userdata/sydney-trams','utils/trainlogger/userdata/perth-trains','utils/trainlogger/userdata/bus','utils/trainlogger/userdata/tram',
-                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/images','utils/game/scores','photo-submissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps', 'utils/trainlogger/userdata/flights', 'utils/schedule/history', 'cache']
+                    'utils/trainlogger/achievements/data','utils/train/images','utils/game/images','utils/game/scores','photosubmissions','logins','utils/favourites/data','utils/trainlogger/userdata/maps', 'utils/trainlogger/userdata/flights', 'utils/schedule/history', 'cache']
 for folder in required_folders:
     if os.path.exists(folder) and os.path.isdir(folder):
         print(f"{folder} exists")
@@ -5015,9 +5016,9 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
     log_command(ctx.user.id, 'submit-photo')
     async def submitPhoto():
         # see if they diddnt put a car number
-        if photofor == 'website' and number == '':
-            await ctx.edit_original_response(content="Please provide the number for the train in the photo.")
-            return
+        # if photofor == 'website' and number == '':
+        #     await ctx.edit_original_response(content="Please provide the number for the train in the photo.")
+        #     return
         
         target_guild_id = 1214139268725870602
         target_channel_id = 1238821549352685568
@@ -5030,17 +5031,19 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
             public_channel = target_guild.get_channel(showcase_channel)
             if channel:
                 if photo.content_type.startswith('image/'):
-                    await photo.save(f"./photo-submissions/{photo.filename}")
-                    file = discord.File(f"./photo-submissions/{photo.filename}")
-                    await channel.send(f'# Photo submitted for {photofor} by <@{ctx.user.id}>:\n- Number {number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ', file=file) # type: ignore
+                    await photo.save(f"./photosubmissions/photos/{photo.filename}")
+                    file = discord.File(f"./photosubmissions/photos/{photo.filename}")
+                    subid, queue = await addSubmission(photo.filename, ctx.user.id, date, location, photofor, number)
+                    await channel.send(f'# Photo submitted for {photofor} by <@{ctx.user.id}>:\n- Number {number}\n- Date: {date}\n- Location: {location}\n<@780303451980038165> ID = `{subid}`', file=file) # type: ignore
                     
                     # publically send embed
                     embed = discord.Embed(title='Photo Submission', 
                       description=f'Photo submitted by <@{ctx.user.id}> for {photofor}:\n- Number {number}\n- Date: {date}\n- Location: {location}')
-                    file = discord.File(f"./photo-submissions/{photo.filename}", filename=f'{photo.filename}')
+                    file = discord.File(f"./photosubmissions/photos/{photo.filename}", filename=f'{photo.filename}')
                     embed.set_image(url=f"attachment://{photo.filename}")
+                    embed.set_footer(text=f'Position in queue: {queue} | ID: {subid}')
                     await public_channel.send(embed=embed, file=file) # type: ignore
-                    await ctx.edit_original_response(content='Your photo has been submitted and will be reviewed shortly!\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://victorianrailphotos.com.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)')
+                    await ctx.edit_original_response(content=f'Your photo has been submitted! `Position in queue: {queue}`\nSubmitted photos can be used in their original form with proper attribution to represent trains, trams, groupings, stations, and stops. They will be featured on the Discord bot and on https://victorianrailphotos.com.\n[Join the Discord server to be notified when you photo is accepted.](https://discord.gg/nfAqAnceQ5)\nTo ensure your photo is on the website it must follow [these guidelines](https://docs.google.com/document/d/e/2PACX-1vRd6gGTd-hWTjT-eyorgvnm9asDlBTzy8nKPfBdxl2_W_qzSPKj1G7stPEtgxGN3s4Mrplz63cA3L8h/pub).')
                 else:
                     await ctx.edit_original_response(content="Please upload a valid image file.")
             else:
@@ -5049,6 +5052,50 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
             await ctx.edit_original_response(content="Error: Target guild not found.")
 
     await submitPhoto()
+    
+@bot.command(name='accept', description="Accept a photo submission from the queue")
+async def accept(ctx, id: int):
+    if ctx.author.id in admin_users:
+        userid = await removeSubmission(id)
+        userid = bot.get_user(int(userid))
+        
+        m = f'sent message confirming to user ID: {userid.mention}'
+        try:
+            await userid.send(f"Your photo with id {id} of your photos has been accepted and removed from the queue. You can see it shortly in the bot and on the website/game.")
+        except:
+            m = (f"Could not send message to user ID: {userid.id}. They may have DMs disabled.")
+        await ctx.send(f"Submission with queue number {id} has been accepted and removed from the queue. {m}")
+
+@bot.command(name='reject', description="Reject a photo submission from the queue")
+async def reject(ctx, id: int, *, reason: str):
+    if ctx.author.id in admin_users:
+        userid = await removeSubmission(id)
+        user = bot.get_user(int(userid))
+        
+        m = f'Sent message confirming to user ID: {user.mention}'
+        try:
+            await user.send(f"One of your photos has been rejected and removed from the queue.\nReason: {reason}")
+        except:
+            m = (f"Could not send message to user ID: {userid}. They may have DMs disabled.")
+        await ctx.send(f"Submission with queue number {id} has been rejected and removed from the queue. {m}")
+    
+@bot.tree.command(name='queue', description="View the current photo submission queue")
+async def queue(ctx: discord.Interaction):
+    await ctx.response.defer()
+    if ctx.user.id in admin_users:
+        data = await returnQueue()
+        embed = discord.Embed(title='Photo Submission Queue (top 25)')
+    else:
+        data = await returnQueue(ctx.user.id)
+        embed = discord.Embed(title='Your photo Submission Queue (top 25)')
+        
+    count = 1
+    for item in data:
+        embed.add_field(name=item[1], value=f'Photo ID: **{item[0]}**, Location: {item[5]}', inline=False)
+        count += 1
+        if count == 25:
+            break
+    await ctx.edit_original_response(embed=embed)
     
 @stats.command(name='profile', description="Shows a users trip log stats, and leaderboard wins")    
 async def profile(ctx, user: discord.User = None):
