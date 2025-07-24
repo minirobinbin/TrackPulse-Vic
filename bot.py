@@ -5006,8 +5006,7 @@ async def sets(ctx, state:str):
 @app_commands.choices(photofor=[
     app_commands.Choice(name="Railway Photo & Bot train search", value="website"),
     app_commands.Choice(name="Bot/Website Station Photo Guessing Game", value="guesser"),
-    app_commands.Choice(name="Both", value="both"),
-
+    
 ])
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
