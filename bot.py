@@ -5090,7 +5090,8 @@ async def queue(ctx: discord.Interaction):
         
     count = 1
     for item in data:
-        embed.add_field(name=item[1], value=f'Photo ID: **{item[0]}**, Train {item[7]}, Location: {item[5]}', inline=False)
+        userMention = discord.user(int(item[3])).mention
+        embed.add_field(name=item[1], value=f'Photo ID: **{item[0]}**, Train {item[7]}, Location: {item[5]}\nSubmitted by {userMention}', inline=False)
         count += 1
         if count == 25:
             break
