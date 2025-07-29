@@ -5090,9 +5090,9 @@ async def queue(ctx: discord.Interaction):
         embed = discord.Embed(title='Photo Submission Queue (top 25)')
     else:
         data = await returnQueue(ctx.user.id)
-        embed = discord.Embed(title='Your photo Submission Queue (top 25)')
+        embed = discord.Embed(title='Your photo Submission Queue (top 25)', description=f'Total items: {len(data)}')
         
-    count = 1
+    count = 0
     for item in data:
         userMention = bot.get_user(int(item[3]))
         embed.add_field(name=item[1], value=f'Photo ID: **{item[0]}**, Train {item[7]}, Location: {item[5]}\nSubmitted by {userMention.mention}', inline=False)
