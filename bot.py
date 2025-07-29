@@ -2918,12 +2918,14 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                     first_car = set[:hyphen_index]
                     await printlog(f'First car: {first_car}')
                     image = getImage(first_car)
+                    credits = getPhotoCredits(first_car)
                     if image == None:
                         last_hyphen = set.rfind("-")
                         if last_hyphen != -1:
                             last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
                             await printlog(f'Last car: {last_car}')
                             image = getImage(last_car)
+                            credits = getPhotoCredits(last_car)
                             if image == None:
                                 image = getImage(type_final)
                                 await printlog(f'the loco number is: {set}')
@@ -2933,7 +2935,9 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         except Exception as e:
             await printlog(f"Error getting image: {e}")
 
-        embed.set_footer(text=f"Log ID #{id}")
+        footer = f"Log ID #{id}"
+        footer += f'| Photo by {credits}' if credits else ''
+        embed.set_footer(text=footer)
         
         await ctx.edit_original_response(embed=embed)
         await addAchievement(ctx.user.name, ctx.channel.id, ctx.user.mention)
@@ -5086,9 +5090,9 @@ async def queue(ctx: discord.Interaction):
         embed = discord.Embed(title='Photo Submission Queue (top 25)')
     else:
         data = await returnQueue(ctx.user.id)
-        embed = discord.Embed(title='Your photo Submission Queue (top 25)')
+        embed = discord.Embed(title='Your photo Submission Queue (top 25)', description=f'Total items: {len(data)}')
         
-    count = 1
+    count = 0
     for item in data:
         userMention = bot.get_user(int(item[3]))
         embed.add_field(name=item[1], value=f'Photo ID: **{item[0]}**, Train {item[7]}, Location: {item[5]}\nSubmitted by {userMention.mention}', inline=False)
