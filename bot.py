@@ -2913,19 +2913,22 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                 image = getImage(set)
 
             else:
+                credits = None
                 hyphen_index = set.find("-")
                 if hyphen_index != -1:
                     first_car = set[:hyphen_index]
                     await printlog(f'First car: {first_car}')
                     image = getImage(first_car)
-                    credits = getPhotoCredits(first_car)
+                    if image is not None:
+                        credits = getPhotoCredits(first_car)
                     if image == None:
                         last_hyphen = set.rfind("-")
                         if last_hyphen != -1:
                             last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
                             await printlog(f'Last car: {last_car}')
                             image = getImage(last_car)
-                            credits = getPhotoCredits(last_car)
+                            if image is not None:
+                                credits = getPhotoCredits(last_car)
                             if image == None:
                                 image = getImage(type_final)
                                 await printlog(f'the loco number is: {set}')
@@ -2936,7 +2939,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             await printlog(f"Error getting image: {e}")
 
         footer = f"Log ID #{id}"
-        footer += f'| Photo by {credits}' if credits else ''
+        footer += f' | Photo by {credits}' if credits is not None else ''
         embed.set_footer(text=footer)
         
         await ctx.edit_original_response(embed=embed)
