@@ -587,7 +587,7 @@ async def log_rare_trains(rare_trains):
             await channel.send("Embed too big! There are many trains on the wrong line. Check ANYTRIP.")
             with open('logs.txt', 'a') as file:
                 file.write(f"Sent rare trains but it was too long")
-        await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!\n`Due to errors in the PTV api data out of our control, some data may be inaccurate.`')
+        await channel.send('<@&1227171023795781694> Trains found on lines they are not normally on!\n`Due to errors in the TV api data out of our control, some data may be inaccurate.`')
     else:
         await log_channel.send("None found")
 
@@ -698,7 +698,7 @@ async def trainTimleyCheckerLoop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-hangman','/games station-order','/help','/line-status','/log adelaide-train','/log adelaide-tram','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search ptv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-hangman','/games station-order','/help','/line-status','/log adelaide-train','/log adelaide-tram','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search tv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -1028,7 +1028,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
         
 '''
 # thing to save myki credentials to bot:
-@myki.command(name='save-login', description='Save your PTV account username and password to the bot, run it again to change your saved info')
+@myki.command(name='save-login', description='Save your TV account username and password to the bot, run it again to change your saved info')
 @app_commands.describe(ptvusername = "PTV accpunt username", ptvpassword = "PTV account password", encryptionpassword = "A password to encrypt your PTV password")
 async def login(ctx, ptvusername: str, ptvpassword: str, encryptionpassword: str):
     await ctx.response.defer(ephemeral=True)
@@ -1748,7 +1748,7 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
     
     
 # ptv api search command
-@search.command(name="ptv", description="Search stops, routes and myki ticket outlets provided by PTV")
+@search.command(name="tv", description="Search stops, routes and myki ticket outlets provided by Transport Victoria")
 @app_commands.describe(search="What to search for")
 @app_commands.choices(type=[
         app_commands.Choice(name="stops", value="stops"),
@@ -1794,19 +1794,19 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
 
                     if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
                         train_count +=1
-                        train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")                    
+                        train_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on Transport Victoria website]({url})\n")                    
                     elif emoji == "<:vline:1241165814258729092>" and vline_count < maximum_responses:
                         vline_count +=1
-                        vline_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                        vline_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on Transport Victoria website]({url})\n")
                     elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
                         tram_count +=1
-                        tram_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                        tram_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on Transport Victoria website]({url})\n")
                     elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
                         bus_count +=1
-                        bus_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                        bus_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on Transport Victoria website]({url})\n")
                     elif emoji == "<:coach:1241165858274021489>" and coach_count < maximum_responses:
                         coach_count +=1
-                        coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on PTV website]({url})\n")
+                        coach_list.append(f"**{stop_name}**\n{stop_suburb}\n[View on Transport Victoria website]({url})\n")
                 
                 if train_count != 0:
                     for train in train_list:
@@ -1867,20 +1867,20 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
 
                     if emoji == "<:train:1241164967789727744>" and train_count < maximum_responses:
                         train_count +=1
-                        train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")                    
+                        train_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on Transport Victoria website]({url})\n")                    
                     elif emoji == "<:vline:1241165814258729092>":
                         if route_id in vline_rail_lines and vline_count < maximum_responses:
                             vline_count +=1
-                            vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                            vline_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on Transport Victoria website]({url})\n")
                         if coach_count < maximum_responses:
                             coach_count +=1
-                            coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                            coach_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on Transport Victoria website]({url})\n")
                     elif emoji == "<:tram:1241165701390012476>" and tram_count < maximum_responses:
                         tram_count +=1
-                        tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                        tram_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on Transport Victoria website]({url})\n")
                     elif emoji == "<:bus:1241165769241530460>" and bus_count < maximum_responses:
                         bus_count +=1
-                        bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on PTV website]({url})\n")
+                        bus_list.append(f"**{route_number}{route_name}**\n{route_service_status}\n[View on Transport Victoria website]({url})\n")
                 
                 if train_count != 0:
                     for train in train_list:
@@ -5915,7 +5915,7 @@ async def about(ctx):
     embed.add_field(name="Developed by", value="[Xm9G](https://xm9g.net/)\n[Comeng17](https://github.com/Comeng17)", inline=True)
     embed.add_field(name="Contributions by",value='[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\nAperture',inline=True)
     embed.add_field(name='Photos sourced from',value="[Victorian Rail Photos](https://victorianrailphotos.com/)")
-    embed.add_field(name="Data Sources", value="[Public Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
+    embed.add_field(name="Data Sources", value="[Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Website', value='https://trackpulse.xm9g.net')
     embed.add_field(name='Discord Server', value='https://discord.gg/nfAqAnceQ5')
     embed.add_field(name='Report issues', value='[Report a bug on github](https://github.com/TrackPulse-Vic/TrackPulse-Vic/issues)')
@@ -6301,8 +6301,8 @@ async def syncgame(ctx):
 async def synclists(ctx):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-lists')
-        await printlog("Downloading stop name data from PTV")
-        await ctx.send("Downloading stop name data from PTV")
+        await printlog("Downloading stop name data from TV")
+        await ctx.send("Downloading stop name data from TV")
         try:
             downloader_function(0)
             await ctx.send("Metro stop data downloaded")
