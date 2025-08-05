@@ -2909,6 +2909,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             image = 'https://victorianrailphotos.com/photos/317M-6.webp'
         
         try:
+            credits = None
             if not '-' in set:
                 image = getImage(set)
 
