@@ -52,10 +52,11 @@ from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 from commands.traintimleyfetcher import getchannelstocheck, seeWhereTrainsAre, trainTimleyFetcherAdd, trainTimleyFetcherList, trainTimleyFetcherRemove
-from photosubmissions.manager import addSubmission, removeSubmission, returnQueue
+from photosubmissions.manager import addSubmission, getUserID, removeSubmission, returnQueue
 from utils.aviationAPIs.airportdata import get_airport_data
 from utils.aviationAPIs.aircraftphoto import getplaneimage
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
+from utils.vicrailphotosapi.accepter import acceptPhoto
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
@@ -2905,34 +2906,37 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        if type_final == 'Tait':
-            image = 'https://victorianrailphotos.com/photos/317M-6.webp'
         
         try:
             credits = None
             if not '-' in set:
-                image = getImage(set)
+                imagec = getImage(set)
+                image = imagec[0]
+                credits = imagec[1]
 
             else:
                 credits = None
                 hyphen_index = set.find("-")
+                
                 if hyphen_index != -1:
                     first_car = set[:hyphen_index]
                     await printlog(f'First car: {first_car}')
-                    image = getImage(first_car)
-                    if image is not None:
-                        credits = getPhotoCredits(first_car)
-                    if image == None:
+                    
+                    imagec = getImage(first_car)
+                    image, credits = imagec
+                    
+                    if image is None:
                         last_hyphen = set.rfind("-")
                         if last_hyphen != -1:
-                            last_car = set[last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                            last_car = set[last_hyphen + 1 :]
                             await printlog(f'Last car: {last_car}')
-                            image = getImage(last_car)
-                            if image is not None:
-                                credits = getPhotoCredits(last_car)
-                            if image == None:
-                                image = getImage(type_final)
+                            
+                            imagec = getImage(last_car)
+                            image, credits = imagec
+                            
+                            if image is None:
                                 await printlog(f'the loco number is: {set}')
+
             if image != None:
                 embed.set_thumbnail(url=image)
             
@@ -3992,23 +3996,32 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None, 
                         image = None
                         
                         # thing to find image:
-                        if not ('-' in sublist[1]):
-                            image = getImage(sublist[1])
+                        image, credits = None, None
+
+                        train_number = sublist[1]
+
+                        if "-" not in train_number:
+                            image, credits = getImage(train_number)
                         else:
-                            hyphen_index = sublist[1].find("-")
+                            hyphen_index = train_number.find("-")
                             if hyphen_index != -1:
-                                first_car = sublist[1][:hyphen_index]
+                                first_car = train_number[:hyphen_index]
                                 await printlog(f'First car: {first_car}')
-                                image = getImage(first_car)
-                                if image == None:
-                                    last_hyphen = sublist[1].rfind("-")
+                                
+                                image, credits = getImage(first_car)
+                                
+                                if image is None:
+                                    last_hyphen = train_number.rfind("-")
                                     if last_hyphen != -1:
-                                        last_car = sublist[1][last_hyphen + 1 :]  # Use last_hyphen instead of hyphen_index
+                                        last_car = train_number[last_hyphen + 1 :]
                                         await printlog(f'Last car: {last_car}')
-                                        image = getImage(last_car)
-                                        if image == None:
-                                            image = getImage(sublist[2])
-                                            await printlog(f'the loco number is: {sublist[1]}')
+                                        
+                                        image, credits = getImage(last_car)
+                                        
+                                        if image is None:
+                                            image, credits = getImage(sublist[2])
+                                            await printlog(f'the loco number is: {train_number}')
+
                                         
                         #send in thread to reduce spam!
                             # Make the embed
@@ -5060,18 +5073,29 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
 
     await submitPhoto()
     
-@bot.command(name='accept', description="Accept a photo submission from the queue")
-async def accept(ctx, id: int):
-    if ctx.author.id in admin_users:
-        userid = await removeSubmission(id)
+@bot.tree.command(name='accept', description="Accept a photo submission from the queue")
+async def accept(ctx, id: int, traintype:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
+    await ctx.response.defer()
+    if ctx.user.id in admin_users:
+        userid = await getUserID(id)
         userid = bot.get_user(int(userid))
+        apiResponse = acceptPhoto(id, userid.name, traintype, featured, note, number, location, date)
+        
+        print(apiResponse)
+        if 'error' in apiResponse.lower():
+            await ctx.followup.send(apiResponse)
+            return
+        
+        await removeSubmission(id)
         
         m = f'sent message confirming to user ID: {userid.mention}'
         try:
             await userid.send(f"Your photo with id {id} of your photos has been accepted and removed from the queue. You can see it shortly in the bot and on the website/game.")
         except:
             m = (f"Could not send message to user ID: {userid.id}. They may have DMs disabled.")
-        await ctx.send(f"Submission with queue number {id} has been accepted and removed from the queue. {m}")
+        await ctx.followup.send(f"Submission with queue number {id} has been accepted and removed from the queue. {m}")
+    else:
+        await ctx.followup.send("You do not have permission to use this command.")
 
 @bot.command(name='reject', description="Reject a photo submission from the queue")
 async def reject(ctx, id: int, *, reason: str):
