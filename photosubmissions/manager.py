@@ -35,6 +35,14 @@ async def removeSubmission(submission_id):
     conn.close()
     return userid
 
+async def getUserID(submission_id):
+    conn = sqlite3.connect('photosubmissions/db.db')
+    c = conn.cursor()
+    c.execute("SELECT userid FROM submissions WHERE id = ?", (submission_id,))
+    result = c.fetchone()
+    conn.close()
+    return result[0] if result else None
+
 async def returnQueue(user=None):
     conn = sqlite3.connect('photosubmissions/db.db')
     c = conn.cursor()
