@@ -52,10 +52,11 @@ from commands.logger.logqldtrain import logQLDtrain
 from commands.searchPhoto import searchTrainPhoto
 from commands.searchtrain import searchTrainCommand
 from commands.traintimleyfetcher import getchannelstocheck, seeWhereTrainsAre, trainTimleyFetcherAdd, trainTimleyFetcherList, trainTimleyFetcherRemove
-from photosubmissions.manager import addSubmission, removeSubmission, returnQueue
+from photosubmissions.manager import addSubmission, getUserID, removeSubmission, returnQueue
 from utils.aviationAPIs.airportdata import get_airport_data
 from utils.aviationAPIs.aircraftphoto import getplaneimage
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
+from utils.vicrailphotosapi.accepter import acceptPhoto
 sys.stdout = sys.__stdout__  # Reset stdout if needed
 
 original_open = builtins.open
@@ -5072,18 +5073,29 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
 
     await submitPhoto()
     
-@bot.command(name='accept', description="Accept a photo submission from the queue")
-async def accept(ctx, id: int):
-    if ctx.author.id in admin_users:
-        userid = await removeSubmission(id)
+@bot.tree.command(name='accept', description="Accept a photo submission from the queue")
+async def accept(ctx, id: int, traintype:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
+    await ctx.response.defer()
+    if ctx.user.id in admin_users:
+        userid = await getUserID(id)
         userid = bot.get_user(int(userid))
+        apiResponse = acceptPhoto(id, userid.name, traintype, featured, note, number, location, date)
+        
+        print(apiResponse)
+        if 'error' in apiResponse.lower():
+            await ctx.followup.send(apiResponse)
+            return
+        
+        await removeSubmission(id)
         
         m = f'sent message confirming to user ID: {userid.mention}'
         try:
             await userid.send(f"Your photo with id {id} of your photos has been accepted and removed from the queue. You can see it shortly in the bot and on the website/game.")
         except:
             m = (f"Could not send message to user ID: {userid.id}. They may have DMs disabled.")
-        await ctx.send(f"Submission with queue number {id} has been accepted and removed from the queue. {m}")
+        await ctx.followup.send(f"Submission with queue number {id} has been accepted and removed from the queue. {m}")
+    else:
+        await ctx.followup.send("You do not have permission to use this command.")
 
 @bot.command(name='reject', description="Reject a photo submission from the queue")
 async def reject(ctx, id: int, *, reason: str):
