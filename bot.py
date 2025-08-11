@@ -5074,13 +5074,13 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
     await submitPhoto()
     
 @bot.tree.command(name='accept', description="Accept a photo submission from the queue")
-async def accept(ctx, id: int, traintype:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
+async def accept(ctx, id: int, traintype:str, mode:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
     await ctx.response.defer()
     if ctx.user.id in admin_users:
         userid = await getUserID(id)
         userid = bot.get_user(int(userid))
-        apiResponse = acceptPhoto(id, userid.name, traintype, featured, note, number, location, date)
-        
+        apiResponse = await acceptPhoto(id, userid.name, traintype, featured, note, number, location, date, mode.lower())
+
         print(apiResponse)
         if 'error' in apiResponse.lower():
             await ctx.followup.send(apiResponse)
