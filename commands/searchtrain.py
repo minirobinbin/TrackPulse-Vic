@@ -229,12 +229,13 @@ async def searchTrainCommand(ctx, train: str, hide_run_info:bool=False, metro_co
                 infofield = discord.ui.TextDisplay(f'**Information:** None available')
                         
             # train image
-            image = getImage(train.upper())
+            image, credits = getImage(train.upper())
+
             if image != None:
                 galleryPic1 = discord.MediaGalleryItem(image)
                 gallery = discord.ui.MediaGallery(galleryPic1)
                 seperator1 = discord.ui.Separator()
-                sources = discord.ui.TextDisplay(f'-# **Sources:** [{getPhotoCredits(train.upper())} (Photo)](https://victorianrailphotos.com?number={train.upper()}), Vicsig & Wikipedia (Other info)')
+                sources = discord.ui.TextDisplay(f'-# **Sources:** [{credits} (Photo)](https://victorianrailphotos.com/trains/{train.upper()}), Vicsig & Wikipedia (Other info)')
             else:
                 seperator1 = discord.ui.Separator()
 

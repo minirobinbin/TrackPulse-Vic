@@ -1,3 +1,4 @@
+import time
 import discord
 import requests
 
@@ -25,35 +26,38 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
         image_count = 0
         images = []
         
-        # get the photo credits
-        from utils.photo import getPhotoCredits
-        
-        # search up to 5 photos of the carriage
-        for i in range(5):
-            if image_count >= 5:
-                break
-                
-            photoNumber = f"-{i+1}" if i > 0 else ""
-            carriage_num = f"{carriage}{photoNumber}"
+        # Fetch photos from new API
+        url = f'https://victorianrailphotos.com/api/photos/{carriage}'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+        except requests.RequestException as e:
+            print(f"Error fetching images for {carriage}: {e}")
+            data = {"photos": []}
+
+        # Loop through up to 5 photos
+        for photo in data.get("photos", [])[:5]:
+            photographer = photo.get("photographer", "Unknown")
+            photo_url = photo.get("url")
+            credits = photographer
             
-            credits = getPhotoCredits(carriage_num, state='VIC')
-            url = f'https://victorianrailphotos.com/photos/{carriage_num}.webp'
-            try:
-                response = requests.head(url)
-                if response.status_code == 200:
-                    gallery_item = discord.MediaGalleryItem(media=url, description=f'{carriage}, Photo by {credits}')
-                    images.append(gallery_item)
-                    allCredits.append(credits) if credits not in allCredits else None
-                    image_count += 1
-                else:
-                    if photoNumber == '':
-                        await ctx.followup.send(f"There are no photos of `{carriage_num}`.")
-                        continue
-                    else:
-                        print(f"Image not found for {carriage_num}.")
-                        break    
-            except requests.RequestException as e:
-                print(f"Error fetching image for {carriage_num}: {e}")
+            if not photo_url:
+                continue
+            
+            gallery_item = discord.MediaGalleryItem(
+                media=photo_url,
+                description=f'{carriage}, Photo by {credits}'
+            )
+            images.append(gallery_item)
+            
+            if credits not in allCredits:
+                allCredits.append(credits)
+            
+            image_count += 1
+
+        if image_count == 0:
+            await ctx.followup.send(f"There are no photos of `{carriage}`.")
         
         if images:
             class GalleryContainer(discord.ui.Container):
@@ -65,5 +69,6 @@ async def searchTrainPhoto(ctx, number:str, search_set:bool):
                     Gallery = GalleryContainer(id=1)
             
             await ctx.followup.send(view=GalleryView())
+    time.sleep(0.3)
     
     
