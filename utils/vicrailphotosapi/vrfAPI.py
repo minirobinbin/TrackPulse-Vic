@@ -6,7 +6,7 @@ def upload_image(image_path, number, train_type, location, date, photographer, f
     load_dotenv()
     api_token = os.getenv('VRF_TOKEN')
     
-    url = 'http://127.0.0.1:6966/api/upload'
+    url = 'http://victorianrailphotos.com/api/upload'
     # remember to set this to the actual site when done
     
     data = {
