@@ -21,6 +21,7 @@ from numbers import Number
 import operator
 from shutil import ExecError
 import shutil
+import sqlite3
 from tracemalloc import stop
 from cycler import V
 from discord.ext import commands, tasks
@@ -5073,13 +5074,51 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
 
     await submitPhoto()
     
+@bot.tree.command(name='alias', description='Set an alias for your photos to be displayed on VictorianRailPhotos')
+async def alias(ctx, name:str):
+    await ctx.response.defer()
+    conn = sqlite3.connect('userdata/aliases.db')
+    cursor = conn.cursor()
+    cursor.execute(f'''
+    CREATE TABLE IF NOT EXISTS aliases (
+        userid INTEGER PRIMARY KEY,
+        alias TEXT
+    )''')
+    cursor.execute(f'''
+    INSERT INTO aliases (userid, alias)
+    VALUES (?, ?)
+    ''', (ctx.user.id, name))
+    
+    conn.commit()
+    conn.close()
+    
+    await ctx.followup.send(f'Set alias to `{name}`')
+    
+    
+    
 @bot.tree.command(name='accept', description="Accept a photo submission from the queue")
 async def accept(ctx, id: int, traintype:str, mode:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
     await ctx.response.defer()
     if ctx.user.id in admin_users:
-        userid = await getUserID(id)
-        userid = bot.get_user(int(userid))
-        apiResponse = await acceptPhoto(id, userid.name, traintype, featured, note, number, location, date, mode.lower())
+        try:
+            userid = await getUserID(id)
+            userid = bot.get_user(int(userid))
+        except TypeError:
+            await ctx.followup.send('i cant find that id')
+
+        # see if thers an alias
+        conn = sqlite3.connect('userdata/aliases.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT alias FROM aliases WHERE userid = ?', (userid.id,))
+        result = cursor.fetchone()
+        conn.close()
+        # if its not use discord usernams
+        if result:
+            userName = result[0]
+        else:
+            userName = userid.name
+        
+        apiResponse = await acceptPhoto(id, userName, traintype, featured, note, number, location, date, mode.lower())
 
         print(apiResponse)
         if 'error' in apiResponse.lower():
