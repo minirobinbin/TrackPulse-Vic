@@ -6,7 +6,7 @@ from utils.vicrailphotosapi.vrfAPI import upload_image
 
 
 
-def acceptPhoto(id, username, trainType, featured:bool, note, number, location, date):
+def acceptPhoto(id, username, trainType, featured:bool, note, number, location, date, mode='train'):
     id = str(id)
     conn = sqlite3.connect('photosubmissions/db.db')
     c = conn.cursor()
@@ -45,7 +45,8 @@ def acceptPhoto(id, username, trainType, featured:bool, note, number, location, 
             date=date,
             photographer=username,
             featured='Y' if featured else 'N',
-            note=note
+            note=note,
+            mode=mode,
         )
 
         if 'error' in url:

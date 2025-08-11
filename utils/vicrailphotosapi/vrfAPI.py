@@ -2,11 +2,12 @@ import requests
 import os
 from dotenv import load_dotenv
 
-def upload_image(image_path, number, train_type, location, date, photographer, featured='N', note=''):
+def upload_image(image_path, number, train_type, location, date, photographer, featured='N', note='', mode='train'):
     load_dotenv()
     api_token = os.getenv('VRF_TOKEN')
     
-    url = 'http://victorianrailphotos.com/api/upload'
+    url = 'http://127.0.0.1:6966/api/upload'
+    # remember to set this to the actual site when done
     
     data = {
         'number': number,
@@ -15,7 +16,8 @@ def upload_image(image_path, number, train_type, location, date, photographer, f
         'date': date,
         'photographer': photographer,
         'featured': featured,
-        'note': note
+        'note': note,
+        'mode': mode,
     }
     
     # Prepare file
