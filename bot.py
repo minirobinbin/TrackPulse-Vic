@@ -5079,7 +5079,7 @@ async def accept(ctx, id: int, traintype:str, featured:bool=False, note:str=None
     if ctx.user.id in admin_users:
         userid = await getUserID(id)
         userid = bot.get_user(int(userid))
-        apiResponse = acceptPhoto(id, userid.name, traintype, featured, note, number, location, date, mode.lower())
+        apiResponse = await acceptPhoto(id, userid.name, traintype, featured, note, number, location, date, mode.lower())
 
         print(apiResponse)
         if 'error' in apiResponse.lower():
