@@ -63,10 +63,14 @@ def convertToWEBP(input_path, output_path, quality=100):
         
         img = Image.open(input_path)
         
+        max_size = (1920, 1080)
+        if img.size[0] > max_size[0] or img.size[1] > max_size[1]:
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            
         # Convert to RGB if the image is in RGBA
         if img.mode == 'RGBA':
             img = img.convert('RGB')
-        
+            
         img.save(output_path, 'WEBP', quality=quality)
         print(f"Image successfully converted to {output_path}")
         
