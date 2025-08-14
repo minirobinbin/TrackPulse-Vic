@@ -410,9 +410,12 @@ Optional:
 
 Required:
     Photo: attach the photo you would like to submit.
-    Car_number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station". Note that Xm9G manually reads this so any info in any understandable form is acceptable.
-    Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
-    Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.''',
+    Date: the date the photo was taken. YYYY-MM-DD is the preferred format.
+    Location: input the name of the location the photo was taken.
+    Photofor: input which use your photo is to be used for. You must choose between Railway Photo & Bot train search, Bot/Website Station Photo Guessing Game or both.
+
+Optional:
+    Number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station".''',
         '/wongm': '''</wongm:1288004355475111939> is a command that allows you to search the Wongm Rail Gallery. It provides a link to the results.
 
 **Options:**
