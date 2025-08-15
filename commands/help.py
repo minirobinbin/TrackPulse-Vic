@@ -337,7 +337,7 @@ Required:
     End_zone: the fare zone your trip ended in. This has to be an integer from 1 to 15.''',
         # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
         # '/myki view': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
-        '/search ptv': '''</search ptv:1240101357847838814> is a command that allows you to search PTV for stations, routes or myki outlets.
+        '/search tv': '''</search tv:1240101357847838814> is a command that allows you to search Transport Victoria for stations, routes or myki outlets.
 
 **Options:**
 
