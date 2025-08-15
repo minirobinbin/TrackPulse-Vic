@@ -19,6 +19,9 @@ async def helpCommand(ctx,category,command):
         "general": [
             "</about:1322339128121102357> - Shows information about the bot.",
             "</submit-photo:1240999419470413875> - Submit a photo to the bot and [website](https://railway-photos.xm9g.net)",
+            "</queue:1397528751536996372> - See which of your photos are yet to be submitted",
+            "</alias:1404379454955978865> - Choose the alias you want to credited as for your submitted photos.",
+            "<accept:1404061643867951154> - An admin command that allows adding of photos to the bot's photo archive.",
             "</stats profile:1240101357847838815> - View your profile with key stats from your logs and games.",
             "</year-in-review:1294634052099375155> - View your year in review with key stats from your logs.",
             "</schedule add:1394221058890010635 - Add a train to be sent in a channel every 30 minutes.",
@@ -334,7 +337,7 @@ Required:
     End_zone: the fare zone your trip ended in. This has to be an integer from 1 to 15.''',
         # '/myki save-login': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
         # '/myki view': '''Unfortunately the entry for this command hasn't been completed. In fact, this command shouldn't even be functional.''',
-        '/search ptv': '''</search ptv:1240101357847838814> is a command that allows you to search PTV for stations, routes or myki outlets.
+        '/search tv': '''</search tv:1240101357847838814> is a command that allows you to search Transport Victoria for stations, routes or myki outlets.
 
 **Options:**
 
@@ -404,15 +407,18 @@ Optional:
 Optional:
     User: pick a user who's profile you wish to view. By default it's set to you.''',
         '/stats termini': '''</stats termini:1240101357847838815> is a command allows you to view a what Metro and V/Line Termini you've been to.''',
-        '/submit-photo': '''</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, contact Xm9G, otherwise he will use your Discord name (without emojis).
+        '/submit-photo': '''</submit-photo:1240999419470413875> is a command that allows you to submit a photograph of a train or a station to the archive this bot pulls from.\nThese photos will be used by the bot in the </search train:1240101357847838814> and </search train-photo:1240101357847838814> commands to represent a specific trainset for trains or the </departures:1288002114466877529> and </search station-photo:1240101357847838814> commands to represent a specific railway station for stations, and will be available for viewing on the [Xm9G photo gallery website](https://railway-photos.xm9g.net).\nIn all of these uses, credit will be provided in the form of "photo by [your name]". If you would like to choose your name, use </alias:1404379454955978865>, otherwise it will use your Discord username.
 
 **Options:**
 
 Required:
     Photo: attach the photo you would like to submit.
-    Car_number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. For stations, please just write the name of the station in this format: "[Name] Station", e.g. "Flinders Street Station". Note that Xm9G manually reads this so any info in any understandable form is acceptable.
-    Date: the date the photo was taken. While the date format YYYY-MM-DD is preferred, note that Xm9G manually reads this so any info in any understandable form is acceptable.
-    Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.''',
+    Date: the date the photo was taken. YYYY-MM-DD is the preferred format. Note that Xm9G manually reads this so any info in any understandable form is acceptable.
+    Location: input the name of the location the photo was taken. Note that Xm9G manually reads this so any info in any understandable form is acceptable.
+    Photofor: input which use your photo is to be used for. You must choose between Railway Photo & Bot train search, Bot/Website Station Photo Guessing Game or both.
+
+Optional:
+    Number: input the ID of the train the photo is of, or the name of the railway station. Examples for trains include "1M", "9026", "N452", "2111", "ACN9", although they do not have to be Victorian trains. If there are multiple trains, include as many of them as you want, with each ID seperated by a comma. Note that Xm9G manually reads this so any info in any understandable form is acceptable.''',
         '/wongm': '''</wongm:1288004355475111939> is a command that allows you to search the Wongm Rail Gallery. It provides a link to the results.
 
 **Options:**
