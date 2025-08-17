@@ -651,7 +651,10 @@ async def trainTimleyCheckerLoop():
                     if str(train[0]) == str(channel[1]):
                         print(f"channele: {channel[0]}")
                         channelID = bot.get_channel(int(channel[0]))
-                        await channelID.send(f"{train[0]} is not currently running")
+                        try:
+                            await channelID.send(f"{train[0]} is not currently running")
+                        except:
+                            print(f'couldnt send message to {channelID.id}')
                     else:
                         print(f'{train[0]} not {channel[1]}')
             else:
@@ -679,7 +682,9 @@ async def trainTimleyCheckerLoop():
                             embed.set_image(url="attachment://map.png")
                             
                             channelID = bot.get_channel(int(channel[0]))
-                            await channelID.send(embed=embed, file=image)
+                            try:
+                                await channelID.send(embed=embed, file=image)
+                            print(f'Couldnt sent message to {channelID.id}')
                         else:
                             print(f'{train[4]} not {channel[1]}')
                 else:
