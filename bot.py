@@ -651,7 +651,10 @@ async def trainTimleyCheckerLoop():
                     if str(train[0]) == str(channel[1]):
                         print(f"channele: {channel[0]}")
                         channelID = bot.get_channel(int(channel[0]))
-                        await channelID.send(f"{train[0]} is not currently running")
+                        try:
+                            await channelID.send(f"{train[0]} is not currently running")
+                        except:
+                            print(f'couldnt send message to {channelID}')
                     else:
                         print(f'{train[0]} not {channel[1]}')
             else:
@@ -679,7 +682,10 @@ async def trainTimleyCheckerLoop():
                             embed.set_image(url="attachment://map.png")
                             
                             channelID = bot.get_channel(int(channel[0]))
-                            await channelID.send(embed=embed, file=image)
+                            try:
+                                await channelID.send(embed=embed, file=image)
+                            except:
+                                print(f'Couldnt sent message to {channelID}')
                         else:
                             print(f'{train[4]} not {channel[1]}')
                 else:
@@ -6341,7 +6347,7 @@ async def syncdb(ctx, url='https://victorianrailphotos.com/trainsets.csv'):
 async def syncgame(ctx):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
-        csv_url = 'https://victorianrailphotos.com/botgames/guesser.csv'
+        csv_url = 'https://xm9g.net/botgames/guesser.csv'
         save_location = "utils/game/images/guesser.csv"
         await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
@@ -6351,7 +6357,7 @@ async def syncgame(ctx):
         except Exception as e:
             await ctx.send(f"Error: `{e}`")
             
-        csv_url = 'https://victorianrailphotos.com/botgames/ultrahard.csv'
+        csv_url = 'https://xm9g.net/botgames/ultrahard.csv'
         save_location = "utils/game/images/ultrahard.csv"
         await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
         await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
