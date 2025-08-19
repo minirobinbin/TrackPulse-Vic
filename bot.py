@@ -686,7 +686,6 @@ async def trainTimleyCheckerLoop():
                                 await channelID.send(embed=embed, file=image)
                             except:
                                 print(f'Couldnt sent message to {channelID}')
-=======
                                 print(f'Couldnt sent message to {channelID.id}')
                         else:
                             print(f'{train[4]} not {channel[1]}')
