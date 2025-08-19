@@ -2911,7 +2911,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         try:
             credits = None
             if not '-' in set:
-                imagec = getImage(set)
+                imagec = getImage(set, thumbnail=True)
                 image = imagec[0]
                 credits = imagec[1]
 
@@ -2923,7 +2923,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                     first_car = set[:hyphen_index]
                     await printlog(f'First car: {first_car}')
                     
-                    imagec = getImage(first_car)
+                    imagec = getImage(first_car, thumbnail=True)
                     image, credits = imagec
                     
                     if image is None:
@@ -2932,7 +2932,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
                             last_car = set[last_hyphen + 1 :]
                             await printlog(f'Last car: {last_car}')
                             
-                            imagec = getImage(last_car)
+                            imagec = getImage(last_car, thumbnail=True)
                             image, credits = imagec
                             
                             if image is None:

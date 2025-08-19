@@ -2,8 +2,13 @@ import requests
 
 # THIS IS DIFFRNT TO THE ONE USED IN THE TRAIN PHOTO COMMAND!
 # THIS ONE ONLY RETURNS THE FIRST IMAGE AND ALSO REQUIRS CORRECT FORMATTING!!
-def getImage(number):
+def getImage(number, thumbnail=True):
     apiURL = f"https://victorianrailphotos.com/api/photos/{number}"
+    
+    if thumbnail:
+        thummy = 'thubnail'
+    else:
+        thummy = 'url'
     
     # Make a GET request to fetch the photo data
     try:
@@ -16,7 +21,7 @@ def getImage(number):
         
         if featured_photos:
             photo = featured_photos[-1]
-            photo_url = photo['url']
+            photo_url = photo[f'{thummy}']
             photographer = photo.get('photographer', 'Unknown')
             url_response = requests.head(photo_url)
             if url_response.status_code == 200:
@@ -25,7 +30,7 @@ def getImage(number):
         
         if photos:
             photo = photos[-1]
-            photo_url = photo['url']
+            photo_url = photo[f'{thummy}']
             photographer = photo.get('photographer', 'Unknown')
             url_response = requests.head(photo_url)
             if url_response.status_code == 200:
