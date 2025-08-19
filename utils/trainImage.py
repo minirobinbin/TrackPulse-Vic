@@ -2,7 +2,7 @@ import requests
 
 # THIS IS DIFFRNT TO THE ONE USED IN THE TRAIN PHOTO COMMAND!
 # THIS ONE ONLY RETURNS THE FIRST IMAGE AND ALSO REQUIRS CORRECT FORMATTING!!
-def getImage(number, thumbnail=True):
+def getImage(number, thumbnail=False):
     apiURL = f"https://victorianrailphotos.com/api/photos/{number}"
     
     if thumbnail:
