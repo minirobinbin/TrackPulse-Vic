@@ -6,7 +6,7 @@ def getImage(number, thumbnail=True):
     apiURL = f"https://victorianrailphotos.com/api/photos/{number}"
     
     if thumbnail:
-        thummy = 'thubnail'
+        thummy = 'thumbnail'
     else:
         thummy = 'url'
     
