@@ -5122,7 +5122,7 @@ async def alias(ctx, name:str):
 @bot.tree.command(name='accept', description="Accept a photo submission from the queue")
 async def accept(ctx, id: int, traintype:str, mode:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
     await ctx.response.defer()
-    if ctx.user.id in admin_users:
+    if ctx.user.has_role(1402142767060221997):
         try:
             userid = await getUserID(id)
             userid = bot.get_user(int(userid))
