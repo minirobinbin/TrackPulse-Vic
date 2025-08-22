@@ -1387,10 +1387,12 @@ async def tramsearch(ctx, tram: str):
         else:
             embed.add_field(name='Information', value='None available')
             
+        imageURL, credits = getTramImage(tram.upper())
+        if imageURL is not None:
+            embed.set_image(url=imageURL)
+            embed.add_field(name='Photo by:', value=credits, inline=False)
         
-        embed.set_image(url=getTramImage(tram.upper()))
-        
-        embed.add_field(name="Source:", value=f'[{getPhotoCredits(tram.upper())} (Photo)](https://victorianrailphotos.com?number={tram.upper()}), [MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
+        embed.add_field(name="Source:", value=f'[MPTG (Icon)](https://melbournesptgallery.weebly.com/melbourne-train-and-tram-fronts.html), [Vicsig (Other info)](https://vicsig.net)', inline=False)
         
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
