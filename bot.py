@@ -366,7 +366,7 @@ async def printlog(text):
 # check if these things are on in the .env
 rareCheckerOn = False
 automatic_updates = False
-admin_users = [1002449671224041502, 780303451980038165, int(USER_ID)]
+admin_users = [1002449671224041502, 780303451980038165,634620519500480512, int(USER_ID)]
 if config['RARE_SERVICE_CHECKER'] == 'ON':
     rareCheckerOn = True
 startupAchievements = False
@@ -5122,7 +5122,7 @@ async def alias(ctx, name:str):
 @bot.tree.command(name='accept', description="Accept a photo submission from the queue")
 async def accept(ctx, id: int, traintype:str, mode:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None):
     await ctx.response.defer()
-    if ctx.user.has_role(1402142767060221997):
+    if ctx.user.id in admin_users:
         try:
             userid = await getUserID(id)
             userid = bot.get_user(int(userid))
