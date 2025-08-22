@@ -130,7 +130,7 @@ def tramType(number):
     elif car >= 6001 and car <= 6050:
         return('E-Class')
     elif car in [856, 888, 925, 928, 946, 957, 959, 961, 981, 983, 1000, 1010]:
-        return('C2-Class')
+        return('W-Class')
     elif car >= 6051 and car <= 6100:
         return('E2-Class')
     else:
