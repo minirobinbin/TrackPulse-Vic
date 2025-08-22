@@ -436,7 +436,7 @@ async def download_csv(url, save_path):
 @bot.event
 async def on_ready():
     # download the trainset data     
-    csv_url = "https://victorianrailphotos.com/trainsets.csv"
+    csv_url = "https://victorianrailphotos.com/api/trainsets.csv"
     save_location = "utils/trainsets.csv"
     # await printlog(f"Downloading trainset data from {csv_url} to {save_location}")
     # await download_csv(csv_url, save_location)
@@ -6327,7 +6327,7 @@ async def ping(ctx):
     log_command(ctx.author.id, 'ping')
     
 @bot.command()
-async def syncdb(ctx, url='https://victorianrailphotos.com/trainsets.csv'):
+async def syncdb(ctx, url='https://victorianrailphotos.com/api/trainsets.csv'):
     if ctx.author.id in admin_users:
         log_command(ctx.author.id, 'sync-db')
         csv_url = url
