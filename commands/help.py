@@ -14,7 +14,9 @@ async def helpCommand(ctx,category,command):
             "</search train-photo:1240101357847838814> - Shows photos of a specific train from https://railway-photos.xm9g.net\nIncludes the option to search for all carriages in a set.",
             "</search station:1240101357847838814> - Shows information about a specific railway station.",
             "</search ptv:1240101357847838814> - Searches PTV for stations, routes or myki outlets.",
+            "/search victorianrailphotos - Searches Victorianrailphotos.com for photos.",
             "</wongm:1288004355475111939> - Searches Wongm's Rail Gallery",
+
         ],
         "general": [
             "</about:1322339128121102357> - Shows information about the bot.",

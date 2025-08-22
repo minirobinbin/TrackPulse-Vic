@@ -713,7 +713,7 @@ async def trainTimleyCheckerLoop():
 
 
 # Help command
-help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-hangman','/games station-order','/help','/line-status','/log adelaide-train','/log adelaide-tram','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search tv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
+help_commands = ['Which /log command should I use?','/about','/achievements view','/completion sets','/completion stations','/departures','/favourite add','/favourite remove','/games station-guesser','/games station-hangman','/games station-order','/help','/line-status','/log adelaide-train','/log adelaide-tram','/log bus','/log delete','/log edit','/log export','/log import','/log perth-train','/log stats','/log sydney-train','/log sydney-tram','/log train','/log tram','/log view','/disruptions','/maps trips','/maps view','/myki calculate-fare','/search tv','/search route','/search station','/search run','/search train','/search train-photo','/search tram','/search victorianrailphotos','/stats leaderboard','/stats profile','/stats termini','/submit-photo','/wongm','/year-in-review']
 
 async def help_autocompletion(
     interaction: discord.Interaction,
@@ -1118,6 +1118,14 @@ async def line_info(ctx, search: str):
     await printlog(spaces_removed)
     url = f"https://railgallery.wongm.com/page/search/?s={spaces_removed}"
     await ctx.response.send_message(url)
+    
+# my photo site search
+@search.command(name="victorianrailphotos", description="Search for photos on victorianrailphotos.com")
+@app_commands.describe(number='Carriage/Loco number', traintype='Type of train', location='Location of photo', photographer='Photographer of photo', featured='Featured photos only.')
+async def victorianrailphotos(ctx, number: str = '', traintype: str = '', location: str = '', photographer: str = '', featured:bool=False):
+    if featured:
+        featured = 'featured'
+    await ctx.response.send_message(f'[View results](https://victorianrailphotos.com/search?number={number}&type={traintype}&location={location}&photographer={photographer})')
 
 
 
