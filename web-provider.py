@@ -18,7 +18,7 @@ CORS(app, resources={
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"]
+    default_limits=["1000 per day", "300 per hour"]
 )
 
 # Configuration
@@ -33,7 +33,7 @@ DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 CSV_DIR = os.getenv("CSV_DIR")
 MAP_DIR = os.getenv("MAP_DIR")
-GUESSER_DIR = 'assets/guesser/images'
+GUESSER_DIR = os.getenv("GUESSER_DIR")
 
 @app.route('/', methods=['GET'])
 @limiter.limit("10000/day;100/hour")
