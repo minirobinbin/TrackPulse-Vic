@@ -113,14 +113,13 @@ def serve_guesser(filename):
     print(f"Requested file: {filename}")
     print(f"Full path: {file_path}")
     print(f"Path exists: {os.path.exists(file_path)}")
-    print(f"Is PNG: {file_path.endswith('.png')}")
     
     if os.path.exists(file_path) and file_path.endswith('.png'):
         response = send_file(file_path, mimetype='image/png')
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response
     else:
-        response = make_response(f"File not found or not a PNG at {file_path}", 404)
+        response = make_response(f"File not found {file_path}", 404)
         response.headers.update({
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
