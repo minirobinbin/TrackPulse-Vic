@@ -56,6 +56,7 @@ from commands.traintimleyfetcher import getchannelstocheck, seeWhereTrainsAre, t
 from photosubmissions.manager import addSubmission, getUserID, removeSubmission, returnQueue
 from utils.aviationAPIs.airportdata import get_airport_data
 from utils.aviationAPIs.aircraftphoto import getplaneimage
+from utils.game.imageadder import acceptGuesserPhoto
 from utils.trainlogger.map.line_coordinates_log_train_map_pre_munnel import getTotalLines
 from utils.vicrailphotosapi.accepter import acceptPhoto
 sys.stdout = sys.__stdout__  # Reset stdout if needed
@@ -5159,6 +5160,32 @@ async def accept(ctx, id: int, traintype:str, mode:str, featured:bool=False, not
     else:
         await ctx.followup.send("You do not have permission to use this command.")
 
+@bot.tree.command(name='accept-guesser', description="Accept a photo submission for the station photo guessing game")
+@app_commands.describe(station="only put in the name of the station, not 'station' or anything else")
+@app_commands.choices(mode=[
+    app_commands.Choice(name="Normal", value="guesser"),
+    app_commands.Choice(name="Ultra hard", value="ultrahard"),
+])
+    
+async def accept_guesser(ctx, id: int, station:str, difficulty:str, mode:str='guesser'):
+    if ctx.user.id in admin_users:
+        await ctx.response.defer()
+        try:
+            try:
+                userid = await getUserID(id)
+                userid = bot.get_user(int(userid))
+            except TypeError:
+                raise Exception('Could not find user ID for that submission')
+            await acceptGuesserPhoto(id, station, difficulty, mode, userid.name)
+        except Exception as e:
+            await ctx.followup.send(f'Couldnt add guesser image: `{e}`')
+            return
+        await removeSubmission(id) # remove from queue
+        await ctx.followup.send(f"Submission with queue number {id} has been accepted and added to the guessing game.")
+    else:
+        await ctx.response.send_message("You do not have permission to use this command.")
+        return
+    
 @bot.command(name='reject', description="Reject a photo submission from the queue")
 async def reject(ctx, id: int, *, reason: str):
     if ctx.author.id in admin_users:
