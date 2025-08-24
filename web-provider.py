@@ -114,7 +114,7 @@ def serve_guesser(filename):
     print(f"Full path: {file_path}")
     print(f"Path exists: {os.path.exists(file_path)}")
     
-    if os.path.exists(file_path) and file_path.endswith('.png'):
+    if os.path.exists(file_path):
         response = send_file(file_path, mimetype='image/png')
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response
