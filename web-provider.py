@@ -99,7 +99,7 @@ def serve_map(filename):
         return response
     
 @app.route('/guesser/<filename>', methods=['GET', 'OPTIONS'])
-def serve_map(filename):
+def serve_guesser(filename):
     if request.method == 'OPTIONS':
         response = make_response()
         response.headers['Access-Control-Allow-Origin'] = '*'
