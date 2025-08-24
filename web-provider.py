@@ -79,7 +79,7 @@ def serve_map(filename):
         print("Handled OPTIONS preflight request for /map")
         return response
 
-    file_path = os.path.join(GUESSER_DIR, filename)
+    file_path = os.path.join(MAP_DIR, filename)
     print(f"Requested file: {filename}")
     print(f"Full path: {file_path}")
     print(f"Path exists: {os.path.exists(file_path)}")
@@ -109,7 +109,7 @@ def serve_guesser(filename):
         print("Handled OPTIONS preflight request for /map")
         return response
 
-    file_path = os.path.join(MAP_DIR, filename)
+    file_path = os.path.join(GUESSER_DIR, filename)
     print(f"Requested file: {filename}")
     print(f"Full path: {file_path}")
     print(f"Path exists: {os.path.exists(file_path)}")
