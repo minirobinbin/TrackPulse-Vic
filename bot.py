@@ -6386,33 +6386,6 @@ async def syncdb(ctx, url='https://victorianrailphotos.com/api/trainsets.csv'):
     else:
         await printlog(f'{str(ctx.author.id)} tried to sync the database.')
         await ctx.send("You are not authorized to use this command.")
-        
-@bot.command()
-async def syncgame(ctx):
-    if ctx.author.id in admin_users:
-        log_command(ctx.author.id, 'sync-db')
-        csv_url = 'https://xm9g.net/botgames/guesser.csv'
-        save_location = "utils/game/images/guesser.csv"
-        await ctx.send(f"Downloading guesser data from {csv_url} to {save_location}")
-        await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
-        try:
-            await download_csv(csv_url, save_location)
-            await ctx.send(f"Success!")
-        except Exception as e:
-            await ctx.send(f"Error: `{e}`")
-            
-        csv_url = 'https://xm9g.net/botgames/ultrahard.csv'
-        save_location = "utils/game/images/ultrahard.csv"
-        await ctx.send(f"Downloading ultrahard data from {csv_url} to {save_location}")
-        await printlog(f"Downloading trainset data from {csv_url} to `{save_location}`")
-        try:
-            await download_csv(csv_url, save_location)
-            await ctx.send(f"Success!")
-        except Exception as e:
-            await ctx.send(f"Error: `{e}`")
-    else:
-        await printlog(f'{str(ctx.author.id)} tried to sync the database.')
-        await ctx.send("You are not authorized to use this command.")
 
 @bot.command()
 async def synclists(ctx):
