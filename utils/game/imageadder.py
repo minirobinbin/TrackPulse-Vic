@@ -23,6 +23,6 @@ async def acceptGuesserPhoto(id: int, station: str, difficulty: str, mode: str, 
     url = uploadImage(imagePath, name=os.path.splitext(image_filename)[0])
     
     print(f'adding to {mode}.csv: {id}, {station}, {difficulty}')
-    with open(f'utils/game/images/{mode}.csv', 'a', newline='') as file:
+    with open(f'utils/game/images/{mode}.csv', 'a', newline='\n') as file:
         writer = csv.writer(file)
         writer.writerow([url, station, difficulty, username])
