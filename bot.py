@@ -3223,14 +3223,14 @@ async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='tod
         embed.add_field(name="Trip", value=f'{start.title()} to {end.title()}')
         if notes != None:
             embed.add_field(name="Notes", value=notes.strip('"'))
-        embed.set_footer(text=f"Log ID #{id}")
 
         # thing to find image:
         await printlog(f"Finding image for {number}")
-        image = getTramImage(number)
-        if image != None:
-            embed.set_thumbnail(url=image)
-
+        imageURL, credits = getTramImage(number.upper())
+        if imageURL != None:
+            embed.set_thumbnail(url=imageURL)
+        credits = f' | Photo by {credits}' if credits != None else ''
+        embed.set_footer(text=f"Log ID #{id}{credits}")
         await ctx.edit_original_response(embed=embed)
         
                 
