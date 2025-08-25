@@ -24,6 +24,7 @@ utils/schedule/history/
 cache/
 photo-submissions/
 assets/guesser/images/
+utils/game/images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
