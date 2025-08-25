@@ -5194,7 +5194,7 @@ async def reject(ctx, id: int, *, reason: str):
         
         m = f'Sent message confirming to user ID: {user.mention}'
         try:
-            await user.send(f"One of your photos has been rejected and removed from the queue.\nReason: {reason}")
+            await user.send(f"Your photo with id {id} of your photos has been rejected and removed from the queue.\nReason: {reason}")
         except:
             m = (f"Could not send message to user ID: {userid}. They may have DMs disabled.")
         await ctx.send(f"Submission with queue number {id} has been rejected and removed from the queue. {m}")
