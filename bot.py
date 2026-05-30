@@ -136,6 +136,7 @@ from utils.trainlogger.ids import *
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress, legend
 from utils.lines_dictionaries import *
+from utils.stationcodes import *
 from utils.trainlogger.achievements import *
 from utils.trainlogger.graph import *
 
@@ -3340,6 +3341,14 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             notes = notes.replace('\n', ' ')
             #add quotes so the csv dosn't break when u use a comma
             notes = f'"{notes}"'
+
+        # Station Code Converter
+        if len(start) == 3:
+            printlog("converting start from station code")
+            start = station_codes[start.upper()]
+        if len(end) == 3:
+            printlog("converting end from station code")
+            end = station_codes[end.upper()]
                 
             
         # Add train to the list
