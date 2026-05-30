@@ -30,6 +30,7 @@ station_codes = {
     # Added early for specific people
     "BOR":	"Boronia",
     "FTG":	"Ferntree Gully",
+    "SYN":	"Syndal",
 
     # Three Letter Stations
     "MOE":	"Moe",
