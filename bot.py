@@ -369,6 +369,8 @@ if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
     
 lineStatusOn = False
 
+MAINTENANCE_MODE = False
+
 channel_game_status = {} # variable to store what channels are running the guessing game
 
 global traintoedit 
@@ -607,7 +609,19 @@ async def on_ready():
         channel = bot.get_channel(int(file))
         await channel.send("Bot restarted")
         with open('restart.txt', 'w') as file:
-                file.write('')
+            file.write('')
+
+    # maintenance mode
+    global MAINTENANCE_MODE
+    file = open('maintenance.txt','r')
+    file = file.read()
+
+    if file == '':
+        await printlog("Bot in normal conditions")
+        MAINTENANCE_MODE = False
+    else:
+        await printlog("Maintenance Mode Enabled")
+        MAINTENANCE_MODE = True
 
 # achievement awarder  check achievements
 async def addAchievement(username, channel, mention):
@@ -7590,6 +7604,40 @@ async def restart(ctx):
     else:
         await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def maintenancemode(ctx):
+    if ctx.author.id in admin_users:
+        log_command(ctx.author.id, 'maintenance')
+        await ctx.send(f"Toggling Maintenance Mode")
+        await printlog("Toggling Maintenance Mode")
+        global MAINTENANCE_MODE
+        MAINTENANCE_MODE = not(MAINTENANCE_MODE)
+        if MAINTENANCE_MODE:
+            with open('maintenance.txt', 'w') as file:
+                file.write(":3")
+            await ctx.send(f"Maintenance Mode On")
+            await printlog("Maintenance Mode On")
+        else:
+            with open('maintenance.txt', 'w') as file:
+                file.write("")
+            await ctx.send(f"Maintenance Mode Off")
+            await printlog("Maintenance Mode Off")
+
+    else:
+        await printlog(f'{str(ctx.author.id)} tried to toggle maintenance mode.')
+        await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def maintenancequery(ctx):
+    log_command(ctx.author.id, 'maintenance')
+    if MAINTENANCE_MODE:
+        await ctx.send(f"Maintenance Mode On")
+        await printlog("Maintenance Mode On")
+    else:
+        await ctx.send(f"Maintenance Mode Off")
+        await printlog("Maintenance Mode Off")
+
 
 @bot.command()
 async def shutdown(ctx):
