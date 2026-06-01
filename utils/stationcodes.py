@@ -82,43 +82,17 @@ station_codes = {
     "TLN":	"Cobblebank",
     "BNV":  "Ballan",
     "BAL":  "Ballarat",
-    "BBL":  "Bank Box Loop", # What even is this? But its here anyways
-    "BAW":  "Barnawartha",
-    "BWP":  "Barwon Park Loop", # Again, is this real (vicsig says it is), no matter what, its here anyway
-    "BEA":  "Bena",
-    "BNL":  "Benalla",
+    "BNL":  "Benalla", # still open but apparently wont have any departures for a bit
     "BDG":  "Bendigo",
-    "GRS":  "Bombardier Siding", # Why do these station codes exist
-    "ACI":  "Bonlac Foods Limited Siding", # I'm going to stop writing these reduntant coding commments now :D
-    "BRC":  "Boorcan",
-    "BSR":  "Bowser Loop",
-    "SBL":  "Box Hill", # Box Hill (underground) what are you on vicsig, anyway its there if you want to use it to log box hill
-    "BSK":  "Bradshaw",
     "BRF":  "Broadford",
-    "MBL":  "Bungaree East End", #....
-    "BGL":  "Bungaree Loop",
-    "BGN":  "Bungaree West End",  # Too many Bungaree station codes
     "BYP":  "Bunyip",
-    "BLS":  "Burnley Stabling Sidings",
-    "BBT":  "Burrumbeet",
-    "SBU":  "Burwood", # Another (underground) station on vicsig
-    "CPV":  "Calder Park Sidings",
     "CPD":  "Camperdown",
-    "CRU":  "Carlsruhe",
     "CME":  "Castlemaine",
-    "SCE":  "Cheltenham", # Cheltenham (underground)
-    "SCY":  "Clayton", # Clayton (undergronud) please edit these if there is an actual meaning for the (underground)
     "CLV":  "Clunes",
-    "CLY":  "Clyde",
-    "COY":  "Cobblebank Stabling Yard",
     "COL":  "Colac",
     "CDH":  "Condah",
     "CWK":  "Creswick",
-    "DEJ":  "Dandenong East Junction",
-    "DNU":  "Darnum",
     "DPK":  "Deer Park",
-    "DPW":  "Deer Park West Junction",
-    "DVS":  "Devenish",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
