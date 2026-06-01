@@ -1,8 +1,10 @@
 station_codes = {
-    # Colac Was the Most recent station (following vicsig and sorting by name)
+    # Dandenong Was the Most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
+    "CWD":  "Collingwood",
     "CHL":  "Clifton Hill",
+    "CXT":  "Croxton",
     "BEL":  "Bell",
     "ALP":	"Alphington",
     # Burnley Station Codes
@@ -15,6 +17,7 @@ station_codes = {
     "UNN":	"Union",
     "BOX":  "Box Hill",
     "BBN":  "Blackburn",
+    "CDN":  "Croydon",
     "BAY":  "Bayswater",
     "BOR":	"Boronia",
     "BEG":  "Belgrave",
@@ -24,10 +27,12 @@ station_codes = {
     "CFD":  "Caulfield",
     "CNE":  "Carnegie",
     "CLA":  "Clayton",
+    "DNG":  "Dandenong",
     "BEW":  "Berwick",
     "BFD":  "Beaconsfield",
     "CDA":  "Cardinia Road",
     "EPH":	"East Pakenham",
+    "CBE":  "Cranbourne",
     # Frankston/Stony Point Station Codes
     "ARM":	"Armadale",
     "BEN":  "Bentleigh",
@@ -39,6 +44,7 @@ station_codes = {
     "CAR":  "Carrum",
     "BXR":  "Baxter",
     "BIT":  "Bittern",
+    "CPT":  "Crib Point",
     # Sandringham Station Codes
     "BCV":  "Balaclava",
     "BBH":  "Brighton Beach",
@@ -51,6 +57,8 @@ station_codes = {
     # Craigieburn Station Codes
     "ASV":	"Ascot Vale",
     "BMS":  "Broadmeadows",
+    "CLO":  "Coolaroo",
+    "CGB":  "Craigieburn",
     # Upfield Station Codes
     "BWK":  "Brunswick",
     "ASY":	"Anstey",
@@ -99,6 +107,8 @@ station_codes = {
     "CLY":  "Clyde",
     "COY":  "Cobblebank Stabling Yard",
     "COL":  "Colac",
+    "CDH":  "Condah",
+    "CWK":  "Creswick",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
