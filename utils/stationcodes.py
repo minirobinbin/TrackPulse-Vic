@@ -1,5 +1,5 @@
 station_codes = {
-    # Gardiner Was the Most recent station (following vicsig and sorting by name)
+    # Greensborough Was the Most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "CWD":  "Collingwood",
@@ -12,11 +12,13 @@ station_codes = {
     "ALP":	"Alphington",
     "DBN":  "Darebin",
     "EGT":  "Eaglemont",
+    "GRN":  "Greensborough",
     "ELT":  "Eltham",
     "DCK":  "Diamond Creek",
     # Burnley Station Codes
     "ERM":  "East Richmond",
     "BLY":  "Burnley",
+    "GFE":  "Glenferrie",
     "AUB":	"Auburn",
     "CAM":  "Camberwell",
     "ECM":  "East Camberwell",
@@ -34,8 +36,10 @@ station_codes = {
     "BWD":  "Burwood",
     "ALM":  "Alamein",
     "GAR":  "Gardiner",
+    "GIR":  "Glen Iris",
     "DLG":  "Darling",
     "EMV":  "East Malvern",
+    "GWY":  "Glen Waverley",
     # Cran/Pak Station Codes
     "CFD":  "Caulfield",
     "CNE":  "Carnegie",
@@ -48,6 +52,7 @@ station_codes = {
     "CBE":  "Cranbourne",
     # Frankston/Stony Point Station Codes
     "ARM":	"Armadale",
+    "GHY":  "Glen Huntly",
     "BEN":  "Bentleigh",
     "CTM":  "Cheltenham",
     "CHE":  "Cheltenham", # Not Official but I know other use this
@@ -71,6 +76,7 @@ station_codes = {
 
     # Sunbury Station Codes
     "ALB":	"Albion",
+    "GIN":  "Ginifer",
     "DIT":  "Diggers Rest",
 
     # Flemington Racecourse Station Codes
@@ -79,6 +85,8 @@ station_codes = {
     # Craigieburn Station Codes
     "ASV":	"Ascot Vale",
     "ESD":  "Essendon",
+    "GBV":  "Glenbervie",
+    "GRY":  "Glenroy",
     "BMS":  "Broadmeadows",
     "CLO":  "Coolaroo",
     "CGB":  "Craigieburn",
@@ -89,6 +97,7 @@ station_codes = {
     "COB":  "Coburg",
     "BAT":  "Batman",
     "FAK":  "Fawkner",
+    "GOW":  "Gowrie",
     # Misc/VLine Station Codes
     "ALY":	"Albury",
     "ART":	"Ararat",
@@ -118,6 +127,9 @@ station_codes = {
     "DRO":  "Drouin",
     "EAG":  "Eaglehawk",
     "ECH":  "Echuca",
+    "GFD":  "Garfield",
+    "GLG":  "Geelong",
+    "GIS":  "Gisborne",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
