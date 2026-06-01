@@ -1,5 +1,5 @@
 station_codes = {
-    # Larburnum was the most recent station (following vicsig and sorting by name)
+    # Marshall was the most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "JLI":  "Jolimont-MCG",
@@ -8,6 +8,7 @@ station_codes = {
     "CXT":  "Croxton",
     "BEL":  "Bell",
     "KPK":  "Keon Park",
+    "LAL":  "Lalor",
     "EPP":  "Epping",
     "HWS":  "Hawkstowe",
     "DEN":  "Dennis",
@@ -17,6 +18,7 @@ station_codes = {
     "IVA":  "Ivanhoe",
     "EGT":  "Eaglemont",
     "HDB":  "Heidelberg",
+    "MCD":  "Macleod",
     "GRN":  "Greensborough",
     "ELT":  "Eltham",
     "DCK":  "Diamond Creek",
@@ -37,6 +39,7 @@ station_codes = {
     "LAB":  "Laburnum", # Though I have something against laburnum, its here.
     "HTD":  "Heatherdale",
     "CDN":  "Croydon",
+    "LIL":  "Lilydale",
     "HMT":  "Heathmont",
     "BAY":  "Bayswater",
     "BOR":	"Boronia",
@@ -56,6 +59,7 @@ station_codes = {
     "JOR":  "Jordanville",
     "GWY":  "Glen Waverley",
     # Cran/Pak Station Codes
+    "MAL":  "Malvern",
     "CFD":  "Caulfield",
     "CNE":  "Carnegie",
     "HUG":  "Hughesdale",
@@ -67,6 +71,7 @@ station_codes = {
     "BFD":  "Beaconsfield",
     "CDA":  "Cardinia Road",
     "EPH":	"East Pakenham",
+    "LBK":  "Lynbrook",
     "CBE":  "Cranbourne",
     # Frankston/Stony Point Station Codes
     "HKN":  "Hawksburn",
@@ -83,6 +88,7 @@ station_codes = {
     "CAR":  "Carrum",
     "KAN":  "Kananook",
     "FKN":  "Frankston",
+    "LWA":  "Leawarra",
     "BXR":  "Baxter",
     "HST":  "Hastings",
     "BIT":  "Bittern",
@@ -95,6 +101,7 @@ station_codes = {
     "HAM":  "Hampton",
     # Werribee/Williamstown Station Codes
     "ALT":	"Altona",
+    "LAV":  "Laverton",
     "ACF":	"Aircraft",
     "HCG":  "Hoppers Crossing",
 
@@ -118,6 +125,7 @@ station_codes = {
     "CLO":  "Coolaroo",
     "CGB":  "Craigieburn",
     # Upfield Station Codes
+    "MAC":  "Macaulay",
     "FBD":  "Flemington Bridge",
     "JWL":  "Jewell",
     "BWK":  "Brunswick",
@@ -163,6 +171,11 @@ station_codes = {
     "KFT":  "Kangaroo Flat",
     "KME":  "Kilmore East",
     "KNT":  "Kyneton",
+    "LAR":  "Lara",
+    "LTR":  "Little River",
+    "LWY":  "Longwarry",
+    "MSL":  "Marshall",
+    
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
