@@ -1,19 +1,25 @@
 station_codes = {
-    # Diamond Creek Was the Most recent station (following vicsig and sorting by name)
+    # Gardiner Was the Most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "CWD":  "Collingwood",
     "CHL":  "Clifton Hill",
     "CXT":  "Croxton",
     "BEL":  "Bell",
-    "ALP":	"Alphington",
+    "EPP":  "Epping",
     "DEN":  "Dennis",
+    "FFD":  "Fairfield",
+    "ALP":	"Alphington",
     "DBN":  "Darebin",
+    "EGT":  "Eaglemont",
+    "ELT":  "Eltham",
     "DCK":  "Diamond Creek",
     # Burnley Station Codes
+    "ERM":  "East Richmond",
     "BLY":  "Burnley",
     "AUB":	"Auburn",
     "CAM":  "Camberwell",
+    "ECM":  "East Camberwell",
     "CBY":  "Canterbury",
     "CHM":  "Chatham",
     "ASH":	"Ashburton",
@@ -23,10 +29,13 @@ station_codes = {
     "CDN":  "Croydon",
     "BAY":  "Bayswater",
     "BOR":	"Boronia",
+    "FTG":	"Ferntree Gully",
     "BEG":  "Belgrave",
     "BWD":  "Burwood",
     "ALM":  "Alamein",
+    "GAR":  "Gardiner",
     "DLG":  "Darling",
+    "EMV":  "East Malvern",
     # Cran/Pak Station Codes
     "CFD":  "Caulfield",
     "CNE":  "Carnegie",
@@ -41,16 +50,20 @@ station_codes = {
     "ARM":	"Armadale",
     "BEN":  "Bentleigh",
     "CTM":  "Cheltenham",
-    "CHE":  "Cheltenham", # Will be here because I know others use this station code
+    "CHE":  "Cheltenham", # Not Official but I know other use this
     "ASP":	"Aspendale",
+    "EDI":  "Edithvale",
     "CSA":  "Chelsea",
     "BON":  "Bonbeach",
     "CAR":  "Carrum",
+    "FKN":  "Frankston",
     "BXR":  "Baxter",
     "BIT":  "Bittern",
     "CPT":  "Crib Point",
     # Sandringham Station Codes
     "BCV":  "Balaclava",
+    "ELS":  "Elsternwick",
+    "GVE":  "Gardenvale",
     "BBH":  "Brighton Beach",
     # Werribee/Williamstown Station Codes
     "ALT":	"Altona",
@@ -59,16 +72,23 @@ station_codes = {
     # Sunbury Station Codes
     "ALB":	"Albion",
     "DIT":  "Diggers Rest",
+
+    # Flemington Racecourse Station Codes
+    "RCE":  "Flemington Racecourse",
+    
     # Craigieburn Station Codes
     "ASV":	"Ascot Vale",
+    "ESD":  "Essendon",
     "BMS":  "Broadmeadows",
     "CLO":  "Coolaroo",
     "CGB":  "Craigieburn",
     # Upfield Station Codes
+    "FBD":  "Flemington Bridge",
     "BWK":  "Brunswick",
     "ASY":	"Anstey",
     "COB":  "Coburg",
     "BAT":  "Batman",
+    "FAK":  "Fawkner",
     # Misc/VLine Station Codes
     "ALY":	"Albury",
     "ART":	"Ararat",
@@ -93,6 +113,11 @@ station_codes = {
     "CDH":  "Condah",
     "CWK":  "Creswick",
     "DPK":  "Deer Park",
+    "DGE":  "Dingee",
+    "DBK":  "Donnybrook",
+    "DRO":  "Drouin",
+    "EAG":  "Eaglehawk",
+    "ECH":  "Echuca",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
@@ -108,10 +133,9 @@ station_codes = {
     "AZC":	"Anzac",
     "NME":	"North Melbourne",
     "RMD":	"Richmond",
+    "FSY":  "Footscray",
     
     # Added early for specific people
-    
-    "FTG":	"Ferntree Gully",
     "SYN":	"Syndal",
 
     # Three Letter Stations
