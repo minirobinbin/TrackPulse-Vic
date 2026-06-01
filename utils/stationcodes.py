@@ -58,6 +58,7 @@ station_codes = {
 
     # Sunbury Station Codes
     "ALB":	"Albion",
+    "DIT":  "Diggers Rest",
     # Craigieburn Station Codes
     "ASV":	"Ascot Vale",
     "BMS":  "Broadmeadows",
