@@ -1,11 +1,13 @@
 station_codes = {
-    # Ivanhoe Was the Most recent station (following vicsig and sorting by name)
+    # Larburnum was the most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
+    "JLI":  "Jolimont-MCG",
     "CWD":  "Collingwood",
     "CHL":  "Clifton Hill",
     "CXT":  "Croxton",
     "BEL":  "Bell",
+    "KPK":  "Keon Park",
     "EPP":  "Epping",
     "HWS":  "Hawkstowe",
     "DEN":  "Dennis",
@@ -32,6 +34,7 @@ station_codes = {
     "UNN":	"Union",
     "BOX":  "Box Hill",
     "BBN":  "Blackburn",
+    "LAB":  "Laburnum", # Though I have something against laburnum, its here.
     "HTD":  "Heatherdale",
     "CDN":  "Croydon",
     "HMT":  "Heathmont",
@@ -44,11 +47,13 @@ station_codes = {
     "ASH":	"Ashburton",
     "ALM":  "Alamein",
     "HEY":  "Heyington",
+    "KYG":  "Kooyong",
     "GAR":  "Gardiner",
     "GIR":  "Glen Iris",
     "DLG":  "Darling",
     "EMV":  "East Malvern",
     "HOL":  "Holmesglen",
+    "JOR":  "Jordanville",
     "GWY":  "Glen Waverley",
     # Cran/Pak Station Codes
     "CFD":  "Caulfield",
@@ -76,6 +81,7 @@ station_codes = {
     "CSA":  "Chelsea",
     "BON":  "Bonbeach",
     "CAR":  "Carrum",
+    "KAN":  "Kananook",
     "FKN":  "Frankston",
     "BXR":  "Baxter",
     "HST":  "Hastings",
@@ -95,21 +101,25 @@ station_codes = {
     # Sunbury Station Codes
     "ALB":	"Albion",
     "GIN":  "Ginifer",
+    "KPL":  "Kelior Plains",
     "DIT":  "Diggers Rest",
 
     # Flemington Racecourse Station Codes
     "RCE":  "Flemington Racecourse",
     
     # Craigieburn Station Codes
+    "KEN":  "Kensington",
     "ASV":	"Ascot Vale",
     "ESD":  "Essendon",
     "GBV":  "Glenbervie",
     "GRY":  "Glenroy",
+    "JAC":  "Jacana",
     "BMS":  "Broadmeadows",
     "CLO":  "Coolaroo",
     "CGB":  "Craigieburn",
     # Upfield Station Codes
     "FBD":  "Flemington Bridge",
+    "JWL":  "Jewell",
     "BWK":  "Brunswick",
     "ASY":	"Anstey",
     "COB":  "Coburg",
@@ -150,6 +160,9 @@ station_codes = {
     "GIS":  "Gisborne",
     "HEV":  "Healesville",
     "HCJ":  "Heathcote Junction",
+    "KFT":  "Kangaroo Flat",
+    "KME":  "Kilmore East",
+    "KNT":  "Kyneton",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
