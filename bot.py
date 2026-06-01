@@ -374,10 +374,12 @@ maintenance_message = "```Bot currently in Maintenance Mode, bot may go offline,
 maintenance_game_message = "```Bot currently in Maintenance Mode, this game may randomly end, will return to normal soon, hopefully at least```"
 
 async def maintenance_func(ctx):
-    await ctx.channel.send(maintenance_message)
+    if MAINTENANCE_MODE:
+         await ctx.channel.send(maintenance_message)
 
 async def maintenance_game_func(ctx):
-    await ctx.channel.send(maintenance_game_message)
+    if MAINTENANCE_MODE
+        await ctx.channel.send(maintenance_game_message)
 
 
 channel_game_status = {} # variable to store what channels are running the guessing game
