@@ -378,7 +378,7 @@ async def maintenance_func(ctx):
          await ctx.channel.send(maintenance_message)
 
 async def maintenance_game_func(ctx):
-    if MAINTENANCE_MODE
+    if MAINTENANCE_MODE:
         await ctx.channel.send(maintenance_game_message)
 
 
