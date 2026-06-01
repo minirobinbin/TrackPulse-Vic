@@ -1,13 +1,16 @@
 station_codes = {
-    # Camperdown Was the Most recent station (following vicsig and sorting by name)
+    # Colac Was the Most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
+    "CHL":  "Clifton Hill",
     "BEL":  "Bell",
     "ALP":	"Alphington",
     # Burnley Station Codes
     "BLY":  "Burnley",
     "AUB":	"Auburn",
     "CAM":  "Camberwell",
+    "CBY":  "Canterbury",
+    "CHM":  "Chatham",
     "ASH":	"Ashburton",
     "UNN":	"Union",
     "BOX":  "Box Hill",
@@ -18,14 +21,22 @@ station_codes = {
     "BWD":  "Burwood",
     "ALM":  "Alamein",
     # Cran/Pak Station Codes
+    "CFD":  "Caulfield",
+    "CNE":  "Carnegie",
+    "CLA":  "Clayton",
     "BEW":  "Berwick",
     "BFD":  "Beaconsfield",
+    "CDA":  "Cardinia Road",
     "EPH":	"East Pakenham",
     # Frankston/Stony Point Station Codes
     "ARM":	"Armadale",
     "BEN":  "Bentleigh",
+    "CTM":  "Cheltenham",
+    "CHE":  "Cheltenham", # Will be here because I know others use this station code
     "ASP":	"Aspendale",
+    "CSA":  "Chelsea",
     "BON":  "Bonbeach",
+    "CAR":  "Carrum",
     "BXR":  "Baxter",
     "BIT":  "Bittern",
     # Sandringham Station Codes
@@ -43,6 +54,7 @@ station_codes = {
     # Upfield Station Codes
     "BWK":  "Brunswick",
     "ASY":	"Anstey",
+    "COB":  "Coburg",
     "BAT":  "Batman",
     # Misc/VLine Station Codes
     "ALY":	"Albury",
@@ -79,6 +91,14 @@ station_codes = {
     "SBU":  "Burwood", # Another (underground) station on vicsig
     "CPV":  "Calder Park Sidings",
     "CPD":  "Camperdown",
+    "CRU":  "Carlsruhe",
+    "CME":  "Castlemaine",
+    "SCE":  "Cheltenham", # Cheltenham (underground)
+    "SCY":  "Clayton", # Clayton (undergronud) please edit these if there is an actual meaning for the (underground)
+    "CLV":  "Clunes",
+    "CLY":  "Clyde",
+    "COY":  "Cobblebank Stabling Yard",
+    "COL":  "Colac",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
