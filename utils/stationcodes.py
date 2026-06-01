@@ -1,5 +1,5 @@
 station_codes = {
-    # Dandenong Was the Most recent station (following vicsig and sorting by name)
+    # Diamond Creek Was the Most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "CWD":  "Collingwood",
@@ -7,6 +7,9 @@ station_codes = {
     "CXT":  "Croxton",
     "BEL":  "Bell",
     "ALP":	"Alphington",
+    "DEN":  "Dennis",
+    "DBN":  "Darebin",
+    "DCK":  "Diamond Creek",
     # Burnley Station Codes
     "BLY":  "Burnley",
     "AUB":	"Auburn",
@@ -23,6 +26,7 @@ station_codes = {
     "BEG":  "Belgrave",
     "BWD":  "Burwood",
     "ALM":  "Alamein",
+    "DLG":  "Darling",
     # Cran/Pak Station Codes
     "CFD":  "Caulfield",
     "CNE":  "Carnegie",
@@ -109,6 +113,11 @@ station_codes = {
     "COL":  "Colac",
     "CDH":  "Condah",
     "CWK":  "Creswick",
+    "DEJ":  "Dandenong East Junction",
+    "DNU":  "Darnum",
+    "DPK":  "Deer Park",
+    "DPW":  "Deer Park West Junction",
+    "DVS":  "Devenish",
     
     # Inner City stations With too many lines
     "FSS":	"Flinders Street",
