@@ -3402,7 +3402,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             
         # Add train to the list
         print(f'adding {set} {type_final} {savedate} {line} {start.title()} {end.title()} {notes}')
-        id = addTrain(ctx.user.name, set, type_final, savedate, line, start.title(), end.title(), notes)
+        id = addTrain(ctx.user.id, ctx.user.name, set, type_final, savedate, line, start.title(), end.title(), notes)
         
         if line in vLineLines:
             embed = discord.Embed(title="Train Logged",colour=vline_map_colour)
@@ -3518,7 +3518,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
                 return
             
             # Delete the log
-            idformatted1 = deleteRow(ctx.user.name, idformatted, mode)
+            idformatted1 = deleteRow(ctx.user.id, ctx.user.name, idformatted, mode)
             
             # Update message
             if idformatted == 'LAST':
@@ -3554,7 +3554,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
                 await ctx.response.send_message(f'Invalid log ID entered: `{idformatted}`. You can find the ID of a log to delete by using </log view:1289843416628330506>.', ephemeral=True)
                 return
                 
-        dataToDelete = universalReadRow(ctx.user.name, idformatted, mode)
+        dataToDelete = universalReadRow(ctx.user.id, ctx.user.name, idformatted, mode)
         if dataToDelete in ['no data at all', 'no data for user']:
             await ctx.response.send_message(f'You have no logs you can delete!', ephemeral=True)
             return
@@ -3599,6 +3599,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
     log_command(ctx.user.id, 'edit-row')
     
     username = ctx.user.name
+    userid = ctx.user.id
     logid = id
     if logid[0] == '#':
         idformatted = logid[1:].upper()
@@ -3606,7 +3607,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
         idformatted = logid.upper()
     
     # Find old data for the edited row
-    dataToDelete = universalReadRow(username, idformatted, mode)
+    dataToDelete = universalReadRow(userid, username, idformatted, mode)
     
     if notes != 'nochange':
             # Remove emojis using regex
@@ -3637,7 +3638,7 @@ async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str
     else:
         savedate = 'nochange'
     
-    result = editRow(username, idformatted, mode,line,number,start,end,savedate,type,notes)
+    result = editRow(userid, username, idformatted, mode,line,number,start,end,savedate,type,notes)
     
     if result == 'invalid id did not show up':
         await ctx.edit_original_response(content=f'Invalid log ID entered: `{idformatted}`')
@@ -3732,7 +3733,7 @@ async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='tod
             notes = f'"{notes}"'
 
         # Add train to the list
-        id = addTram(ctx.user.name, number, type, savedate, route, start.title(), end.title(), notes)
+        id = addTram(ctx.user.id, ctx.user.name, number, type, savedate, route, start.title(), end.title(), notes)
 
         embed = discord.Embed(title="Tram Logged",colour=tram_colour)
         
@@ -3858,7 +3859,7 @@ async def logNSWTrain(ctx,  line:str, number: str, start:str, end:str, type:str=
             return
 
         # Add train to the list
-        id = addSydneyTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addSydneyTrain(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Train Logged",colour=sydney_train_colour)
         
@@ -3958,7 +3959,7 @@ async def logSATrain(ctx, line:str, number: str, start:str, end:str, date:str='t
             type = 'Unknown'
         
         # Add train to the list
-        id = addAdelaideTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addAdelaideTrain(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Train Logged",colour=adelaide_metro_colour)
         
@@ -4036,7 +4037,7 @@ async def logSATram(ctx, line:str, number: str, type:str, start:str, end:str, da
             return
 
         # Add train to the list
-        id = addAdelaideTram(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addAdelaideTram(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Tram Logged",colour=adelaide_tram_colour)
         
@@ -4130,7 +4131,7 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
             type = 'Unknown'
         
         # Add train to the list
-        id = addPerthTrain(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addPerthTrain(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Train Logged",colour=transperth_colour)
         
@@ -4204,7 +4205,7 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
             url = 'https://planespotters.net'
         
         # Add train to the list
-        id = addFlight(ctx.user.name, registration.upper(), type.upper(), savedate, flightnumber.upper(), start.upper(), end.upper(), airline.title())
+        id = addFlight(ctx.user.id, ctx.user.name, registration.upper(), type.upper(), savedate, flightnumber.upper(), start.upper(), end.upper(), airline.title())
 
         embed = discord.Embed(title="Flight Logged",colour=0x0070c0)
         
@@ -4283,7 +4284,7 @@ async def logNSWTram(ctx, line:str, number: str, type:str, start:str, end:str, d
             return
 
         # Add train to the list
-        id = addSydneyTram(ctx.user.name, set, type, savedate, line, start.title(), end.title())
+        id = addSydneyTram(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Tram Logged",colour=sydney_tram_colour)
         
@@ -4372,7 +4373,7 @@ async def logCanberraTram(ctx, line:str, number: str, type:str, start:str, end:s
             return
 
         # Add train to the list
-        id = addCanberraTram(ctx.user.name, number, type, savedate, line, start.title(), end.title())
+        id = addCanberraTram(ctx.user.id, ctx.user.name, number, type, savedate, line, start.title(), end.title())
 
         embed = discord.Embed(title="Tram Logged",colour=sydney_tram_colour)
         
@@ -4513,9 +4514,9 @@ async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='U
 
         # Add bus to the list
         try:
-            id = addBus(ctx.user.name, numbertest, type, savedate, line, start.title(), end.title(), operator.title(), notes)
+            id = addBus(ctx.user.id, ctx.user.name, numbertest, type, savedate, line, start.title(), end.title(), operator.title(), notes)
         except:
-            id = addBus(ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title(), notes)
+            id = addBus(ctx.user.id, ctx.user.name, set, type, savedate, line, start.title(), end.title(), operator.title(), notes)
 
         embed = discord.Embed(title="Bus Logged",colour=bus_colour)
 
@@ -4566,6 +4567,7 @@ async def editrow(ctx, id:str, mode:str='bus', line:str='nochange', number:str='
     log_command(ctx.user.id, 'edit-row')
     
     username = ctx.user.name
+    userid = ctx.user.id
     logid = id
     if logid[0] == '#':
         idformatted = logid[1:].upper()
@@ -4573,7 +4575,7 @@ async def editrow(ctx, id:str, mode:str='bus', line:str='nochange', number:str='
         idformatted = logid.upper()
     
     # Find old data for the edited row
-    dataToDelete = universalReadRow(username, idformatted, mode)
+    dataToDelete = universalReadRow(userid, username, idformatted, mode)
     
     if notes != 'nochange':
             # Remove emojis using regex
@@ -4666,9 +4668,9 @@ async def editrow(ctx, id:str, mode:str='bus', line:str='nochange', number:str='
         except:
             pass
     try:
-        result = editRowBus(username, idformatted, mode,line,numbertest,start,end,savedate,type,operator,notes)
+        result = editRowBus(userid, username, idformatted, mode,line,numbertest,start,end,savedate,type,operator,notes)
     except:
-        result = editRowBus(username, idformatted, mode,line,number,start,end,savedate,type,operator,notes)
+        result = editRowBus(userid, username, idformatted, mode,line,number,start,end,savedate,type,operator,notes)
     
     if result == 'invalid id did not show up':
         await ctx.edit_original_response(content=f'Invalid log ID entered: `{idformatted}`')
@@ -4871,7 +4873,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readLogs(userid.name)
+                data = readLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trains logged!",ephemeral=True)
@@ -4977,7 +4979,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readTramLogs(userid.name)
+                data = readTramLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trams logged!",ephemeral=True)
@@ -5043,7 +5045,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readSydneyLightRailLogs(userid.name)
+                data = readSydneyLightRailLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trams logged!",ephemeral=True)
@@ -5100,7 +5102,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trains logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readSydneyTrainLogs(userid.name)
+                data = readSydneyTrainLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trains logged!",ephemeral=True)
@@ -5213,7 +5215,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trams logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readAdelaideTramLogs(userid.name)
+                data = readAdelaideTramLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trams logged!",ephemeral=True)
@@ -5270,7 +5272,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no Perth trains logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readAdelaideLogs(userid.name)
+                data = readAdelaideLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no Perth trains logged!",ephemeral=True)
@@ -5326,7 +5328,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no busses logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readBusLogs(userid.name)
+                data = readBusLogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no busses logged!",ephemeral=True)
@@ -5400,7 +5402,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no flights logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = readFlightlogs(userid.name)
+                data = readFlightlogs(userid.id, userid.name)
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no flights logged!",ephemeral=True)
@@ -5472,7 +5474,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                         await ctx.response.send_message("This user has no trips logged!",ephemeral=True)
                     return
                 await printlog(userid.name)
-                data = universalReadLogs(userid.name, mode='canberra-trams')
+                data = universalReadLogs(userid.id, userid.name, mode='canberra-trams')
                 if data == 'no data':
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trips logged!",ephemeral=True)
@@ -5557,7 +5559,7 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
         @discord.ui.button(label="Confirm Import", style=discord.ButtonStyle.danger)
         async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
             if interaction.user != ctx.user:
-                await interaction.response.send_message("This isn't your commend!", ephemeral=True)
+                await interaction.response.send_message("This isn't your command!", ephemeral=True)
                 return
             
             try:
@@ -5577,9 +5579,9 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
                 
                 # Copy to user's log file
                 if mode == 'train':
-                    save_path = f'utils/trainlogger/userdata/{ctx.user.name}.csv'
+                    save_path = f'utils/trainlogger/userdata/{ctx.user.id}.csv'
                 else:
-                    save_path = f'utils/trainlogger/userdata/{mode}/{ctx.user.name}.csv'
+                    save_path = f'utils/trainlogger/userdata/{mode}/{ctx.user.id}.csv'
                     
                 shutil.copy(f'temp/{file.filename}', save_path)
                 
