@@ -4726,10 +4726,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
             
             if mode == 'train':
                 file_path = f'utils/trainlogger/userdata/{userid.name}.csv'
-                file_path = f'utils/trainlogger/userdata/{userid.id}.csv'
+                fileid = f'utils/trainlogger/userdata/{userid.id}.csv'
             else:
                 file_path = f'utils/trainlogger/userdata/{mode}/{userid.name}.csv'
-                fileid = f'utils/trainlogger/userdata/{mode}/{userid.name}.csv'
+                fileid = f'utils/trainlogger/userdata/{mode}/{userid.id}.csv'
             
             if not os.path.exists(fileid):
                 print(f"userid doesn't exist, using username: {file_path}")
