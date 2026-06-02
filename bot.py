@@ -4726,27 +4726,16 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
             
             if mode == 'train':
                 file_path = f'utils/trainlogger/userdata/{userid.name}.csv'
-                
-            if mode == 'tram':
-                file_path = f'utils/trainlogger/userdata/tram/{userid.name}.csv'
+                file_path = f'utils/trainlogger/userdata/{userid.id}.csv'
+            else:
+                file_path = f'utils/trainlogger/userdata/{mode}/{userid.name}.csv'
+                fileid = f'utils/trainlogger/userdata/{mode}/{userid.name}.csv'
             
-            if mode == 'bus':
-                file_path = f'utils/trainlogger/userdata/bus/{userid.name}.csv'  
-                
-            if mode == 'sydney-trains':
-                file_path = f'utils/trainlogger/userdata/sydney-trains/{userid.name}.csv'  
-            if mode == 'sydney-trams':
-                file_path = f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv' 
-            if mode == 'adelaide-trains':
-                file_path = f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv'
-            if mode == 'adelaide-trams':
-                file_path = f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv' 
-            if mode == 'perth-trains':
-                file_path = f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv'   
-            if mode == 'flights':
-                file_path = f'utils/trainlogger/userdata/flights/{userid.name}.csv'  
-            if mode == 'canberra-trams':
-                file_path = f'utils/trainlogger/userdata/canberra-trams/{userid.name}.csv'
+            if not os.path.exists(fileid):
+                print(f"userid doesn't exist, using username: {file_path}")
+            else:
+                print(f"userid does exist, using userid: {fileid} (belonging to {userid.name})")
+                file_path = fileid
                 
             
             if mode != 'bus':
