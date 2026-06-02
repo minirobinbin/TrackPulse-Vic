@@ -1,5 +1,5 @@
 station_codes = {
-    # Marshall was the most recent station (following vicsig and sorting by name)
+    # Maryborough was the most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "JLI":  "Jolimont-MCG",
@@ -175,6 +175,7 @@ station_codes = {
     "LTR":  "Little River",
     "LWY":  "Longwarry",
     "MSL":  "Marshall",
+    "MYB":  "Maryborough",
     
     
     # Inner City stations With too many lines
