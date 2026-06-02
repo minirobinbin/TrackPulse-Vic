@@ -3468,7 +3468,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
         extraText = '\u200b'
 
         # tell you if you have ridden the train before
-        _, count = checkTrainRidden(set, f"utils/trainlogger/userdata/{ctx.user.name}.csv")
+        _, count = checkTrainRidden(set, f"utils/trainlogger/userdata/{ctx.user.id}.csv")
         rides_before = max(len(count) - 1, 0)
         if rides_before > 0:
             extraText += f"You have ridden this train {rides_before} times before!"
@@ -6215,11 +6215,11 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'**Longest Streak:** `{streak(username, "train")[0]}` (current: `{streak(username, "train")[1]}`)\n'
-            f'**Total logs:** `{logAmounts(username, "train")}`\n'
-            f'**Stations visited:** `{stationPercent(username)}`\n'
-            f'**Lines visited:** `{linePercent(username)}`\n'
-            f'**Distance:** `{round(getTotalTravelDistance(username))}km`'
+            f'**Longest Streak:** `{streak(userid, "train")[0]}` (current: `{streak(userid, "train")[1]}`)\n'
+            f'**Total logs:** `{logAmounts(userid, "train")}`\n'
+            f'**Stations visited:** `{stationPercent(userid)}`\n'
+            f'**Lines visited:** `{linePercent(userid)}`\n'
+            f'**Distance:** `{round(getTotalTravelDistance(userid))}km`'
     )       
             except FileNotFoundError:
                 embed1.add_field(name="<:train:1241164967789727744><:vline:1241165814258729092> Train Log Stats", value=f'{username} has no logged trips!')
@@ -6245,10 +6245,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Class:** {trains[1] if len(trains) > 1 and trains[0].startswith("Unknown") else trains[0]}\n'
             f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "tram")[0]}` (current: `{streak(username, "tram")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "tram")[0]}` (current: `{streak(userid, "tram")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "tram")}'
+            f'Total logs: {logAmounts(userid, "tram")}'
     )
             except FileNotFoundError:
                 embed1.add_field(name="<:tram:1241165701390012476> Tram Log Stats", value=f'{username} has no logged trips!')
@@ -6279,10 +6279,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Train Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "sydney-trains")[0]}` (current: `{streak(username, "sydney-trains")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "sydney-trains")[0]}` (current: `{streak(userid, "sydney-trains")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "sydney-trains")}'
+            f'Total logs: {logAmounts(userid, "sydney-trains")}'
     )
             except FileNotFoundError:
                 embed2.add_field(name="<:NSWTrains:1255084911103184906><:NSWMetro:1255084902748000299> Train Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -6309,10 +6309,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "sydney-trams")[0]}` (current: `{streak(username, "sydney-trams")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "sydney-trams")[0]}` (current: `{streak(userid, "sydney-trams")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "sydney-trams")}'
+            f'Total logs: {logAmounts(userid, "sydney-trams")}'
     )
             except FileNotFoundError:
                 embed2.add_field(name="<:NSWLightRail:1255084906053369856> Light Rail Log Stats", value=f'{username} has no logged trips in NSW!')
@@ -6343,10 +6343,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "adelaide-trains")[0]}` (current: `{streak(username, "adelaide-trains")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "adelaide-trains")[0]}` (current: `{streak(userid, "adelaide-trains")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "adelaide-trains")}'
+            f'Total logs: {logAmounts(userid, "adelaide-trains")}'
     )
             except FileNotFoundError:
                 embed3.add_field(name="<:Adelaide_train_:1300008231510347807><:journeybeyond:1300021503093510155> Adelaide Train Log Stats:", value=f'{username} has no logged trips in Adelaide!')
@@ -6373,10 +6373,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Tram Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "adelaide-trams")[0]}` (current: `{streak(username, "adelaide-trams")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "adelaide-trams")[0]}` (current: `{streak(userid, "adelaide-trams")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "adelaide-trams")}'
+            f'Total logs: {logAmounts(userid, "adelaide-trams")}'
     )
             except FileNotFoundError:
                 embed3.add_field(name="<:adelaidetram:1357271311021379644> Adelaide Tram Log Stats", value=f'{username} has no logged trips in Adelaide!')
@@ -6407,10 +6407,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "perth-trains")[0]}` (current: `{streak(username, "perth-trains")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "perth-trains")[0]}` (current: `{streak(userid, "perth-trains")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "perth-trains")}'
+            f'Total logs: {logAmounts(userid, "perth-trains")}'
     )
             except FileNotFoundError:
                 embed4.add_field(name="<:transperthtrain:1335396329798631477><:TransWA:1335397360255373392> Perth Train Log Stats", value=f'{username} has no logged trips in Perth!')
@@ -6437,10 +6437,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "canberra-trams")[0]}` (current: `{streak(username, "canberra-trams")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "canberra-trams")[0]}` (current: `{streak(userid, "canberra-trams")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "canberra-trams")}'
+            f'Total logs: {logAmounts(userid, "canberra-trams")}'
     )
             except FileNotFoundError:
                 embed4.add_field(name="<:canberraLightRail:1422730624426573854> Canberra Light Rail Log Stats", value=f'{username} has no logged trips in Canberra!')
@@ -6467,10 +6467,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Bus Number:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "bus")[0]}` (current: `{streak(username, "bus")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "bus")[0]}` (current: `{streak(userid, "bus")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "bus")}'
+            f'Total logs: {logAmounts(userid, "bus")}'
     )
             except FileNotFoundError:
                 embed4.add_field(name="<:bus:1241165769241530460><:coach:1241165858274021489><:skybus:1241165983083925514><:NSW_Bus:1264885653922123878><:transperthbus:1335396307510235217><:Canberra_Bus:1264885650826465311> Bus Log Stats", value=f'{username} has no logged bus trips!')
@@ -6497,10 +6497,10 @@ async def profile(ctx, user: discord.User = None):
             f'**Top Registration:** {sets[1] if len(sets) > 1 and sets[0].startswith("Unknown") else sets[0]}\n'
             f'**Top Trip:** {trips[1] if len(trips) > 1 and trips[0].startswith("Unknown") else trips[0]}\n'
             f'**Top Date:** {dates[1] if len(dates) > 1 and dates[0].startswith("Unknown") else dates[0]}\n\n'
-            f'**Longest Streak:** `{streak(username, "flights")[0]}` (current: `{streak(username, "flights")[1]}`)\n'
+            f'**Longest Streak:** `{streak(userid, "flights")[0]}` (current: `{streak(userid, "flights")[1]}`)\n'
             f'User started logging {joined}\n'
             f'Last log {last}\n'
-            f'Total logs: {logAmounts(username, "flights")}'
+            f'Total logs: {logAmounts(userid, "flights")}'
     )
             except FileNotFoundError:
                 embed4.add_field(name="✈️ Flight Log Stats", value=f'{username} has no logged plane trips!')
