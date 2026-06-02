@@ -5679,23 +5679,22 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
                 print(f'user {user} is not the same as {ctx.user}')
                 await ctx.followup.send('You can only view your own stats!')
                 return
-            
         if global_stats:
             if stat == 'distanceovertime':
-                data = distanceOverTime(userid.name, year, True)
+                data = distanceOverTime(userid.id, year, True)
             data = globalTopStats(statSearch)
         else:
             try:
                 if stat == 'operators':
-                    data = topOperators(userid.name)
+                    data = topOperators(userid.id)
                 elif stat == 'length':
-                    data = getLongestTrips(userid.name)  
+                    data = getLongestTrips(userid.id)  
                 elif stat == 'distanceovertime':
-                    data = distanceOverTime(userid.name, year)
+                    data = distanceOverTime(userid.id, year)
                 elif mode == 'all':
-                    data = allTopStats(userid.name, statSearch, year)
+                    data = allTopStats(userid.id, statSearch, year)
                 else:
-                    data = topStats(userid.name, statSearch, year, mode)
+                    data = topStats(userid.id, statSearch, year, mode)
                 
             except:
                 await ctx.followup.send('You have no logged trips!')
@@ -5907,7 +5906,7 @@ async def sets(ctx, train:str):
         embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
         for train in trainTypes:
             try:
-                data = setlist(ctx.user.name, train, summary=True)
+                data = setlist(ctx.user.id, train, summary=True)
                 embed.add_field(name=f'{getTrainTypeEmoji(train)} {train}', value=data, inline=True)
             except:
                 await ctx.edit_original_response(content='No logs found!')
@@ -5917,7 +5916,7 @@ async def sets(ctx, train:str):
         return
     # specific traim
     try:
-        data =setlist(ctx.user.name, train)
+        data =setlist(ctx.user.id, train)
     except:
         await ctx.edit_original_response(content='No logs found!')
     
@@ -5974,7 +5973,7 @@ async def sets(ctx, state:str):
     await ctx.response.defer()
     log_command(ctx.user.id, 'log-stations')
     try:
-        data =stationlist(ctx.user.name, state)
+        data =stationlist(ctx.user.id, state)
     except Exception as e:
         await ctx.edit_original_response(content='No logs found')
         await printlog(f'ERROR: {e}')
@@ -6194,16 +6193,16 @@ async def profile(ctx, user: discord.User = None):
             embed1.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
             try:
                 # Victoria Trains
-                lines = topStats(username, 'lines', 0, 'train')
-                stations = topStats(username, 'stations', 0, 'train')
-                sets = topStats(username, 'sets', 0, 'train')
-                trains = topStats(username, 'types', 0, 'train')
-                dates = topStats(username, 'dates', 0, 'train')
-                trips = topStats(username, 'pairs', 0, 'train')
+                lines = topStats(userid, 'lines', 0, 'train')
+                stations = topStats(userid, 'stations', 0, 'train')
+                sets = topStats(userid, 'sets', 0, 'train')
+                trains = topStats(userid, 'types', 0, 'train')
+                dates = topStats(userid, 'dates', 0, 'train')
+                trips = topStats(userid, 'pairs', 0, 'train')
 
                 #other stats stuff:
-                eDate =lowestDate(username, 'train')
-                LeDate =highestDate(username, 'train')
+                eDate =lowestDate(userid, 'train')
+                LeDate =highestDate(userid, 'train')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed1.add_field(
@@ -6227,16 +6226,16 @@ async def profile(ctx, user: discord.User = None):
 
             # Victoria Trams
             try:
-                lines = topStats(username, 'lines', 0, 'tram')
-                stations = topStats(username, 'stations', 0, 'tram')
-                sets = topStats(username, 'sets', 0, 'tram')
-                trains = topStats(username, 'types', 0, 'tram')
-                dates = topStats(username, 'dates', 0, 'tram')
-                trips = topStats(username, 'pairs', 0, 'tram')
+                lines = topStats(userid, 'lines', 0, 'tram')
+                stations = topStats(userid, 'stations', 0, 'tram')
+                sets = topStats(userid, 'sets', 0, 'tram')
+                trains = topStats(userid, 'types', 0, 'tram')
+                dates = topStats(userid, 'dates', 0, 'tram')
+                trips = topStats(userid, 'pairs', 0, 'tram')
 
                 #other stats stuff:
-                eDate =lowestDate(username, 'tram')
-                LeDate =highestDate(username, 'tram')
+                eDate =lowestDate(userid, 'tram')
+                LeDate =highestDate(userid, 'tram')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed1.add_field(
@@ -6260,16 +6259,16 @@ async def profile(ctx, user: discord.User = None):
             embed2.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
             # NSW Trains
             try:
-                lines = topStats(username, 'lines', 0, 'sydney-trains')
-                stations = topStats(username, 'stations', 0, 'sydney-trains')
-                sets = topStats(username, 'sets', 0, 'sydney-trains')
-                trains = topStats(username, 'types', 0, 'sydney-trains')
-                dates = topStats(username, 'dates', 0, 'sydney-trains')
-                trips = topStats(username, 'pairs', 0, 'sydney-trains')
+                lines = topStats(userid, 'lines', 0, 'sydney-trains')
+                stations = topStats(userid, 'stations', 0, 'sydney-trains')
+                sets = topStats(userid, 'sets', 0, 'sydney-trains')
+                trains = topStats(userid, 'types', 0, 'sydney-trains')
+                dates = topStats(userid, 'dates', 0, 'sydney-trains')
+                trips = topStats(userid, 'pairs', 0, 'sydney-trains')
                 
                 #other stats stuff:
-                eDate =lowestDate(username, 'sydney-trains')
-                LeDate =highestDate(username, 'sydney-trains')
+                eDate =lowestDate(userid, 'sydney-trains')
+                LeDate =highestDate(userid, 'sydney-trains')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed2.add_field(
@@ -6290,16 +6289,16 @@ async def profile(ctx, user: discord.User = None):
 
             # NSW Light Rail
             try:
-                lines = topStats(username, 'lines', 0, 'sydney-trams')
-                stations = topStats(username, 'stations', 0, 'sydney-trams')
-                sets = topStats(username, 'sets', 0, 'sydney-trams')
-                trains = topStats(username, 'types', 0, 'sydney-trams')
-                dates = topStats(username, 'dates', 0, 'sydney-trams')
-                trips = topStats(username, 'pairs', 0, 'sydney-trams')
+                lines = topStats(userid, 'lines', 0, 'sydney-trams')
+                stations = topStats(userid, 'stations', 0, 'sydney-trams')
+                sets = topStats(userid, 'sets', 0, 'sydney-trams')
+                trains = topStats(userid, 'types', 0, 'sydney-trams')
+                dates = topStats(userid, 'dates', 0, 'sydney-trams')
+                trips = topStats(userid, 'pairs', 0, 'sydney-trams')
                 
                 #other stats stuff:
-                eDate =lowestDate(username, 'sydney-trams')
-                LeDate =highestDate(username, 'sydney-trams')
+                eDate =lowestDate(userid, 'sydney-trams')
+                LeDate =highestDate(userid, 'sydney-trams')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed2.add_field(
@@ -6324,16 +6323,16 @@ async def profile(ctx, user: discord.User = None):
             embed3.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
             # Adelaide Trains
             try:
-                lines = topStats(username, 'lines', 0, 'adelaide-trains')
-                stations = topStats(username, 'stations', 0, 'adelaide-trains')
-                sets = topStats(username, 'sets', 0, 'adelaide-trains')
-                trains = topStats(username, 'types', 0, 'adelaide-trains')
-                dates = topStats(username, 'dates', 0, 'adelaide-trains')
-                trips = topStats(username, 'pairs', 0, 'adelaide-trains')
+                lines = topStats(userid, 'lines', 0, 'adelaide-trains')
+                stations = topStats(userid, 'stations', 0, 'adelaide-trains')
+                sets = topStats(userid, 'sets', 0, 'adelaide-trains')
+                trains = topStats(userid, 'types', 0, 'adelaide-trains')
+                dates = topStats(userid, 'dates', 0, 'adelaide-trains')
+                trips = topStats(userid, 'pairs', 0, 'adelaide-trains')
 
                 #other stats stuff:
-                eDate =lowestDate(username, 'adelaide-trains')
-                LeDate =highestDate(username, 'adelaide-trains')
+                eDate =lowestDate(userid, 'adelaide-trains')
+                LeDate =highestDate(userid, 'adelaide-trains')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed3.add_field(
@@ -6354,16 +6353,16 @@ async def profile(ctx, user: discord.User = None):
 
             # Adelaide Trams
             try:
-                lines = topStats(username, 'lines', 0, 'adelaide-trams')
-                stations = topStats(username, 'stations', 0, 'adelaide-trams')
-                sets = topStats(username, 'sets', 0, 'adelaide-trams')
-                trains = topStats(username, 'types', 0, 'adelaide-trams')
-                dates = topStats(username, 'dates', 0, 'adelaide-trams')
-                trips = topStats(username, 'pairs', 0, 'adelaide-trams')
+                lines = topStats(userid, 'lines', 0, 'adelaide-trams')
+                stations = topStats(userid, 'stations', 0, 'adelaide-trams')
+                sets = topStats(userid, 'sets', 0, 'adelaide-trams')
+                trains = topStats(userid, 'types', 0, 'adelaide-trams')
+                dates = topStats(userid, 'dates', 0, 'adelaide-trams')
+                trips = topStats(userid, 'pairs', 0, 'adelaide-trams')
                 
                 #other stats stuff:
-                eDate =lowestDate(username, 'adelaide-trams')
-                LeDate =highestDate(username, 'adelaide-trams')
+                eDate =lowestDate(userid, 'adelaide-trams')
+                LeDate =highestDate(userid, 'adelaide-trams')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed3.add_field(
@@ -6388,16 +6387,16 @@ async def profile(ctx, user: discord.User = None):
             embed4.set_author(name=username, url='https://xm9g.net', icon_url=pfp)
             # Perth Trains
             try:
-                lines = topStats(username, 'lines', 0, 'perth-trains')
-                stations = topStats(username, 'stations', 0, 'perth-trains')
-                sets = topStats(username, 'sets', 0, 'perth-trains')
-                trains = topStats(username, 'types', 0, 'perth-trains')
-                dates = topStats(username, 'dates', 0, 'perth-trains')
-                trips = topStats(username, 'pairs', 0, 'perth-trains')
+                lines = topStats(userid, 'lines', 0, 'perth-trains')
+                stations = topStats(userid, 'stations', 0, 'perth-trains')
+                sets = topStats(userid, 'sets', 0, 'perth-trains')
+                trains = topStats(userid, 'types', 0, 'perth-trains')
+                dates = topStats(userid, 'dates', 0, 'perth-trains')
+                trips = topStats(userid, 'pairs', 0, 'perth-trains')
 
                 #other stats stuff:
-                eDate =lowestDate(username, 'perth-trains')
-                LeDate =highestDate(username, 'perth-trains')
+                eDate =lowestDate(userid, 'perth-trains')
+                LeDate =highestDate(userid, 'perth-trains')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed4.add_field(
@@ -6418,16 +6417,16 @@ async def profile(ctx, user: discord.User = None):
 
             # Canberra Light Rail
             try:
-                lines = topStats(username, 'lines', 0, 'canberra-trams')
-                stations = topStats(username, 'stations', 0, 'canberra-trams')
-                sets = topStats(username, 'sets', 0, 'canberra-trams')
-                trains = topStats(username, 'types', 0, 'canberra-trams')
-                dates = topStats(username, 'dates', 0, 'canberra-trams')
-                trips = topStats(username, 'pairs', 0, 'canberra-trams')
+                lines = topStats(userid, 'lines', 0, 'canberra-trams')
+                stations = topStats(userid, 'stations', 0, 'canberra-trams')
+                sets = topStats(userid, 'sets', 0, 'canberra-trams')
+                trains = topStats(userid, 'types', 0, 'canberra-trams')
+                dates = topStats(userid, 'dates', 0, 'canberra-trams')
+                trips = topStats(userid, 'pairs', 0, 'canberra-trams')
 
                 #other stats stuff:
-                eDate =lowestDate(username, 'canberra-trams')
-                LeDate =highestDate(username, 'canberra-trams')
+                eDate =lowestDate(userid, 'canberra-trams')
+                LeDate =highestDate(userid, 'canberra-trams')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed4.add_field(
@@ -6448,16 +6447,16 @@ async def profile(ctx, user: discord.User = None):
 
             # Buses
             try:
-                lines = topStats(username, 'lines', 0, 'bus')
-                stations = topStats(username, 'stations', 0, 'bus')
-                sets = topStats(username, 'sets', 0, 'bus')
-                trains = topStats(username, 'types', 0, 'bus')
-                dates = topStats(username, 'dates', 0, 'bus')
-                trips = topStats(username, 'pairs', 0, 'bus')
+                lines = topStats(userid, 'lines', 0, 'bus')
+                stations = topStats(userid, 'stations', 0, 'bus')
+                sets = topStats(userid, 'sets', 0, 'bus')
+                trains = topStats(userid, 'types', 0, 'bus')
+                dates = topStats(userid, 'dates', 0, 'bus')
+                trips = topStats(userid, 'pairs', 0, 'bus')
                 
                 #other stats stuff:
-                eDate =lowestDate(username, 'bus')
-                LeDate =highestDate(username, 'bus')
+                eDate =lowestDate(userid, 'bus')
+                LeDate =highestDate(userid, 'bus')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed4.add_field(
@@ -6478,16 +6477,16 @@ async def profile(ctx, user: discord.User = None):
 
             # Flights
             try:
-                lines = topStats(username, 'lines', 0, 'flights')
-                stations = topStats(username, 'stations', 0, 'flights')
-                sets = topStats(username, 'sets', 0, 'flights')
-                trains = topStats(username, 'types', 0, 'flights')
-                dates = topStats(username, 'dates', 0, 'flights')
-                trips = topStats(username, 'pairs', 0, 'flights')
+                lines = topStats(userid, 'lines', 0, 'flights')
+                stations = topStats(userid, 'stations', 0, 'flights')
+                sets = topStats(userid, 'sets', 0, 'flights')
+                trains = topStats(userid, 'types', 0, 'flights')
+                dates = topStats(userid, 'dates', 0, 'flights')
+                trips = topStats(userid, 'pairs', 0, 'flights')
                 
                 #other stats stuff:
-                eDate =lowestDate(username, 'flights')
-                LeDate =highestDate(username, 'flights')
+                eDate =lowestDate(userid, 'flights')
+                LeDate =highestDate(userid, 'flights')
                 joined = convert_iso_to_unix_time(f"{eDate}T00:00:00Z") 
                 last = convert_iso_to_unix_time(f"{LeDate}T00:00:00Z")
                 embed4.add_field(
@@ -6686,7 +6685,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_post_munnel
     async def generate_map():
         if user == None:
             username = ctx.user.name
-            target_user = ctx.user.name
+            target_user = ctx.user.id
         else:
             username = user.name
             target_user = user.name
