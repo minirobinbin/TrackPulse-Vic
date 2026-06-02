@@ -4854,7 +4854,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trains logged!",ephemeral=True)
@@ -4960,7 +4963,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/tram/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/tram/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/tram/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.follow("You have no trams logged!",ephemeral=True)
@@ -5026,7 +5032,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/sydney-trams/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/sydney-trams/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trams logged!",ephemeral=True)
@@ -5083,7 +5092,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/sydney-trains/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/sydney-trains/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/sydney-trains/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trains logged!",ephemeral=True)
@@ -5140,7 +5152,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/adelaide-trains/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/adelaide-trains/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no Adelaide trains logged!",ephemeral=True)
@@ -5196,7 +5211,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/adelaide-trams/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/adelaide-trams/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trams logged!",ephemeral=True)
@@ -5253,7 +5271,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/pertth-trains/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/perth-trains/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no Perth trains logged!",ephemeral=True)
@@ -5309,7 +5330,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/bus/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/bus/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/bus/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no busses logged!",ephemeral=True)
@@ -5383,7 +5407,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/flights/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/flights/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/flights/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no flights logged!",ephemeral=True)
@@ -5455,7 +5482,10 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
                     userid = user
                 
                 try:
-                    file = discord.File(f'utils/trainlogger/userdata/canberra-trams/{userid.name}.csv')
+                    try:
+                        file = discord.File(f'utils/trainlogger/userdata/canberra-trams/{userid.id}.csv')
+                    except:
+                        file = discord.File(f'utils/trainlogger/userdata/canberra-trams/{userid.name}.csv')
                 except FileNotFoundError:
                     if userid == ctx.user:
                         await ctx.response.send_message("You have no trips logged!",ephemeral=True)
