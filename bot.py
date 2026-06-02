@@ -136,6 +136,7 @@ from utils.trainlogger.ids import *
 from utils.trainlogger.map.readlogs import logMap
 from utils.trainlogger.map.mapimage import compress, legend
 from utils.lines_dictionaries import *
+from utils.stationcodes import *
 from utils.trainlogger.achievements import *
 from utils.trainlogger.graph import *
 
@@ -367,6 +368,19 @@ if config['DEVS_TO_HAVE_ADMIN_ACCESS'] == 'OFF':
 # settings
     
 lineStatusOn = False
+
+MAINTENANCE_MODE = False
+maintenance_message = "```Bot currently in Maintenance Mode, bot may go offline, commands may stop working midway through and games may randomly stop, will return to normal soon, hopefully at least```"
+maintenance_game_message = "```Bot currently in Maintenance Mode, this game may randomly end, will return to normal soon, hopefully at least```"
+
+async def maintenance_func(ctx):
+    if MAINTENANCE_MODE:
+         await ctx.channel.send(maintenance_message)
+
+async def maintenance_game_func(ctx):
+    if MAINTENANCE_MODE:
+        await ctx.channel.send(maintenance_game_message)
+
 
 channel_game_status = {} # variable to store what channels are running the guessing game
 
@@ -606,7 +620,19 @@ async def on_ready():
         channel = bot.get_channel(int(file))
         await channel.send("Bot restarted")
         with open('restart.txt', 'w') as file:
-                file.write('')
+            file.write('')
+
+    # maintenance mode
+    global MAINTENANCE_MODE
+    file = open('maintenance.txt','r')
+    file = file.read()
+
+    if file == '':
+        await printlog("Bot in normal conditions")
+        MAINTENANCE_MODE = False
+    else:
+        await printlog("Maintenance Mode Enabled")
+        MAINTENANCE_MODE = True
 
 # achievement awarder  check achievements
 async def addAchievement(username, channel, mention):
@@ -1131,6 +1157,7 @@ async def help_autocompletion(
 async def help(ctx, category: app_commands.Choice[str] = None, command:str=None):
     log_command(ctx.user.id, 'help')
     await helpCommand(ctx, category, command)
+    await maintenance_func(ctx)
 
 
     
@@ -1215,6 +1242,7 @@ async def line_info(ctx, line: str):
 
     # Send the embed to the Discord channel
     await ctx.edit_original_response(embed=embed)
+    await maintenance_func(ctx)
 
 
 # Route Seach v2
@@ -1304,6 +1332,8 @@ async def route(ctx, mode: str, number: int):
     except Exception as e:
         await ctx.channel.send(f"error:\n`{e}`\nMake sure you inputted a valid route number, otherwise, the bot is broken.")
 
+    await maintenance_func(ctx)
+
 
 # train Photo search
 @search.command(name="train-photo", description="Search Victorianrailphotos.com")
@@ -1375,6 +1405,7 @@ async def stationphoto(ctx, station:str):
             
         await ctx.edit_original_response(embed=embed)
     asyncio.create_task(searchstationpic())
+    await maintenance_func(ctx)
  
 # myki fare calculator   
 @myki.command(name="calculate-fare", description="Calculate fare for a trip")   
@@ -1429,6 +1460,7 @@ async def calculate_fair(ctx, start_zone:int, end_zone:int):
             await printlog(e)
             
     asyncio.create_task(calc())
+    await maintenance_func(ctx)
             
 
         
@@ -1517,6 +1549,7 @@ async def victorianrailphotos(ctx, number: str = '', traintype: str = '', locati
     if featured:
         featured = 'featured'
     await ctx.response.send_message(f'[View results](https://victorianrailphotos.com/search?number={number}&type={traintype}&location={location}&photographer={photographer})')
+    await maintenance_func(ctx)
 
 
 
@@ -1553,6 +1586,8 @@ async def train_search(ctx, train: str, state:str='auto', hide_run_info:bool=Fal
             return
     else:
         await ctx.response.send_message(f"{state} is not supported yet.")
+
+    await maintenance_func(ctx)
         
             
 # search run id   
@@ -1725,6 +1760,8 @@ async def runidsearch(ctx, number:str, mode:str='metro'):
             # loop = asyncio.get_event_loop()
             # task = loop.create_task(transportVicSearch_async(ctx, train.upper(), embed, embed_update))
             # await task
+
+    await maintenance_func(ctx)
             
 @search.command(name="tram", description="Search for a specific Tram")
 @app_commands.describe(tram="tram")
@@ -1805,6 +1842,8 @@ async def tramsearch(ctx, tram: str):
         # embed.add_field(name='<a:botloading2:1261102206468362381> Loading trip data', value='⠀')
         embed_update = await ctx.edit_original_response(embed=embed)
 
+    await maintenance_func(ctx)
+
 async def busOpsautocompletion(
     interaction: discord.Interaction,
     current: str
@@ -1848,6 +1887,7 @@ async def bussearchcommand(ctx, bus: str, operator:str='Unknown'):
     except Exception as e:
         print(f'Error finding bus: {e}')
         await ctx.edit_original_response(content=f"can not find that bus in list")
+    await maintenance_func(ctx)
 
 @bot.tree.command(name="import-bus-tram-data", description="ADMIN ONLY Import csv data for search bus and tram")
 @app_commands.describe(mode="bus or tram")
@@ -1878,6 +1918,7 @@ async def importbustram(ctx, mode:str, file:discord.Attachment):
     else:
         await ctx.edit_original_response("You do not have permission to use this command.")
         return
+    await maintenance_func(ctx)
     
     
 # add a favourite stop
@@ -1907,6 +1948,7 @@ async def favourite(ctx, stop: str):
     message = save_favourites(ctx.user.id, stop)
     
     await ctx.edit_original_response(content=message)
+    await maintenance_func(ctx)
     
 async def stop_autocompletion(
     interaction: discord.Interaction,
@@ -1935,6 +1977,7 @@ async def remove(ctx, stop: str):
     message = remove_favourite(ctx.user.id, stop)
     
     await ctx.edit_original_response(content=message)
+    await maintenance_func(ctx)
 
 # Next departures for a station
 async def station_autocompletion(
@@ -2253,6 +2296,7 @@ async def departures(ctx, stop: str, time:str="none", line:str='all'):
             await printlog(traceback.format_exc())  
     
     asyncio.create_task(nextdeps(stop, time))
+    await maintenance_func(ctx)
     
     
 # ptv api search command
@@ -2441,6 +2485,7 @@ async def search(ctx, search:str, type:str, maximum_responses:int=3):
             await ctx.edit_original_response(content='''"maximum_responses" set too high, try a lower number. If you're using the myki outlet mode, the maximum is 25.''')
             return
     asyncio.create_task(ptvsearch(search))
+    await maintenance_func(ctx)
         
 
 
@@ -2517,6 +2562,7 @@ async def train_line(ctx):
 async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-guesser')
+    await maintenance_game_func(ctx)
     async def run_game(): 
 
         # Check if a game is already running in this channel
@@ -2783,6 +2829,7 @@ async def lb(ctx, game:str, scope:str='global'):
         count = count + 1
         
     await ctx.response.send_message(embed=embed)
+    await maintenance_func(ctx)
 
 
 # Station order game made by @domino
@@ -2840,6 +2887,7 @@ linelist = [
 async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='all'):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-order')
+    await maintenance_game_func(ctx)
     async def run_game(line):
         # Check if a game is already running in this channel
         if channel in channel_game_status and channel_game_status[channel]:
@@ -3039,6 +3087,7 @@ async def testthing(ctx, rounds: int = 1, direction: str = 'updown', line:str='a
 async def hangman(ctx, rounds: int = 1, attempts: int = 10):
     channel = ctx.channel
     log_command(ctx.user.id, 'game-station-hangman')
+    await maintenance_game_func(ctx)
     async def run_game(line):
         # Check if a game is already running in this channel
         if channel in channel_game_status and channel_game_status[channel]:
@@ -3265,6 +3314,7 @@ async def type_autocompletion(
 
 # Train logger
 async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='today', type:str='auto', notes:str=None, hidemessage:bool=False):
+    await maintenance_func(ctx)
     channel = ctx.channel
     await ctx.response.defer(ephemeral=hidemessage)
     log_command(ctx.user.id, 'log-train')
@@ -3340,6 +3390,14 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
             notes = notes.replace('\n', ' ')
             #add quotes so the csv dosn't break when u use a comma
             notes = f'"{notes}"'
+
+        # Station Code Converter
+        if len(start) == 3:
+            printlog("converting start from station code")
+            start = station_codes[start.upper()]
+        if len(end) == 3:
+            printlog("converting end from station code")
+            end = station_codes[end.upper()]
                 
             
         # Add train to the list
@@ -3448,6 +3506,7 @@ async def logtrain(ctx, line:str, number:str, start:str, end:str, date:str='toda
     app_commands.Choice(name="Flight", value="flights"),
 ])
 async def deleteLog(ctx, mode:str, id:str='LAST'):
+    await maintenance_func(ctx)
     class DeleteConfirmation(discord.ui.View):
         def __init__(self):
             super().__init__(timeout=30)
@@ -3536,6 +3595,7 @@ async def deleteLog(ctx, mode:str, id:str='LAST'):
 @app_commands.autocomplete(type=type_autocompletion)
 async def editrow(ctx, id:str, mode:str='train', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', type:str='auto', notes:str='nochange'):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'edit-row')
     
     username = ctx.user.name
@@ -3630,6 +3690,7 @@ async def station_autocompletion(
 
 async def logtram(ctx, route:str, number: str, start:str, end:str, date:str='today', notes:str=None, hidemessage:bool=False):
     await ctx.response.defer(ephemeral=hidemessage)
+    await maintenance_func(ctx)
     channel = ctx.channel
     await printlog(date)
     async def log(notes):
@@ -3761,6 +3822,7 @@ async def NSWstation_autocompletion(
 async def logNSWTrain(ctx,  line:str, number: str, start:str, end:str, type:str='auto', date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await ctx.response.defer(ephemeral=hidemessage)
+    await maintenance_func(ctx)
     async def log(type):
         log_command(ctx.user.id, 'log-nsw-train')
         await printlog("logging the nsw sydney train")
@@ -3855,6 +3917,7 @@ async def logSATrain(ctx, line:str, number: str, start:str, end:str, date:str='t
     channel = ctx.channel
     log_command(ctx.user.id, 'log-adelaide-train')
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         await printlog("logging the adelaide train")
 
@@ -3943,6 +4006,7 @@ async def Adelaidestop_autocompletion(
 async def logSATram(ctx, line:str, number: str, type:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         log_command(ctx.user.id, 'log-adelaide-tram')
         await printlog("logging the adelaide tram")
@@ -4020,6 +4084,7 @@ async def logPerthTrain(ctx, number: str, line:str, start:str, end:str, date:str
     channel = ctx.channel
     log_command(ctx.user.id, 'log-perth-train')
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         await printlog("logging the perth train")
 
@@ -4093,6 +4158,7 @@ async def logFlght(ctx, registration:str, type:str, start:str, end:str, airline:
     log_command(ctx.user.id, 'log-flight')
     await ctx.response.defer(ephemeral=hidemessage)
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         await printlog("logging the fliying train")
 
@@ -4187,6 +4253,7 @@ async def NSWstop_autocompletion(
 async def logNSWTram(ctx, line:str, number: str, type:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         log_command(ctx.user.id, 'log-nsw-tram')
         await printlog("logging the sydney tram")
@@ -4277,6 +4344,7 @@ async def logNSWTram(ctx, line:str, number: str, type:str, start:str, end:str, d
 async def logCanberraTram(ctx, line:str, number: str, type:str, start:str, end:str, date:str='today', hidemessage:bool=False):
     channel = ctx.channel
     await printlog(date)
+    await maintenance_func(ctx)
     async def log():
         log_command(ctx.user.id, 'log-canberra-tram')
         await printlog("logging the canberra tram")
@@ -4351,6 +4419,7 @@ async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='U
     channel = ctx.channel
     await ctx.response.defer(ephemeral=hidemessage)
     await printlog(date)
+    await maintenance_func(ctx)
     async def log(notes,type,operator):
         log_command(ctx.user.id, 'log-bus')
         await printlog("logging the bus")
@@ -4493,6 +4562,7 @@ async def logBus(ctx, line:str, number: str, start:str, end:str, operator:str='U
 @app_commands.describe(date = "Date in DD/MM/YYYY format")
 async def editrow(ctx, id:str, mode:str='bus', line:str='nochange', number:str='nochange', start:str='nochange', end:str='nochange', date:str='nochange', type:str='auto', operator:str='nochange', notes:str='nochange'):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'edit-row')
     
     username = ctx.user.name
@@ -4631,6 +4701,7 @@ vLineLines = ['Geelong','Warrnambool', 'Ballarat', 'Maryborough', 'Ararat', 'Ben
 # ])
 
 async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
+    await maintenance_func(ctx)
     async def sendLogs():
         log_command(ctx.user.id, 'view-log')
         
@@ -5454,6 +5525,7 @@ async def userLogs(ctx, mode:str='train', user: discord.User=None, id:str=None):
     app_commands.Choice(name="Perth Trains", value="perth-trains"),
 ])
 async def export(ctx, format:str, mode:str, hidemessage:bool=False):
+    await maintenance_func(ctx)
     try:
         await logExport(ctx, format, mode, hidemessage)
     except FileNotFoundError as e:
@@ -5475,6 +5547,7 @@ async def export(ctx, format:str, mode:str, hidemessage:bool=False):
 ])
 async def importlogs(ctx, mode:str, file:discord.Attachment):
     await ctx.response.defer(ephemeral=True)
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'import-log')
 
     class ImportConfirmation(discord.ui.View):
@@ -5576,6 +5649,7 @@ async def importlogs(ctx, mode:str, file:discord.Attachment):
 async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&g', global_stats:bool=False, user: discord.User = None, year:int=0):
     async def sendLogs():
         await ctx.response.defer()
+        await maintenance_func(ctx)
         log_command(ctx.user.id, 'log-stats')
         statSearch = stat
         userid = user if user else ctx.user
@@ -5757,6 +5831,7 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
 @stats.command(name='termini', description='View which line termini you have been to')
 async def termini(ctx):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'log-termini')
     try:
         data =terminiList(ctx.user.name)
@@ -5800,6 +5875,7 @@ async def termini(ctx):
     app_commands.Choice(name='N Class', value='N Class'),
 ])
 async def sets(ctx, train:str):
+    await maintenance_func(ctx)
     userid = ctx.user
     trainTypes = ["X'Trapolis 100", "X'Trapolis 2.0", "Comeng", 'Siemens Nexas', 'HCMT', 'VLocity', 'Sprinter', 'N Class']
     await ctx.response.defer()
@@ -5872,6 +5948,7 @@ async def sets(ctx, train:str):
     app_commands.Choice(name="Western Australia", value="Western Australian"),
 ])
 async def sets(ctx, state:str):
+    await maintenance_func(ctx)
     userid = ctx.user
     await ctx.response.defer()
     log_command(ctx.user.id, 'log-stations')
@@ -5930,6 +6007,7 @@ async def sets(ctx, state:str):
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str, location: str, photofor:str, number: str=''):
     await ctx.response.defer(ephemeral=True)
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'submit-photo-retired')
     async def submitPhoto():
         await ctx.followup.send('This command has been retired. Please submit photos via the VictorianRailPhotos website: https://victorianrailphotos.com/upload')
@@ -5940,6 +6018,7 @@ async def submit(ctx: discord.Interaction, photo: discord.Attachment, date: str,
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 async def alias(ctx: discord.Interaction, name: str):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     worked = setWebAlias(ctx.user.id, name)
     if worked:
         await ctx.followup.send(f'Set alias to `{name}`')
@@ -5956,6 +6035,7 @@ async def alias(ctx: discord.Interaction, name: str):
 
 async def accept(ctx, id: int, mode:str, traintype:str, featured:bool=False, note:str=None, number:str=None, location:str=None, date:str=None, reason:str=None):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     if ctx.user.id in admin_users:            
         try:
             userid = await getUserID(id)
@@ -6029,6 +6109,7 @@ async def accept_guesser(ctx, id: int, station:str, difficulty:str, mode:str='gu
     else:
         await ctx.response.send_message("You do not have permission to use this command.")
         return
+    await maintenance_func(ctx)
     
 @bot.command(name='reject', description="Reject a photo submission from the queue")
 async def reject(ctx, id: int, *, reason: str):
@@ -6046,10 +6127,12 @@ async def reject(ctx, id: int, *, reason: str):
             except:
                 m = (f"Could not send message to user ID: {userid}. They may have DMs disabled.")
             await ctx.send(f"Submission with queue number `{id}` has been rejected and removed from the queue. {m}")
+    await maintenance_func(ctx)
     
 @bot.tree.command(name='queue', description="View the current photo submission queue")
 async def queue(ctx: discord.Interaction):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     if ctx.user.id in admin_users:
         data = await returnQueue()
         embed = discord.Embed(title='Photo Submission Queue (top 25)')
@@ -6068,6 +6151,7 @@ async def queue(ctx: discord.Interaction):
     
 @stats.command(name='profile', description="Shows a users trip log stats, and leaderboard wins")    
 async def profile(ctx, user: discord.User = None):
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'view-profile')
     try:
         await ctx.response.defer()
@@ -6491,6 +6575,7 @@ async def profile(ctx, user: discord.User = None):
 ])
 async def viewMaps(ctx, mode: str, no_compression: bool = False):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id,'map-view')
     try:
         editmode = mode.removeprefix("time_based_variants/") + str(no_compression)
@@ -6573,6 +6658,7 @@ async def viewMaps(ctx, mode: str, no_compression: bool = False):
 ])
 async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_post_munnel.png",line: str='All', train:str='all', year: int=0, user: discord.Member=None,global_stats:bool=False,no_compression:bool=False):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'maps-trips')
     await printlog(f"Making trip map for {str(ctx.user.id)}")
 
@@ -6729,8 +6815,69 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_post_munnel
             except Exception as e:
                 await ctx.followup.send(f'Error sending map:\n```{e}```')
 
-    # Start the async map generation
-    asyncio.create_task(generate_map())
+# Start the async map generation
+    async def safe_generate_map():
+        import os
+        import traceback
+        
+        # get memory usage before starting the map generation
+        baseline_rss_kb = 0
+        try:
+            with open('/proc/self/status', 'r') as f:
+                for line in f:
+                    if line.startswith('VmRSS:'):
+                        baseline_rss_kb = int(line.split()[1])
+                        break
+        except:
+            pass
+
+        map_task = asyncio.ensure_future(generate_map())
+        
+        try:
+            while not map_task.done():
+                await asyncio.sleep(1.0)
+                
+                # 2. Get the Current RAM
+                current_rss_kb = 0
+                try:
+                    with open('/proc/self/status', 'r') as f:
+                        for line in f:
+                            if line.startswith('VmRSS:'):
+                                current_rss_kb = int(line.split()[1])
+                                break
+                except:
+                    continue 
+                
+                # how much mapstrips is using compared to before it started
+                command_usage_kb = current_rss_kb - baseline_rss_kb
+                
+                # 4GB limit
+                if command_usage_kb > (4 * 1024 * 1024): 
+                    map_task.cancel()
+                    
+                    print(f"MEMORY ERROR (EXCEEDED) in map generation")
+                    
+                    error_msg = ("Map Generation ERROR: Memory Limit Reached. Please try again in a few minutes. "
+                                 "If you see me again, please know the developers are actively trying to fix this issue. "
+                                 "Apologies for any inconvenience.")
+                    
+                    try:
+                        await ctx.edit_original_response(content=error_msg)
+                    except:
+                        try:
+                            await ctx.followup.send(error_msg)
+                        except:
+                            pass
+                    return
+            
+            await map_task
+            
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            print(f'CRITICAL ERROR in map generation: {e}\n{traceback.format_exc()}')
+
+    await safe_generate_map()
 
 @bot.command(name='testfind')
 async def testfind(ctx):
@@ -6774,6 +6921,7 @@ async def award(ctx, user: discord.User, achievement:int):
 @app_commands.describe(user="Who's achievements to show?")
 async def viewAchievements(ctx, user: discord.User = None):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'view-achievements')
 
     if user is None:
@@ -6878,6 +7026,7 @@ async def viewAchievements(ctx, user: discord.User = None):
 async def checklines(ctx, operator: str):
     # Defer the response to avoid timeout
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'line-status')
 
     # Run the async function in the background
@@ -6976,6 +7125,7 @@ async def run_in_thread(ctx, operator):
 @schedule.command(name="add", description="Add a train to make its run be send in a channel every 10 minutes.")
 @app_commands.describe(train="A carriage number on the train to send, eg 860M", channel="The channel to send the run to")
 async def add_schedule(ctx, train: str, channel: discord.TextChannel):
+    await maintenance_func(ctx)
     if ctx.user.guild_permissions.administrator:
         log_command(ctx.user.id, 'add-schedule')
         await ctx.response.defer()
@@ -6990,6 +7140,7 @@ async def add_schedule(ctx, train: str, channel: discord.TextChannel):
     if ctx.user.guild_permissions.administrator:
         log_command(ctx.user.id, 'remove-schedule')
         await ctx.response.defer()
+        await maintenance_func(ctx)
         await trainTimleyFetcherRemove(ctx, train, channel)
     else:
         await ctx.response.send_message("Only administrators can remove schedules.", ephemeral=True)
@@ -6999,16 +7150,18 @@ async def add_schedule(ctx, train: str, channel: discord.TextChannel):
 async def list_schedule(ctx, channel: discord.TextChannel):
     log_command(ctx.user.id, 'view-schedule-list')
     await ctx.response.defer()
+    await maintenance_func(ctx)
     await trainTimleyFetcherList(ctx, channel)
 
 #about/credits
 @bot.tree.command(name="about", description="View information about the bot.")
 async def about(ctx):
     await ctx.response.defer()
+    await maintenance_func(ctx)
     log_command(ctx.user.id, 'about')
     embed = discord.Embed(title="About", description=f"TrackPulse Vic is a Discord bot designed for users to log their train, tram or bus trips across Victoria, New South Wales, South Australia and Western Australia, allowing you to keep track of what transport you have taken and when. It also includes other features such as real-time tracking for Metro Trains Melbourne, upcoming departures for Melbourne stations and the ability to search for information on specific trains, and also fun games for you to play with your friends.\nOnline Since <t:{uptime}:R>", color=discord.Color.blue())
     embed.add_field(name="Developed by", value="[Comeng17](https://github.com/Comeng17)", inline=True)
-    embed.add_field(name="Contributions by",value=f'[Billy Evans](https://xm9g.net/)\n[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Richy](https://github.com/Richy023)\n[minirobinbin](https://github.com/minirobinbin)\n[NebulaFire](https://github.com/NebulaInferno)\nsaladmunchr (hosting)\nAperture (NSW train info)\n',inline=True)
+    embed.add_field(name="Contributions by",value=f'[Billy Evans](https://xm9g.net/)\n[domino6658](https://github.com/domino6658)\n[AshKmo](https://github.com/AshKmo)\n[Richy](https://github.com/Richy023)\n[minirobinbin](https://github.com/minirobinbin)\n[NebulaFire](https://github.com/NebulaInferno)\nCaroline Springs (hosting)\nAperture (NSW train info)\n',inline=True)
     embed.add_field(name='Photos sourced from',value="[Victorian Rail Photos](https://victorianrailphotos.com/)")
     embed.add_field(name="Data Sources", value="[Transport Victoria](https://www.ptv.vic.gov.au/)\n", inline=True)
     embed.add_field(name='Website', value='https://trackpulsevic.xm9g.net')
@@ -7025,6 +7178,7 @@ async def about(ctx):
 async def yearinreview(ctx, year: int=2025):
     async def yir():
         await ctx.response.defer()
+        await maintenance_func(ctx)
         log_command(ctx.user.id, 'year-in-review')
         current_year = datetime.now().year
         unix_time = int(time.time())
@@ -7520,6 +7674,40 @@ async def restart(ctx):
     else:
         await printlog(f'{str(ctx.author.id)} tried to restart the bot.')
         await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def maintenancemode(ctx):
+    if ctx.author.id in admin_users:
+        log_command(ctx.author.id, 'maintenance')
+        await ctx.send(f"Toggling Maintenance Mode")
+        await printlog("Toggling Maintenance Mode")
+        global MAINTENANCE_MODE
+        MAINTENANCE_MODE = not(MAINTENANCE_MODE)
+        if MAINTENANCE_MODE:
+            with open('maintenance.txt', 'w') as file:
+                file.write(":3")
+            await ctx.send(f"Maintenance Mode On")
+            await printlog("Maintenance Mode On")
+        else:
+            with open('maintenance.txt', 'w') as file:
+                file.write("")
+            await ctx.send(f"Maintenance Mode Off")
+            await printlog("Maintenance Mode Off")
+
+    else:
+        await printlog(f'{str(ctx.author.id)} tried to toggle maintenance mode.')
+        await ctx.send("You are not authorized to use this command.")
+
+@bot.command()
+async def maintenancequery(ctx):
+    log_command(ctx.author.id, 'maintenance')
+    if MAINTENANCE_MODE:
+        await ctx.send(f"Maintenance Mode On")
+        await printlog("Maintenance Mode On")
+    else:
+        await ctx.send(f"Maintenance Mode Off")
+        await printlog("Maintenance Mode Off")
+
 
 @bot.command()
 async def shutdown(ctx):
