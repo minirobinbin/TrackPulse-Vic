@@ -1,16 +1,19 @@
 station_codes = {
-    # Maryborough was the most recent station (following vicsig and sorting by name)
+    # Moreland was the most recent station (following vicsig and sorting by name)
     
     # Clifton Hill Station Codes
     "JLI":  "Jolimont-MCG",
     "CWD":  "Collingwood",
     "CHL":  "Clifton Hill",
+    "MER":  "Merri",
     "CXT":  "Croxton",
     "BEL":  "Bell",
     "KPK":  "Keon Park",
     "LAL":  "Lalor",
     "EPP":  "Epping",
+    "MMR":  "Middle Gorge",
     "HWS":  "Hawkstowe",
+    "MDD":  "Mernda",
     "DEN":  "Dennis",
     "FFD":  "Fairfield",
     "ALP":	"Alphington",
@@ -20,6 +23,7 @@ station_codes = {
     "HDB":  "Heidelberg",
     "MCD":  "Macleod",
     "GRN":  "Greensborough",
+    "MMY":  "Montmorency",
     "ELT":  "Eltham",
     "DCK":  "Diamond Creek",
     "HBE":  "Hurstbridge",
@@ -34,11 +38,14 @@ station_codes = {
     "CBY":  "Canterbury",
     "CHM":  "Chatham",
     "UNN":	"Union",
+    "MAB":  "Mont Albert",
     "BOX":  "Box Hill",
     "BBN":  "Blackburn",
     "LAB":  "Laburnum", # Though I have something against laburnum, its here.
+    "MCH":  "Mitcham",
     "HTD":  "Heatherdale",
     "CDN":  "Croydon",
+    "MLK":  "Mooroolbark",
     "LIL":  "Lilydale",
     "HMT":  "Heathmont",
     "BAY":  "Bayswater",
@@ -72,15 +79,20 @@ station_codes = {
     "CDA":  "Cardinia Road",
     "EPH":	"East Pakenham",
     "LBK":  "Lynbrook",
+    "MPK":  "Merinda Park",
     "CBE":  "Cranbourne",
     # Frankston/Stony Point Station Codes
     "HKN":  "Hawksburn",
     "ARM":	"Armadale",
     "GHY":  "Glen Huntly",
+    "MCK":  "McKinnon",
     "BEN":  "Bentleigh",
+    "MRN":  "Moorabbin",
     "HIG":  "Highett",
     "CTM":  "Cheltenham",
     "CHE":  "Cheltenham", # Not Official but I know other use this
+    "MEN":  "Mentone",
+    "MOR":  "Mordialloc",
     "ASP":	"Aspendale",
     "EDI":  "Edithvale",
     "CSA":  "Chelsea",
@@ -97,6 +109,7 @@ station_codes = {
     "BCV":  "Balaclava",
     "ELS":  "Elsternwick",
     "GVE":  "Gardenvale",
+    "MBN":  "Middle Brighton",
     "BBH":  "Brighton Beach",
     "HAM":  "Hampton",
     # Werribee/Williamstown Station Codes
@@ -106,6 +119,7 @@ station_codes = {
     "HCG":  "Hoppers Crossing",
 
     # Sunbury Station Codes
+    "MFY":  "Middle Footscray",
     "ALB":	"Albion",
     "GIN":  "Ginifer",
     "KPL":  "Kelior Plains",
@@ -117,6 +131,7 @@ station_codes = {
     # Craigieburn Station Codes
     "KEN":  "Kensington",
     "ASV":	"Ascot Vale",
+    "MPD":  "Moonee Ponds",
     "ESD":  "Essendon",
     "GBV":  "Glenbervie",
     "GRY":  "Glenroy",
@@ -130,6 +145,7 @@ station_codes = {
     "JWL":  "Jewell",
     "BWK":  "Brunswick",
     "ASY":	"Anstey",
+    "MLD":  "Moreland",
     "COB":  "Coburg",
     "BAT":  "Batman",
     "FAK":  "Fawkner",
@@ -176,6 +192,8 @@ station_codes = {
     "LWY":  "Longwarry",
     "MSL":  "Marshall",
     "MYB":  "Maryborough",
+    "MEL":  "Melton",
+    "MPA":  "Mooroopna",
     
     
     # Inner City stations With too many lines
