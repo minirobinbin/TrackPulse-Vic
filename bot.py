@@ -5762,7 +5762,7 @@ async def statTop(ctx: discord.Interaction, stat: str, mode:str, format: str='l&
         # distance over time
         if stat == 'distanceovertime':
             distanceChart(data, userid)
-            await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.name}.png'))
+            await ctx.followup.send(file=discord.File(f'temp/Graph{ctx.user.id}.png'))
                 
         # make temp csv
         csv_filename = f'temp/top{stat.title()}.{userid}-t{time.time()}.csv'
