@@ -6688,7 +6688,7 @@ async def mapstrips(ctx,mode: str="time_based_variants/log_train_map_post_munnel
             target_user = ctx.user.id
         else:
             username = user.name
-            target_user = user.name
+            target_user = user.id
 
         if mode == "time_based_variants/log_train_map_pre_munnel.png":
             modeName = 'vic'
