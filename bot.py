@@ -2657,7 +2657,7 @@ async def game(ctx,rounds: int = 1, line:str='all', ultrahard: bool=False):
                     embed.color = very_hard_colour
             
             embed.set_image(url=url)
-            embed.set_footer(text=f"Photo by {credit}. DM @xm9g to submit a photo | {len(data)} photos in set | Started by {ctx.user.name}")
+            embed.set_footer(text=f"Photo by {credit}. | {len(data)} photos in set | Started by {ctx.user.name}")
             embed.set_author(name=f"Round {round+1}/{rounds}")
 
             # Send the embed message
