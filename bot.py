@@ -5914,9 +5914,9 @@ async def sets(ctx, train:str):
         embed.set_footer(text='Choose a train type to see which sets you have been on.')
         await ctx.edit_original_response(embed=embed)
         return
-    # specific traim
+    # specific train
     try:
-        data =setlist(ctx.user.id, train)
+        data = setlist(ctx.user.id, train)
     except:
         await ctx.edit_original_response(content='No logs found!')
     
@@ -5959,6 +5959,89 @@ async def sets(ctx, train:str):
         for item in split_strings:
             await logsthread.send(item)
 
+@completion.command(name='lines', description='View which stations on lines you have been on')
+@app_commands.choices(line=[
+    app_commands.Choice(name="Summary", value="Summary"),
+    app_commands.Choice(name="Hurstbridge", value="Hurstbridge"),
+    app_commands.Choice(name="Mernda",value="Mernda"),
+    app_commands.Choice(name="Craigieburn",value="Craigieburn"),
+    app_commands.Choice(name="Sunbury",value="Sunbury"),
+    app_commands.Choice(name="Upfield",value="Upfield"),
+    app_commands.Choice(name="Cranbourne",value="Cranbourne"),
+    app_commands.Choice(name="Pakenham",value="Pakenham"),
+    app_commands.Choice(name="Frankston",value="Frankston"),
+    app_commands.Choice(name="Stony Point",value="Stony Point"),
+    app_commands.Choice(name="Werribee",value="Werribee"),
+    app_commands.Choice(name="Williamstown",value="Williamstown"),
+    app_commands.Choice(name="Sandringham",value="Sandringham"),
+    app_commands.Choice(name="Alamein",value="Alamein"),
+    app_commands.Choice(name="Belgrave",value="Belgrave"),
+    app_commands.Choice(name="Glen Waverly",value="Glen Waverly"),
+    app_commands.Choice(name="Lilydale",value="Lilydale"),
+    app_commands.Choice(name="Metro Tunnel",value="Metro Tunnel"),
+    app_commands.Choice(name="City Loop",value="City Loop")
+])
+async def sets(ctx, line:str):
+    await maintenance_func(ctx)
+    userid = ctx.user
+    trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop"]
+    await ctx.response.defer()
+    log_command(ctx.user.id, 'log-lines')
+
+    if line == 'Summary':
+        embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
+        for line in trainLines:
+            try:
+                print(line)
+                data = completionList(ctx.user.id, line, summary=True)
+                embed.add_field(name=f'{line}', value=data, inline=True)
+            except:
+                await ctx.edit_original_response(content=f'No logs found!')
+                return
+        embed.set_footer(text="Choose a line to see which stations you've been to")
+        await ctx.edit_original_response(embed=embed)
+        return
+    
+    try:
+        data = completionList(ctx.user.id, line)
+    except Exception as e:
+        await ctx.edit_original_response(content=f'No logs found! {e}')
+
+    try:
+        logsthread = await ctx.channel.create_thread(
+            name=f'{line} stations {userid.name} has been to',
+            auto_archive_duration=60,
+            type=discord.ChannelType.public_thread
+        )
+    except Exception as e:
+        await ctx.response.send_message(f"Cannot create thread! Ensure the bot has permission to create threads and that you aren't running this in another thread or DM.\n Error: `{e}`")
+
+    pfp = userid.avatar.url
+    embed=discord.Embed(title=f'{line} stations {userid.name} has been to', colour=metro_colour)
+    embed.set_author(name=userid.name, url='https://victorianrailphotos.com', icon_url=pfp)
+    embed.add_field(name='Click here to view your data:', value=f'<#{logsthread.id}>')
+    await ctx.edit_original_response(embed=embed)
+
+    if len(data) <= 2000:
+        await logsthread.send(data)
+    else:
+        await logsthread.send(f"{line} stations you have been to:")
+        split_strings = []
+        start = 0
+
+        while start < len(data):
+            if start + 2000 < len(data):
+                split_index = data.rfind('\n', start, start + 2000)
+                if split_index == -1:
+                    split_index = start + 2000
+            else:
+                split_index = len(data)
+
+            split_strings.append(data[start:split_index])
+            start = split_index + 1
+        
+        for item in split_strings:
+            await logsthread.send(item)
 
 @completion.command(name='stations', description='View which you have visited')
 @app_commands.choices(state=[
