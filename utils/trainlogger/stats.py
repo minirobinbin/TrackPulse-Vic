@@ -937,7 +937,7 @@ def completionList(user, line, summary:bool = False):
     else:
         result_string = ''
       
-    # Calculate the percentage of sets that have been ticked
+    # Calculate the percentage of stations that have been ticked
     # ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item for item in stations if item in [row[6] for row in csv_data]]
     ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item in [row[6] for row in csv_data]]
     percent_ticked = round(len(ticked_stations) / len(stations) * 100, 2)
