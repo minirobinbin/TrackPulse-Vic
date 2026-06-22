@@ -5992,7 +5992,6 @@ async def sets(ctx, line:str):
         embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
         for line in trainLines:
             try:
-                print(line)
                 data = completionList(ctx.user.id, line, summary=True)
                 embed.add_field(name=f'{line}', value=data, inline=True)
             except:

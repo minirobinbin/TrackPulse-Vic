@@ -930,7 +930,6 @@ def completionList(user, line, summary:bool = False):
             item_counts[row[6]] += 1
         else:
             item_counts[row[6]] = 1
-    print(item_counts)
 
     if summary == False:
         # Create a string with ticks for matching items
@@ -941,9 +940,7 @@ def completionList(user, line, summary:bool = False):
     # Calculate the percentage of sets that have been ticked
     # ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item for item in stations if item in [row[6] for row in csv_data]]
     ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item in [row[6] for row in csv_data]]
-    print(len(ticked_stations))
     percent_ticked = round(len(ticked_stations) / len(stations) * 100, 2)
-    print(percent_ticked)
     # Add the percentage to the end of the string
     result_string += f"\n\n{len(ticked_stations)}/{len(stations)} ({percent_ticked}%) of stations visited" if summary == False else f"{len(ticked_stations)}/{len(stations)} `{percent_ticked}%`"
     
