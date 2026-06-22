@@ -5986,7 +5986,7 @@ async def sets(ctx, line:str):
     userid = ctx.user
     trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop"]
     await ctx.response.defer()
-    log_command(ctx.user.id, 'log-lines')
+    log_command(ctx.user.id, 'completion-lines')
 
     if line == 'Summary':
         embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
