@@ -5978,24 +5978,25 @@ async def sets(ctx, train:str):
     app_commands.Choice(name="Belgrave",value="Belgrave"),
     app_commands.Choice(name="Glen Waverly",value="Glen Waverly"),
     app_commands.Choice(name="Lilydale",value="Lilydale"),
+    app_commands.Choice(name="Flemington Racecourse",value="Flemington Racecourse"),
     app_commands.Choice(name="Metro Tunnel",value="Metro Tunnel"),
     app_commands.Choice(name="City Loop",value="City Loop")
 ])
 async def sets(ctx, line:str):
     await maintenance_func(ctx)
     userid = ctx.user
-    trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop"]
+    trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop", "Flemington Racecourse", "All"]
     await ctx.response.defer()
     log_command(ctx.user.id, 'completion-lines')
 
     if line == 'Summary':
-        embed = discord.Embed(title=f'{userid.name}\'s set completion summary', colour=metro_colour)
+        embed = discord.Embed(title=f'{userid.name}\'s line completion summary', colour=metro_colour)
         for line in trainLines:
             try:
                 data = completionList(ctx.user.id, line, summary=True)
                 embed.add_field(name=f'{line}', value=data, inline=True)
-            except:
-                await ctx.edit_original_response(content=f'No logs found!')
+            except Exception as e:
+                await ctx.edit_original_response(content=f'No logs found! {e}')
                 return
         embed.set_footer(text="Choose a line to see which stations you've been to")
         await ctx.edit_original_response(embed=embed)

@@ -756,7 +756,7 @@ def completionList(user, line, summary:bool = False):
             "Collingwood",
             "North Richmond",
             "West Richmond",
-            "Jolimont-Mcg"
+            "Jolimont"
         ]
     elif line == "Mernda": 
         stations = [
@@ -783,13 +783,13 @@ def completionList(user, line, summary:bool = False):
             "Collingwood",
             "North Richmond",
             "West Richmond",
-            "Jolimont-Mcg"
+            "Jolimont"
         ]
     elif line == "Frankston":
         stations = [
             "Frankston", "Kananook", "Seaford", "Carrum", 
             "Chelsea", "Edithvale", "Aspendale", "Mordialloc", "Parkdale", 
-            "Mentone", "Cheltenham", "Highett", "Moorabbin", "Patterson", 
+            "Mentone", "Cheltenham", "Southland", "Highett", "Moorabbin", "Patterson", 
             "Bentleigh", "McKinnon", "Ormond", "Glen Huntly", "Caulfield", "Malvern", 
             "Armadale", "Toorak", "Hawksburn", "South Yarra", "Richmond"
         ]
@@ -896,6 +896,12 @@ def completionList(user, line, summary:bool = False):
             "Leawarra",
             "Frankston"
         ]
+    elif line == "Flemington Racecourse":
+        stations = [
+            "Flemington Racecourse",
+            "Showgrounds",
+            "North Melbourne"
+        ]
     elif line == "Metro Tunnel":
         stations = [
             "Arden",
@@ -912,6 +918,40 @@ def completionList(user, line, summary:bool = False):
             "Melbourne Central",
             "Parliament"
         ]
+    elif line == "All":
+        stations = [
+            "Aircraft", "Alamein", "Albion", "Alphington", "Altona", "Anstey", "Anzac", "Arden", "Ardeer", 
+            "Armadale", "Ascot Vale", "Ashburton", "Aspendale", "Auburn", "Balaclava", "Batman", "Bayswater", 
+            "Beaconsfield", "Belgrave", "Bell", "Bentleigh", "Berwick", "Bittern", "Blackburn", "Boronia", 
+            "Box Hill", "Brighton Beach", "Broadmeadows", "Brunswick", "Burnley", "Burwood", "Camberwell", 
+            "Canterbury", "Cardinia Road", "Carnegie", "Carrum", "Caulfield", "Chatham", "Chelsea", "Cheltenham", 
+            "Clifton Hill", "Cobblebank", "Coburg", "Collingwood", "Coolaroo", "Craigieburn", "Cranbourne", 
+            "Crib Point", "Croxton", "Croydon", "Dandenong", "Darebin", "Darling", "Deer Park", "Dennis", 
+            "Diamond Creek", "Diggers Rest", "Eaglemont", "East Camberwell", "East Malvern", "East Pakenham", 
+            "East Richmond", "Edithvale", "Elsternwick", "Eltham", "Epping", "Essendon", "Fairfield", "Fawkner", 
+            "Ferntree Gully", "Flagstaff", "Flemington Bridge", "Flemington Racecourse", "Flinders Street", 
+            "Footscray", "Frankston", "Gardiner", "Gardenvale", "Ginifer", "Glen Huntly", "Glen Iris", 
+            "Glen Waverley", "Glenbervie", "Glenferrie", "Glenroy", "Gowrie", "Greensborough", "Hallam", 
+            "Hampton", "Hartwell", "Hastings", "Hawkstowe", "Hawksburn", "Hawthorn", "Heatherdale", "Heathmont", 
+            "Heidelberg", "Heyington", "Highett", "Holmesglen", "Hoppers Crossing", "Hughesdale", "Huntingdale", 
+            "Hurstbridge", "Ivanhoe", "Jacana", "Jewell", "Jolimont", "Jordanville", "Kananook", "Keilor Plains", 
+            "Kensington", "Keon Park", "Kooyong", "Laburnum", "Lalor", "Laverton", "Leawarra", "Lilydale", 
+            "Lynbrook", "Macaulay", "Macleod", "Malvern", "McKinnon", "Melbourne Central", "Melton", "Mentone", 
+            "Merinda Park", "Mernda", "Merri", "Middle Gorge", "Middle Footscray", "Mitcham", "Montmorency", "Moonee Ponds", "Moorabbin", 
+            "Mooroolbark", "Morradoo", "Mount Waverley", "Mordialloc", "Moreland", "Murrumbeena", "Narre Warren", 
+            "Newmarket", "Newport", "Noble Park", "North Brighton", "North Melbourne", "North Richmond", 
+            "North Williamstown", "Northcote", "Nunawading", "Oak Park", "Oakleigh", "Officer", "Ormond", 
+            "Pakenham", "Parkdale", "Parkville", "Parliament", "Pascoe Vale", "Patterson", "Prahran", 
+            "Preston", "Regent", "Reservoir", "Richmond", "Ringwood", "Ringwood East", "Ripponlea", "Riversdale", 
+            "Rockbank", "Rosanna", "Roxburgh Park", "Royal Park", "Rushall", "Ruthven", "Sandown Park", 
+            "Sandringham", "Seaford", "Seaholme", "Seddon", "Showgrounds", "Somerville", "South Kensington", "Southland", 
+            "South Morang", "South Yarra", "Southern Cross", "Spotswood", "Springvale", "St Albans", 
+            "State Library", "Stony Point", "Strathmore", "Sunbury", "Sunshine", "Syndal", "Tecoma", 
+            "Thomastown", "Thornbury", "Toorak", "Tooronga", "Tottenham", "Town Hall", "Tyabb", "Union", 
+            "Upfield", "Upper Ferntree Gully", "Upwey", "Victoria Park", "Watergardens", "Watsonia", "Wattle Glen", 
+            "Werribee", "West Footscray", "West Richmond", "Westall", "Westgarth", "Westona", "Williams Landing", 
+            "Williamstown", "Williamstown Beach", "Willison", "Windsor", "Yarraman", "Yarraville"
+        ]
     else:
         line = ['Invalid Line:', f'{line}']
 
@@ -919,15 +959,21 @@ def completionList(user, line, summary:bool = False):
         reader = csv.reader(csvfile)
         csv_data = list(reader)
 
+
+
    # Create a dictionary to count the occurrences of each item
     item_counts = {}
     for row in csv_data:
         if row[5] in item_counts:
             item_counts[row[5]] += 1
+        elif row[5] == "Jolimont-MCG" or row[5] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
         else:
             item_counts[row[5]] = 1
         if row[6] in item_counts:
             item_counts[row[6]] += 1
+        elif row[6] == "Jolimont-MCG" or row[6] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
         else:
             item_counts[row[6]] = 1
 
@@ -941,6 +987,7 @@ def completionList(user, line, summary:bool = False):
     # ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item for item in stations if item in [row[6] for row in csv_data]]
     ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item in [row[6] for row in csv_data]]
     percent_ticked = round(len(ticked_stations) / len(stations) * 100, 2)
+
     # Add the percentage to the end of the string
     result_string += f"\n\n{len(ticked_stations)}/{len(stations)} ({percent_ticked}%) of stations visited" if summary == False else f"{len(ticked_stations)}/{len(stations)} `{percent_ticked}%`"
     
