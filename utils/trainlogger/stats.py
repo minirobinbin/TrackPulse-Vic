@@ -756,7 +756,7 @@ def completionList(user, line, summary:bool = False):
             "Collingwood",
             "North Richmond",
             "West Richmond",
-            "Jolimont-Mcg"
+            "Jolimont"
         ]
     elif line == "Mernda": 
         stations = [
@@ -783,7 +783,7 @@ def completionList(user, line, summary:bool = False):
             "Collingwood",
             "North Richmond",
             "West Richmond",
-            "Jolimont-Mcg"
+            "Jolimont"
         ]
     elif line == "Frankston":
         stations = [
@@ -896,6 +896,12 @@ def completionList(user, line, summary:bool = False):
             "Leawarra",
             "Frankston"
         ]
+    elif line == "Flemington Racecourse":
+        stations = [
+            "Flemington Racecourse",
+            "Showgrounds",
+            "North Melbourne"
+        ]
     elif line == "Metro Tunnel":
         stations = [
             "Arden",
@@ -924,10 +930,14 @@ def completionList(user, line, summary:bool = False):
     for row in csv_data:
         if row[5] in item_counts:
             item_counts[row[5]] += 1
+        elif row[5] == "Jolimont-MCG" or row[5] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
         else:
             item_counts[row[5]] = 1
         if row[6] in item_counts:
             item_counts[row[6]] += 1
+        elif row[6] == "Jolimont-MCG" or row[6] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
         else:
             item_counts[row[6]] = 1
 
@@ -941,6 +951,7 @@ def completionList(user, line, summary:bool = False):
     # ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item for item in stations if item in [row[6] for row in csv_data]]
     ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item in [row[6] for row in csv_data]]
     percent_ticked = round(len(ticked_stations) / len(stations) * 100, 2)
+
     # Add the percentage to the end of the string
     result_string += f"\n\n{len(ticked_stations)}/{len(stations)} ({percent_ticked}%) of stations visited" if summary == False else f"{len(ticked_stations)}/{len(stations)} `{percent_ticked}%`"
     
