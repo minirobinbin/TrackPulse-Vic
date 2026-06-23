@@ -5985,7 +5985,7 @@ async def sets(ctx, train:str):
 async def sets(ctx, line:str):
     await maintenance_func(ctx)
     userid = ctx.user
-    trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop","Flemington Racecourse"]
+    trainLines = ["Hurstbridge", "Mernda", "Craigieburn", "Sunbury", "Upfield", "Cranbourne", "Pakenham", "Frankston", "Stony Point", "Werribee", "Williamstown", "Sandringham", "Alamein", "Lilydale", "Glen Waverly", "Belgrave", "Metro Tunnel", "City Loop", "Flemington Racecourse", "All"]
     await ctx.response.defer()
     log_command(ctx.user.id, 'completion-lines')
 
