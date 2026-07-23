@@ -418,7 +418,7 @@ def distanceOverTime(user, year, globalStats=False):
         file_paths = []
         if os.path.exists(base_path):
             for file in os.listdir(base_path):
-                if file.endswith('.csv') and file not in ['XXm9G.csv', 'comeng_17.csv']:
+                if file.endswith('.csv'):
                     file_paths.append(os.path.join(base_path, file))
         
         all_trips = []
@@ -643,6 +643,356 @@ def topOperators(user):
                 
     return output
 
+def completionList(user, line, summary:bool = False):
+    if line == "Lilydale":
+        stations = [
+            "Lilydale",
+            "Mooroolbark",
+            "Croydon",
+            "Ringwood East",
+            "Ringwood",
+            "Heatherdale",
+            "Mitcham",
+            "Nunawading",
+            "Blackburn",
+            "Laburnum",
+            "Box Hill",
+            "Union",
+            "Chatham",
+            "Canterbury",
+            "East Camberwell",
+            "Camberwell",
+            "Auburn",
+            "Glenferrie",
+            "Hawthorn",
+            "Burnley",
+            "East Richmond",
+            "Richmond"
+        ] 
+    elif line == "Belgrave":
+        stations = [
+            "Belgrave",
+            "Tecoma",
+            "Upwey",
+            "Upper Ferntree Gully",
+            "Ferntree Gully",
+            "Boronia",
+            "Bayswater",
+            "Heathmont",
+            "Ringwood",
+            "Heatherdale",
+            "Mitcham",
+            "Nunawading",
+            "Blackburn",
+            "Laburnum",
+            "Box Hill",
+            "Union",
+            "Chatham",
+            "Canterbury",
+            "East Camberwell",
+            "Camberwell",
+            "Auburn",
+            "Glenferrie",
+            "Hawthorn",
+            "Burnley",
+            "East Richmond",
+            "Richmond"
+        ]
+    elif line == "Alamein":
+        stations = [
+            "Alamein",
+            "Ashburton",
+            "Burwood",
+            "Hartwell",
+            "Willison",
+            "Riversdale",
+            "Camberwell",
+            "Auburn",
+            "Glenferrie",
+            "Hawthorn",
+            "Burnley",
+            "East Richmond",
+            "Richmond"
+        ]
+    elif line == "Glen Waverly":
+        stations = [
+            "Glen Waverley",
+            "Syndal",
+            "Mount Waverley",
+            "Jordanville",
+            "Holmesglen",
+            "East Malvern",
+            "Darling",
+            "Glen Iris",
+            "Gardiner",
+            "Tooronga",
+            "Kooyong",
+            "Heyington",
+            "Burnley",
+            "East Richmond",
+            "Richmond"
+        ]
+    elif line == "Hurstbridge":
+        stations = [
+            "Hurstbridge",
+            "Wattle Glen",
+            "Diamond Creek",
+            "Eltham",
+            "Montmorency",
+            "Greensborough",
+            "Watsonia",
+            "Macleod",
+            "Rosanna",
+            "Heidelberg",
+            "Eaglemont",
+            "Ivanhoe",
+            "Darebin",
+            "Alphington",
+            "Fairfield",
+            "Dennis",
+            "Westgarth",
+            "Clifton Hill",
+            "Victoria Park",
+            "Collingwood",
+            "North Richmond",
+            "West Richmond",
+            "Jolimont"
+        ]
+    elif line == "Mernda": 
+        stations = [
+            "Mernda", 
+            "Hawkstowe",
+            "South Morang",
+            "Middle Gorge", 
+            "Epping", 
+            "Lalor", 
+            "Thomastown", 
+            "Keon Park", 
+            "Ruthven", 
+            "Reservoir", 
+            "Regent", 
+            "Preston", 
+            "Bell", 
+            "Thornbury", 
+            "Croxton", 
+            "Northcote", 
+            "Merri", 
+            "Rushall", 
+            "Clifton Hill",
+            "Victoria Park",
+            "Collingwood",
+            "North Richmond",
+            "West Richmond",
+            "Jolimont"
+        ]
+    elif line == "Frankston":
+        stations = [
+            "Frankston", "Kananook", "Seaford", "Carrum", 
+            "Chelsea", "Edithvale", "Aspendale", "Mordialloc", "Parkdale", 
+            "Mentone", "Cheltenham", "Southland", "Highett", "Moorabbin", "Patterson", 
+            "Bentleigh", "McKinnon", "Ormond", "Glen Huntly", "Caulfield", "Malvern", 
+            "Armadale", "Toorak", "Hawksburn", "South Yarra", "Richmond"
+        ]
+    elif line == "Craigieburn":
+        stations = [
+            "Craigieburn", "Roxburgh Park", "Coolaroo", "Broadmeadows", "Jacana", 
+            "Glenroy", "Oak Park", "Pascoe Vale", "Strathmore", "Glenbervie", 
+            "Essendon", "Moonee Ponds", "Ascot Vale", "Newmarket", "Kensington", "North Melbourne"
+        ]
+    elif line == "Upfield":
+        stations = [
+            "Upfield", "Gowrie", "Fawkner", "Merlynston", "Batman", 
+            "Coburg", "Moreland", "Anstey", "Brunswick", "Jewell", 
+            "Royal Park", "Flemington Bridge", "Macaulay", "North Melbourne"
+        ]
+    elif line == "Sandringham":
+        stations = [
+            "Sandringham", "Hampton", "Brighton Beach", "Middle Brighton", "North Brighton", 
+            "Gardenvale", "Elsternwick", "Ripponlea", "Balaclava", "Windsor", 
+            "Prahran", "South Yarra", "Richmond"
+        ]
+    elif line == "Werribee":
+        stations = [
+            "Werribee", "Hoppers Crossing", "Williams Landing", "Point Cook", "Laverton", 
+            "Aircraft", "Altona", "Seaholme", "Westona", "Seaholme", 
+            "Newport", "Spotswood", "Yarraville", "Seddon", "Footscray", "South Kensington", "North Melbourne"
+        ]
+    elif line == "Williamstown":
+        stations = [
+            "Williamstown", "Williamstown Beach", "North Williamstown", "Newport", 
+            "Spotswood", "Yarraville", "Seddon", "Footscray", "South Kensington", "North Melbourne"
+        ]
+    elif line == "Sunbury":
+        stations = [
+            "Sunbury",
+            "Diggers Rest",
+            "Watergardens",
+            "Keilor Plains",
+            "St Albans",
+            "Ginifer",
+            "Albion",
+            "Sunshine",
+            "Tottenham",
+            "West Footscray",
+            "Middle Footscray",
+            "Footscray"
+        ]
+    elif line == "Cranbourne":
+        stations = [
+            "Cranbourne",
+            "Merinda Park",
+            "Lynbrook",
+            "Hallam",
+            "Dandenong",
+            "Yarraman",
+            "Noble Park",
+            "Sandown Park",
+            "Springvale",
+            "Westall",
+            "Clayton",
+            "Huntingdale",
+            "Oakleigh",
+            "Hughesdale",
+            "Murrumbeena",
+            "Carnegie",
+            "Caulfield",
+            "Malvern"
+        ]
+    elif line == "Pakenham":
+        stations = [
+            "East Pakenham",
+            "Pakenham",
+            "Cardinia Road",
+            "Officer",
+            "Beaconsfield",
+            "Berwick",
+            "Narre Warren",
+            "Hallam",
+            "Dandenong",
+            "Yarraman",
+            "Noble Park",
+            "Sandown Park",
+            "Springvale",
+            "Westall",
+            "Clayton",
+            "Huntingdale",
+            "Oakleigh",
+            "Hughesdale",
+            "Murrumbeena",
+            "Carnegie",
+            "Caulfield",
+            "Malvern"
+        ]
+    elif line == "Stony Point":
+        stations = [
+            "Stony Point",
+            "Crib Point",
+            "Morradoo",
+            "Bittern",
+            "Hastings",
+            "Tyabb",
+            "Somerville",
+            "Baxter",
+            "Leawarra",
+            "Frankston"
+        ]
+    elif line == "Flemington Racecourse":
+        stations = [
+            "Flemington Racecourse",
+            "Showgrounds",
+            "North Melbourne"
+        ]
+    elif line == "Metro Tunnel":
+        stations = [
+            "Arden",
+            "Parkville",
+            "State Library",
+            "Town Hall",
+            "Anzac"
+        ]
+    elif line == "City Loop":
+        stations = [
+            "Flinders Street",
+            "Southern Cross",
+            "Flagstaff",
+            "Melbourne Central",
+            "Parliament"
+        ]
+    elif line == "All":
+        stations = [
+            "Aircraft", "Alamein", "Albion", "Alphington", "Altona", "Anstey", "Anzac", "Arden", "Ardeer", 
+            "Armadale", "Ascot Vale", "Ashburton", "Aspendale", "Auburn", "Balaclava", "Batman", "Bayswater", 
+            "Beaconsfield", "Belgrave", "Bell", "Bentleigh", "Berwick", "Bittern", "Blackburn", "Boronia", 
+            "Box Hill", "Brighton Beach", "Broadmeadows", "Brunswick", "Burnley", "Burwood", "Camberwell", 
+            "Canterbury", "Cardinia Road", "Carnegie", "Carrum", "Caulfield", "Chatham", "Chelsea", "Cheltenham", 
+            "Clifton Hill", "Cobblebank", "Coburg", "Collingwood", "Coolaroo", "Craigieburn", "Cranbourne", 
+            "Crib Point", "Croxton", "Croydon", "Dandenong", "Darebin", "Darling", "Deer Park", "Dennis", 
+            "Diamond Creek", "Diggers Rest", "Eaglemont", "East Camberwell", "East Malvern", "East Pakenham", 
+            "East Richmond", "Edithvale", "Elsternwick", "Eltham", "Epping", "Essendon", "Fairfield", "Fawkner", 
+            "Ferntree Gully", "Flagstaff", "Flemington Bridge", "Flemington Racecourse", "Flinders Street", 
+            "Footscray", "Frankston", "Gardiner", "Gardenvale", "Ginifer", "Glen Huntly", "Glen Iris", 
+            "Glen Waverley", "Glenbervie", "Glenferrie", "Glenroy", "Gowrie", "Greensborough", "Hallam", 
+            "Hampton", "Hartwell", "Hastings", "Hawkstowe", "Hawksburn", "Hawthorn", "Heatherdale", "Heathmont", 
+            "Heidelberg", "Heyington", "Highett", "Holmesglen", "Hoppers Crossing", "Hughesdale", "Huntingdale", 
+            "Hurstbridge", "Ivanhoe", "Jacana", "Jewell", "Jolimont", "Jordanville", "Kananook", "Keilor Plains", 
+            "Kensington", "Keon Park", "Kooyong", "Laburnum", "Lalor", "Laverton", "Leawarra", "Lilydale", 
+            "Lynbrook", "Macaulay", "Macleod", "Malvern", "McKinnon", "Melbourne Central", "Melton", "Mentone", 
+            "Merinda Park", "Mernda", "Merri", "Middle Gorge", "Middle Footscray", "Mitcham", "Montmorency", "Moonee Ponds", "Moorabbin", 
+            "Mooroolbark", "Morradoo", "Mount Waverley", "Mordialloc", "Moreland", "Murrumbeena", "Narre Warren", 
+            "Newmarket", "Newport", "Noble Park", "North Brighton", "North Melbourne", "North Richmond", 
+            "North Williamstown", "Northcote", "Nunawading", "Oak Park", "Oakleigh", "Officer", "Ormond", 
+            "Pakenham", "Parkdale", "Parkville", "Parliament", "Pascoe Vale", "Patterson", "Prahran", 
+            "Preston", "Regent", "Reservoir", "Richmond", "Ringwood", "Ringwood East", "Ripponlea", "Riversdale", 
+            "Rockbank", "Rosanna", "Roxburgh Park", "Royal Park", "Rushall", "Ruthven", "Sandown Park", 
+            "Sandringham", "Seaford", "Seaholme", "Seddon", "Showgrounds", "Somerville", "South Kensington", "Southland", 
+            "South Morang", "South Yarra", "Southern Cross", "Spotswood", "Springvale", "St Albans", 
+            "State Library", "Stony Point", "Strathmore", "Sunbury", "Sunshine", "Syndal", "Tecoma", 
+            "Thomastown", "Thornbury", "Toorak", "Tooronga", "Tottenham", "Town Hall", "Tyabb", "Union", 
+            "Upfield", "Upper Ferntree Gully", "Upwey", "Victoria Park", "Watergardens", "Watsonia", "Wattle Glen", 
+            "Werribee", "West Footscray", "West Richmond", "Westall", "Westgarth", "Westona", "Williams Landing", 
+            "Williamstown", "Williamstown Beach", "Willison", "Windsor", "Yarraman", "Yarraville"
+        ]
+    else:
+        line = ['Invalid Line:', f'{line}']
+
+    with open(f'utils/trainlogger/userdata/{user}.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        csv_data = list(reader)
+
+
+
+   # Create a dictionary to count the occurrences of each item
+    item_counts = {}
+    for row in csv_data:
+        if row[5] in item_counts:
+            item_counts[row[5]] += 1
+        elif row[5] == "Jolimont-MCG" or row[5] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
+        else:
+            item_counts[row[5]] = 1
+        if row[6] in item_counts:
+            item_counts[row[6]] += 1
+        elif row[6] == "Jolimont-MCG" or row[6] == "Jolimont-Mcg":
+            item_counts["Jolimont"] += 1
+        else:
+            item_counts[row[6]] = 1
+
+    if summary == False:
+        # Create a string with ticks for matching items
+        result_string = '\n'.join([f"`{item}` {'✅️' if item in item_counts else ''} {item_counts[item]} times" if item in item_counts else f"`{item}`" for item in stations])
+    else:
+        result_string = ''
+      
+    # Calculate the percentage of stations that have been ticked
+    # ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item for item in stations if item in [row[6] for row in csv_data]]
+    ticked_stations = [item for item in stations if item in [row[5] for row in csv_data] or item in [row[6] for row in csv_data]]
+    percent_ticked = round(len(ticked_stations) / len(stations) * 100, 2)
+
+    # Add the percentage to the end of the string
+    result_string += f"\n\n{len(ticked_stations)}/{len(stations)} ({percent_ticked}%) of stations visited" if summary == False else f"{len(ticked_stations)}/{len(stations)} `{percent_ticked}%`"
+    
+    return(result_string)
+
 def setlist(user, train, summary:bool = False): # probably shouldn't make this hard coded but use the trainsets csv.
     # List of items
     if train == "X'Trapolis 100":
@@ -691,6 +1041,59 @@ def setlist(user, train, summary:bool = False): # probably shouldn't make this h
         "973M-1687T-974M", "975M-1688T-976M", "977M-1689T-978M", "979M-1690T-980M", "981M-1691T-982M",
         "983M-1692T-984M", "985M-1693T-986M",
     ]
+    elif train == "X'Trapolis 2.0":
+        sets = [
+            "8101-8201-8301-8401-8501-8601",
+            "8102-8202-8302-8402-8502-8602",
+            "8103-8203-8303-8403-8503-8603",
+            "8104-8204-8304-8404-8504-8604",
+            "8105-8205-8305-8405-8505-8605",
+            "8106-8206-8306-8406-8506-8606",
+            "8107-8207-8307-8407-8507-8607",
+            "8108-8208-8308-8408-8508-8608",
+            "8109-8209-8309-8409-8509-8609",
+            "8110-8210-8310-8410-8510-8610",
+            "8111-8211-8311-8411-8511-8611",
+            "8112-8212-8312-8412-8512-8612",
+            "8113-8213-8313-8413-8513-8613",
+            "8114-8214-8314-8414-8514-8614",
+            "8115-8215-8315-8415-8515-8615",
+            "8116-8216-8316-8416-8516-8616",
+            "8117-8217-8317-8417-8517-8617",
+            "8118-8218-8318-8418-8518-8618",
+            "8119-8219-8319-8419-8519-8619",
+            "8120-8220-8320-8420-8520-8620",
+            "8121-8221-8321-8421-8521-8621",
+            "8122-8222-8322-8422-8522-8622",
+            "8123-8223-8323-8423-8523-8623",
+            "8124-8224-8324-8424-8524-8624",
+            "8125-8225-8325-8425-8525-8625",
+            "8126-8226-8326-8426-8526-8626",
+            "8127-8227-8327-8427-8527-8627",
+            "8128-8228-8328-8428-8528-8628",
+            "8129-8229-8329-8429-8529-8629",
+            "8130-8230-8330-8430-8530-8630",
+            "8131-8231-8331-8431-8531-8631",
+            "8132-8232-8332-8432-8532-8632",
+            "8133-8233-8333-8433-8533-8633",
+            "8134-8234-8334-8434-8534-8634",
+            "8135-8235-8335-8435-8535-8635",
+            "8136-8236-8336-8436-8536-8636",
+            "8137-8237-8337-8437-8537-8637",
+            "8138-8238-8338-8438-8538-8638",
+            "8139-8239-8339-8439-8539-8639",
+            "8140-8240-8340-8440-8540-8640",
+            "8141-8241-8341-8441-8541-8641",
+            "8142-8242-8342-8442-8542-8642",
+            "8143-8243-8343-8443-8543-8643",
+            "8144-8244-8344-8444-8544-8644",
+            "8145-8245-8345-8445-8545-8645",
+            "8146-8246-8346-8446-8546-8646",
+            "8147-8247-8347-8447-8547-8647",
+            "8148-8248-8348-8448-8548-8648",
+            "8149-8249-8349-8449-8549-8649",
+            "8150-8250-8350-8450-8550-8650",
+        ]
     elif train == 'Comeng':
         sets = [
         "301M-1001T-302M", "303M-1002T-304M", "307M-1004T-308M", "309M-1005T-310M",
